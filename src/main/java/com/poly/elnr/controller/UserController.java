@@ -8,19 +8,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.poly.elnr.repository.UserRepository;
 
+
 //@RequestMapping("user")dev
+
 @Controller
 public class UserController {
 
 	@Autowired
 	UserRepository userRepository;
 	
-	@GetMapping("user")
+	@GetMapping("user/index")
 	public String index() {
 		userRepository.findAll().forEach(list->{
 			System.out.println("Name: "+list.getFullName());
 		});
-		return "user/index";
+		return "user/layout/index";
 	}
 	
 }
