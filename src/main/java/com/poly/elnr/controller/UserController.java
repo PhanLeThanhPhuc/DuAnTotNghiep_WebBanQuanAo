@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.poly.elnr.repository.UserRepository;
 
-//@RequestMapping("user")
+//@RequestMapping("user")dev
 @Controller
 public class UserController {
 
