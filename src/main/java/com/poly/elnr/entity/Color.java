@@ -11,7 +11,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,10 +21,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name="voucher")
+@Table(name="Color")
 @Entity
-public class Voucher implements Serializable{
-	
+public class Color  implements Serializable {
+
     /**
 	 * 
 	 */
@@ -38,29 +37,8 @@ public class Voucher implements Serializable{
     @Column(name = "name")
     private String name;
 
-    @Column(name = "min")
-    private double min;
-
-    @Column(name = "start_date")
-    private Date startDate;
-
-    @Column(name = "end_date")
-    private Date endDate;
-
-    @Column(name = "quantity")
-    private int quantity;
-
-    @Column(name = "status")
-    private boolean status;
-    
-    @Column(name = "active")
-    private boolean active;
-
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
-
-    @OneToMany(mappedBy = "voucher")
-    private List<VoucherDetail> voucherDetails;
-
+   
 }
