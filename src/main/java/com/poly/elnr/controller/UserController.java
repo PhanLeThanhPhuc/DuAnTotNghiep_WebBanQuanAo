@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.poly.elnr.repository.UserRepository;
 
 
-//@RequestMapping("user")dev
+//@RequestMapping("user")dev khoa nhanh
 
 @Controller
 public class UserController {

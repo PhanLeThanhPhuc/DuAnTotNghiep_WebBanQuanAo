@@ -67,6 +67,12 @@ public class Order implements Serializable{
 
     @Column(name = "total")
     private double total;
+    
+    @Column(name = "total_discount")
+    private double totalDiscount;
+    
+    @Column(name = "weight")
+    private double weight;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -75,5 +81,4 @@ public class Order implements Serializable{
     @OneToMany(mappedBy = "order")
     private List<OrderDetail> orderDetails;
 
-    // Getter and Setter methods
 }
