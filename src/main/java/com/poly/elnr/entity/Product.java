@@ -47,6 +47,9 @@ public class Product implements Serializable{
 	@Column(name = "price")
 	private double price;
 
+	@Column(name = "weight")
+	private double weight;
+	
 	@Column(name = "is_sale")
 	private boolean isSale;
 
@@ -71,5 +74,17 @@ public class Product implements Serializable{
 
 	@OneToMany(mappedBy = "product")
 	private List<ProductDetails> productDetails;
+	
+    @OneToMany(mappedBy = "product")
+    private List<VoucherDetail> voucherDetails;
 
+    @OneToMany(mappedBy = "product")
+    private List<OrderDetail> orderDetails;
+
+    @OneToMany(mappedBy = "product")
+    private List<Review> reviews;
+    
+    @OneToMany(mappedBy = "product")
+    private List<Color> colors;
+    
 }
