@@ -24,5 +24,5 @@ public class UserController {
 		});
 		return "user/layout/home";
 	}
-	
+	// Bao Vi test
 }
