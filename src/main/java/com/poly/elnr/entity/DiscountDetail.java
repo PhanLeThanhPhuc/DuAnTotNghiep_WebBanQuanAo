@@ -1,6 +1,5 @@
 package com.poly.elnr.entity;
 
-import java.util.Date;
 import java.io.Serializable;
 
 import jakarta.persistence.Entity;
@@ -21,7 +20,7 @@ import lombok.Setter;
 @Setter
 @Table(name="discount_detail")
 @Entity
-public class DiscountDetail {
+public class DiscountDetail implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id
