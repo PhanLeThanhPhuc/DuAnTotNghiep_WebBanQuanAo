@@ -35,9 +35,12 @@ public class Voucher implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "voucher")
+    private String voucher;
 
+    @Column(name = "discount_price")
+    private String discountPrice;
+    
     @Column(name = "min")
     private double min;
 
@@ -55,12 +58,11 @@ public class Voucher implements Serializable{
     
     @Column(name = "active")
     private boolean active;
-
-    @ManyToOne
-    @JoinColumn(name = "product_id")
-    private Product product;
-
+    
     @OneToMany(mappedBy = "voucher")
-    private List<VoucherDetail> voucherDetails;
+    private List<Order> order;
+
+   
+
 
 }

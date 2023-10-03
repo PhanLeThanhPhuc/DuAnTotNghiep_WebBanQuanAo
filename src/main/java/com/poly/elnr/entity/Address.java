@@ -41,8 +41,8 @@ public class Address implements Serializable{
     @Column(name = "ward")
     private String ward;
 
-    @Column(name = "detail_address")
-    private String detailAddress;
+    @Column(name = "address_detail")
+    private String address_detail;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

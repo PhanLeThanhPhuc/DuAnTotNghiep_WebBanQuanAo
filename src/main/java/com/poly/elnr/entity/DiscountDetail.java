@@ -1,6 +1,5 @@
 package com.poly.elnr.entity;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import jakarta.persistence.Column;
@@ -20,26 +19,21 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name="voucher")
+@Table(name="discount_detail")
 @Entity
-public class VoucherDetail implements Serializable{
-	
-	
-    /**
-	 * 
-	 */
+public class DiscountDetail {
 	private static final long serialVersionUID = 1L;
 
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
-    @ManyToOne
-    @JoinColumn(name = "voucher_id")
-    private Voucher voucher;
-
-    @ManyToOne
-    @JoinColumn(name = "product_id")
-    private Product product;
+	
+	@ManyToOne
+	@JoinColumn(name = "Discount_ID")
+	private Discount discount;
+	
+	@ManyToOne
+	@JoinColumn(name = "product_ID")
+	private Product product;
 	
 }

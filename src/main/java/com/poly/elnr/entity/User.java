@@ -1,6 +1,7 @@
 package com.poly.elnr.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -32,9 +33,6 @@ public class User implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "user_name")
-    private String userName;
-
     @Column(name = "pass_word")
     private String password;
 
@@ -53,8 +51,15 @@ public class User implements Serializable{
     @Column(name = "status")
     private boolean status;
 
-    @Column(name = "token")
-    private String token;
+    @Column(name = "date_insert")
+    private Date date_insert;
+    
+    @Column(name = "date_update")
+    private Date date_update;
+    
+    @Column(name = "image")
+    private String image;
+
 
     @OneToMany(mappedBy = "user")
     private List<Address> addresses;

@@ -77,6 +77,10 @@ public class Order implements Serializable{
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+    
+    @ManyToOne
+    @JoinColumn(name = "voucher_id")
+    private Voucher voucher;
 
     @OneToMany(mappedBy = "order")
     private List<OrderDetail> orderDetails;

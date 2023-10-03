@@ -1,10 +1,7 @@
 package com.poly.elnr.entity;
 
-import java.io.Serializable;
-
 import java.util.Date;
 import java.util.List;
-
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,36 +14,39 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name="Category")
+@Table(name="Description")
 @Entity
-public class Category implements Serializable{
-	
-    /**
-	 * 
-	 */
+public class Description {
 	private static final long serialVersionUID = 1L;
 
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+	@Column(name = "quantity")
+    private int quantity;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "weight")
+    private String weight;
 
-    @Column(name = "date_insert")
-    private Date dateInsert;
+    @Column(name = "material")
+    private String material;
 
-    @Column(name = "date_update")
-    private Date dateUpdate;
-
-    @Column(name = "status")
-    private boolean status;
+    @Column(name = "technology")
+    private String technology;
     
-    @OneToMany(mappedBy = "category")
-	List<CategoryDetail> category_detail;
-
+    @Column(name = "manufacture")
+    private String manufacture;
+    
+    
+    @Column(name = "description")
+    private String description;
+    
+    @OneToMany(mappedBy = "description")
+	private List<Product> product;
+    
 }
