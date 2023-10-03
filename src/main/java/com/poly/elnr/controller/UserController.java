@@ -4,12 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-
-
 import com.poly.elnr.repository.UserRepository;
-
-
-//@RequestMapping("user")dev khoa nhanh
 
 @Controller
 public class UserController {
@@ -24,5 +19,5 @@ public class UserController {
 		});
 		return "user/layout/home";
 	}
-	// Bao Vi test
+
 }
