@@ -61,6 +61,7 @@ public class User implements Serializable{
     private String image;
 
 
+
     @OneToMany(mappedBy = "user")
     private List<Address> addresses;
 
