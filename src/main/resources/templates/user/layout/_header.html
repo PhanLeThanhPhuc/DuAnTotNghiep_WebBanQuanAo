@@ -24,10 +24,17 @@
                                             aria-expanded="false">
                                             SHOP
                                         </a>
-                                        <div class="dropdown-menu" aria-labelledby="navbarDropdown_1">
-                                            <a class="dropdown-item" href="category.html"> shop category</a>
-                                            <a class="dropdown-item" href="single-product.html">product details</a>
-
+                                        <div style="width: 500px;" class="dropdown-menu mx-auto "
+                                            aria-labelledby="navbarDropdown_1">
+                                            <div class="col-sm-12 row">
+                                         	          
+         											 <div class="col-sm-6" th:each="mapValueCategory : ${category}">
+          											
+            										  <a class="dropdown-item" th:href="|category.html${mapValueCategory.key}|">[[${mapValueCategory.key}]]</a>
+            										  <a th:each="categoryDetailName : ${mapValueCategory.value}" class="dropdown-item" href="category.html">[[${categoryDetailName}]]</a>
+            												     
+                                                </div> 
+                                            </div>
                                         </div>
                                     </li>
                                     <li class="nav-item dropdown">
