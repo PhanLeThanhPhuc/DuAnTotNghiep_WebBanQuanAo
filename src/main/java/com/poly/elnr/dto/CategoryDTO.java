@@ -12,8 +12,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CategoryDTO  {
- 
-	int idCategory;
 	
 	String CatgoryName;
 	
