@@ -23,10 +23,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name="Product")
+@Table(name = "Product")
 @Entity
-public class Product implements Serializable{
-	
+public class Product implements Serializable {
+
 	/**
 	 * 
 	 */
@@ -39,22 +39,17 @@ public class Product implements Serializable{
 	@Column(name = "name")
 	private String name;
 
-	
-
 	@Column(name = "discount_price")
 	private double discountPrice;
 
 	@Column(name = "price")
 	private double price;
 
-	
-	
 	@Column(name = "is_sale")
 	private boolean isSale;
 
 	@Column(name = "status")
 	private boolean status;
-
 
 	@Column(name = "date_insert")
 	private Date dateInsert;
@@ -62,37 +57,33 @@ public class Product implements Serializable{
 	@Column(name = "date_update")
 	private Date dateUpdate;
 
+	@Column(name = "thumbnail")
+	private String thumbnail;
+
 	@ManyToOne
-	@JoinColumn(name = "categoryDetail_ID")
+	@JoinColumn(name = "categoryDetail_id")
 	private CategoryDetail categoryDdetail;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "color_id")
 	private Color color;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "description_id")
 	private Description description;
-	
-	
-	
-	
+
 	@OneToMany(mappedBy = "product")
 	private List<ImageProduct> images;
 
 	@OneToMany(mappedBy = "product")
 	private List<ProductDetails> productDetails;
 
+	@OneToMany(mappedBy = "product")
+	private List<OrderDetail> orderDetails;
 
-    @OneToMany(mappedBy = "product")
-    private List<OrderDetail> orderDetails;
+	@OneToMany(mappedBy = "product")
+	private List<Review> reviews;
+	@OneToMany(mappedBy = "product")
+	private List<DiscountDetail> discountDetail;
 
-    @OneToMany(mappedBy = "product")
-    private List<Review> reviews;
-    @OneToMany(mappedBy = "product")
-    private List<DiscountDetail> discountDetail;
-   
-    
-    
-    
 }
