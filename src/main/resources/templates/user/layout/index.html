@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="css/flaticon.css">
     <link rel="stylesheet" href="css/themify-icons.css">
     <!-- font awesome CSS -->
-    <link rel="stylesheet" href="/assets/user/teample/css/magnific-popup.css">
+    <link href="/assets/user/teample/css/magnific-popup.css" rel="stylesheet">
     <!-- swiper CSS -->
     <link rel="stylesheet" href="/assets/user/teample/css/slick.css">
     <!-- style CSS -->
@@ -27,7 +27,8 @@
     
     <!-- ====================IMPORT LIBERY============================ -->
     <link rel="stylesheet" href="/assets/user/user/css/css_header.css">
-    
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
     
 </head>
 
@@ -38,10 +39,10 @@
 	<!-- main -->
 	<div th:replace="${main}"></div>
 	<!-- footer -->
-	<div th:replace="user/layout/_footer.html"></div>
+	<div th:replace="~{user/layout/_footer.html}"></div>
 
     <!-- jquery plugins here-->
-    <script src="/assets/user/teample/js/jquery-1.12.1.min.js"></script>
+    
     <!-- popper js -->
     <script src="/assets/user/teample/js/popper.min.js"></script>
     <!-- bootstrap js -->
@@ -55,7 +56,12 @@
     <!-- particles js -->
     <script src="/assets/user/teample/js/owl.carousel.min.js"></script>
     <script src="/assets/user/teample/js/jquery.nice-select.min.js"></script>
-    <!-- slick js -->
+    
+    
+     <!-- ====================IMPORT LIBERY============================ -->
+	<script src="/assets/user/user/js/jquery.twbsPagination.js"></script>
+    
+    <!-- slick js
     <script src="/assets/user/teample/js/slick.min.js"></script>
     <script src="/assets/user/teample/js/jquery.counterup.min.js"></script>
     <script src="/assets/user/teample/js/waypoints.min.js"></script>
@@ -64,8 +70,8 @@
     <script src="/assets/user/teample/js/jquery.form.js"></script>
     <script src="/assets/user/teample/js/jquery.validate.min.js"></script>
     <script src="/assets/user/teample/js/mail-script.js"></script>
-    <!-- custom js -->
-    <script src="/assets/user/teample/js/custom.js"></script>
+    <!-- custom js 
+    <script src="/assets/user/teample/js/custom.js"></script> -->
 </body>
 
 </html>

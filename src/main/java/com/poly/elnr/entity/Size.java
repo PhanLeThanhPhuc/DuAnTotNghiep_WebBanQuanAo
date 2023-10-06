@@ -3,6 +3,7 @@ package com.poly.elnr.entity;
 import java.io.Serializable;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -33,11 +34,12 @@ public class Size implements Serializable{
     private int id;
 
     @Column(name = "size")
-    private String size;
+    private String name;
 
     @Column(name = "status")
     private boolean status;
-    
+
+    @JsonIgnore
     @OneToMany(mappedBy = "size")
     private List<ProductDetails> productDetails;
 }

@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -45,7 +46,8 @@ public class Category implements Serializable{
 
     @Column(name = "status")
     private boolean status;
-    
+
+    @JsonIgnore
     @OneToMany(mappedBy = "category")
 	List<CategoryDetail> category_detail;
 
