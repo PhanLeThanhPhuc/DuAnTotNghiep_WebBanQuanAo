@@ -336,7 +336,7 @@
         page: null,
         first: '<i class="fa-solid fa-angles-right fa-rotate-180"></i>',
         prev: '<i class="fa-sharp fa-solid fa-angle-right fa-rotate-180"></i>',
-        next: '<i class="fa-sharp fa-solid fa-angle-right fa-beat-fade"></i>',
+        next: '<i class="fa-sharp fa-solid fa-angle-right"></i>',
         last: '<i class="fa-solid fa-angles-right fa-flip-vertical"></i>',
         loop: false,
         beforePageClick: null,

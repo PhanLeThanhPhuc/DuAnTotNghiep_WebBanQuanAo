@@ -1,13 +1,9 @@
 package com.poly.elnr.service.serviceImpl;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import com.poly.elnr.entity.Product;
@@ -29,32 +25,26 @@ public class ProductServiceImpl implements ProductService {
 	ProductRepository productRepository;
 
 	@Override
-	public Page<Product> findProductByCategoryDetailFilter(String name,
+	public Page<Product> findProductByCategoryDetailFilter(int idCategoryDetail,
 														   List<Integer> colorId,
 														   List<Integer> sizeId,
 														   Optional<String> sort,
 														   Optional<Integer> p) {
 		Sort s;
-		if(sort.isEmpty() || sort.get().equals("price-asc") ){
+		if (sort.isEmpty() || sort.get().equals("price-asc")) {
 			s = Sort.by(Sort.Direction.ASC, "price");
-		}else if(sort.get().equals("price-desc")){
+		} else if (sort.get().equals("price-desc")) {
 			s = Sort.by(Sort.Direction.DESC, "price");
-		}else if(sort.get().equals("name-az")){
+		} else if (sort.get().equals("name-az")) {
 			s = Sort.by(Sort.Direction.ASC, "name");
-		}else {
+		} else {
 			s = Sort.by(Sort.Direction.DESC, "name");
 		}
 
-		Pageable pageable = PageRequest.of(p.orElse(0), 2, s);
 		List<Integer> listColorId = colorId == null || colorId.isEmpty() ? colorRepository.findAllColorId() : colorId;
 		List<Integer> listSizeId = sizeId == null || sizeId.isEmpty() ? sizeRepository.findAllSizeId() : sizeId;
-		return productRepository.findProductByCategoryDetailFilter(name, listColorId, listSizeId, pageable);
-	}
-
-	@Override
-	public Page<Product> findProductByCategoryDetail(String name, Optional<Integer> p) {
-		Pageable pageable = PageRequest.of(p.orElse(0), 8);
-		return productRepository.findProductByCategoryDetail(name, pageable);
+		Pageable pageable = PageRequest.of(p.orElse(0), 3, s);
+		return  productRepository.findProductByCategoryDetailFilter(idCategoryDetail, listColorId, listSizeId, pageable);
 	}
 
 }

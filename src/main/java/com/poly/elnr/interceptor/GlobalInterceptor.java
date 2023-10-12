@@ -1,4 +1,5 @@
 package com.poly.elnr.interceptor;
+import com.poly.elnr.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -18,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 public class GlobalInterceptor implements HandlerInterceptor {
 
     private final SizeService sizeService;
-    private final CategoryDetailService categoryDetailService;
+    private final CategoryService categoryService;
     private final ColorService colorService;
 
     @Override
@@ -32,7 +33,7 @@ public class GlobalInterceptor implements HandlerInterceptor {
         }
         
         if (request.getHeader("X-Requested-With") == null) {
-            request.setAttribute("category", categoryDetailService.findCategoryAndCategoryDetail());
+            request.setAttribute("category", categoryService.findALlCategory());
         }
         
     }
