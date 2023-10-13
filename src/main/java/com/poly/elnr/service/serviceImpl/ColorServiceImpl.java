@@ -1,5 +1,6 @@
 package com.poly.elnr.service.serviceImpl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -19,6 +20,15 @@ public class ColorServiceImpl implements ColorService{
 	@Override
 	public List<Color> findAllColor() {
 		return colorRepository.findAll();
+	}
+
+	@Override
+	public List<Color> findAllColorEight() {
+		List<Color> listColor = colorRepository.findAll();
+		if(listColor.size() <8){
+			return colorRepository.findAll();
+		}
+		return colorRepository.findAll().subList(0,8);
 	}
 
 }

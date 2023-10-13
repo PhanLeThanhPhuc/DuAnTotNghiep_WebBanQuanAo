@@ -29,7 +29,8 @@ public class GlobalInterceptor implements HandlerInterceptor {
         
         if (requestURI.startsWith("/user/product")) {
         	 request.setAttribute("sizeMenu", sizeService.findAllSizeStatusTrue());
-        	 request.setAttribute("colorMenu", colorService.findAllColor());
+        	 request.setAttribute("colorMenu", colorService.findAllColorEight());
+        	 request.setAttribute("colorPopover", colorService.findAllColor());
         }
         
         if (request.getHeader("X-Requested-With") == null) {

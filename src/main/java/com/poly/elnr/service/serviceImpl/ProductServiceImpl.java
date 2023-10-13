@@ -43,8 +43,27 @@ public class ProductServiceImpl implements ProductService {
 
 		List<Integer> listColorId = colorId == null || colorId.isEmpty() ? colorRepository.findAllColorId() : colorId;
 		List<Integer> listSizeId = sizeId == null || sizeId.isEmpty() ? sizeRepository.findAllSizeId() : sizeId;
-		Pageable pageable = PageRequest.of(p.orElse(0), 3, s);
-		return  productRepository.findProductByCategoryDetailFilter(idCategoryDetail, listColorId, listSizeId, pageable);
+		Pageable pageable = PageRequest.of(p.orElse(0), 12, s);
+		return productRepository.findProductByCategoryDetailFilter(idCategoryDetail, listColorId, listSizeId, pageable);
+	}
+
+	@Override
+	public Page<Product> findProductByCategoryFilter(int idCategory, List<Integer> colorId, List<Integer> sizeId, Optional<String> sort, Optional<Integer> p) {
+		Sort s;
+		if (sort.isEmpty() || sort.get().equals("price-asc")) {
+			s = Sort.by(Sort.Direction.ASC, "price");
+		} else if (sort.get().equals("price-desc")) {
+			s = Sort.by(Sort.Direction.DESC, "price");
+		} else if (sort.get().equals("name-az")) {
+			s = Sort.by(Sort.Direction.ASC, "name");
+		} else {
+			s = Sort.by(Sort.Direction.DESC, "name");
+		}
+
+		List<Integer> listColorId = colorId == null || colorId.isEmpty() ? colorRepository.findAllColorId() : colorId;
+		List<Integer> listSizeId = sizeId == null || sizeId.isEmpty() ? sizeRepository.findAllSizeId() : sizeId;
+		Pageable pageable = PageRequest.of(p.orElse(0), 12, s);
+		return productRepository.findProductByCategoryFilter(idCategory, listColorId, listSizeId, pageable);
 	}
 
 }

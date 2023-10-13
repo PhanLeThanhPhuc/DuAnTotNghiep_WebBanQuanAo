@@ -3,7 +3,7 @@
 <main>
 	<section class="cat_product_area section_padding">
         <div class="container">
-            <form id="form" th:action="@{|product|}" method="get">
+            <form id="form" th:action="@{|productcategory|}" method="get">
                     <div class="row">
                 <div class="col-lg-3">
                     <div class="left_sidebar_area">
@@ -14,12 +14,12 @@
                             <div class="widgets_inner">
                                 <ul class="list">
 
-                                    <input type="hidden" name="idCategoryDetail" th:value="${idCategoryDetail}">
+                                    <input type="hidden" name="idCategory" th:value="${idCategory}">
 <!--                                        <input type="hidden" name="sort" th:value="${sortValue}">-->
                                     <li th:each="item : ${sizeMenu}">
-                                        <a>[[${item.name}]]</a>
+                                        <a class="size">[[${item.name}]]</a>
                                         <span>
-                                             <input onchange="document.getElementById('form').submit();" th:checked="${#lists.contains(sizeId, item.id)}" name="size" th:value="${item.id}" type="checkbox" class="form-check-input">
+                                             <input onclick="clickCheckbox()" th:checked="${#lists.contains(sizeId, item.id)}" name="size" th:value="${item.id}" type="checkbox" class="form-check-input">
                                         </span>
                                     </li>
                                 </ul>
@@ -32,10 +32,25 @@
                             <div class="widgets_inner">
                                 <ul class="list">
                                     <li th:each="item : ${colorMenu}">
-                                        <a>[[${item.name}]]</a>
+                                        <a class="color">[[${item.name}]]</a>
                                         <span>
-                                             <input onchange="document.getElementById('form').submit();" th:checked="${#lists.contains(colorId, item.id)}" name="color" th:value="${item.id}" type="checkbox" class="form-check-input">
+                                             <input onclick="clickCheckbox()" th:checked="${#lists.contains(colorId, item.id)}" name="color" th:value="${item.id}" type="checkbox" class="form-check-input checkbox-sidebar">
                                         </span>
+                                    </li>
+                                    <li>
+                                        <a class="color" type="button" id="popoverButton">Khác>></a>
+                                        <div id="customPopover" class="custom-popover" style="display: none;">
+                                            <div class="custom-popover-header">Chọn màu</div>
+                                            <div class="custom-popover-content col-sm-12 row">
+                                                <div th:each="item : ${colorPopover}" class="col-sm-3 container-checkbox">
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input th:checked="${#lists.contains(colorId, item.id)}" name="color" th:value="${item.id}" type="checkbox" class="form-check-input checkbox-popover">
+                                                        <a class="color">[[${item.name}]]</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <button onclick="buttonPopover()" type="button" class="btn btn-danger">Xác nhận</button>
+                                        </div>
                                     </li>
                                 </ul>
                             </div>
@@ -68,8 +83,11 @@
                                 <img th:src="@{|/assets/user/user/image/${item.thumbnail}|}">
                                 <div class="single_product_text">
                                     <h4>[[${item.name}]]</h4>
-                                    <h6>[[${item.color.name}]]</h6>
-                                    <h6 th:each="itemsize : ${item.productDetails}">[[${itemsize.size.name}]]</h6>
+                                    <h6>Màu: [[${item.color.name}]]</h6>
+                                    <h6>
+                                        Size:
+                                        <span th:each="itemsize : ${item.productDetails}" class="size">[[${itemsize.size.name}]]</span>
+                                    </h6>
                                     <h3>[[${#numbers.formatDecimal(item.price, 0, 'COMMA', 0,'POINT')}]]</h3>
                                 </div>
                             </div>

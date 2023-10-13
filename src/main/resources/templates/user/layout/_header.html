@@ -30,8 +30,8 @@
 
                                                 <div class="col-sm-6" th:each="itemCategory : ${category}">
 
-                                                    <a class="dropdown-item font-category" th:href="@{|category.html|}">[[${itemCategory.name.toUpperCase()}]]</a>
-                                                    <a th:each="categoryDetail : ${itemCategory.category_detail}" class="dropdown-item" th:href="@{|product?idCategoryDetail=${categoryDetail.id}|}">[[${categoryDetail.name}]]</a>
+                                                    <a class="dropdown-item font-category" th:href="@{|productcategory?idCategory=${itemCategory.id}|}">[[${itemCategory.name.toUpperCase()}]]</a>
+                                                    <a th:each="categoryDetail : ${itemCategory.category_detail}" class="dropdown-item" th:href="@{|productcategorydetail?idCategoryDetail=${categoryDetail.id}|}">[[${categoryDetail.name}]]</a>
 
                                                 </div>
                                             </div>

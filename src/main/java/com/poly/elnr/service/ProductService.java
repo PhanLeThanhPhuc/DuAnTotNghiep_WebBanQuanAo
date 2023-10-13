@@ -10,7 +10,12 @@ import com.poly.elnr.entity.Product;
 public interface ProductService {
 	
 	Page<Product> findProductByCategoryDetailFilter(int idCategoryDetail,
-													List<Integer> colorId, 
+													List<Integer> colorId,
+													List<Integer> sizeId,
+													Optional<String> sort,
+													Optional<Integer> p);
+	Page<Product> findProductByCategoryFilter(int idCategoryDetail,
+													List<Integer> colorId,
 													List<Integer> sizeId,
 													Optional<String> sort,
 													Optional<Integer> p);
