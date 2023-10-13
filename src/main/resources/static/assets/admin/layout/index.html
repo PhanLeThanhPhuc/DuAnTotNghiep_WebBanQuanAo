@@ -17,7 +17,13 @@
     <link href="/assets/admin/teample/css/style.css" rel="stylesheet">
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.js"></script>
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
+
+
+
 
 <body ng-app="app">
 
@@ -34,9 +40,18 @@
     	
 		<div ng-include="'/assets/admin/layout/menu/_header.html'"></div>
 		<div ng-include="'/assets/admin/layout/menu/_sidebar.html'"></div>
-		<div class="content-body ng-view">
+		<div class="content-body ">
+		<main>
+		<div class="ng-view">
+		
+		
 		
 		</div>
+		
+		
+		</main>
+		</div>
+		<div ng-include="'/assets/admin/layout/menu/footer.html'"></div>
        
     </div>
     
@@ -45,6 +60,13 @@
     <script src="/assets/admin/teample/js/settings.js"></script>
     <script src="/assets/admin/teample/js/gleek.js"></script>
     <script src="/assets/admin/teample/js/styleSwitcher.js"></script>
+    
+    <script src="/assets/admin/teample/plugins/tables/js/jquery.dataTables.min.js"></script>
+    <script src="/assets/admin/teample/plugins/tables/js/datatable/dataTables.bootstrap4.min.js"></script>
+    <script src="/assets/admin/teample/plugins/tables/js/datatable-init/datatable-basic.min.js"></script>
+    
+    <script src="/assets/admin/teample/plugins/validation/jquery.validate.min.js"></script>
+    <script src="/assets/admin/teample/plugins/validation/jquery.validate-init.js"></script>
 
     <!-- Chartjs -->
     <script src="/assets/admin/teample/plugins/chart.js/Chart.bundle.min.js"></script>
@@ -67,7 +89,10 @@
     
      <!--=========================================-->
      <script src="/assets/admin/js/route/admin-route-app.js"></script>
-
+     
+	
+	<script src="/assets/admin/js/category.js"></script>
 </body>
+
 
 </html>

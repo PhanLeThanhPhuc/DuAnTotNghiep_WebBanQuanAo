@@ -1,15 +1,22 @@
-package com.poly.elnr.service.serviceImpl;
+package com.poly.elnr.controller;
 
-import org.springframework.stereotype.Service;
+import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.poly.elnr.entity.Product;
+import com.poly.elnr.repository.ProductRepository;
 import com.poly.elnr.service.ProductService;
 
 
-@Service
-public class ProductServiceImpl implements ProductService{
+@Controller
+@RequestMapping("user")
+public class ProductController {
 
-<<<<<<< Updated upstream
-=======
 	@Autowired
 	ProductRepository dao;
 
@@ -25,6 +32,7 @@ public class ProductServiceImpl implements ProductService{
 	 * public List<Product> findByCategoryId(String cid) { return
 	 * dao.findByCategoryId(cid); }
 	 */
+
 	public Product create(Product product) {
 		return dao.save(product);
 	}
@@ -36,11 +44,5 @@ public class ProductServiceImpl implements ProductService{
 	public void delete(Integer id) {
 		dao.deleteById(id);
 	}
-
-	@Override
-	public List<Product> findByCategoryId(String cid) {
-		// TODO Auto-generated method stub
-		return null;
-	}
->>>>>>> Stashed changes
+	
 }
