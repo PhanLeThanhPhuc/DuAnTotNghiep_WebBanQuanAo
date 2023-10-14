@@ -5,6 +5,8 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -72,11 +74,35 @@ public class Product implements Serializable {
 	@JoinColumn(name = "description_id")
 	private Description description;
 
+	
+	
+	
+
+
+
+
 	@OneToMany(mappedBy = "product")
 	private List<ImageProduct> images;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "product")
 	private List<ProductDetails> productDetails;
+
+
+    @OneToMany(mappedBy = "product")
+    private List<OrderDetail> orderDetails;
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "product")
+	private List<OrderDetail> orderDetails;
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "product")
+	private List<Review> reviews;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "product")
+	private List<DiscountDetail> discountDetail;
 
 	@OneToMany(mappedBy = "product")
 	private List<OrderDetail> orderDetails;
@@ -85,5 +111,6 @@ public class Product implements Serializable {
 	private List<Review> reviews;
 	@OneToMany(mappedBy = "product")
 	private List<DiscountDetail> discountDetail;
+
 
 }
