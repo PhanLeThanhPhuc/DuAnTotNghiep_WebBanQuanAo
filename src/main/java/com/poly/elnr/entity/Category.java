@@ -2,10 +2,15 @@ package com.poly.elnr.entity;
 
 import java.io.Serializable;
 
+
+
+
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -38,14 +43,17 @@ public class Category implements Serializable{
     private String name;
 
     @Column(name = "date_insert")
-    private Date dateInsert;
+    private Date dateInsert= new Date();
+    
 
     @Column(name = "date_update")
     private Date dateUpdate;
 
     @Column(name = "status")
     private boolean status;
-    
+
+
+    @JsonIgnore
     @OneToMany(mappedBy = "category")
 	List<CategoryDetail> category_detail;
 

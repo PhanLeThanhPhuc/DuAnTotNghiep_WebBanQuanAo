@@ -6,6 +6,5 @@ import java.util.Map;
 
 public interface CategoryDetailService {
 
-	Map<String, List<String>> findCategoryAndCategoryDetail();
 	
 }

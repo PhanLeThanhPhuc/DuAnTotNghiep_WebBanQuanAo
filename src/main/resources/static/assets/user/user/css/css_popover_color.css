@@ -1,0 +1,23 @@
+.custom-popover {
+	position: absolute;
+	background-color: #fff;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	padding: 15px;
+	z-index: 9999;
+	width: 700px;
+	margin-top: 30px;
+	margin-left: 65px;
+}
+
+.custom-popover-header {
+	font-weight: bold;
+}
+
+.custom-popover-content {
+	padding: 10px;
+}
+
+.container-checkbox {
+	padding: 5px;
+}
