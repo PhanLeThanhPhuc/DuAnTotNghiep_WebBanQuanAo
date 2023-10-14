@@ -14,6 +14,7 @@ public interface ProductService {
 													List<Integer> sizeId,
 													Optional<String> sort,
 													Optional<Integer> p);
+	
 	Page<Product> findProductByCategoryFilter(int idCategoryDetail,
 													List<Integer> colorId,
 													List<Integer> sizeId,
