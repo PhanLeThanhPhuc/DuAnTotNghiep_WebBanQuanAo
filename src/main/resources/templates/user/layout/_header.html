@@ -31,17 +31,19 @@
 										aria-labelledby="navbarDropdown_1">
 										<div class="col-sm-12 row">
 
+
 											<div class="col-sm-6"
 												th:each="mapValueCategory : ${category}">
 
-												<a class="dropdown-item"
-													th:href="|category.html${mapValueCategory.key}|">[[${mapValueCategory.key}]]</a>
+												<a class="dropdown-item font-category"
+													th:href="|category.html${mapValueCategory.key}|">[[${mapValueCategory.key.toUpperCase()}]]</a>
 												<a th:each="categoryDetailName : ${mapValueCategory.value}"
 													class="dropdown-item" href="category.html">[[${categoryDetailName}]]</a>
 
 											</div>
 										</div>
 									</div></li>
+								
 								<li class="nav-item dropdown"><a
 									class="nav-link dropdown-toggle" href="blog.html"
 									id="navbarDropdown_3" role="button" data-toggle="dropdown"

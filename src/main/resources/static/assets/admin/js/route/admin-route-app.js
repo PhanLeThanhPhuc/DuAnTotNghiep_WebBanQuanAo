@@ -2,9 +2,10 @@ app = angular.module("app", ["ngRoute"]);
 
 app.config(function ($routeProvider) {
   $routeProvider
-    .when("/product", {
-      templateUrl: "/assets/admin/product/index.html",
-      controller: "product-ctrl"
+    
+    .when("/category", {
+      templateUrl: "/assets/admin/category/index.html",
+      controller: "category-ctrl"
     })
     .when("/authorize", {
       templateUrl: "/assets/admin/authority/index.html",
