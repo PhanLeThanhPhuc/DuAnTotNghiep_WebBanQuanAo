@@ -33,9 +33,6 @@ app.controller("cart-ctrl", function($scope, $http) {
 					item.qty += qtt;
 					this.saveToLocalStorage();
 				}
-
-
-
 			}
 			else {
 				$http.get(`/rest/productsDetail/size/${id}/` + sizeid).then(resp => {
