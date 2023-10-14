@@ -2,6 +2,7 @@ package com.poly.elnr.entity;
 
 import java.io.Serializable;
 
+
 import java.util.Date;
 import java.util.List;
 
@@ -29,6 +30,7 @@ import lombok.Setter;
 @Table(name="CategoryDetail")
 @Entity
 public class CategoryDetail implements Serializable {
+	
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -50,6 +52,7 @@ public class CategoryDetail implements Serializable {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
+
     @JsonIgnore
     @OneToMany(mappedBy = "categoryDdetail")
 	private List<Product> product;

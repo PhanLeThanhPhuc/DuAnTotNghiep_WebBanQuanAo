@@ -1,9 +1,6 @@
 package com.poly.elnr.entity;
 
-import java.io.Serializable
-;
-
-
+import java.io.Serializable;
 
 import java.util.Date;
 import java.util.List;
@@ -68,6 +65,7 @@ public class Product implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "categoryDetail_id")
 	private CategoryDetail categoryDdetail;
+
 	@ManyToOne
 	@JoinColumn(name = "color_id")
 	private Color color;
@@ -76,9 +74,7 @@ public class Product implements Serializable {
 	@JoinColumn(name = "description_id")
 	private Description description;
 
-	
-	
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "product")
 	private List<ImageProduct> images;
@@ -98,5 +94,6 @@ public class Product implements Serializable {
    
     
     
+
 }
 

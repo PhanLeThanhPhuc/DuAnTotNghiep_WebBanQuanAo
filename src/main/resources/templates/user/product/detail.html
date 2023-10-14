@@ -71,7 +71,7 @@
 									<div th:each="a: ${sizes}">
 										<input type="radio" th:id="${a.size.id}" name="x" 
 											th:attr="ng-click=@{|handleRadioClick(${a.quantity});sizeid(${a.size.id})|}"
-											th:value="${a.quantity}" /> <label th:for="${a.size.id}">[[${a.size.size}]]</label>
+											th:value="${a.quantity}" /> <label th:for="${a.size.id}">[[${a.size.name}]]</label>
 									</div>
 								</nav>
 								<p>Số lượng sản phẩm: {{soluong}}</p>

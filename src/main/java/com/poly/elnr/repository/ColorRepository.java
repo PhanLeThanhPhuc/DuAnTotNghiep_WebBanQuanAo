@@ -6,14 +6,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import com.poly.elnr.entity.Size;
+import com.poly.elnr.entity.Color;
 
 @Repository
-public interface SizeRepository extends JpaRepository<Size, Integer>{
+public interface ColorRepository extends JpaRepository<Color, Integer>{
+
+	@Query("SELECT c.id from Color c")
+	List<Integer> findAllColorId();
 	
-	 List<Size> findByStatusTrue();
-	 
-	 @Query("SELECT z.id from Size z")
-	 List<Integer> findAllSizeId();
-	 
 }
