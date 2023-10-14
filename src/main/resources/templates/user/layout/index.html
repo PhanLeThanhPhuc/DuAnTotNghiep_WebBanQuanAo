@@ -2,72 +2,92 @@
 <html xmlns:th="http://www.thymeleaf.org" th:fragment="dynamic(main)">
 
 <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>NoneGap</title>
-    <link rel="icon" href="/assets/user/img/favicon.png">
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="/assets/user/teample/css/bootstrap.min.css">
-    <!-- animate CSS -->
-    <link rel="stylesheet" href="/assets/user/teample/css/animate.css">
-    <!-- owl carousel CSS -->
-    <link rel="stylesheet" href="/assets/user/teample/css/owl.carousel.min.css">
-    <!-- font awesome CSS -->
-    <link rel="stylesheet" href="/assets/user/teample/css/all.css">
-    <!-- flaticon CSS --
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>NoneGap</title>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+<link rel="icon" href="/assets/user/img/favicon.png">
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="/assets/user/teample/css/bootstrap.min.css">
+<!-- animate CSS -->
+<link rel="stylesheet" href="/assets/user/teample/css/animate.css">
+<!-- owl carousel CSS -->
+<link rel="stylesheet"
+	href="/assets/user/teample/css/owl.carousel.min.css">
+<!-- font awesome CSS -->
+<link rel="stylesheet" href="/assets/user/teample/css/all.css">
+<!-- flaticon CSS --
     <link rel="stylesheet" href="css/flaticon.css">
     <link rel="stylesheet" href="css/themify-icons.css">
     <!-- font awesome CSS -->
-    <link rel="stylesheet" href="/assets/user/teample/css/magnific-popup.css">
-    <!-- swiper CSS -->
-    <link rel="stylesheet" href="/assets/user/teample/css/slick.css">
-    <!-- style CSS -->
-    <link rel="stylesheet" href="/assets/user/teample/css/style.css">
-    
-    <!-- ====================IMPORT LIBERY============================ -->
-    <link rel="stylesheet" href="/assets/user/user/css/css_header.css">
-    
-    
-   
-    
+<link rel="stylesheet"
+	href="/assets/user/teample/css/magnific-popup.css">
+<!-- swiper CSS -->
+<link rel="stylesheet" href="/assets/user/teample/css/slick.css">
+<!-- style CSS -->
+<link rel="stylesheet" href="/assets/user/teample/css/style.css">
+
+<!-- ====================IMPORT LIBERY============================ -->
+<link rel="stylesheet" href="/assets/user/user/css/css_header.css">
+
+<link rel="stylesheet"
+	href="/assets/user/teample/css/lightslider.min.css">
+
+<link rel="stylesheet" href="/assets/user/teample/css/radio-button.css">
+
+
+<script th:src="@{/assets/user/user/js/shopping-cart-app.js}"></script>
 </head>
 
-<body>
-    
-    <!-- header -->
-	<div th:replace="~{user/layout/_header.html}"></div>
+<body ng-app="app" ng-controller="cart-ctrl">
+
+	<!-- header -->
+	<div th:replace="~{/user/layout/_header.html}"></div>
 	<!-- main -->
+	
+	
 	<div th:replace="${main}"></div>
 	<!-- footer -->
-	<div th:replace="user/layout/_footer.html"></div>
+	<div th:replace="~{/user/layout/_footer.html}"></div>
 
-    <!-- jquery plugins here-->
-    <script src="/assets/user/teample/js/jquery-1.12.1.min.js"></script>
-    <!-- popper js -->
-    <script src="/assets/user/teample/js/popper.min.js"></script>
-    <!-- bootstrap js -->
-    <script src="/assets/user/teample/js/bootstrap.min.js"></script>
-    <!-- easing js -->
-    <script src="/assets/user/teample/js/jquery.magnific-popup.js"></script>
-    <!-- swiper js -->
-    <script src="/assets/user/teample/js/swiper.min.js"></script>
-    <!-- swiper js -->
-    <script src="/assets/user/teample/js/masonry.pkgd.js"></script>
-    <!-- particles js -->
-    <script src="/assets/user/teample/js/owl.carousel.min.js"></script>
-    <script src="/assets/user/teample/js/jquery.nice-select.min.js"></script>
-    <!-- slick js -->
-    <script src="/assets/user/teample/js/slick.min.js"></script>
-    <script src="/assets/user/teample/js/jquery.counterup.min.js"></script>
-    <script src="/assets/user/teample/js/waypoints.min.js"></script>
-    <script src="/assets/user/teample/js/contact.js"></script>
-    <script src="/assets/user/teample/js/jquery.ajaxchimp.min.js"></script>
-    <script src="/assets/user/teample/js/jquery.form.js"></script>
-    <script src="/assets/user/teample/js/jquery.validate.min.js"></script>
-    <script src="/assets/user/teample/js/mail-script.js"></script>
-    <!-- custom js -->
-    <script src="/assets/user/teample/js/custom.js"></script>
+	<!-- jquery plugins here-->
+	<!-- jquery -->
+	<script src="/assets/user/teample/js/jquery-1.12.1.min.js"></script>
+	<!-- popper js -->
+	<script src="/assets/user/teample/js/popper.min.js"></script>
+	<!-- bootstrap js -->
+	<script src="/assets/user/teample/js/bootstrap.min.js"></script>
+	<!-- easing js -->
+	<script src="/assets/user/teample/js/jquery.magnific-popup.js"></script>
+	<!-- swiper js -->
+	<script src="/assets/user/teample/js/lightslider.min.js"></script>
+	<!-- swiper js -->
+	<script src="/assets/user/teample/js/masonry.pkgd.js"></script>
+	<!-- particles js -->
+	<script src="/assets/user/teample/js/owl.carousel.min.js"></script>
+	<script src="/assets/user/teample/js/jquery.nice-select.min.js"></script>
+	<!-- slick js -->
+	<script src="/assets/user/teample/js/slick.min.js"></script>
+	<script src="/assets/user/teample/js/swiper.jquery.js"></script>
+	<script src="/assets/user/teample/js/jquery.counterup.min.js"></script>
+	<script src="/assets/user/teample/js/waypoints.min.js"></script>
+	<script src="/assets/user/teample/js/contact.js"></script>
+	<script src="/assets/user/teample/js/jquery.ajaxchimp.min.js"></script>
+	<script src="/assets/user/teample/js/jquery.form.js"></script>
+	<script src="/assets/user/teample/js/jquery.validate.min.js"></script>
+	<script src="/assets/user/teample/js/mail-script.js"></script>
+	<script src="/assets/user/teample/js/stellar.js"></script>
+	<!-- custom js -->
+	<script src="/assets/user/teample/js/theme.js"></script>
+	<script src="/assets/user/teample/js/custom.js"></script>
+
+
+	<script src="/assets/user/user/js/shopping-cart-app.js"></script>
+	<script src="/assets/user/user/js/shopping-cart-ctrl.js"></script>
 </body>
 
 </html>

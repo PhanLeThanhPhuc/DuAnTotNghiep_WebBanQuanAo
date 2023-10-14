@@ -1,8 +1,11 @@
 package com.poly.elnr.entity;
 
 import java.io.Serializable;
+
 import java.util.Date;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -47,7 +50,7 @@ public class CategoryDetail implements Serializable {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
-    
+    @JsonIgnore
     @OneToMany(mappedBy = "categoryDdetail")
 	private List<Product> product;
 }

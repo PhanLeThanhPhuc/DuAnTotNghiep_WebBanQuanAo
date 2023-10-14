@@ -2,9 +2,11 @@ package com.poly.elnr.entity;
 
 import java.io.Serializable;
 
+
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -46,6 +48,7 @@ public class Category implements Serializable{
     @Column(name = "status")
     private boolean status;
     
+    @JsonIgnore
     @OneToMany(mappedBy = "category")
 	List<CategoryDetail> category_detail;
 
