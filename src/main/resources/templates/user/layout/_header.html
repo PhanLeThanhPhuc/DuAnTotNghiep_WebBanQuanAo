@@ -30,7 +30,7 @@
                                          	          
          											 <div class="col-sm-6" th:each="mapValueCategory : ${category}">
           											
-            										  <a class="dropdown-item" th:href="|category.html${mapValueCategory.key}|">[[${mapValueCategory.key}]]</a>
+            										  <a class="dropdown-item font-category" th:href="|category.html${mapValueCategory.key}|">[[${mapValueCategory.key.toUpperCase()}]]</a>
             										  <a th:each="categoryDetailName : ${mapValueCategory.value}" class="dropdown-item" href="category.html">[[${categoryDetailName}]]</a>
             												     
                                                 </div> 

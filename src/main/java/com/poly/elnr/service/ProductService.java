@@ -1,9 +1,12 @@
 package com.poly.elnr.service;
 
+import java.util.List;
+
+import com.poly.elnr.entity.Product;
+
 public interface ProductService {
 
-<<<<<<< Updated upstream
-=======
+
 public List<Product> findAll() ;
 	
 	public Product findById(Integer id) ;
@@ -16,6 +19,7 @@ public List<Product> findAll() ;
 
 	public void delete(Integer id) ;
 	
-	
->>>>>>> Stashed changes
+
+	List<Product> findAllProduct();
+
 }
