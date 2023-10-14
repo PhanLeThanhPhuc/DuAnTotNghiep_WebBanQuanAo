@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -61,13 +63,13 @@ public class User implements Serializable{
     private String image;
 
 
-
+    @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Address> addresses;
-
+    @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Review> reviews;
-
+    @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Authority> authorities;
 

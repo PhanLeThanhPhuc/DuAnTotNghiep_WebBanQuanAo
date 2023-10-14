@@ -43,5 +43,7 @@ public class ProductDetails implements Serializable{
     @JoinColumn(name = "product_id")
     private Product product;
 
+
+
     // Getter and Setter methods
 }

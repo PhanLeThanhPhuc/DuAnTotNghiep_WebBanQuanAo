@@ -6,9 +6,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class HomeController {
 
-	@GetMapping("admin/index")
+	@GetMapping("/admin/index")
 	public String viewAdmin() {
 		return"redirect:/assets/admin/layout/index.html";
 	}
+	
+	
 	
 }

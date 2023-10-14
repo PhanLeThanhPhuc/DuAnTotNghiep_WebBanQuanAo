@@ -2,6 +2,8 @@ package com.poly.elnr.entity;
 
 import java.io.Serializable;
 
+
+
 import java.util.Date;
 import java.util.List;
 
@@ -48,7 +50,7 @@ public class Category implements Serializable{
     @Column(name = "status")
     private boolean status;
     
-    
+
     @JsonIgnore
     @OneToMany(mappedBy = "category")
 	List<CategoryDetail> category_detail;
