@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.poly.elnr.config.UserInfoUserDetails;
-import com.poly.elnr.entity.User;
+import com.poly.elnr.entity.Users;
 import com.poly.elnr.repository.UserRepository;
 
 
@@ -19,7 +19,7 @@ public class UserSecurityService implements UserDetailsService{
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Optional<User> userInfo = repository.findByEmail(email);
+        Optional<Users> userInfo = repository.findByEmail(email);
         if (userInfo.isPresent()) {
             return new UserInfoUserDetails(userInfo.get());
         } else {

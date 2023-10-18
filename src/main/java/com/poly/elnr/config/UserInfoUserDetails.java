@@ -10,7 +10,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import com.poly.elnr.entity.User;
+import com.poly.elnr.entity.Users;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,13 +26,13 @@ public class UserInfoUserDetails implements UserDetails{
     private String password;
     private List<GrantedAuthority> authorities;
 
-    public UserInfoUserDetails(User userInfo) {
+    public UserInfoUserDetails(Users userInfo) {
     	name = userInfo.getEmail();
         password = userInfo.getPassword();
 
         authorities = new ArrayList<>();
         userInfo.getAuthorities().forEach(listAuthorities->{
-            authorities.add(new SimpleGrantedAuthority(listAuthorities.getRole().getName()));
+            authorities.add(new SimpleGrantedAuthority(listAuthorities.getRole().getId()));
         });
 
     }
@@ -41,7 +41,7 @@ public class UserInfoUserDetails implements UserDetails{
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;
     }
-
+    
     @Override
     public String getPassword() {
         return password;

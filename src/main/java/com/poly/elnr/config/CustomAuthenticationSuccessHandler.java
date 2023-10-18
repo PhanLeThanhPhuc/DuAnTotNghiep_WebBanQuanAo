@@ -13,7 +13,7 @@ import org.springframework.ui.Model;
 
 import com.poly.elnr.repository.UserRepository;
 import com.poly.elnr.service.SessionService;
-import com.poly.elnr.service.UserServiceSecurity;
+//import com.poly.elnr.service.UserServiceSecurity;
 
 import java.io.IOException;
 import jakarta.servlet.ServletException;
@@ -56,11 +56,11 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 		
 		// Tiến hành phân quyền
 		for (GrantedAuthority authority : authorities) {
-			if (authority.getAuthority().equals("ROLE_ADMIN")) {
+			if (authority.getAuthority().equals("ADMIN")) {
 				// Nếu có vai trò "ADMIN", chuyển hướng đến "/admin/home"
 				response.sendRedirect("/admin/chao");
 				return;
-			} else if (authority.getAuthority().equals("ROLE_USER")) {
+			} else if (authority.getAuthority().equals("USER")) {
 				// Nếu có vai trò "MANAGER", chuyển hướng đến "/manager/home"
 				response.sendRedirect("/cline/chao");
 				return;

@@ -7,13 +7,15 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.poly.elnr.entity.User;
+import com.poly.elnr.entity.Users;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Integer> {
+public interface UserRepository extends JpaRepository<Users, Integer> {
 
-Optional<User> findByEmail(String email);
+	Optional<Users> findByEmail(String email);
 	
-	@Query("Select o FROM User o WHERE o.email = :email")
-	User findEmail(@Param("email") String email);
+	@Query("Select o FROM Users o WHERE o.email = :email")
+	Users findEmail(@Param("email") String email);
+	
+//	User findByEmail(String phone);
 }

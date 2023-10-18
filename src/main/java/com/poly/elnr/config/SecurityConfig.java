@@ -33,8 +33,8 @@ public class SecurityConfig {
 		return http.csrf().disable()
 					.authorizeHttpRequests()
 					.requestMatchers("/assets/user/**","/user/new").permitAll()
-					.requestMatchers("/cline/**").hasAuthority("ROLE_USER")
-					.requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
+					.requestMatchers("/cline/**").hasAuthority("USER")
+					.requestMatchers("/admin/**").hasAuthority("ADMIN")
 					.anyRequest().permitAll()
 					.and()
 					.formLogin()
@@ -52,6 +52,7 @@ public class SecurityConfig {
 		            .and()
 		            .oauth2Login()
 	                .loginPage("/security/user")
+	                .successHandler(authenticationSuccessHandler()) 
 	                .defaultSuccessUrl("/user/controller", true).and()
 		            .build();
 
