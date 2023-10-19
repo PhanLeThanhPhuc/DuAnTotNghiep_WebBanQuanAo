@@ -3,6 +3,8 @@ package com.poly.elnr.service.serviceImpl;
 import java.util.Date;
 import java.util.Random;
 
+import com.poly.elnr.config.UserInfoUserDetails;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -34,7 +36,10 @@ public class UserServiceImpl implements UserService{
 	
 	@Autowired
 	PasswordEncoder passwordEncoder;
-	
+
+	@Autowired
+	SessionService session;
+
 	@Override
 	public void oauth2(OAuth2User oAuth2User) {
 		
@@ -43,8 +48,7 @@ public class UserServiceImpl implements UserService{
 		String picture = oAuth2User.getAttribute("picture");
 		
 		Users user  = userRepository.findEmail(email);
-		
-//		System.out.println(user.toString());
+
 		if(user == null) {
 			Users u = new Users();
 			u.setFullName(name);
@@ -67,15 +71,17 @@ public class UserServiceImpl implements UserService{
 			authority.setRole(roleId);
 			authorityRepository.save(authority);
 
-			UserDetails userDetails = User.withUsername(user.getEmail()).password(passwordEncoder.encode(RamDomNameUtils.generateRandomPassword())).roles("USER").build();
+			UserDetails userDetails = User.withUsername(user.getEmail()).password(passwordEncoder.encode(RamDomNameUtils.generateRandomPassword())).roles(roleId.getId()).build();
 			Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 			SecurityContextHolder.getContext().setAuthentication(auth);
-			DaoAuthenticationProvider authenticationProvider=new DaoAuthenticationProvider();
-		
-			
-			System.out.println("kkkkk");
+			session.set("user", user);
 		}else {
-			
+			user = userRepository.findEmail(email);
+			UserInfoUserDetails userDetails = new UserInfoUserDetails(user);
+			Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+			SecurityContextHolder.getContext().setAuthentication(auth);
+			System.out.println(userDetails.getAuthorities());
+			session.set("user", user);
 		}
 			
 		

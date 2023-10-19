@@ -6,7 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.poly.elnr.config.UserInfoUserDetails;
-import com.poly.elnr.service.SessionService;
+import com.poly.elnr.service.serviceImpl.SessionService;
 
 
 @Controller

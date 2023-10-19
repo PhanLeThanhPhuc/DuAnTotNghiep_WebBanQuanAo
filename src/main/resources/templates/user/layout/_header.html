@@ -75,16 +75,16 @@
 									href="contact.html">CONTACT</a></li>
 							</ul>
 							<!--  -->
-							
+
 							<div th:if="${session.user != null}">
 								<!-- Nội dung hiển thị khi đã đăng nhập -->
 								<p>
-									Xin chào, <span th:text="${session.user.name}"></span>!
+									Xin chào, <span th:text="${session.user.fullName}"></span>!
 								</p>
 							</div>
 							<div th:unless="${session.user != null}">
 								<!-- Nội dung ẩn khi chưa đăng nhập -->
-								
+
 							</div>
 						</div>
 						<div class="hearer_icon d-flex">

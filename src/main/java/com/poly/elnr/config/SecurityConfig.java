@@ -28,13 +28,14 @@ public class SecurityConfig {
 		return new UserSecurityService();
     }
 
+
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		return http.csrf().disable()
 					.authorizeHttpRequests()
 					.requestMatchers("/assets/user/**","/user/new").permitAll()
-					.requestMatchers("/cline/**").hasAuthority("USER")
-					.requestMatchers("/admin/**").hasAuthority("ADMIN")
+					.requestMatchers("/client/**").hasAuthority("ROLE_USER")
+					.requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
 					.anyRequest().permitAll()
 					.and()
 					.formLogin()
@@ -52,7 +53,6 @@ public class SecurityConfig {
 		            .and()
 		            .oauth2Login()
 	                .loginPage("/security/user")
-	                .successHandler(authenticationSuccessHandler()) 
 	                .defaultSuccessUrl("/user/controller", true).and()
 		            .build();
 
@@ -84,6 +84,8 @@ public class SecurityConfig {
      public AuthenticationSuccessHandler authenticationSuccessHandler() {
          return new CustomAuthenticationSuccessHandler();
      }
+
+
      
      @Bean
      public LogoutSuccessHandler logoutSuccessHandler() {

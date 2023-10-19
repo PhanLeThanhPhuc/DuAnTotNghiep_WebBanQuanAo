@@ -16,8 +16,8 @@ public class Test {
 	@Autowired
 	UserService userService;
 	
-//	 @GetMapping("/user/controller")
-//	    public Map<String, Object> getUser(@AuthenticationPrincipal OAuth2User oAuth2User) {
-//	        return oAuth2User.getAttributes();
-//	    }
+	 @GetMapping("/client/chao")
+	    public String getUser() {
+	        return "d,skdka";
+	    }
 }

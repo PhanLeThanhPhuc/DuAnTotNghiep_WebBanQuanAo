@@ -28,13 +28,13 @@ public class GlobalInterceptor implements HandlerInterceptor {
         String requestURI = request.getRequestURI();
         
         if (requestURI.startsWith("/user/product")) {
-        	 request.setAttribute("sizeMenu", sizeService.findAllSizeStatusTrue());
-        	 request.setAttribute("colorMenu", colorService.findAllColorEight());
-        	 request.setAttribute("colorPopover", colorService.findAllColor());
+//        	 request.setAttribute("sizeMenu", sizeService.findAllSizeStatusTrue());
+//        	 request.setAttribute("colorMenu", colorService.findAllColorEight());
+//        	 request.setAttribute("colorPopover", colorService.findAllColor());
         }
         
         if (request.getHeader("X-Requested-With") == null) {
-            request.setAttribute("category", categoryService.findALlCategory());
+//            request.setAttribute("category", categoryService.findALlCategory());
         }
         
     }
