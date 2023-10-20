@@ -14,7 +14,7 @@ public interface CategoryService {
 
 	public Category update(Category category) ;
 
-	public void delete(Integer id) ;
+	public void delete(Category id) ;
 
     List<Category> findALlCategory();
 
