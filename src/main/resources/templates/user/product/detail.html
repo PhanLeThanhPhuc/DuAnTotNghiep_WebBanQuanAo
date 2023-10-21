@@ -30,24 +30,17 @@
 					<div class="col-lg-7 col-xl-7">
 						<div class="product_slider_img">
 							<div id="vertical">
-								<div data-thumb="/assets/user/teample/img/product/product_3.png">
-									<img src="/assets/user/teample/img/product/product_3.png" />
-								</div>
 								<div
-									data-thumb="/assets/user/teample/img/product/single-product/product_1.png">
-									<img
-										src="/assets/user/teample/img/product/single-product/product_1.png" />
+									th:attr="data-thumb=@{|/assets/user/user/image/*{thumbnail}|}">
+									<img th:src="@{|/assets/user/user/image/*{thumbnail}|}" />
 								</div>
-								<div
-									data-thumb="/assets/user/teample/img/product/single-product/product_1.png">
-									<img
-										src="/assets/user/teample/img/product/single-product/product_1.png" />
+								
+								
+								<div th:each="img : ${images}"
+									th:attr="data-thumb=@{|/assets/user/user/image/${img.image}|}">
+									<img th:src="@{|/assets/user/user/image/${img.image}|}" />
 								</div>
-								<div
-									data-thumb="/assets/user/teample/img/product/single-product/product_1.png">
-									<img
-										src="/assets/user/teample/img/product/single-product/product_1.png" />
-								</div>
+								
 							</div>
 						</div>
 					</div>
@@ -62,15 +55,13 @@
 
 
 							<ul class="list">
-								<li> <span>Category</span> :  
-										[[*{categoryDdetail.name}]]
-								</li>
+								<li><span>Category</span> : [[*{categoryDdetail.name}]]</li>
 								<li><span>Color</span> : [[*{color.name}]]</a></li>
 
 								<nav class="radio-button">
 									<div th:each="a: ${sizes}">
-										<input type="radio" th:id="${a.size.id}" name="x" 
-											th:attr="ng-click=@{|handleRadioClick(${a.quantity});sizeid(${a.size.id})|}"
+										<input type="radio" th:id="${a.size.id}" name="x"
+											th:attr="ng-click=@{|sizeClick(${a.quantity});sizeid(${a.size.id})|}"
 											th:value="${a.quantity}" /> <label th:for="${a.size.id}">[[${a.size.name}]]</label>
 									</div>
 								</nav>
@@ -90,8 +81,8 @@
 										<i class="ti-plus"></i>
 									</span>
 								</div>
-								<a th:attr="ng-click=@{|cart.add(${id})|}" class="btn_3">add to cart</a> <a href="#"
-									class="like_us"> <i class="ti-heart"></i>
+								<a th:attr="ng-click=@{|cart.add(*{id})|}" class="btn_3">add
+									to cart</a> 
 								</a>
 							</div>
 						</div>
@@ -111,12 +102,7 @@
 					<li class="nav-item"><a class="nav-link" id="home-tab"
 						data-toggle="tab" href="#home" role="tab" aria-controls="home"
 						aria-selected="true">Description</a></li>
-					<li class="nav-item"><a class="nav-link" id="profile-tab"
-						data-toggle="tab" href="#profile" role="tab"
-						aria-controls="profile" aria-selected="false">Specification</a></li>
-					<li class="nav-item"><a class="nav-link" id="contact-tab"
-						data-toggle="tab" href="#contact" role="tab"
-						aria-controls="contact" aria-selected="false">Comments</a></li>
+					
 					<li class="nav-item"><a class="nav-link active"
 						id="review-tab" data-toggle="tab" href="#review" role="tab"
 						aria-controls="review" aria-selected="false">Reviews</a></li>
@@ -124,326 +110,150 @@
 				<div class="tab-content" id="myTabContent">
 					<div class="tab-pane fade" id="home" role="tabpanel"
 						aria-labelledby="home-tab">
-						<p>[[*{description.description}]]</p>
-					</div>
-					<div class="tab-pane fade" id="profile" role="tabpanel"
-						aria-labelledby="profile-tab">
-						<div class="table-responsive">
+						<div >
 							<table class="table">
 								<tbody>
 									<tr>
 										<td>
-											<h5>Width</h5>
+											Name
 										</td>
 										<td>
-											<h5>128mm</h5>
+											[[*{name}]]
 										</td>
 									</tr>
 									<tr>
 										<td>
-											<h5>Height</h5>
+											Manufacture
 										</td>
-										<td>
-											<h5>508mm</h5>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<h5>Technology</h5>
-										</td>
-										<td>
-											<h5>[[*{description.technology}]]</h5>
+										<td >
+											[[*{description.manufacture}]]
 										</td>
 									</tr>
 									<tr>
 										<td>
-											<h5>Weight</h5>
+											Technology
 										</td>
-										<td>
-											<h5>[[*{description.weight}]]</h5>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<h5>Material</h5>
-										</td>
-										<td>
-											<h5>[[*{description.material}]]</h5>
+										<td  >
+											[[*{description.technology}]]
 										</td>
 									</tr>
 									<tr>
 										<td>
-											<h5>Freshness Duration</h5>
+											Weight
 										</td>
 										<td>
-											<h5>03days</h5>
+											[[*{description.weight}]]
 										</td>
 									</tr>
 									<tr>
 										<td>
-											<h5>When packeting</h5>
+											Material
 										</td>
 										<td>
-											<h5>Without touch of hand</h5>
+											[[*{description.material}]]
 										</td>
 									</tr>
-									<tr>
-										<td>
-											<h5>Each Box contains</h5>
-										</td>
-										<td>
-											<h5>60pcs</h5>
-										</td>
-									</tr>
+									
+									
+									
 								</tbody>
 							</table>
 						</div>
+						<p style="margin:40px;margin-top:20px; font-size:18px;">[[*{description.description}]]</p>
 					</div>
-					<div class="tab-pane fade" id="contact" role="tabpanel"
-						aria-labelledby="contact-tab">
-						<div class="row">
-							<div class="col-lg-6">
-								<div class="comment_list">
-									<div class="review_item">
-										<div class="media">
-											<div class="d-flex">
-												<img src="img/product/single-product/review-1.png" alt="" />
-											</div>
-											<div class="media-body">
-												<h4>Blake Ruiz</h4>
-												<h5>12th Feb, 2017 at 05:56 pm</h5>
-												<a class="reply_btn" href="#">Reply</a>
-											</div>
-										</div>
-										<p>Lorem ipsum dolor sit amet, consectetur adipisicing
-											elit, sed do eiusmod tempor incididunt ut labore et dolore
-											magna aliqua. Ut enim ad minim veniam, quis nostrud
-											exercitation ullamco laboris nisi ut aliquip ex ea commodo</p>
-									</div>
-									<div class="review_item reply">
-										<div class="media">
-											<div class="d-flex">
-												<img src="img/product/single-product/review-2.png" alt="" />
-											</div>
-											<div class="media-body">
-												<h4>Blake Ruiz</h4>
-												<h5>12th Feb, 2017 at 05:56 pm</h5>
-												<a class="reply_btn" href="#">Reply</a>
-											</div>
-										</div>
-										<p>Lorem ipsum dolor sit amet, consectetur adipisicing
-											elit, sed do eiusmod tempor incididunt ut labore et dolore
-											magna aliqua. Ut enim ad minim veniam, quis nostrud
-											exercitation ullamco laboris nisi ut aliquip ex ea commodo</p>
-									</div>
-									<div class="review_item">
-										<div class="media">
-											<div class="d-flex">
-												<img src="img/product/single-product/review-3.png" alt="" />
-											</div>
-											<div class="media-body">
-												<h4>Blake Ruiz</h4>
-												<h5>12th Feb, 2017 at 05:56 pm</h5>
-												<a class="reply_btn" href="#">Reply</a>
-											</div>
-										</div>
-										<p>Lorem ipsum dolor sit amet, consectetur adipisicing
-											elit, sed do eiusmod tempor incididunt ut labore et dolore
-											magna aliqua. Ut enim ad minim veniam, quis nostrud
-											exercitation ullamco laboris nisi ut aliquip ex ea commodo</p>
-									</div>
-								</div>
-							</div>
-							<div class="col-lg-6">
-								<div class="review_box">
-									<h4>Post a comment</h4>
-									<form class="row contact_form" action="contact_process.php"
-										method="post" id="contactForm" novalidate="novalidate">
-										<div class="col-md-12">
-											<div class="form-group">
-												<input type="text" class="form-control" id="name"
-													name="name" placeholder="Your Full name" />
-											</div>
-										</div>
-										<div class="col-md-12">
-											<div class="form-group">
-												<input type="email" class="form-control" id="email"
-													name="email" placeholder="Email Address" />
-											</div>
-										</div>
-										<div class="col-md-12">
-											<div class="form-group">
-												<input type="text" class="form-control" id="number"
-													name="number" placeholder="Phone Number" />
-											</div>
-										</div>
-										<div class="col-md-12">
-											<div class="form-group">
-												<textarea class="form-control" name="message" id="message"
-													rows="1" placeholder="Message"></textarea>
-											</div>
-										</div>
-										<div class="col-md-12 text-right">
-											<button type="submit" value="submit" class="btn_3">
-												Submit Now</button>
-										</div>
-									</form>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="tab-pane fade show active" id="review" role="tabpanel"
+					
+					
+					<div class="tab-pane fade	 show active" id="review" role="tabpanel"
 						aria-labelledby="review-tab">
 						<div class="row">
-							<div class="col-lg-6">
-								<div class="row total_rate">
+							<div class="col-lg-12">
+								<div  class="row total_rate">
 									<div class="col-6">
 										<div class="box_total">
 											<h5>Overall</h5>
-											<h4>4.0</h4>
-											<h6>(03 Reviews)</h6>
+											<h4 th:text="${rating}"></h4>
+											<h6>([[${ratingTotal}]] Reviews)</h6>
 										</div>
 									</div>
 									<div class="col-6">
 										<div class="rating_list">
-											<h3>Based on 3 Reviews</h3>
+											<h3>Based on [[${ratingTotal}]] Reviews</h3>
 											<ul class="list">
 												<li><a href="#">5 Star <i class="fa fa-star"></i> <i
 														class="fa fa-star"></i> <i class="fa fa-star"></i> <i
-														class="fa fa-star"></i> <i class="fa fa-star"></i> 01
+														class="fa fa-star"></i> <i class="fa fa-star"></i>[[${rating5}]]
 												</a></li>
 												<li><a href="#">4 Star <i class="fa fa-star"></i> <i
 														class="fa fa-star"></i> <i class="fa fa-star"></i> <i
-														class="fa fa-star"></i> <i class="fa fa-star"></i> 01
+														class="fa fa-star"></i> <i class="fa fa-star"></i> [[${rating4}]]
 												</a></li>
 												<li><a href="#">3 Star <i class="fa fa-star"></i> <i
 														class="fa fa-star"></i> <i class="fa fa-star"></i> <i
-														class="fa fa-star"></i> <i class="fa fa-star"></i> 01
+														class="fa fa-star"></i> <i class="fa fa-star"></i>[[${rating3}]]
 												</a></li>
 												<li><a href="#">2 Star <i class="fa fa-star"></i> <i
 														class="fa fa-star"></i> <i class="fa fa-star"></i> <i
-														class="fa fa-star"></i> <i class="fa fa-star"></i> 01
+														class="fa fa-star"></i> <i class="fa fa-star"></i> [[${rating2}]]
 												</a></li>
 												<li><a href="#">1 Star <i class="fa fa-star"></i> <i
 														class="fa fa-star"></i> <i class="fa fa-star"></i> <i
-														class="fa fa-star"></i> <i class="fa fa-star"></i> 01
+														class="fa fa-star"></i> <i class="fa fa-star"></i> [[${rating1}]]
 												</a></li>
 											</ul>
 										</div>
 									</div>
 								</div>
 								<div class="review_list">
-									<div class="review_item">
+									<div th:each="review : ${reviews}" class="review_item">
 										<div class="media">
 											<div class="d-flex">
-												<img src="img/product/single-product/review-1.png" alt="" />
+												<img class="rounded-circle" style="width:50px;" th:src="@{|/assets/user/user/image/${review.User.image}|}"  alt="" />
 											</div>
 											<div class="media-body">
-												<h4>Blake Ruiz</h4>
-												<i class="fa fa-star"></i> <i class="fa fa-star"></i> <i
-													class="fa fa-star"></i> <i class="fa fa-star"></i> <i
-													class="fa fa-star"></i>
+												<h4>[[${review.User.fullName}]]</h4>
+												
+												
+												<i th:if="${review.rating >=1}" class="fa fa-star"></i>
+							                    <i th:if="${review.rating >=2}" class="fa fa-star"></i>
+							                    <i th:if="${review.rating >=3}" class="fa fa-star"></i>
+							                    <i th:if="${review.rating >=4}" class="fa fa-star"></i>
+							                    <i th:if="${review.rating ==5}" class="fa fa-star"></i>
+							                      
+							                      <p>[[${review.dateReview}]]</p>
 											</div>
-										</div>
-										<p>Lorem ipsum dolor sit amet, consectetur adipisicing
-											elit, sed do eiusmod tempor incididunt ut labore et dolore
-											magna aliqua. Ut enim ad minim veniam, quis nostrud
-											exercitation ullamco laboris nisi ut aliquip ex ea commodo</p>
+										</div >				
+											<div th:if="${review.image != ''}">
+												<img  style="width:100px; margin-left:50px;margin-top:20px" th:src="@{|/assets/user/user/image/${review.image}|}"  alt="" />
+											</div>
+										<p style="margin-left:50px;">[[${review.descriptionReview}]]</p>
 									</div>
-									<div class="review_item">
-										<div class="media">
-											<div class="d-flex">
-												<img src="img/product/single-product/review-2.png" alt="" />
-											</div>
-											<div class="media-body">
-												<h4>Blake Ruiz</h4>
-												<i class="fa fa-star"></i> <i class="fa fa-star"></i> <i
-													class="fa fa-star"></i> <i class="fa fa-star"></i> <i
-													class="fa fa-star"></i>
-											</div>
-										</div>
-										<p>Lorem ipsum dolor sit amet, consectetur adipisicing
-											elit, sed do eiusmod tempor incididunt ut labore et dolore
-											magna aliqua. Ut enim ad minim veniam, quis nostrud
-											exercitation ullamco laboris nisi ut aliquip ex ea commodo</p>
-									</div>
-									<div class="review_item">
-										<div class="media">
-											<div class="d-flex">
-												<img src="img/product/single-product/review-3.png" alt="" />
-											</div>
-											<div class="media-body">
-												<h4>Blake Ruiz</h4>
-												<i class="fa fa-star"></i> <i class="fa fa-star"></i> <i
-													class="fa fa-star"></i> <i class="fa fa-star"></i> <i
-													class="fa fa-star"></i>
-											</div>
-										</div>
-										<p>Lorem ipsum dolor sit amet, consectetur adipisicing
-											elit, sed do eiusmod tempor incididunt ut labore et dolore
-											magna aliqua. Ut enim ad minim veniam, quis nostrud
-											exercitation ullamco laboris nisi ut aliquip ex ea commodo</p>
-									</div>
+									
+									<form id="form" th:action="@{|product-detail|}" method="get">
+							
+							
+							<div class="col-lg-12">
+								<div class="pageination">
+									<nav aria-label="Page navigation example">
+										<ul class="pagination justify-content-center " id="pagination"></ul>
+									</nav>
+									<input id="page" name="p" type="hidden">
 								</div>
 							</div>
-							<div class="col-lg-6">
-								<div class="review_box">
-									<h4>Add a Review</h4>
-									<p>Your Rating:</p>
-									<ul class="list">
-										<li><a href="#"> <i class="fa fa-star"></i>
-										</a></li>
-										<li><a href="#"> <i class="fa fa-star"></i>
-										</a></li>
-										<li><a href="#"> <i class="fa fa-star"></i>
-										</a></li>
-										<li><a href="#"> <i class="fa fa-star"></i>
-										</a></li>
-										<li><a href="#"> <i class="fa fa-star"></i>
-										</a></li>
-									</ul>
-									<p>Outstanding</p>
-									<form class="row contact_form" action="contact_process.php"
-										method="post" novalidate="novalidate">
-										<div class="col-md-12">
-											<div class="form-group">
-												<input type="text" class="form-control" name="name"
-													placeholder="Your Full name" />
-											</div>
-										</div>
-										<div class="col-md-12">
-											<div class="form-group">
-												<input type="email" class="form-control" name="email"
-													placeholder="Email Address" />
-											</div>
-										</div>
-										<div class="col-md-12">
-											<div class="form-group">
-												<input type="text" class="form-control" name="number"
-													placeholder="Phone Number" />
-											</div>
-										</div>
-										<div class="col-md-12">
-											<div class="form-group">
-												<textarea class="form-control" name="message" rows="1"
-													placeholder="Review"></textarea>
-											</div>
-										</div>
-										<div class="col-md-12 text-right">
-											<button type="submit" value="submit" class="btn_3">
-												Submit Now</button>
-										</div>
-									</form>
+							<input th:value="*{id}" name="product-id" type="hidden">
+							</form>
 								</div>
+								
 							</div>
+							
+							
 						</div>
 					</div>
 				</div>
 			</div>
 		</section>
+		
 		<!--================End Product Description Area =================-->
 
-		<!-- product_list part start-->
 		<section class="product_list best_seller">
 			<div class="container">
 				<div class="row justify-content-center">
@@ -458,21 +268,46 @@
 				<div class="row align-items-center justify-content-between">
 					<div class="col-lg-12">
 						<div class="best_product_slider owl-carousel">
-							<div class="single_product_item">
-								<img src="img/product/product_1.png" alt="">
-								<div class="single_product_text">
-									<h4>Quartz Belt Watch</h4>
-									<h3>$150.00</h3>
-								</div>
+							<div th:each="p:*{categoryDdetail.product}"
+								class="single_product_item">
+
+								<a th:href="@{|/user/product-detail?product-id=${p.id}|}"> <img
+									th:src="@{|/assets/user/user/image/${p.thumbnail}|}"
+									style="height: 270px;" alt="">
+									<div class="single_product_text">
+										<h5 class="text-truncate mb-3" th:utext="${p.name}"></h5>
+										<h3>[[${p.price}]]</h3>
+									</div>
+								</a>
 							</div>
-							
-							
+
 						</div>
 					</div>
 				</div>
 			</div>
 		</section>
 		<!-- product_list part end-->
+		
+		<script th:inline="javascript">
+		/*<![CDATA[*/
+		$(function() {
+			window.pagObj = $('#pagination').twbsPagination({
+				totalPages : /*[[${reviews.totalPages}]]*/'default',
+				visiblePages : 5,
+				startPage : /*[[${reviews.number+1}]]*/'default',
+				onPageClick : function(event, page) {
+					console.info(page + ' (from options)');
+					if (page != /*[[${reviews.number+1}]]*/'default') {
+						$('#page').val(parseInt(page - 1));
+						$('#form').submit();
+					}
+				}
+			}).on('page', function(event, page) {
+				console.info(page + ' (from event listening)');
+			});
+		});
+		/*]]>*/
+	</script>
 
 
 
