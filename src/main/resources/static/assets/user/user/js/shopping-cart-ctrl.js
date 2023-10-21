@@ -1,13 +1,12 @@
-app.controller("cart-ctrl", function($scope, $http) {
+app.controller("cart-ctrl", function($scope, $http, $location) {
 	// quản lý giỏ hàng
-
-
-
-	$scope.handleRadioClick = function(size) {
+	
+	$scope.soluong=0;
+	$scope.sizeClick = function(size) {
 		$scope.soluong = size;
 	};
-	
-	
+
+
 	$scope.sizeid = function(idff) {
 		$scope.sizeidf = idff;
 	};
@@ -17,8 +16,8 @@ app.controller("cart-ctrl", function($scope, $http) {
 		qtyyy: 1,
 		items: [],
 		add(id) { // thêm sản phẩm vào giỏ hàng
-		var sizeid = $scope.sizeidf;
-			if(sizeid==null){
+			var sizeid = $scope.sizeidf;
+			if (sizeid == null) {
 				alert("Vui Lòng chọn size !!");
 			}
 			var item = this.items.find(item => item.product.id == id && item.size.id == $scope.sizeidf);
@@ -39,10 +38,11 @@ app.controller("cart-ctrl", function($scope, $http) {
 					if (qtt > sol) {
 						alert("Vượt quá số lượng cho phép !!!");
 					} else {
+
 						resp.data.qty = qtt;
 						this.items.push(resp.data);
 						this.saveToLocalStorage();
-
+						alert("Thêm sản phẩm thành công");
 					}
 
 
@@ -50,8 +50,8 @@ app.controller("cart-ctrl", function($scope, $http) {
 				})
 			}
 		},
-		remove(id,size) { // xóa sản phẩm khỏi giỏ hàng
-			var index = this.items.findIndex(item => item.product.id == id&& item.size.id == size);
+		remove(id, size) { // xóa sản phẩm khỏi giỏ hàng
+			var index = this.items.findIndex(item => item.product.id == id && item.size.id == size);
 			this.items.splice(index, 1);
 			this.saveToLocalStorage();
 		},
@@ -72,18 +72,19 @@ app.controller("cart-ctrl", function($scope, $http) {
 				.map(item => this.amt_of(item))
 				.reduce((total, amt) => total += amt, 0);
 		},
-		cartChange(size,product,qti){
-			
+		cartChange(size, product, qti) {
+
 			var item = this.items.find(item => item.product.id == product && item.size.id == size);
-			if(qti>item.quantity){				
-				item.qty=item.quantity;
+			if (qti > item.quantity) {
+				item.qty = item.quantity;
 				alert("Vượt quá số lượng cho phép !!!");
 			}
+
 			this.saveToLocalStorage();
 
 		},
 		saveToLocalStorage() { // lưu giỏ hàng vào local storage
-	
+
 			var json = JSON.stringify(angular.copy(this.items));
 			localStorage.setItem("cart", json);
 		},
