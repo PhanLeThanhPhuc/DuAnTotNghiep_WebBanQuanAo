@@ -6,8 +6,14 @@ import com.poly.elnr.entity.Color;
 
 public interface ColorService {
 
-	List<Color> findAllColor();
+	public List<Color> findAllColor();
 
-	List<Color> findAllColorEight();
+	public List<Color> findAllColorEight();
+
+	/* public List<Color> findAll(); */
+
+	public Color create(Color create);
+
+	public void delete(Color id);
 
 }

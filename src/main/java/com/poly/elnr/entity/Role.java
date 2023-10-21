@@ -21,7 +21,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name="roles")
+@Table(name="role")
 @Entity
 public class Role implements Serializable{
 	
@@ -31,8 +31,7 @@ public class Role implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private String id;
 
     @Column(name = "name")
     private String name;
