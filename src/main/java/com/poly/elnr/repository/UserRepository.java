@@ -12,10 +12,9 @@ import com.poly.elnr.entity.Users;
 @Repository
 public interface UserRepository extends JpaRepository<Users, Integer> {
 
-	Optional<Users> findByEmail(String email);
-	
 	@Query("Select o FROM Users o WHERE o.email = :email")
 	Users findEmail(@Param("email") String email);
-	
-//	User findByEmail(String phone);
+
+	@Query("Select o FROM Users o WHERE o.phone = :phone")
+	Users findByPhone(@Param("phone") String phone);
 }

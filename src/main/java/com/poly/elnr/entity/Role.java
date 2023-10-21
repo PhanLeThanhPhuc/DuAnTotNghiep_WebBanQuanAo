@@ -21,7 +21,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name="roles")
+@Table(name="role")
 @Entity
 public class Role implements Serializable{
 	

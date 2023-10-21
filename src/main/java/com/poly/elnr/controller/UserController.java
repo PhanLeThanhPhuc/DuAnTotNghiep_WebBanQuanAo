@@ -28,12 +28,5 @@ public class UserController {
 	public String index(Model model) {
 		return "user/layout/home";
 	}
-	
-	
-	 @GetMapping("/user/controller")
-	    public String getUser(@AuthenticationPrincipal OAuth2User oAuth2User) {
-		 userService.oauth2(oAuth2User);
-		 return "user/layout/home";
-	    }
 
 }

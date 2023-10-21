@@ -10,13 +10,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class HomeController {
 
-
 	@GetMapping("admin/index")
 	public String viewAdmin(Model model) {
 
 		return"redirect:/assets/admin/layout/index.html";
 	}
-	
-	
-	
+
 }
