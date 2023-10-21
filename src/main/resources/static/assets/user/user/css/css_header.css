@@ -7,3 +7,47 @@
 	color: black !important;
 }
 
+ .btn_3, .btn-google, .btn-facebook {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-right: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .btn_3 {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .btn-google, .btn-facebook {
+            background-color: #4CAF50;
+            color: white;
+        }
+		
+        .btn_3:hover, .btn-google:hover, .btn-facebook:hover {
+            background-color: #45a049; /* Darken the background on hover */
+        }
+        .login_part .form-group .btn_3 {
+        margin: 7px 0 10px;
+        }
+        
+/* /*         .social-icons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.social-login__icon {
+    font-size: 30px; Kích thước icon
+    margin: 0 10px; Khoảng cách giữa các icon
+}
+.hearer_icon a {
+            margin-right: 10px; Khoảng cách giữa các icon
+            font-size: 23px; Kích thước của icon
+        }
+     */ */
