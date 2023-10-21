@@ -2,6 +2,7 @@ package com.poly.elnr.service.serviceImpl;
 
 import java.util.List;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -66,7 +67,7 @@ public class ProductServiceImpl implements ProductService {
 		List<Integer> listSizeId = sizeId == null || sizeId.isEmpty() ? sizeRepository.findAllSizeId() : sizeId;
 		Pageable pageable = PageRequest.of(p.orElse(0), 12, s);
 		return productRepository.findProductByCategoryDetailFilter(idCategoryDetail, listColorId, listSizeId, pageable);
-	}
+	}	  
 
 	@Override
 	public Page<Product> findProductByCategoryFilter(int idCategory, List<Integer> colorId, List<Integer> sizeId, Optional<String> sort, Optional<Integer> p) {
