@@ -48,7 +48,7 @@
                                             PAGE
                                         </a>
                                         <div class="dropdown-menu" aria-labelledby="navbarDropdown_2">
-                                            <a class="dropdown-item" href="login.html"> login</a>
+                                            <a class="dropdown-item" th:href="@{/security/user}"> login</a>
                                             <a class="dropdown-item" href="tracking.html">tracking</a>
                                             <a class="dropdown-item" href="checkout.html">product checkout</a>
                                             <a class="dropdown-item" href="cart.html">shopping cart</a>
@@ -74,6 +74,18 @@
 								<li class="nav-item"><a class="nav-link"
 									href="contact.html">CONTACT</a></li>
 							</ul>
+							<!--  -->
+
+							<div th:if="${session.user != null}">
+								<!-- Nội dung hiển thị khi đã đăng nhập -->
+								<p>
+									Xin chào, <span th:text="${session.user.fullName}"></span>!
+								</p>
+							</div>
+							<div th:unless="${session.user != null}">
+								<!-- Nội dung ẩn khi chưa đăng nhập -->
+
+							</div>
 						</div>
 						<div class="hearer_icon d-flex">
 							<a th:href="@{/user/cart}" class="btn border"> <i
@@ -83,6 +95,21 @@
 						</div>
 
 						<!-- </div> -->
+						  <div th:if="${session.user != null}">
+            <!-- Nội dung hiển thị khi đã đăng nhập -->
+            <div class="dropdown">
+                <button class="btn  dropdown-toggle btn-icon" type="button" id="accountDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-user"></i> <!-- Icon user -->
+                </button>
+                <div class="dropdown-menu" aria-labelledby="accountDropdown">
+                    <a class="dropdown-item" href="#">Thông tin tài khoản</a>
+                    <a class="dropdown-item" href="#">Thay đổi mật khẩu</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a>
+                </div>
+            </div>
+        </div>
+    </div>
 					</nav>
 				</nav>
 			</div>
