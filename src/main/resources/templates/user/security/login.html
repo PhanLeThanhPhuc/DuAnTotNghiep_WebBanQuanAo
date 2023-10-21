@@ -23,13 +23,17 @@
 									Welcome Back ! <br> Please Sign in now
 								</h3>
 								<h1>Please Log In</h1>
-								<div th:if="${param.error}">Invalid username and password.
+<!--								<div th:if="${param.error}">-->
+<!--									<p th:text="${message}" class="error-message"></p>-->
+<!--								</div>-->
+								<div th:if="${param.error}">
+									<p th:text="${param.message}" class="error-message"></p>-->
 								</div>
 								<div th:if="${param.logout}">You have been logged out.</div>
 								<form class="row contact_form"
 									th:action="@{/j_spring_security_check}" method="post">
 									<div class="col-md-12 form-group p_star">
-										<input type="email" class="form-control" id="username"
+										<input type="text" class="form-control" id="username"
 											name="username" value="" placeholder="Username">
 									</div>
 									<div class="col-md-12 form-group p_star">

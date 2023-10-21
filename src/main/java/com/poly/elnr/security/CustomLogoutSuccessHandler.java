@@ -1,4 +1,4 @@
-package com.poly.elnr.config;
+package com.poly.elnr.security;
 
 import java.io.IOException;
 
@@ -22,9 +22,7 @@ public class CustomLogoutSuccessHandler implements LogoutSuccessHandler{
 	@Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response,
                                 Authentication authentication) throws IOException, ServletException {
-        // Xóa thông tin người dùng khỏi session khi đăng xuất thành công
 		session.remove("user");
-        // Chuyển hướng sau khi đăng xuất thành công
         response.sendRedirect("/security/user");
     }
 }

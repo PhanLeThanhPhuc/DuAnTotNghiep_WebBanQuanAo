@@ -88,11 +88,7 @@ public class ProductController {
 		model.addAttribute("idCategoryDetail", idCategoryDetail);
 		return "user/product/productCategoryDetail";
 	}
-	
-	
 
-
-	
 	@RequestMapping("product-detail-{id}")
 	public String detail(Model model, @PathVariable("id") Integer id) {
 		List<ProductDetails> size = detailService.findByProductID(id);
