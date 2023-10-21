@@ -35,12 +35,14 @@ public class CategoryServiceImpl implements CategoryService {
 		return categoryRepository.save(category);
 	}
 
-	public void delete(Integer id) {
-
+	public void delete(Category id) {
+		categoryRepository.delete(id);
 	}
 
 	@Override
 	public List<Category> findALlCategory() {
 		return categoryRepository.findAll();
 	}
+
+	
 }

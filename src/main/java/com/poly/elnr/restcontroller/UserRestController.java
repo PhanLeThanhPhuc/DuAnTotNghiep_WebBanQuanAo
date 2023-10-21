@@ -2,7 +2,6 @@ package com.poly.elnr.restcontroller;
 
 import java.util.List;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,39 +13,37 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.poly.elnr.entity.Category;
-import com.poly.elnr.service.CategoryService;
+import com.poly.elnr.entity.User;
+import com.poly.elnr.service.UserService;
 
 
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/rest/categories")
-public class CategoryRestController {
-	
+@RequestMapping("/rest/users")
+public class UserRestController {
 	@Autowired
-	CategoryService categoryService;
+	UserService userService;
 	
 	@GetMapping
-	public List<Category> findAll() {
-		return categoryService.findAll();
+	public List<User> findAll() {
+		return userService.findAll();
 	}
 	
 	@PostMapping
-	public Category post(@RequestBody  Category category) {
-		return categoryService.create(category);
+	public User post(@RequestBody  User user) {
+		return userService.create(user);
 		 
 	}
 	
 	@PutMapping("{id}")
-	public Category put(@PathVariable("id") Integer id, @RequestBody Category category) {
-		return categoryService.update(category);
+	public User put(@PathVariable("id") Integer id, @RequestBody User user) {
+		return userService.update(user);
 	}
 	
 	@DeleteMapping("{id}")
-	public void delete(@PathVariable("id") Category id) {
-		categoryService.delete(id);
+	public void delete(@PathVariable("id") User id) {
+		userService.delete(id);
 	}
 	
-
 }

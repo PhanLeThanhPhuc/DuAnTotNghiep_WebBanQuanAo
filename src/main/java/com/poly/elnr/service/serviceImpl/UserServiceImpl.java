@@ -1,5 +1,7 @@
 package com.poly.elnr.service.serviceImpl;
+import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Date;
 
 import com.poly.elnr.security.CustomUserDetails;
@@ -13,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
-
 import com.poly.elnr.entity.Authority;
 import com.poly.elnr.entity.Role;
 import com.poly.elnr.entity.Users;
@@ -104,6 +105,33 @@ public class UserServiceImpl implements UserService {
 		Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 		SecurityContextHolder.getContext().setAuthentication(auth);
 		session.set("user", user);
+	}
+
+	@Autowired
+	UserRepository userRepository;
+	
+	@Override
+	public List<User> findAll() {
+		// TODO Auto-generated method stub
+		return userRepository.findAll();
+	}
+
+	@Override
+	public User create(User user) {
+		// TODO Auto-generated method stub
+		return userRepository.save(user);
+	}
+
+	@Override
+	public User update(User user) {
+		// TODO Auto-generated method stub
+		return userRepository.save(user);
+	}
+
+	@Override
+	public void delete(User id) {
+		// TODO Auto-generated method stub
+		userRepository.delete(id);
 	}
 
 }
