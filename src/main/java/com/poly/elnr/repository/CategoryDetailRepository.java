@@ -11,5 +11,6 @@ import com.poly.elnr.entity.CategoryDetail;
 
 @Repository
 public interface CategoryDetailRepository extends JpaRepository<CategoryDetail, Long> {
+
 	
 }

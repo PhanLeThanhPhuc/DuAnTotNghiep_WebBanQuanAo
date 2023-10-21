@@ -2,9 +2,11 @@ package com.poly.elnr.service.serviceImpl;
 
 import java.util.List;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.poly.elnr.entity.Category;
 import com.poly.elnr.entity.Product;
 import com.poly.elnr.repository.ProductRepository;
 import java.util.*;
@@ -33,17 +35,20 @@ public class ProductServiceImpl implements ProductService {
 	ProductRepository productRepository;
 
 	
-	@Override
+	
 	public List<Product> findAll() {
 		// TODO Auto-generated method stub
 		return productRepository.findAll();
 	}
 
-	@Override
+	
 	public Product findById(Integer id) {
 		// TODO Auto-generated method stub
 		return productRepository.findById(id).get();
 	}
+	
+	
+	
 
 	@Override
 	public Page<Product> findProductByCategoryDetailFilter(int idCategoryDetail,
@@ -66,7 +71,7 @@ public class ProductServiceImpl implements ProductService {
 		List<Integer> listSizeId = sizeId == null || sizeId.isEmpty() ? sizeRepository.findAllSizeId() : sizeId;
 		Pageable pageable = PageRequest.of(p.orElse(0), 12, s);
 		return productRepository.findProductByCategoryDetailFilter(idCategoryDetail, listColorId, listSizeId, pageable);
-	}
+	}	  
 
 	@Override
 	public Page<Product> findProductByCategoryFilter(int idCategory, List<Integer> colorId, List<Integer> sizeId, Optional<String> sort, Optional<Integer> p) {
@@ -86,5 +91,31 @@ public class ProductServiceImpl implements ProductService {
 		Pageable pageable = PageRequest.of(p.orElse(0), 12, s);
 		return productRepository.findProductByCategoryFilter(idCategory, listColorId, listSizeId, pageable);
 	}
+
+
+	@Override
+	public Product create(Product product) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public void delete(Integer id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public List<Product> findALlProduct() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	
+
+	
 
 }
