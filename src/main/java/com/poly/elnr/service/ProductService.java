@@ -17,7 +17,6 @@ public interface ProductService {
 	public Product create(Product product) ;
 	public void delete(Integer id) ;
 
-	List<Product> findALlProduct();
 	Page<Product> findProductByCategoryDetailFilter(int idCategoryDetail,
 													List<Integer> colorId,
 													List<Integer> sizeId,
@@ -29,4 +28,6 @@ public interface ProductService {
 													List<Integer> sizeId,
 													Optional<String> sort,
 													Optional<Integer> p);
+
+	public Product update(Product product);
 }
