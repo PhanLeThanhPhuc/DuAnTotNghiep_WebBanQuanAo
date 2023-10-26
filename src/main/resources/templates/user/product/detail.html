@@ -50,14 +50,19 @@
 								previous <span>|</span> next
 							</h5>
 							<h3>[[*{name}]]</h3>
-							<h2>[[*{price}]]</h2>
-
-
+							
+							
 
 							<ul class="list">
 								<li><span>Category</span> : [[*{categoryDdetail.name}]]</li>
 								<li><span>Color</span> : [[*{color.name}]]</a></li>
-
+							<div th:if="*{isSale ==true}">
+								<h4 class="priceBeforeSale" style="text-decoration-line: line-through;">[[*{price}]]</h4>
+								<h2 class="price">[[*{discountPrice}]]</h2>
+							</div>
+							<div th:unless="*{isSale ==true}">
+								<h2 class="price">[[*{price}]]</h2>
+							</div>
 								<nav class="radio-button">
 									<div th:each="a: ${sizes}">
 										<input type="radio" th:id="${a.size.id}" name="x"
