@@ -34,6 +34,10 @@ public class OrderDetail implements Serializable{
 
     @Column(name = "quantity")
     private int quantity;
+    @Column(name = "color")
+    private String color;
+    @Column(name = "size")
+    private String size;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
