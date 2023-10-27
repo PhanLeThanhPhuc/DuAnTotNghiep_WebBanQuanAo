@@ -34,10 +34,26 @@ public class ProductRestController {
 	ProductService productService;
 	
 	@GetMapping
-	public List<Product> findAll() {
+	public List<Product> getAll() {
 		return productService.findAll();
 	}
-	
+	@GetMapping("{id}")
+	public Product getOne(@PathVariable("id") Integer id) {
+		return productService.findById(id);
+	}
+	@PostMapping
+	public Product post(@RequestBody Product product) {
+		productService.create(product);
+		return product;
+	}
+	@PutMapping("{id}")
+	public Product put(@PathVariable("id") Integer id, @RequestBody Product product) {
+		return productService.update(product);
+	}
+	@DeleteMapping("{id}")
+	public void delete(@PathVariable("id") Integer id) {
+		productService.delete(id);
+	}
 	
 	
 	

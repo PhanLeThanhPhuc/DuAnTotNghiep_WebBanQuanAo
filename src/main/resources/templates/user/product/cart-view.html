@@ -44,7 +44,7 @@
 									<td>
 										<div class="media">
 											<div class="d-flex">
-												<img src="\teample\img\product\product_1.png" alt=""
+												<img src="/assets/user/user/image/{{item.product.thumbnail}}" alt=""
 													style="width: 50px;">
 											</div>
 											<div class="media-body">
@@ -54,7 +54,13 @@
 									</td>
 
 									<td>
-										<h5>{{item.product.price}}</h5>
+										<div ng-if="item.priceBeforeSale ==''">
+											<h5>{{item.price}}</h5>
+										</div>
+										<div ng-if="item.priceBeforeSale !=''">
+											<h5 style="text-decoration-line: line-through;">{{item.priceBeforeSale}}</h5>
+											<h5>{{item.price}}</h5>
+										</div>
 									</td>
 									<td>
 										<h5>{{item.size.name}}</h5>

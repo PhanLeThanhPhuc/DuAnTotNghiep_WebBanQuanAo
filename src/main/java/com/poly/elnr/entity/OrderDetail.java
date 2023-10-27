@@ -34,7 +34,15 @@ public class OrderDetail implements Serializable{
 
     @Column(name = "quantity")
     private int quantity;
-
+    @Column(name = "size")
+    private String size;
+    @Column(name = "price")
+    private String price;
+    @Column(name = "discount_price")
+    private String discountPrice;
+   
+    
+    
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;

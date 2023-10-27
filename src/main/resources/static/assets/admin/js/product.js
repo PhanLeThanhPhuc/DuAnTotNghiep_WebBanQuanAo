@@ -1,20 +1,38 @@
-app.controller("color-ctrl", function($scope, $http){
+app.controller("product-ctrl", function($scope, $http){
 	$scope.initialize = function(){
+		$http.get("/rest/categorydetail").then(resp => {
+			$scope.categories = resp.data;
+		})
 		$http.get("/rest/colors").then(resp => {
+			$scope.colors = resp.data;
+		})
+		$http.get("/rest/description").then(resp => {
+			$scope.description = resp.data;
+		})
+
+		$http.get("/rest/products").then(resp => {
 			$scope.items = resp.data;
+			$scope.items.forEach(item => {
+				item.dateInsert = new Date(item.dateInsert)
+			})
+			
+			$scope.items.forEach(item => {
+				item.dateUpdate = new Date(item.dateUpdate)
+			})
 		});
 		$scope.reset();
 	}
 	
-
 	$scope.reset = function(){
 		$scope.form = {
+			dateUpdate: new Date(),
 			dateInsert: new Date(),
+			sale:false,
 			status: true,
-			
+			thumbnail: "cloud-upload.jpg"
 		}
 	}
-
+	
 	$scope.edit = function(item){
 		$scope.form = angular.copy(item);
 		$(".nav-tabs a:eq(0)").tab("show");
@@ -22,8 +40,9 @@ app.controller("color-ctrl", function($scope, $http){
 
 	$scope.create = function(){
 		var item = angular.copy($scope.form);
-		$http.post(`/rest/colors`, item).then(resp => {
-			resp.data.dateInsert = new Date(resp.data.dateInsert)
+		$http.post(`/rest/products`, item).then(resp => {
+			resp.data.dateInsert = new Date()
+			resp.data.dateUpdate = new Date()
 			$scope.items.push(resp.data);
 			$scope.reset();
 			alert("Thêm mới sản phẩm thành công!");
@@ -35,10 +54,11 @@ app.controller("color-ctrl", function($scope, $http){
 
 	$scope.update = function(){
 		var item = angular.copy($scope.form);
-		$http.put(`/rest/colors/${item.id}`, item).then(resp => {
+		item.dateUpdate = new Date();
+		$http.put(`/rest/products/${item.id}`, item).then(resp => {
 			var index = $scope.items.findIndex(p => p.id == item.id);
 			$scope.items[index] = item;
-			alert("Cập nhật sản phẩm thành công!");
+			alert("Cập nhật sản phẩm thành công!!!!");
 		})
 		.catch(error => {
 			alert("Lỗi cập nhật sản phẩm!");
@@ -48,7 +68,7 @@ app.controller("color-ctrl", function($scope, $http){
 
 	$scope.delete = function(item){
 		if(confirm("Bạn muốn xóa sản phẩm này?")){
-			$http.delete(`/rest/colors/${item.id}`).then(resp => {
+			$http.delete(`/rest/products/${item.id}`).then(resp => {
 				var index = $scope.items.findIndex(p => p.id == item.id);
 				$scope.items.splice(index, 1);
 				$scope.reset();
@@ -60,7 +80,19 @@ app.controller("color-ctrl", function($scope, $http){
 		}
 	}
 	
-	
+	$scope.imageChanged = function(files){
+		var data = new FormData();
+		data.append('file', files[0]);
+		$http.post('/rest/upload/image', data, {
+			transformRequest: angular.identity,
+			headers: {'Content-Type': undefined}
+        }).then(resp => {
+			$scope.form.thumbnail = resp.data.name;
+		}).catch(error => {
+			alert("Lỗi upload hình ảnh");
+			console.log("Error", error);
+		})
+	}
 
 	$scope.initialize();
 
@@ -93,5 +125,4 @@ app.controller("color-ctrl", function($scope, $http){
 			this.page--;
 		}
 	}
-}
-);
+});
