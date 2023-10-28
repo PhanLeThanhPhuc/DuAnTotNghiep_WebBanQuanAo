@@ -1,0 +1,27 @@
+.text-a{
+    font-weight: bold;
+    font-size: 13px;
+    color: black;
+}
+.text-center {
+    text-align: center!important;
+}
+.pb-2 {
+    padding-bottom: 0.5rem!important;
+}
+.img-avt {
+     width: 130px;
+     height: 130px;
+     padding: 3px;
+     animation: shining 1.6s ease-in-out infinite;
+ }
+.rounded-circle {
+    border-radius: 50%!important;
+}
+ table.table {
+     border-collapse: collapse;
+     border: none;
+ }
+th, td {
+    border: none;
+}

@@ -83,6 +83,7 @@ public class Order implements Serializable{
     @ManyToOne
     @JoinColumn(name = "voucher_id")
     private Voucher voucher;
+
     @JsonIgnore
     @OneToMany(mappedBy = "order")
     private List<OrderDetail> orderDetails;
