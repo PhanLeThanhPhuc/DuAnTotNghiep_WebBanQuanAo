@@ -8,6 +8,8 @@ import java.util.Date;
 import com.poly.elnr.security.CustomUserDetails;
 import com.poly.elnr.utils.CustomOAuth2User;
 import com.poly.elnr.utils.RegexUtils;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -131,5 +133,18 @@ public class UserServiceImpl implements UserService {
 		// TODO Auto-generated method stub
 		userRepository.delete(id);
 	}
+
+	@Override
+	public Users findById(Integer id) {
+		// TODO Auto-generated method stub
+		return userRepository.findById(id).get();
+	}
+
+	@Override
+	public List<Users> findAllUserByIdRole() {
+		// TODO Auto-generated method stub
+		return userRepository.findAllUserByIdRole();
+	}
+
 
 }

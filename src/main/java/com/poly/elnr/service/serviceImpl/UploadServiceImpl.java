@@ -22,6 +22,7 @@ public class UploadServiceImpl implements UploadService{
 		try {
 			File saveFile = new File(dir,file.getOriginalFilename());
 			file.transferTo(saveFile);
+			System.out.println(saveFile);
 			return saveFile;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
