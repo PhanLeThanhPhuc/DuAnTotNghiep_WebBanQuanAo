@@ -10,19 +10,22 @@
 							class="table table-striped table-bordered zero-configuration">
 							<thead>
 								<tr>
-									<th>ID</th>
+									<th>Image</th>
 									<th>Fullname</th>
 									<th>SDT</th>
 									<th>Email</th>
 									<th>Giới tính</th>
 									<th>Ngày tạo </th>
 									<th>Ngày cập nhật</th>
-									
+									<th>Trạng thái</th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr ng-repeat="item in pager.items">
-									<td>{{item.id}}</td>
+									<td><div class="d-flex">
+												<img src="/assets/user/user/image/{{item.image}}" alt=""
+													style="width: 50px;">
+											</div></td>
 									<td>{{item.fullName}}</td>
 									<td>{{item.phone}}</td>
 									<td>{{item.email}}</td>
@@ -30,7 +33,7 @@
 									
 									<td>{{item.date_insert | date : 'dd-MM-yyyy hh:mm'}}</td>
 									<td>{{item.date_update | date : 'dd-MM-yyyy hh:mm'}}</td>
-									
+									<td>{{item.status ?'Hoạt động':'Ngưng hoạt động'}}</td>
 									<td><span>
 									<a  ng-click="edit(item)" data-toggle="tooltip"
 											 data-placement="top" title="Edit"><i
