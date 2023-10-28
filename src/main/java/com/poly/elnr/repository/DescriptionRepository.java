@@ -1,18 +1,11 @@
 package com.poly.elnr.repository;
-
-import java.util.List;
-
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import com.poly.elnr.entity.Color;
+import com.poly.elnr.entity.Description;
 
 @Repository
-public interface ColorRepository extends JpaRepository<Color, Integer>{
+public interface DescriptionRepository extends JpaRepository<Description,Integer>{
 
-	@Query("SELECT c.id from Color c")
-	List<Integer> findAllColorId();
-	
 }

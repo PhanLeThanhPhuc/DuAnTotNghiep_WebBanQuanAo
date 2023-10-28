@@ -1,0 +1,174 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{/user/layout/index :: dynamic(~{::main})}">
+<main>
+    <section class="section_padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <!-- Tabs nav -->
+                    <div class="nav flex-column nav-pills nav-pills-custom" id="v-pills-tab" role="tablist"
+                         aria-orientation="vertical">
+                        <a class="nav-link mb-3 p-3 shadow " id="v-pills-home-tab" data-toggle="pill"
+                           href="v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="false">
+                            <i class="fa fa-user-circle-o mr-2"></i>
+                            <span class="font-weight-bold small text-uppercase text-a">Thông tin cá nhân</span></a>
+
+                        <a class="nav-link mb-3 p-3 shadow active" id="v-pills-profile-tab" data-toggle="pill"
+                           href="v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="true">
+                            <i class="fa fa-calendar-minus-o mr-2"></i>
+                            <span class="font-weight-bold small text-uppercase text-a">Thông tin đơn hàng</span></a>
+
+                        <a class="nav-link mb-3 p-3 shadow" id="v-pills-messages-tab" data-toggle="pill"
+                           href="v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">
+                            <i class="fa fa-star mr-2"></i>
+                            <span class="font-weight-bold small text-uppercase text-a">Địa chỉ</span></a>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <!-- Tabs content -->
+                    <div class="tab-content" id="v-pills-tabContent">
+                        <div class="tab-pane fade shadow rounded bg-white show active p-4" id="v-pills-home"
+                             role="tabpanel" aria-labelledby="v-pills-home-tab">
+                            <h4>CHI TIẾT ĐƠN HÀNG #1</h4>
+                            <div class="row">
+                                <div class="col-lg-6 col-lx-4">
+                                    <div class="single_confirmation_details p-3">
+                                        <h4>Thông tin khách hàng</h4>
+                                        <ul>
+                                            <li>
+                                                <p>Tên</p><span>: Thành Phúc</span>
+                                            </li>
+                                            <li>
+                                                <p>Địa chỉ</p><span>:[[${order.detailAddress}]], [[${order.ward}]], [[${order.province}]], [[${order.district}]]</span>
+                                            </li>
+                                            <li>
+                                                <p>Số điện thoại</p><span>: 0346363860</span>
+                                            </li>
+                                            <li>
+                                                <p>Email</p><span>: Phuc@gmail.com</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6 col-lx-4">
+                                    <div class="single_confirmation_details p-3">
+                                        <h4>Thông tin đơn hàng</h4>
+                                        <ul>
+                                            <li>
+                                                <p>Ngày đặt</p><span>[[${order.orderDate}]]</span>
+                                            </li>
+                                            <li>
+
+                                            <th:block th:if="${order.voucher != null}" >
+                                                <p>Tổng tiền</p>
+                                                    <span>[[${#numbers.formatDecimal(order.totalDiscount, 0, 'COMMA', 0, 'POINT')}]]</span><br>
+                                                <p>Tổng tiền</p>
+                                                    <span style="text-decoration: line-through;" >[[${#numbers.formatDecimal(order.total, 0, 'COMMA', 0, 'POINT')}]]</span>
+                                            </th:block>
+
+                                            <th:block th:if="${order.voucher == null}" >
+                                                <p>Tổng tiền</p><span>[[${#numbers.formatDecimal(order.total, 0, 'COMMA', 0, 'POINT')}]]</span>
+                                            </th:block>
+
+                                            </li>
+                                            <li>
+                                                <p>Trạng thái giao hàng</p><span>: Check payments</span>
+                                            </li>
+                                            <li>
+                                                <p>Thanh toán</p><span>: Chuyển khoản</span>
+                                            </li>
+                                            <li>
+                                                <p>Mã khuyến mại sử dụng</p><span>: [[${order.voucher.voucher}]]</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="order_details_iner" style="border-radius: 15px; color: #ffffff;">
+                                        <h4 style="font-weight: bold;">THÔNG TIN SẢN PHẨM</h4>
+                                        <table class="table table-borderless">
+                                            <thead>
+                                            <tr>
+                                                <th style="font-weight: bold;" scope="col" colspan="2">SẢN PHẨM</th>
+                                                <th style="font-weight: bold;" scope="col">SỐ LƯỢNG</th>
+                                                <th style="font-weight: bold;" scope="col">GIÁ</th>
+                                                <th style="font-weight: bold;" scope="col">TỔNG TIỀN</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:each="orderdetail : ${order.orderDetails}">
+                                                <td colspan="2">
+                                                    <div style="display: grid; grid-template-columns: 80px auto 15%; grid-gap: 20px;">
+                                                        <img th:src="@{|/assets/user/user/image/${orderdetail.productDetails.product.thumbnail}|}" width="85px" height="85px" style="border-radius: 20px;" alt="">
+                                                        <div style="display: flex; flex-flow: column; gap: 10px;">
+                                                            <span style="font-size: 17px;">[[${orderdetail.productDetails.product.name}]]</span>
+                                                            <span>Color: [[${orderdetail.productDetails.product.color.name}]]</span>
+                                                            <span>Size: [[${orderdetail.productDetails.size.name}]]</span>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>[[${orderdetail.quantity}]]</td>
+                                                <td><span>[[${#numbers.formatDecimal(orderdetail.price, 0, 'COMMA', 0, 'POINT')}]]</span></td>
+                                                <td><span>[[${#numbers.formatDecimal(orderdetail.quantity * orderdetail.price, 0, 'COMMA', 0, 'POINT')}]]</span></td>
+                                            </tr>
+                                            </tbody>
+                                            <tfoot>
+                                            <tr>
+                                                <th scope="col" colspan="3"></th>
+                                                <th scope="col">TẠM TÍNH: </th>
+                                                <th scope="col">
+                                                    [[${#numbers.formatDecimal(subTotal, 0, 'COMMA', 0, 'POINT')}]]
+                                                </th>
+                                            </tr>
+                                                <tr>
+                                                    <th scope="col" colspan="3"></th>
+                                                    <th scope="col">ÁP DỤNG VOUCHER: </th>
+                                                    <th scope="col">- [[${#numbers.formatDecimal(order.voucher.discountPrice, 0, 'COMMA', 0, 'POINT')}]]</th>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="col" colspan="3"></th>
+                                                    <th scope="col">TỔNG TIỀN THANH TOÁN: </th>
+                                                    <th scope="col">[[${#numbers.formatDecimal(order.total, 0, 'COMMA', 0, 'POINT')}]]</th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade shadow rounded bg-white p-4" id="v-pills-profile" role="tabpanel"
+                             aria-labelledby="v-pills-profile-tab">
+
+                        </div>
+
+                        <div class="tab-pane fade shadow rounded bg-white p-5" id="v-pills-messages" role="tabpanel"
+                             aria-labelledby="v-pills-messages-tab">
+                            <h4 class="font-italic mb-4">Reviews</h4>
+                            <p class="font-italic text-muted mb-2">Lorem ipsum dolor sit amet, consectetur adipisicing
+                                elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+                                minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
+                                eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa
+                                qui officia deserunt mollit anim id est laborum.</p>
+                        </div>
+
+                        <div class="tab-pane fade shadow rounded bg-white p-5" id="v-pills-settings" role="tabpanel"
+                             aria-labelledby="v-pills-settings-tab">
+                            <h4 class="font-italic mb-4">Confirm booking</h4>
+                            <p class="font-italic text-muted mb-2">Lorem ipsum dolor sit amet, consectetur adipisicing
+                                elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+                                minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
+                                eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa
+                                qui officia deserunt mollit anim id est laborum.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>

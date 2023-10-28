@@ -38,7 +38,8 @@ app.controller("cart-ctrl", function($scope, $http, $location) {
 					if (qtt > sol) {
 						alert("Vượt quá số lượng cho phép !!!");
 					} else {
-
+						resp.data.priceBeforeSale=$('.priceBeforeSale').text();
+						resp.data.price=$('.price').text();
 						resp.data.qty = qtt;
 						this.items.push(resp.data);
 						this.saveToLocalStorage();

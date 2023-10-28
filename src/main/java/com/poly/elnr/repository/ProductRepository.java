@@ -28,13 +28,14 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 	Product findProductSize(Integer id, Integer sizeid);
 
 
-	
+
+
 
 	@Query("SELECT DISTINCT p FROM Product p "
-            + "INNER JOIN p.productDetails pd "
-            + "WHERE p.categoryDdetail.id =:idCategoryDetail "
-            + "AND (p.color.id IN :colorId "
-            + "AND pd.size.id IN :sizeId) ")
+			+ "INNER JOIN p.productDetails pd "
+			+ "WHERE p.categoryDdetail.id =:idCategoryDetail "
+			+ "AND (p.color.id IN :colorId "
+			+ "AND pd.size.id IN :sizeId) ")
 	Page<Product> findProductByCategoryDetailFilter(@Param("idCategoryDetail") int idCategoryDetail,
 													@Param("colorId") List<Integer> colorId,
 													@Param("sizeId") List<Integer> sizeId,

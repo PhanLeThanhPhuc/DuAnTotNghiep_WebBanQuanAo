@@ -6,13 +6,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,9 +31,11 @@ public class Discount implements Serializable {
     private int discount;
     
     @Column(name = "startdate")
+    @Temporal(TemporalType.DATE)
     private Date startdate;
     
     @Column(name = "enddate")
+    @Temporal(TemporalType.DATE)
     private Date enddate;
     
     @Column(name = "active")
