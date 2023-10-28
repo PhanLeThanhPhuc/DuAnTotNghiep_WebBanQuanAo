@@ -2,6 +2,7 @@ package com.poly.elnr.service.serviceImpl;
 
 import java.util.List;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,5 +21,32 @@ public class DescriptionServiceImpl implements DescriptionService{
 		// TODO Auto-generated method stub
 		return descriptionRepository.findAll();
 	}
+
+	@Override
+	public Description findById(Integer id) {
+		// TODO Auto-generated method stub
+		return descriptionRepository.findById(id).get();
+	}
+
+	@Override
+	public void create(Description description) {
+		// TODO Auto-generated method stub
+		descriptionRepository.save(description);
+	}
+
+	@Override
+	public Description update(Description description) {
+		// TODO Auto-generated method stub
+		return descriptionRepository.save(description);
+	}
+
+	@Override
+	public void delete(Integer id) {
+		// TODO Auto-generated method stub
+		descriptionRepository.deleteById(id);
+		
+	}
+
+	
 
 }

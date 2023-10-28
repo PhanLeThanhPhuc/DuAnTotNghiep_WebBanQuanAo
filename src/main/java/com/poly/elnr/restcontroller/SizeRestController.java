@@ -3,9 +3,6 @@ package com.poly.elnr.restcontroller;
 import java.util.List;
 
 
-
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,39 +14,37 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.poly.elnr.entity.Description;
-import com.poly.elnr.service.DescriptionService;
-
+import com.poly.elnr.entity.Size;
+import com.poly.elnr.service.SizeService;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/rest/description")
-public class DescriptionRestController {
-	
+@RequestMapping("/rest/sizes")
+public class SizeRestController {
 	@Autowired
-	DescriptionService descriptionService;
+	SizeService sizeService;
 	
 	@GetMapping
-	public List<Description> findAll() {
-		return descriptionService.findAll();
+	public List<Size> getAll(){
+		return sizeService.findAll();
 	}
 	
 	@GetMapping("{id}")
-	public Description getOne(@PathVariable("id") Integer id) {
-		return descriptionService.findById(id);
+	public Size getOne(@PathVariable("id") Integer id) {
+		return sizeService.findById(id);
 	}
 	
 	@PostMapping
-	public Description post(@RequestBody Description description) {
-		descriptionService.create(description);
-		return description;
+	public Size post(@RequestBody Size size) {
+		sizeService.create(size);
+		return size;
 	}
 	@PutMapping("{id}")
-	public Description put(@PathVariable("id") Integer id, @RequestBody Description description) {
-		return descriptionService.update(description);
+	public Size put(@PathVariable("id") Integer id, @RequestBody Size size) {
+		return sizeService.update(size);
 	}
 	@DeleteMapping("{id}")
 	public void delete(@PathVariable("id") Integer id) {
-		descriptionService.delete(id);
+		sizeService.delete(id);
 	}
 }

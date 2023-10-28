@@ -18,4 +18,6 @@ public interface ColorService {
 
 	public void delete(Color id);
 
+	public Color update(Color color);
+
 }

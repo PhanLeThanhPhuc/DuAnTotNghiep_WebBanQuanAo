@@ -11,33 +11,30 @@
 							<thead>
 								<tr>
 									<th>ID</th>
-									<th>Image</th>
-									<th>Name</th>
-									<th>Category</th>
-									<th>price</th>
-									<th>Sale</th>
-									<th>Available?</th>
+									<th>name</th>
+									<th>weight</th>
+									<th>material</th>
+									<th>technology</th>
+									<th>manufacture</th>
+									<th></th>
+
 
 								</tr>
 							</thead>
 							<tbody>
 								<tr ng-repeat="item in pager.items">
 									<td>{{item.id}}</td>
-									<td><div class="d-flex">
-												<img src="/assets/user/user/image/{{item.thumbnail}}" alt=""
-													style="width: 50px;">
-											</div></td>
 									<td>{{item.name}}</td>
-									<td>{{item.categoryDdetail.name}}</td>
-									<td>{{item.price}}đ</td>
-									<td>{{item.sale?'Yes':'No'}}</td>
-									<td>{{item.status?'Yes':'No'}}</td>
+									<td>{{item.weight}}</td>
+									<td>{{item.material}}đ</td>
+									<td>{{item.technology}}</td>
+									<td>{{item.manufacture}}</td>
 									<td><span> <a ng-click="edit(item)"
 											data-toggle="tooltip" data-placement="top" title="Edit"><i
 												class="fa fa-pencil color-muted m-r-5"></i> </a> <a
 											ng-click="delete(item)" data-toggle="tooltip"
 											data-placement="top" title="Delete"><i
-												class="fa fa-close color-danger"></i></a></span>
+												class="fa fa-close color-danger"></i></a></span></td>
 								</tr>
 							</tbody>
 						</table>
