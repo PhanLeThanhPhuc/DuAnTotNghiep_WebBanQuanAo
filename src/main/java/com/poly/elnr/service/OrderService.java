@@ -10,4 +10,6 @@ public interface OrderService {
 
     Order fillOrderById(int id);
 
+    double subTotalOrder(int idOrder);
+
 }

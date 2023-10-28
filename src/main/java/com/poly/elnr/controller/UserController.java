@@ -42,8 +42,9 @@ public class UserController {
 	}
 
 	@GetMapping("user/order-detail")
-	public String userOrderDetails(Model model){
-//		model.addAttribute("orderDetails", order)
+	public String userOrderDetails(Model model, @RequestParam("idOrder") int idOrder){
+		model.addAttribute("subTotal",orderService.subTotalOrder(idOrder));
+		model.addAttribute("order", orderService.fillOrderById(idOrder));
 		return "user/layout/user-orderdetails.html";
 	}
 
