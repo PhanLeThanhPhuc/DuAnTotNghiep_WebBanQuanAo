@@ -78,4 +78,34 @@ app.controller("authority-ctrl", function($scope, $http, $location){
 	    afterHidden: function () {}  // will be triggered after the toast has been hidden
 	});
 	}
+	
+	$scope.pager = {
+		page: 0,
+		size: 10,
+		get admins(){
+			if(this.page < 0){
+				this.last();
+			}
+			if(this.page >= this.count){
+				this.first();
+			}
+			var start = this.page*this.size;
+			return $scope.admins.slice(start, start + this.size)
+		},
+		get count(){
+			return Math.ceil(1.0 * $scope.admins.length / this.size);
+		},
+		first(){
+			this.page = 0;
+		},
+		last(){
+			this.page = this.count - 1;
+		},
+		next(){
+			this.page++;
+		},
+		prev(){
+			this.page--;
+		}
+	}
 });

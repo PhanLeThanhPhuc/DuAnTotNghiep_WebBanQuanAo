@@ -22,6 +22,7 @@ app.controller("user-ctrl", function($scope, $http){
 	$scope.edit = function(item){
 		$scope.form = angular.copy(item);
 		$(".nav-tabs a:eq(0)").tab("show");
+		
 	}
 
 	$scope.create = function(){
