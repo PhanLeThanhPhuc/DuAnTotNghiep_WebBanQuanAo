@@ -26,6 +26,17 @@ app.controller("product-ctrl", function($scope, $http) {
 		});
 		$scope.reset();
 	}
+	$scope.closeCollapsibles = function() {
+		// Close all collapsible elements
+		var collapsibles = document.querySelectorAll('.collapse');
+		for (var i = 0; i < collapsibles.length; i++) {
+			var collapsible = collapsibles[i];
+			if (collapsible.classList.contains('show')) {
+				var collapseInstance = new bootstrap.Collapse(collapsible);
+				collapseInstance.hide();
+			}
+		}
+	};
 
 	$scope.reset = function() {
 		$scope.productSize = [];
@@ -36,6 +47,7 @@ app.controller("product-ctrl", function($scope, $http) {
 			status: true,
 			thumbnail: "cloud-upload.jpg"
 		}
+		$scope.closeCollapsibles();
 	}
 
 	$scope.selected = [];
@@ -75,8 +87,10 @@ app.controller("product-ctrl", function($scope, $http) {
 
 	}
 
+	$scope.oldDescriptionId = null;
 	$scope.edit = function(item) {
 		$scope.form = angular.copy(item);
+		$scope.oldDescriptionId = $scope.form.description.id;
 		$(".nav-tabs a:eq(0)").tab("show");
 		$http.get(`/rest/productsDetail/${item.id}`).then(resp => {
 			$scope.productSize = resp.data;
@@ -92,11 +106,28 @@ app.controller("product-ctrl", function($scope, $http) {
 			$scope.items.push(resp.data);
 			$scope.form = angular.copy(resp.data);
 			alert("Thêm mới sản phẩm thành công!");
+
+			$scope.selected.forEach(function(productDetail) {
+				productdt = { size: productDetail, product: $scope.form }
+				$http.post(`/rest/productsDetail`, productdt).then(resp => {
+					$scope.productSize.push(resp.data);
+				}).catch(error => {
+					alert("Lỗi thêm size sản phẩm!");
+					console.log("Error", error);
+				});
+			});
 		}).catch(error => {
 			alert("Lỗi thêm mới sản phẩm!");
 			console.log("Error", error);
 		});
+
+
+
 	}
+
+
+
+
 	$scope.update = function() {
 		var size = angular.copy($scope.productSize);
 		size.forEach(function(size) {
@@ -106,11 +137,16 @@ app.controller("product-ctrl", function($scope, $http) {
 				console.log("Error", error);
 			});
 		});
+
+		if ($scope.form.description.id == null) {
+			$scope.form.description.id = $scope.oldDescriptionId;
+		}
 		var item = angular.copy($scope.form);
 		item.dateUpdate = new Date();
 		$http.put(`/rest/products/${item.id}`, item).then(resp => {
 			var index = $scope.items.findIndex(p => p.id == item.id);
 			$scope.items[index] = item;
+			$scope.oldDescriptionId = $scope.form.description.id;
 			alert("Cập nhật sản phẩm thành công!!!!");
 		}).catch(error => {
 			alert("Lỗi cập nhật sản phẩm!");
@@ -133,13 +169,13 @@ app.controller("product-ctrl", function($scope, $http) {
 	}
 
 
-		$scope.imageChanged = function(files){
+	$scope.imageChanged = function(files) {
 		var data = new FormData();
 		data.append('file', files[0]);
 		$http.post('/rest/upload/image', data, {
 			transformRequest: angular.identity,
-			headers: {'Content-Type': undefined}
-        }).then(resp => {
+			headers: { 'Content-Type': undefined }
+		}).then(resp => {
 			$scope.form.thumbnail = resp.data.name;
 		}).catch(error => {
 			alert("Lỗi upload hình ảnh");
@@ -178,4 +214,58 @@ app.controller("product-ctrl", function($scope, $http) {
 			this.page--;
 		}
 	}
+
+
+
+
+	$scope.$watch('form.description.id', function(newValue) {
+		if (newValue) {
+			$scope.descriptionDetail(newValue);
+		}
+
+	});
+
+	$scope.descriptionDetail = function(selectedValue) {
+		$http.get("/rest/description/" + selectedValue).then(function(response) {
+			$scope.form.description = response.data;
+		}).catch(function(error) {
+			console.log("Error", error);
+		});
+	};
+
+
+	$scope.createDescription = function() {
+		var item = angular.copy($scope.form.description);
+		$http.post(`/rest/description`, item).then(resp => {
+			resp.data.dateInsert = new Date(resp.data.dateInsert)
+			$scope.description.push(resp.data);
+			$scope.form.description = resp.data;
+			alert("Thêm mới mô tả sản phẩm thành công!");
+		}).catch(error => {
+			alert("Lỗi thêm mới !");
+			console.log("Error", error);
+		});
+	}
+
+	$scope.resetDescription = function() {
+		$scope.form.description = {
+		}
+	}
+
+	$scope.updateDescription = function() {
+		var item = angular.copy($scope.form.description);
+		$http.put(`/rest/description/${item.id}`, item).then(resp => {
+			var index = $scope.description.findIndex(p => p.id == item.id);
+			$scope.description[index] = item;
+
+			alert("Cập nhật mô tả sản phẩm công!");
+		})
+			.catch(error => {
+				alert("Lỗi cập nhật !");
+				console.log("Error", error);
+			});
+	}
+
+
+
 });

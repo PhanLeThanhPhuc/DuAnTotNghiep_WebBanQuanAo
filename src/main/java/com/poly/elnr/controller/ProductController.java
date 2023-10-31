@@ -97,6 +97,7 @@ public class ProductController {
 		model.addAttribute("images", imageService.findByProductID(id));
 		model.addAttribute("reviews", reviewService.findByProductID(id, p));
 		model.addAttribute("sizes", detailService.findByProductID(id));
+		model.addAttribute("soluong", detailService.findByProductID(id).stream().mapToInt(n->n.getQuantity()).sum());
 		model.addAttribute("item", productService.findById(id));
 		return "user/product/detail";
 	}

@@ -15,10 +15,7 @@ app.config(function ($routeProvider) {
       templateUrl: "/assets/admin/product/index.html",
       controller: "product-ctrl"
     })
-    .when("/description", {
-      templateUrl: "/assets/admin/description/index.html",
-      controller: "description-ctrl"
-    })
+
      .when("/size", {
       templateUrl: "/assets/admin/size/index.html",
       controller: "size-ctrl"

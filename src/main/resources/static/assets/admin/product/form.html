@@ -50,9 +50,12 @@
 								</div>
 								<div class="form-group col-sm-6">
 									<div>Category</div>
-									<select ng-model="form.categoryDdetail.id" class="form-control">
+									<select ng-model="form.categoryDdetail.id" class="form-control"
+										ng-change="test(form.categoryDdetail.id)">
 										<option ng-repeat="cate in categories" ng-value="cate.id">{{cate.name}}</option>
 									</select>
+
+
 								</div>
 								<div class="form-group col-sm-6">
 									<div>Available?</div>
@@ -69,29 +72,30 @@
 
 							</div>
 						</div>
+
 						<div class="col-sm-5 ">
-							<div class="row">
-								<div class="col-sm-1"></div>
-								<div class="form-group col-sm-10">
+							<div class=" px-5  row">
+								<div class="form-group col-sm-12">
 									<div>Insert Date</div>
 									<input ng-model="form.dateInsert" type="date"
 										class="form-control">
 								</div>
-								<div class="col-sm-1"></div>
-								<div class="col-sm-1"></div>
-								<div class="form-group col-sm-10">
+								<div class="form-group col-sm-12">
 									<div>Update Date</div>
 									<input ng-model="form.dateUpdate" type="date"
 										class="form-control">
 								</div>
-								<div class="col-sm-1"></div>
-								<div class="col-sm-1"></div>
-								<div class="form-group col-sm-10">
+								<div class="form-group col-sm-12">
 									<div>Description</div>
 									<select ng-model="form.description.id" class="form-control">
-										<option ng-repeat="d in description" ng-value="d.id">{{d.id}}</option>
+										<option ng-repeat="d in description" ng-value="d.id">{{d.name}}</option>
 									</select>
-
+								</div>
+								<div>
+									<a ref="" class="btn btn-light "
+										style="margin: 5px; margin-top: 15px;"
+										data-target="#description" data-toggle="collapse">
+										Description Detail</a>
 								</div>
 							</div>
 						</div>
@@ -125,9 +129,52 @@
 										</div>
 									</div>
 									<div class="text-center">
-										<button ng-click="addsize(form)" ng-disabled="!form.id"
+										<button ng-click="addsize(form)" ng-if="form.id"
 											class="btn btn-success">(+) Size</button>
 										<button ng-click="test()" class="btn btn-success">Clear</button>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div id="description" class="collapse">
+							<div class=" px-5 m-2">
+								<div class=" p-2 row border border-dark">
+									<div class="form-group col-sm-6">
+										<div>Name</div>
+										<input ng-model="form.description.name" class="form-control">
+									</div>
+									<div class="form-group col-sm-6">
+										<div>Weight</div>
+										<input ng-model="form.description.weight" class="form-control">
+									</div>
+									<div class="form-group col-sm-6">
+										<div>Material</div>
+										<input ng-model="form.description.material"
+											class="form-control">
+									</div>
+									<div class="form-group col-sm-6">
+										<div>Technology</div>
+										<input ng-model="form.description.technology"
+											class="form-control">
+									</div>
+									<div class="form-group col-sm-6">
+										<div>Manufacture</div>
+										<input ng-model="form.description.manufacture"
+											class="form-control">
+									</div>
+									<div class="form-group col-sm-12">
+										<div>Description</div>
+										<textarea ng-model="form.description.description" rows="4"
+											class="form-control" cols="50"></textarea>
+									</div>
+
+									<div class="col-sm-12 panel-footer text-right">
+										<button ng-click="createDescription()"
+											ng-disabled="form.description.id" class="btn btn-primary">Create</button>
+										<button ng-click="updateDescription()"
+											ng-disabled="!form.description.id" class="btn btn-success ">Update</button>
+										<button ng-click="resetDescription()" class="btn btn-info">Clear</button>
 									</div>
 								</div>
 							</div>
