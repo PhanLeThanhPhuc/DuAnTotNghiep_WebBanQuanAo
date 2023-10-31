@@ -15,6 +15,6 @@ public interface CategoryDetailService {
 	public void delete(CategoryDetail id);
 
 
-
+	public CategoryDetail update(CategoryDetail create);
 	
 }

@@ -18,9 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.poly.elnr.entity.Users;
 import com.poly.elnr.service.UserService;
 
-
-
-
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/rest/users")

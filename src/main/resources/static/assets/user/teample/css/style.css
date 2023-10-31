@@ -5514,6 +5514,7 @@ ul {
 .single_confirmation_details {
   background-color: #ecfdff;
   /*padding: 35px 40px;*/
+  border-radius: 10px;
 }
 
 @media (max-width: 991px) {

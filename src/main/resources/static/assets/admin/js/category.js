@@ -1,47 +1,83 @@
 app.controller("category-ctrl", function($scope, $http){
 	$scope.initialize = function(){
+		$scope.pageLoaded = false;
 		$http.get("/rest/categories").then(resp => {
-			$scope.items = resp.data;
-			$scope.items.forEach(item => {
+			$scope.listCategory = resp.data;
+			console.log($scope.listCategory);
+			$scope.listCategory.forEach(item => {
 				item.dateInsert = new Date(item.dateInsert)
-				
 			})
 		});
 		$scope.reset();
+		$scope.resetCategoryDetail();
 	}
-	
-	$scope.reset = function(){
-		$scope.form = {
+
+	$scope.fillCategoryDetail = (id) =>{
+		$scope.idCategory = id;
+		var index = $scope.listCategory.findIndex(c => c.id == id);
+		$scope.listCategoryDetails = $scope.listCategory[index].category_detail;
+	}
+
+	$scope.resetCategoryDetail = function(){
+		$scope.formCategoryDetail = {
+			name : "",
 			dateInsert: new Date(),
 			status: true,
-			
 		}
 	}
 
-	$scope.edit = function(item){
-		$scope.form = angular.copy(item);
-		$(".nav-tabs a:eq(0)").tab("show");
+	$scope.reset = function(){
+		$scope.formCategory = {
+			name : "",
+			dateInsert: new Date(),
+			status: true,
+		}
 	}
 
-	$scope.create = function(){
-		var item = angular.copy($scope.form);
-		$http.post(`/rest/categories`, item).then(resp => {
-			resp.data.dateInsert = new Date(resp.data.dateInsert)
-			$scope.items.push(resp.data);
+	$scope.editCategory = function(item){
+		$scope.itemCategory = item;
+		console.log('edit', item)
+		$scope.titleModel ="Cập nhật danh mục";
+		$scope.formCategory = angular.copy(item);
+	}
+
+	$scope.createCategory = function(){
+		var categoryInsert = {
+			dateInsert: new Date(),
+			dateUpdate: new Date(),
+			status: $scope.formCategory.status,
+			name: $scope.formCategory.name,
+		}
+		$http.post(`/rest/categories`, categoryInsert).then(resp => {
+			if(resp.status == 200){
+				$scope.listCategory.push(resp.data);
+				$scope.message("Thêm mới danh mục thành công!");
+			}
 			$scope.reset();
-			alert("Thêm mới sản phẩm thành công!");
 		}).catch(error => {
 			alert("Lỗi thêm mới sản phẩm!");
 			console.log("Error", error);
 		});
 	}
 
-	$scope.update = function(){
-		var item = angular.copy($scope.form);
-		$http.put(`/rest/categories/${item.id}`, item).then(resp => {
-			var index = $scope.items.findIndex(p => p.id == item.id);
-			$scope.items[index] = item;
-			alert("Cập nhật sản phẩm thành công!");
+	$scope.updateCategory = function(){
+		var item = angular.copy($scope.formCategory);
+
+		var categoryUpdate = {
+			dateInsert: $scope.itemCategory.dateInsert,
+			dateUpdate: new Date(),
+			status: item.status,
+			name: item.name,
+			id: item.id
+		}
+
+		$http.put(`/rest/categories/${item.id}`, categoryUpdate).then(resp => {
+			if(resp.status == 200){
+				var index = $scope.listCategory.findIndex(p => p.id == item.id);
+				$scope.listCategory[index] = categoryUpdate;
+				$scope.message("Cập nhật danh mục thành công!");
+			}
+			$scope.reset();
 		})
 		.catch(error => {
 			alert("Lỗi cập nhật sản phẩm!");
@@ -49,40 +85,10 @@ app.controller("category-ctrl", function($scope, $http){
 		});
 	}
 
-	$scope.delete = function(item){
-		if(confirm("Bạn muốn xóa sản phẩm này?")){
-			$http.delete(`/rest/categories/${item.id}`).then(resp => {
-				var index = $scope.items.findIndex(p => p.id == item.id);
-				$scope.items.splice(index, 1);
-				$scope.reset();
-				alert("Xóa sản phẩm thành công!");
-			}).catch(error => {
-				alert("Lỗi xóa sản phẩm!");
-				console.log("Error", error);
-			})
-		}
-	}
-	
-	$scope.imageChanged = function(files){
-		var data = new FormData();
-		data.append('file', files[0]);
-		$http.post('/rest/upload/images', data, {
-			transformRequest: angular.identity,
-			headers: {'Content-Type': undefined}
-        }).then(resp => {
-			$scope.form.image = resp.data.name;
-		}).catch(error => {
-			alert("Lỗi upload hình ảnh");
-			console.log("Error", error);
-		})
-	}
-
-	$scope.initialize();
-
 	$scope.pager = {
 		page: 0,
 		size: 10,
-		get items(){
+		get listCategory(){
 			if(this.page < 0){
 				this.last();
 			}
@@ -90,10 +96,10 @@ app.controller("category-ctrl", function($scope, $http){
 				this.first();
 			}
 			var start = this.page*this.size;
-			return $scope.items.slice(start, start + this.size)
+			return $scope.listCategory.slice(start, start + this.size)
 		},
 		get count(){
-			return Math.ceil(1.0 * $scope.items.length / this.size);
+			return Math.ceil(1.0 * $scope.listCategory.length / this.size);
 		},
 		first(){
 			this.page = 0;
@@ -108,5 +114,94 @@ app.controller("category-ctrl", function($scope, $http){
 			this.page--;
 		}
 	}
+
+	$scope.resetCategoryDetail = function(){
+		$scope.formCategoryDetail = {
+			name : "",
+			dateInsert: new Date(),
+			status: true,
+		}
+	}
+
+	$scope.createCategoryDetail = () => {
+
+		var categoryDetailInsert = {
+			dateInsert: new Date(),
+			dateUpdate: new Date(),
+			status: $scope.formCategoryDetail.status,
+			name: $scope.formCategoryDetail.name,
+			category:{
+				id: $scope.idCategory
+			}
+		}
+
+		$http.post(`/rest/categorydetail`, categoryDetailInsert).then(resp => {
+			if(resp.status === 200){
+				var index = $scope.listCategory.findIndex(c => c.id === $scope.idCategory);
+				$scope.listCategory[index].category_detail.push(resp.data);
+				$scope.message("Thêm mới danh mục con thành công!");
+			}
+		}).catch(error => {
+			alert("Lỗi thêm mới sản phẩm!");
+			console.log("Error", error);
+		});
+	}
+
+
+	$scope.editCategoryDetail = function(item){
+		$scope.titleModel ="Cập nhật danh mục";
+		$scope.formCategoryDetail = angular.copy(item);
+	}
+
+	$scope.updateCategoryDetail = (item) =>{
+		var categoryDetailUpdate = {
+			id : $scope.formCategoryDetail.id,
+			dateInsert: $scope.formCategoryDetail.dateInsert,
+			dateUpdate: new Date(),
+			status: $scope.formCategoryDetail.status,
+			name: $scope.formCategoryDetail.name,
+			category:{
+				id: $scope.idCategory
+			}
+		}
+
+		$http.put(`/rest/categorydetail/${$scope.formCategoryDetail.id}`, categoryDetailUpdate).then(resp => {
+			if(resp.status === 200){
+				var index = $scope.listCategory.findIndex(c => c.id === $scope.idCategory);
+				var detailIndex = $scope.listCategory[index].category_detail.findIndex(detail => detail.id === categoryDetailUpdate.id);
+				$scope.listCategory[index].category_detail[detailIndex] = angular.copy(categoryDetailUpdate);
+				console.log("uopdate",resp.data);
+				$scope.message("Cập nhật danh mục thành công!");
+			}
+		})
+		.catch(error => {
+			alert("Lỗi cập nhật sản phẩm!");
+			console.log("Error", error);
+		});
+
+	}
+
+
+	$scope.message = (mes) =>{
+		$.toast({
+			text: mes,
+			heading: 'Note',
+			icon: 'success',
+			showHideTransition: 'fade',
+			allowToastClose: true,
+			hideAfter: 3000,
+			stack: 5,
+			position: 'top-right', // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values
+			textAlign: 'left',  // Text alignment i.e. left, right or center
+			loader: true,  // Whether to show loader or not. True by default
+			loaderBg: '#9EC600',  // Background color of the toast loader
+			beforeShow: function () {}, // will be triggered before the toast is shown
+			afterShown: function () {}, // will be triggered after the toat has been shown
+			beforeHide: function () {}, // will be triggered before the toast gets hidden
+			afterHidden: function () {}  // will be triggered after the toast has been hidden
+		});
+	}
+
+	$scope.initialize();
 }
 );

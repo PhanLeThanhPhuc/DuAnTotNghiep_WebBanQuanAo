@@ -33,16 +33,11 @@ public class OrderServiceImpl implements OrderService {
 
         Order order = orderRepository.findById(idOrder).get();
         double subTotal = 0;
-
         for (OrderDetail orderDetail : order.getOrderDetails()){
-            if(orderDetail.getProductDetails().getProduct().getDiscountDetail().isEmpty()){
-                System.out.println("K có khuyến mãi");
-                subTotal += orderDetail.getProductDetails().getProduct().getPrice() * orderDetail.getQuantity();
-            }else {
-                System.out.println("Có khuyến mãi");
-               for (DiscountDetail discountDetail : orderDetail.getProductDetails().getProduct().getDiscountDetail()){
-                   subTotal += discountDetail.getDiscount().getDiscount() * orderDetail.getQuantity();
-               }
+            if(orderDetail.getDiscountPrice() == 0){
+                subTotal += orderDetail.getPrice() * orderDetail.getQuantity();
+            }else{
+                subTotal += orderDetail.getDiscountPrice() * orderDetail.getQuantity();
             }
         }
         return subTotal;
