@@ -1,7 +1,7 @@
-app.controller("cart-ctrl", function($scope, $http, $location) {
+app.controller("cart-ctrl", function($scope, $http) {
 	// quản lý giỏ hàng
 	
-	$scope.soluong=0;
+	$scope.soluong=$('.soluong').text();
 	$scope.sizeClick = function(size) {
 		$scope.soluong = size;
 	};

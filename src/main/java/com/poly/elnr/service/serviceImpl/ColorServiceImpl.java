@@ -54,5 +54,11 @@ public class ColorServiceImpl implements ColorService{
 		colorRepository.delete(id);
 	}
 
+	@Override
+	public Color update(Color color) {
+		// TODO Auto-generated method stub
+		return colorRepository.save(color);
+	}
+
 
 }

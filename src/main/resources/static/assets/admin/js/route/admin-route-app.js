@@ -2,14 +2,11 @@ app = angular.module("app", ["ngRoute"]);
 
 app.config(function ($routeProvider) {
   $routeProvider
-    .when("/category-table", {
-      templateUrl: "/assets/admin/category/table.html",
+    .when("/category", {
+      templateUrl: "/assets/admin/category/index.html",
       controller: "category-ctrl"
     })
-    .when("/category-form", {
-      templateUrl: "/assets/admin/category/form.html",
-      controller: "category-ctrl"
-    })
+    
     .when("/color", {
       templateUrl: "/assets/admin/color/index.html",
       controller: "color-ctrl"
@@ -17,6 +14,11 @@ app.config(function ($routeProvider) {
      .when("/product", {
       templateUrl: "/assets/admin/product/index.html",
       controller: "product-ctrl"
+    })
+
+     .when("/size", {
+      templateUrl: "/assets/admin/size/index.html",
+      controller: "size-ctrl"
     })
     .when("/categorydetail-table", {
       templateUrl: "/assets/admin/category_detail/form.html",
