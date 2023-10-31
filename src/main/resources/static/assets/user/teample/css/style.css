@@ -5511,27 +5511,28 @@ ul {
 }
 
 /* line 11, ../../01 cl html template/03_jun 2019/188_Aranoz shop_html/sass/_confirmation_part.scss */
-.confirmation_part .single_confirmation_details {
+.single_confirmation_details {
   background-color: #ecfdff;
-  padding: 35px 40px;
+  /*padding: 35px 40px;*/
+  border-radius: 10px;
 }
 
 @media (max-width: 991px) {
   /* line 11, ../../01 cl html template/03_jun 2019/188_Aranoz shop_html/sass/_confirmation_part.scss */
-  .confirmation_part .single_confirmation_details {
+.single_confirmation_details {
     margin-bottom: 15px;
   }
 }
 
 @media only screen and (min-width: 992px) and (max-width: 1200px) {
   /* line 11, ../../01 cl html template/03_jun 2019/188_Aranoz shop_html/sass/_confirmation_part.scss */
-  .confirmation_part .single_confirmation_details {
+.single_confirmation_details {
     margin-bottom: 30px;
   }
 }
 
 /* line 20, ../../01 cl html template/03_jun 2019/188_Aranoz shop_html/sass/_confirmation_part.scss */
-.confirmation_part .single_confirmation_details h4 {
+.single_confirmation_details h4 {
   font-size: 18px;
   font-weight: 500;
   color: #222222;
@@ -5540,7 +5541,7 @@ ul {
 }
 
 /* line 28, ../../01 cl html template/03_jun 2019/188_Aranoz shop_html/sass/_confirmation_part.scss */
-.confirmation_part .single_confirmation_details ul li {
+.single_confirmation_details ul li {
   position: relative;
   text-transform: capitalize;
   padding-left: 55%;
@@ -5548,7 +5549,7 @@ ul {
 }
 
 /* line 34, ../../01 cl html template/03_jun 2019/188_Aranoz shop_html/sass/_confirmation_part.scss */
-.confirmation_part .single_confirmation_details ul li p {
+.single_confirmation_details ul li p {
   position: absolute;
   left: 0;
   top: 0;
@@ -5557,12 +5558,12 @@ ul {
 }
 
 /* line 41, ../../01 cl html template/03_jun 2019/188_Aranoz shop_html/sass/_confirmation_part.scss */
-.confirmation_part .single_confirmation_details ul li span {
+.single_confirmation_details ul li span {
   color: #222222;
 }
 
 /* line 47, ../../01 cl html template/03_jun 2019/188_Aranoz shop_html/sass/_confirmation_part.scss */
-.confirmation_part .order_details_iner {
+.order_details_iner {
   margin-top: 50px;
   background-color: #ecfdff;
   padding: 30px 30px 15px;
@@ -5570,34 +5571,34 @@ ul {
 }
 
 /* line 52, ../../01 cl html template/03_jun 2019/188_Aranoz shop_html/sass/_confirmation_part.scss */
-.confirmation_part .order_details_iner h3 {
+.order_details_iner h3 {
   font-size: 18px;
 }
 
 /* line 55, ../../01 cl html template/03_jun 2019/188_Aranoz shop_html/sass/_confirmation_part.scss */
-.confirmation_part .order_details_iner .table thead th {
+.order_details_iner .table thead th {
   color: #222222;
   font-size: 16px;
 }
 
 /* line 59, ../../01 cl html template/03_jun 2019/188_Aranoz shop_html/sass/_confirmation_part.scss */
-.confirmation_part .order_details_iner span {
+.order_details_iner span {
   color: #777777;
 }
 
 /* line 62, ../../01 cl html template/03_jun 2019/188_Aranoz shop_html/sass/_confirmation_part.scss */
-.confirmation_part .order_details_iner thead {
+.order_details_iner thead {
   border-top: 1px solid #dddddd;
   border-bottom: 1px solid #dddddd;
 }
 
 /* line 66, ../../01 cl html template/03_jun 2019/188_Aranoz shop_html/sass/_confirmation_part.scss */
-.confirmation_part .order_details_iner tfoot {
+.order_details_iner tfoot {
   border-top: 1px solid #dddddd;
 }
 
 /* line 69, ../../01 cl html template/03_jun 2019/188_Aranoz shop_html/sass/_confirmation_part.scss */
-.confirmation_part .order_details_iner th {
+.order_details_iner th {
   font-weight: 500;
 }
 

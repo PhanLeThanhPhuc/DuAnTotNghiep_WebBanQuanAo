@@ -1,14 +1,18 @@
 package com.poly.elnr.service.serviceImpl;
+import java.io.IOException;
 import java.util.List;
 
 
+import com.poly.elnr.dto.ChangePassword;
+import com.poly.elnr.utils.UploadCloudinaryUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Date;
 
 import com.poly.elnr.security.CustomUserDetails;
 import com.poly.elnr.utils.CustomOAuth2User;
 import com.poly.elnr.utils.RegexUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+
+
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,6 +27,7 @@ import com.poly.elnr.repository.AuthorityRepository;
 import com.poly.elnr.repository.UserRepository;
 import com.poly.elnr.service.UserService;
 import com.poly.elnr.utils.RamDomNameUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -38,6 +43,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	SessionService session;
+
+	@Autowired
+	UploadCloudinaryUtils uploadCloudinaryUtils;
 
 	@Override
 	public UserDetails oauth2(CustomOAuth2User oAuth2User) {
@@ -92,7 +100,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void findByUserNameLogin(String username) {
+	public Users findByUserNameLogin(String username) {
 
 		UserDetails userDetails;
 		Users user;
@@ -106,6 +114,7 @@ public class UserServiceImpl implements UserService {
 		Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 		SecurityContextHolder.getContext().setAuthentication(auth);
 		session.set("user", user);
+		return user;
 	}
 
 	@Override
@@ -132,4 +141,31 @@ public class UserServiceImpl implements UserService {
 		userRepository.delete(id);
 	}
 
+	@Override
+	public Users findById(Integer id) {
+		// TODO Auto-generated method stub
+		return userRepository.findById(id).get();
+	}
+
+	@Override
+	public List<Users> findAllUserByIdRole() {
+		// TODO Auto-generated method stub
+		return userRepository.findAllUserByIdRole();
+	}
+
+	@Override
+	public void changePassword(String oldPassword, String username) {
+		Users user = findByUserNameLogin(username);
+		user.setPassword(oldPassword);
+		userRepository.save(user);
+	}
+
+	@Override
+	public String saveImageUser(MultipartFile multipartFile, String username) throws IOException {
+		Users user = findByUserNameLogin(username);
+		String imageURL = uploadCloudinaryUtils.uploadFileCloudinary(multipartFile);
+		user.setImage(imageURL);
+		userRepository.save(user);
+		return imageURL;
+	}
 }

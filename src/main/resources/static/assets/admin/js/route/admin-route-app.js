@@ -32,7 +32,7 @@ app.config(function ($routeProvider) {
       templateUrl: "/assets/admin/customer/form.html",
       controller: "user-ctrl"
     })
-    .when("/authorize", {
+    .when("/authority", {
       templateUrl: "/assets/admin/authority/index.html",
       controller: "authority-ctrl"
     })
@@ -40,6 +40,11 @@ app.config(function ($routeProvider) {
       templateUrl: "/assets/admin/authority/unauthorized.html",
       controller: "authority-ctrl"
     })
+    .when("/user", {
+      templateUrl: "/assets/admin/user/index.html",
+      controller: "user-ctrl"
+    })
+ 
     .otherwise({
       template: "<h1 class='text-center'>FPT Polytechnic Administration</h1>"
     });

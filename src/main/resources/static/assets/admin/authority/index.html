@@ -1,0 +1,24 @@
+<div class="panel panel-default">
+
+<div class="container-fluid" >
+<div class="card-body">
+	<div class="panel-heading">AUTHORIZING</div>
+	<table class="table table-border">
+		<thead class="bg-success" style="font-variant: small-caps;">
+			<tr>
+				<th></th>
+				<th ng-repeat="role in roles" class="text-center">{{role.name}}</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="acc in admins">
+				<td>{{acc.fullName}}</td>
+				<th ng-repeat="role in roles" class="text-center">
+					<input style="" ng-checked="authority_of(acc, role)" ng-click="authority_changed(acc, role)" type="checkbox">
+				</th>
+			</tr>
+		</tbody>
+	</table>
+  </div>
+  </div>
+    </div>
