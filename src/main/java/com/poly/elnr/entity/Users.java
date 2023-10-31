@@ -16,7 +16,9 @@ import org.hibernate.annotations.BatchSize;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+//@Data
+@Getter
+@Setter
 @Table(name="users")
 @Entity
 public class Users implements Serializable{
@@ -57,11 +59,10 @@ public class Users implements Serializable{
     @Column(name = "image")
     private String image;
 
-
-
     @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Address> addresses;
+
     @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Review> reviews;

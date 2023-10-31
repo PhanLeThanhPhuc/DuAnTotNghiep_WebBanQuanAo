@@ -33,4 +33,14 @@ public class CategoryDetailServiceImpl implements CategoryDetailService {
 		
 	}
 
+	@Override
+	public CategoryDetail update(CategoryDetail create) {
+		return categorydetailRepository.save(create);
+	}
+
+//	@Override
+//	public List<CategoryDetail> findById(int id) {
+//		return categorydetailRepository.findById(id).get();
+//	}
+
 }

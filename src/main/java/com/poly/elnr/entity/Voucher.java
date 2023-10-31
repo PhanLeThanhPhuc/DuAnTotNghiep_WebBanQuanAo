@@ -40,7 +40,7 @@ public class Voucher implements Serializable{
     private String voucher;
 
     @Column(name = "discount_price")
-    private String discountPrice;
+    private double discountPrice;
     
     @Column(name = "min")
     private double min;
