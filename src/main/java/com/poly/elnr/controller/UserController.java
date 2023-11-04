@@ -83,11 +83,11 @@ public class UserController {
         return null;
     }
 
-		@ResponseBody
-		@PostMapping("user/upload")
-		public String uploadFile(@RequestParam("uploadfile") MultipartFile multipartFile,
-								 Model model, Authentication authentication) throws IOException {
-			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-			return userService.saveImageUser(multipartFile, userDetails.getUsername());
-		}
+	@ResponseBody
+	@PostMapping("user/upload")
+	public String uploadFile(@RequestParam("uploadfile") MultipartFile multipartFile,
+							 Model model, Authentication authentication) throws IOException {
+		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+		return userService.saveImageUser(multipartFile, userDetails.getUsername());
+	}
 }

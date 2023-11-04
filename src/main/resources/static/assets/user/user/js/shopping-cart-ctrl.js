@@ -1,7 +1,63 @@
 app.controller("cart-ctrl", function($scope, $http) {
+
+	$scope.initialize = () => {
+		$http.get("/user/province").then(resp => {
+			$scope.listProvince = resp.data.data;
+			console.log($cart.items.map(item => {
+				return {
+					name: item.product.name ,
+					quantity: item.qty
+				}
+			}));
+			console.log($scope.cart)
+		})
+		$scope.form();
+		$scope.shipFee = 0;
+	}
+
+	$scope.form = () =>{
+		$scope.formInformationOrder = {
+			payment : '1'
+		}
+	}
+
+	methodDistrict = (province_id) =>{
+		if(province_id !== "default") {
+			$http.get(`/user/district?province_id=${province_id}`).then(resp => {
+				$scope.listDistrict = resp.data.data;
+			})
+			clearCbbWard();
+		}
+		$scope.shipFee = 0;
+	}
+
+	methodWard = (district_id) =>{
+		if(district_id !== "default") {
+			$http.get(`/user/ward?district_id=${district_id}`).then(resp => {
+				$scope.listWard = resp.data.data;
+				// console.log($scope.listWard)
+			})
+		}else{
+			clearCbbWard();
+		}
+		// checkCbbAddres();
+		$scope.shipFee = 0;
+	}
+
+	clearCbbWard = () =>{
+		var wardSelect = document.getElementById('wardSelect');
+		wardSelect.options.length = 0;
+		const option = document.createElement("option");
+		option.text = "Xã";
+		option.value = "default";
+		wardSelect.add(option);
+	}
+
+	$scope.initialize();
+
 	// quản lý giỏ hàng
-	
 	$scope.soluong=$('.soluong').text();
+
 	$scope.sizeClick = function(size) {
 		$scope.soluong = size;
 	};
@@ -61,17 +117,27 @@ app.controller("cart-ctrl", function($scope, $http) {
 			this.saveToLocalStorage();
 		},
 		amt_of(item) { // tính thành tiền của 1 sản phẩm
-			return item.product.price * item.qty;
+			return item.price.replace(/,/g, "") * item.qty;
 		},
 		get count() { // tính tổng số lượng các mặt hàng trong giỏ
 			return this.items
 				.map(item => item.qty)
 				.reduce((total, qty) => total += qty, 0);
 		},
+		get totalWeights() { // tính tổng số lượng các mặt hàng trong giỏ
+			return this.items
+				.map(item => item.product.weight * item.qty)
+				.reduce((total, weight) => total += weight, 0);
+		},
+
 		get amount() { // tổng thành tiền các mặt hàng trong giỏ
 			return this.items
 				.map(item => this.amt_of(item))
 				.reduce((total, amt) => total += amt, 0);
+		},
+
+		get totalAmount () {
+			return this.amount + $scope.shipFee;
 		},
 		cartChange(size, product, qti) {
 
@@ -97,35 +163,161 @@ app.controller("cart-ctrl", function($scope, $http) {
 
 	$cart.loadFromLocalStorage();
 
-	// Đặt hàng
-	$scope.order = {
-		get account() {
-			return { username: $auth.user.username }
-		},
-		createDate: new Date(),
-		address: "",
-		get orderDetails() {
-			return $cart.items.map(item => {
-				return {
-					product: { id: item.id },
-					price: item.price,
-					quantity: item.qty
-				}
-			});
-		},
-		purchase() {
-			var order = angular.copy(this);
-			// Thực hiện đặt hàng
-			$http.post("/rest/orders", order).then(resp => {
-				alert("Đặt hàng thành công!");
-				$cart.clear();
-				location.href = "/order/detail/" + resp.data.id;
-			}).catch(error => {
-				alert("Đặt hàng lỗi!")
-				console.log(error)
-			})
+	checkCbbAddres = () => {
+		var cboAddress = document.querySelectorAll(".country_select");
+
+		var province = cboAddress[0].options[cboAddress[0].selectedIndex].value;
+
+		var district = cboAddress[1].options[cboAddress[1].selectedIndex].value;
+
+		var ward = cboAddress[2].options[cboAddress[2].selectedIndex].value;
+
+		if(province !== "default" && district !== "default" && ward !== "default"){
+			$scope.getShippingFee();
 		}
 	}
 
 
+
+	$scope.getShippingFee = () =>{
+
+		var cboAddress = document.querySelectorAll(".country_select");
+
+		$scope.provinceId = cboAddress[0].options[cboAddress[0].selectedIndex].value;
+
+		$scope.districtId = cboAddress[1].options[cboAddress[1].selectedIndex].value;
+
+		$scope.wardId = cboAddress[2].options[cboAddress[2].selectedIndex].value;
+
+		$scope.provinceName = cboAddress[0].options[cboAddress[0].selectedIndex].text;
+
+		$scope.districtName = cboAddress[1].options[cboAddress[1].selectedIndex].text;
+
+		$scope.wardName = cboAddress[2].options[cboAddress[2].selectedIndex].text;
+
+		var bodyProduct = {
+			service_type_id : 2,
+			to_ward_code: $scope.wardId ,
+			to_district_id: parseInt($scope.districtId),
+			weight: $scope.cart.totalWeights,
+			items: $cart.items.map(item => {
+				return {
+					name: item.product.name ,
+					quantity: item.qty
+				}
+			})
+		}
+
+		$http.post(`/user/shipfee`, bodyProduct).then(resp => {
+			if(resp.status === 200){
+				$scope.shipFee = resp.data.data.total;
+				console.log(resp.data.data.expected_delivery_time);
+			}
+		}).catch(error => {
+			alert("Lỗi thêm mới !");
+			console.log("Error", error);
+		});
+
+	}
+
+	// $scope.methodOrder = () =>{
+
+	purchase = () =>{
+		// $scope.data = {
+		// 	order :{
+		// 		orderDate: new Date(),
+		// 		detailAddress: $scope.formInformationOrder.name,
+		// 		province: $scope.provinceName,
+		// 		district: $scope.districtName,
+		// 		ward: $scope.wardName,
+		// 		email: $scope.formInformationOrder.email,
+		// 		address: $scope.formInformationOrder.addressDetail +' '+ $scope.wardName+' '+ $scope.districtName+' '+ ' '+$scope.provinceName  ,
+		// 		payment: $scope.formInformationOrder.payment ,
+		// 		phone: $scope.formInformationOrder.phone,
+		// 		total: $scope.cart.totalAmount,
+		// 		totalDiscount: $scope.cart.amount,
+		// 		weight : $scope.cart.totalWeights,
+		// 		voucher: {
+		// 			id: 1
+		// 		},
+		// 		orderDetails :
+		// 			$cart.items.map(item => {
+		// 				return {
+		// 					productDetails: { id: item.id },
+		// 					price: item.price.replace(/,/g, ""),
+		// 					discountPrice: item.priceBeforeSale.replace(/,/g, ""),
+		// 					quantity: item.qty,
+		// 				}
+		// 			}),
+		// 	},
+		// 	orderDataGHN : {
+		// 		payment_type_id: 2,
+		// 		to_name: $scope.formInformationOrder.name,
+		// 		to_phone: $scope.formInformationOrder.phone,
+		// 		to_address: $scope.formInformationOrder.addressDetail +' '+ $scope.wardName+' '+ $scope.districtName+' '+ ' '+$scope.provinceName  ,
+		// 		to_ward_code: $scope.wardId ,
+		// 		to_district_id: parseInt($scope.districtId),
+		// 		cod_amount: $scope.cart.totalAmount,
+		// 		// content: "Đơn hàng quần áo ba lỗ không dễ vỡ",
+		// 		weight: $scope.cart.totalWeights,
+		// 		service_type_id: 2,
+		// 		note: $scope.formInformationOrder.note,
+		// 		required_note: "CHOXEMHANGKHONGTHU",
+		// 		items: $cart.items.map(item => {
+		// 			return {
+		// 				name: item.product.name ,
+		// 				quantity: item.qty
+		// 			}
+		// 		})
+		// 	}
+		// }
+		//
+		// console.log('ddđ',$scope.data)
+
+		$scope.data = {
+			province: $scope.provinceName,
+			district: $scope.districtName,
+			ward: $scope.wardName,
+			detailAddress: $scope.formInformationOrder.addressDetail,
+			nameUser: $scope.formInformationOrder.name,
+			orderDate: new Date(),
+			// status: 0,
+			phone : $scope.formInformationOrder.phone,
+			payment: $scope.formInformationOrder.payment ,
+			shipCode: "",
+			shipFee: $scope.shipFee,
+			email: $scope.formInformationOrder.email,
+			total: $scope.cart.totalAmount,
+			totalDiscount: $scope.cart.totalAmount,
+			weight : $scope.cart.totalWeights,
+			wardCode: $scope.wardId ,
+			districtId: parseInt($scope.districtId),
+			// user: { id: 1 },
+			// voucher: { id: 2 },
+			orderDetails: $cart.items.map(item => {
+				return {
+					productDetails: { id: item.id },
+					price: item.price.replace(/,/g, ""),
+					discountPrice: item.priceBeforeSale.replace(/,/g, ""),
+					quantity: item.qty,
+				}
+			}),
+		};
+
+		$http.post("/user/order", $scope.data,).then(resp => {
+			if(resp.status === 200){
+				alert("Đặt hàng thành công!");
+				if(resp.data.payment === 1){
+					console.log(resp.data.vnPayUrl);
+					// $cart.clear();
+					// location.href = resp.data.vnPayUrl;
+				}else{
+					location.href = resp.data.vnPayUrl;
+				}
+			}
+		}).catch(error => {
+			alert("Đặt hàng lỗi!")
+			console.log(error)
+		})
+	}
 })

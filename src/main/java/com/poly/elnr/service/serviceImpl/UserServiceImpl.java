@@ -168,4 +168,18 @@ public class UserServiceImpl implements UserService {
 		userRepository.save(user);
 		return imageURL;
 	}
+
+	@Override
+	public Users findByUserNamePhoneAndEmail(String username) {
+
+		Users user;
+
+		if(RegexUtils.isPhoneNumber(username)) {
+			user = userRepository.findByPhone(username);
+		}else{
+			user = userRepository.findEmail(username);
+		}
+
+		return user;
+	}
 }

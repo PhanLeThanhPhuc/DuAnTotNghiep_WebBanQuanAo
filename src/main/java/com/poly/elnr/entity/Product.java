@@ -41,6 +41,9 @@ public class Product implements Serializable {
 	@Column(name = "name")
 	private String name;
 
+	@Column(name = "weight")
+	private int weight;
+
 	@Column(name = "discount_price")
 	private double discountPrice;
 
