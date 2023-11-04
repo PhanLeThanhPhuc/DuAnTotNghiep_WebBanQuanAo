@@ -60,12 +60,9 @@
 								<div class="form-group col-sm-6">
 									<div>Available?</div>
 									<div class="form-control">
-										<label class="radio-inline"> <input
-											ng-model="form.status" ng-value="true" name="available"
-											type="radio">Yes
-										</label> <label class="radio-inline"> <input
-											ng-model="form.status" ng-value="false" name="available"
-											type="radio">No
+										<label class="switch"> <input ng-model="form.status"
+											ng-value="true" name="available" type="checkbox"> <span
+											ng-click="updateStatus(form)" class="slider round"></span>
 										</label>
 									</div>
 								</div>
@@ -190,8 +187,6 @@
 		class="btn btn-primary">Create</button>
 	<button ng-click="update()" ng-disabled="!form.id"
 		class="btn btn-success">Update</button>
-	<button ng-click="delete(form)" ng-disabled="!form.id"
-		class="btn btn-danger">Delete</button>
 	<button ng-click="reset()" class="btn btn-info">Reset</button>
 </div>
 

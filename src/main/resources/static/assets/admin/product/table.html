@@ -24,20 +24,22 @@
 								<tr ng-repeat="item in pager.items">
 									<td>{{item.id}}</td>
 									<td><div class="d-flex">
-												<img src="/assets/user/user/image/{{item.thumbnail}}" alt=""
-													style="width: 50px;">
-											</div></td>
+											<img src="/assets/user/user/image/{{item.thumbnail}}" alt=""
+												style="width: 50px;">
+										</div></td>
 									<td>{{item.name}}</td>
 									<td>{{item.categoryDdetail.name}}</td>
 									<td>{{item.price}}đ</td>
 									<td>{{item.sale?'Yes':'No'}}</td>
-									<td>{{item.status?'Yes':'No'}}</td>
+									<td><label class="switch"> <input
+											ng-model="item.status" ng-value="true" name="available"
+											type="checkbox"> <span ng-click="updateStatus(item)"
+											class="slider round"></span>
+									</label></td>
 									<td><span> <a ng-click="edit(item)"
-											data-toggle="tooltip" data-placement="top" title="Edit"><i
-												class="fa fa-pencil color-muted m-r-5"></i> </a> <a
-											ng-click="delete(item)" data-toggle="tooltip"
-											data-placement="top" title="Delete"><i
-												class="fa fa-close color-danger"></i></a></span>
+											data-toggle="tooltip" data-placement="top" title="Edit">
+												<span class="fe fe-24 fe-edit-2">
+										</a>
 								</tr>
 							</tbody>
 						</table>

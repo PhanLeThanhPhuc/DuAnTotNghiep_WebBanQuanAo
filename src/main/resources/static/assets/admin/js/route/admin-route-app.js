@@ -24,14 +24,6 @@ app.config(function ($routeProvider) {
       templateUrl: "/assets/admin/category_detail/form.html",
       controller: "categorydetail-ctrl"
     })
-    .when("/user-table", {
-      templateUrl: "/assets/admin/customer/table.html",
-      controller: "user-ctrl"
-    })
-    .when("/user-form", {
-      templateUrl: "/assets/admin/customer/form.html",
-      controller: "user-ctrl"
-    })
     .when("/authority", {
       templateUrl: "/assets/admin/authority/index.html",
       controller: "authority-ctrl"
@@ -44,6 +36,11 @@ app.config(function ($routeProvider) {
       templateUrl: "/assets/admin/user/index.html",
       controller: "user-ctrl"
     })
+    .when("/review", {
+      templateUrl: "/assets/admin/review/index.html",
+      controller: "review-ctrl"
+    })
+    
  
     .otherwise({
       template: "<h1 class='text-center'>FPT Polytechnic Administration</h1>"

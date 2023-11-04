@@ -28,15 +28,10 @@
 								class="text-danger">*</span>
 							</label>
 							<div class="col-lg-6">
-								<div class="form-control">
-									<label class="radio-inline"> <input
-										ng-model="form.status" ng-value="true" name="available"
-										type="radio">Yes
-									</label> <label class="radio-inline"> <input
-										ng-model="form.status" ng-value="false" name="available"
-										type="radio">No
-									</label>
-								</div>
+								<label class="switch"> <input ng-model="form.status"
+									ng-value="true" name="available" type="checkbox"> <span
+									ng-click="updateStatus(form)" class="slider round"></span>
+								</label>
 							</div>
 						</div>
 

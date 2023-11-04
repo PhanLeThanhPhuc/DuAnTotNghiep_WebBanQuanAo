@@ -12,23 +12,23 @@
 								<tr>
 									<th>ID</th>
 									<th>Name</th>
-									
+									<th>Available?</th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr ng-repeat="item in pager.items">
 									<td>{{item.id}}</td>
 									<td>{{item.name}}</td>
+										<td><label class="switch"> <input
+											ng-model="item.status" ng-value="true" name="available"
+											type="checkbox"> <span ng-click="updateStatus(item)"
+											class="slider round"></span>
+									</label></td>
 									
 									
-									<td><span>
-									<a  ng-click="edit(item)" data-toggle="tooltip"
-											 data-placement="top" title="Edit"><i
-												class="fa fa-pencil color-muted m-r-5"></i> </a> 
-									<a
-											ng-click="delete(item)" data-toggle="tooltip"
-											data-placement="top" title="Delete"><i
-												class="fa fa-close color-danger"></i></a></span>
+									<td><span> <a ng-click="edit(item)"
+											data-toggle="tooltip" data-placement="top" title="Edit">
+											<span class="fe fe-24 fe-edit-2"></a>
 								</tr>
 
 

@@ -40,6 +40,7 @@ app.controller("cart-ctrl", function($scope, $http) {
 					} else {
 						resp.data.priceBeforeSale=$('.priceBeforeSale').text();
 						resp.data.price=$('.price').text();
+						resp.data.sale=$('.sale').text();
 						resp.data.qty = qtt;
 						this.items.push(resp.data);
 						this.saveToLocalStorage();
@@ -61,7 +62,8 @@ app.controller("cart-ctrl", function($scope, $http) {
 			this.saveToLocalStorage();
 		},
 		amt_of(item) { // tính thành tiền của 1 sản phẩm
-			return item.product.price * item.qty;
+			item.price = item.price.replace(/,/g, '');
+			return item.price * item.qty;
 		},
 		get count() { // tính tổng số lượng các mặt hàng trong giỏ
 			return this.items
