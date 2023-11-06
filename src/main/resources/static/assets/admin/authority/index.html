@@ -1,24 +1,45 @@
 <div class="panel panel-default">
+	<div class="container-fluid">
+		<div class="card-body">
+			<div class="panel-heading">AUTHORIZING</div>
+			<div class="form-group col-sm-6">
+				<input ng-model="searchText.$" class="form-control">
+			</div>
+			<table class="table table-border">
+				<thead class="bg-success" style="font-variant: small-caps;">
+					<tr>
+						<th></th>
+						<th ng-repeat="role in roles" class="text-center">{{role.name}}</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="acc in pager.items">
+						<td>{{acc.fullName}}</td>
+						<th ng-repeat="role in roles" class="text-center"><input
+							style="" ng-checked="authority_of(acc, role)"
+							ng-click="authority_changed(acc, role)" type="checkbox">
+						</th>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="bootstrap-pagination text-center">
+			<nav>
+				<ul class="pagination">
+					<li class="page-item"><a class="page-link" href=""
+						ng-click="pager.first()">First</a></li>
+					<li class="page-item"><a class="page-link" href=""
+						ng-click="pager.prev()">Previous</a></li>
+					<li class="page-item"><a class="page-link" href="">{{pager.page
+							+ 1}} of {{pager.count}}</a></li>
 
-<div class="container-fluid" >
-<div class="card-body">
-	<div class="panel-heading">AUTHORIZING</div>
-	<table class="table table-border">
-		<thead class="bg-success" style="font-variant: small-caps;">
-			<tr>
-				<th></th>
-				<th ng-repeat="role in roles" class="text-center">{{role.name}}</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr ng-repeat="acc in admins">
-				<td>{{acc.fullName}}</td>
-				<th ng-repeat="role in roles" class="text-center">
-					<input style="" ng-checked="authority_of(acc, role)" ng-click="authority_changed(acc, role)" type="checkbox">
-				</th>
-			</tr>
-		</tbody>
-	</table>
-  </div>
-  </div>
-    </div>
+
+					<li class="page-item"><a class="page-link" href=""
+						ng-click="pager.next()">Next</a></li>
+					<li class="page-item"><a class="page-link" href=""
+						ng-click="pager.last()">Last</a></li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>

@@ -40,6 +40,10 @@ app.config(function ($routeProvider) {
       templateUrl: "/assets/admin/review/index.html",
       controller: "review-ctrl"
     })
+    .when("/voucher", {
+      templateUrl: "/assets/admin/voucher/index.html",
+      controller: "voucher-ctrl"
+    })
     
  
     .otherwise({

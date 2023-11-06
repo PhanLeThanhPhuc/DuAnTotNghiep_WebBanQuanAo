@@ -52,6 +52,12 @@ public class ReviewServiceImpl implements ReviewService{
 	}
 
 	
+	public void delete(Integer id) {
+		// TODO Auto-generated method stub
+		reviewRepository.deleteById(id);
+	}
+
+	
 	
 
 	

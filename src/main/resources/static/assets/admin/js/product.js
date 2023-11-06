@@ -1,4 +1,4 @@
-app.controller("product-ctrl", function($scope, $http) {
+app.controller("product-ctrl", function($scope,$filter, $http) {
 	$scope.initialize = function() {
 		$http.get("/rest/categorydetail").then(resp => {
 			$scope.categories = resp.data;
@@ -12,7 +12,7 @@ app.controller("product-ctrl", function($scope, $http) {
 		$http.get("/rest/sizes").then(resp => {
 			$scope.sizes = resp.data;
 		})
-
+	
 
 		$http.get("/rest/products").then(resp => {
 			$scope.items = resp.data;
@@ -26,6 +26,7 @@ app.controller("product-ctrl", function($scope, $http) {
 		});
 		$scope.reset();
 	}
+	
 	$scope.closeCollapsibles = function() {
 		// Close all collapsible elements
 		var collapsibles = document.querySelectorAll('.collapse');
@@ -51,9 +52,6 @@ app.controller("product-ctrl", function($scope, $http) {
 	}
 
 	$scope.selected = [];
-	$scope.test = function() {
-		$scope.selected = [];
-	}
 
 	$scope.exist = function(size) {
 		return $scope.selected.indexOf(size) > -1;
@@ -190,10 +188,14 @@ app.controller("product-ctrl", function($scope, $http) {
 		})
 	}
 	$scope.initialize();
-
+	$scope.searchText = {};
+	$scope.items = [];
 	$scope.pager = {
 		page: 0,
 		size: 10,
+		get filteredItems() {
+			return $filter('filter')($scope.items, $scope.searchText);
+		},
 		get items() {
 			if (this.page < 0) {
 				this.last();
@@ -201,12 +203,12 @@ app.controller("product-ctrl", function($scope, $http) {
 			if (this.page >= this.count) {
 				this.first();
 			}
+			var filteredItems = this.filteredItems;
 			var start = this.page * this.size;
-			return $scope.items.slice(start, start + this.size)
+			return filteredItems.slice(start, start + this.size)
 		},
-		
 		get count() {
-			return Math.ceil(1.0 * $scope.items.length / this.size);
+			return Math.ceil(1.0 * this.filteredItems.length / this.size);
 		},
 		first() {
 			this.page = 0;
@@ -293,6 +295,21 @@ app.controller("product-ctrl", function($scope, $http) {
 	    afterHidden: function () {}  // will be triggered after the toast has been hidden
 	});
 	}
+	
+	
+	$scope.uploadImage = function() {
+      var formData = new FormData();
+      formData.append('image', $scope.image);
+
+      $http.post('/upload', formData, {
+        headers: { 'Content-Type': undefined },
+        transformRequest: angular.identity
+      }).then(function(response) {
+        $scope.uploadedImageUrl = response.data.imageUrl;
+      }, function(error) {
+        console.log('Image upload failed:', error);
+      });
+    };
 
 
 

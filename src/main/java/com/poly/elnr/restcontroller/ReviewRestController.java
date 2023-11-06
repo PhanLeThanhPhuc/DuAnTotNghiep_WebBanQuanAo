@@ -2,8 +2,10 @@ package com.poly.elnr.restcontroller;
 
 import java.util.List;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,6 +30,11 @@ public class ReviewRestController {
 		return reviewService.findAll();
 	}
 	
+	@GetMapping("product/{id}")
+	public List<Review> findByProductID(@PathVariable("id") Integer id) {
+		return reviewService.findByProductID2(id);
+	}
+	
 	@PostMapping
 	public Review post(@RequestBody  Review create) {
 		return reviewService.create(create);
@@ -36,5 +43,10 @@ public class ReviewRestController {
 	@PutMapping("{id}")
 	public Review put(@PathVariable("id") Integer id, @RequestBody Review review) {
 		return reviewService.update(review);
+	}
+	
+	@DeleteMapping("{id}")
+	public void delete(@PathVariable("id") Integer id) {
+		reviewService.delete(id);
 	}
 }

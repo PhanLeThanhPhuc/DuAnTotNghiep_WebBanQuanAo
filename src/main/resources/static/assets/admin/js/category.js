@@ -84,7 +84,8 @@ app.controller("category-ctrl", function($scope, $http){
 			console.log("Error", error);
 		});
 	}
-
+	
+	$scope.listCategory = [];
 	$scope.pager = {
 		page: 0,
 		size: 10,

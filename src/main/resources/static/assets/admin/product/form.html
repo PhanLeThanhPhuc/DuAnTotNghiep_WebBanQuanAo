@@ -48,23 +48,19 @@
 										<option ng-repeat="c in colors" ng-value="c.id">{{c.name}}</option>
 									</select>
 								</div>
-								<div class="form-group col-sm-6">
+								<div  class="form-group col-sm-6">
 									<div>Category</div>
-									<select ng-model="form.categoryDdetail.id" class="form-control"
+									<select  ng-model="form.categoryDdetail.id" class="form-control"
 										ng-change="test(form.categoryDdetail.id)">
 										<option ng-repeat="cate in categories" ng-value="cate.id">{{cate.name}}</option>
 									</select>
-
-
 								</div>
 								<div class="form-group col-sm-6">
 									<div>Available?</div>
-									<div class="form-control">
 										<label class="switch"> <input ng-model="form.status"
 											ng-value="true" name="available" type="checkbox"> <span
 											ng-click="updateStatus(form)" class="slider round"></span>
 										</label>
-									</div>
 								</div>
 
 							</div>

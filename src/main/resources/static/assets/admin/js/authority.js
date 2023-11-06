@@ -1,4 +1,4 @@
-app.controller("authority-ctrl", function($scope, $http, $location){
+app.controller("authority-ctrl", function($scope, $http,$filter, $location){
 	$scope.initialize = function(){
 		// load all roles
 		$http.get("/rest/roles").then(resp => {
@@ -7,7 +7,7 @@ app.controller("authority-ctrl", function($scope, $http, $location){
 	    })
 		// load staffs and directors (administrators)
 		$http.get("/rest/users").then(resp => {
-	    	$scope.admins = resp.data;
+	    	$scope.items = resp.data;
 	    })
 	    // load authorites of staffs and directors
 		$http.get("/rest/authorities").then(resp => {
@@ -66,9 +66,6 @@ app.controller("authority-ctrl", function($scope, $http, $location){
 	    hideAfter: 2000, // false to make it sticky or number representing the miliseconds as time after which toast needs to be hidden
 	    stack: 5, // false if there should be only one toast at a time or a number representing the maximum number of toasts to be shown at a time
 	    position: 'top-right', // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values
-	    
-	    
-	    
 	    textAlign: 'left',  // Text alignment i.e. left, right or center
 	    loader: true,  // Whether to show loader or not. True by default
 	    loaderBg: '#9EC600',  // Background color of the toast loader
@@ -77,5 +74,43 @@ app.controller("authority-ctrl", function($scope, $http, $location){
 	    beforeHide: function () {}, // will be triggered before the toast gets hidden
 	    afterHidden: function () {}  // will be triggered after the toast has been hidden
 	});
+	}
+	
+	
+	
+	$scope.searchText = {};
+	$scope.items = [];
+	$scope.pager = {
+		page: 0,
+		size: 10,
+		get filteredItems() {
+			return $filter('filter')($scope.items, $scope.searchText);
+		},
+		get items() {
+			if (this.page < 0) {
+				this.last();
+			}
+			if (this.page >= this.count) {
+				this.first();
+			}
+			var filteredItems = this.filteredItems;
+			var start = this.page * this.size;
+			return filteredItems.slice(start, start + this.size)
+		},
+		get count() {
+			return Math.ceil(1.0 * this.filteredItems.length / this.size);
+		},
+		first() {
+			this.page = 0;
+		},
+		last() {
+			this.page = this.count - 1;
+		},
+		next() {
+			this.page++;
+		},
+		prev() {
+			this.page--;
+		}
 	}
 });

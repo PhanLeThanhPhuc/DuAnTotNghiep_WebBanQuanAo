@@ -1,4 +1,4 @@
-app.controller("user-ctrl", function($scope, $http) {
+app.controller("user-ctrl", function($scope,$filter, $http) {
 	$scope.initialize = function() {
 		$http.get("/rest/users").then(resp => {
 			$scope.items = resp.data;
@@ -90,9 +90,14 @@ app.controller("user-ctrl", function($scope, $http) {
 
 	$scope.initialize();
 
+	$scope.searchText = {};
+	$scope.items = [];
 	$scope.pager = {
 		page: 0,
 		size: 10,
+		get filteredItems() {
+			return $filter('filter')($scope.items, $scope.searchText);
+		},
 		get items() {
 			if (this.page < 0) {
 				this.last();
@@ -100,11 +105,12 @@ app.controller("user-ctrl", function($scope, $http) {
 			if (this.page >= this.count) {
 				this.first();
 			}
+			var filteredItems = this.filteredItems;
 			var start = this.page * this.size;
-			return $scope.items.slice(start, start + this.size)
+			return filteredItems.slice(start, start + this.size)
 		},
 		get count() {
-			return Math.ceil(1.0 * $scope.items.length / this.size);
+			return Math.ceil(1.0 * this.filteredItems.length / this.size);
 		},
 		first() {
 			this.page = 0;
@@ -119,6 +125,8 @@ app.controller("user-ctrl", function($scope, $http) {
 			this.page--;
 		}
 	}
+	
+	
 	$scope.messege = (mes) =>{
 	$.toast({
 	    text: mes, // Text that is to be shown in the toast

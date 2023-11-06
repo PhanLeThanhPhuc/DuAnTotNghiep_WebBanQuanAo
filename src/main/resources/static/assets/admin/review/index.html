@@ -2,9 +2,121 @@
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-12">
+			<div class="row">
+				<div class="col-md-6 col-xl-2 mb-4">
+					<div ng-click="handleClick()"
+						class="card shadow bg-primary text-white">
+						<div class="card-body">
+							<div class="row align-items-center">
+								<div class="col pr-0">
+									<p class="small text-light mb-0">Tổng đánh giá :
+										{{items.length }}</p>
+									<span class="h3 mb-0 text-white">{{average}}</span><span
+										class="circle circle-sm bg-primary"> <i
+										class="fe fe-16 fe-star text-white mb-0"></i>
+									</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6 col-xl-2 mb-4">
+					<div class="card shadow">
+						<div ng-click="handleClick(5)" class="card-body">
+							<div class="row align-items-center">
+
+								<div class="col pr-0">
+									<p class="small text-muted mb-0">Đánh giá 5 sao</p>
+									<span class="h3 mb-0">{{ getFilteredData(5).length }}</span> <span
+										class="small text-success">&nbsp; {{
+										calculatePercentage(5) }}%</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6 col-xl-2 mb-4">
+					<div class="card shadow">
+						<div ng-click="handleClick(4)" class="card-body">
+							<div class="row align-items-center">
+
+								<div class="col pr-0">
+									<p class="small text-muted mb-0">Đánh giá 4 sao</p>
+									<span class="h3 mb-0"> {{ getFilteredData(4).length }}</span> <span
+										class="small text-success">&nbsp; {{
+										calculatePercentage(4) }}%</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6 col-xl-2 mb-4">
+					<div class="card shadow">
+						<div ng-click="handleClick(3)" class="card-body">
+							<div class="row align-items-center">
+
+								<div class="col pr-0">
+									<p class="small text-muted mb-0">Đánh giá 3 sao</p>
+									<span class="h3 mb-0"> {{ getFilteredData(3).length }}</span> <span
+										class="small text-warning">&nbsp; {{
+										calculatePercentage(3) }}%</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6 col-xl-2 mb-4">
+					<div class="card shadow">
+						<div ng-click="handleClick(2)" class="card-body">
+							<div class="row align-items-center">
+								<div class="col">
+									<p class="small text-muted mb-0">Đánh giá 2 sao</p>
+									<div class="row align-items-center no-gutters">
+										<div class="col-auto">
+											<span class="h3 mr-2 mb-0"> {{
+												getFilteredData(2).length }}</span> <span
+												class="small text-warning">&nbsp; {{
+												calculatePercentage(2) }}%</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6 col-xl-2 mb-4">
+					<div class="card shadow">
+						<div ng-click="handleClick(1)" class="card-body">
+							<div class="row align-items-center">
+								<div class="col">
+									<p class="small text-muted mb-0">Đánh giá 1 sao</p>
+									<span class="h3 mb-0">{{ getFilteredData(1).length }}</span> <span
+										class="small text-danger">&nbsp; {{
+										calculatePercentage(1) }}%</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- end section -->
 			<div class="card">
 				<div class="card-body">
-					<h4 class="card-title">Review List</h4>
+					
+					<div class="row">
+						<div class="form-group col-sm-6">
+						Search: <input ng-model="searchText.$" class="form-control">
+
+					</div>
+					<div class="form-group col-sm-6">
+						<div>Product</div>
+						<select  class="form-control" ng-model="product.id"  ng-init="product.id = product.id || 'all'">
+							<option value="all" >All</option> 
+							<option ng-repeat="product in products" ng-value="product.id">{{product.name}}</option>
+						</select>
+					</div>
+					</div>
+					
 					<div class="table-responsive">
 						<table
 							class="table table-striped table-bordered zero-configuration">
@@ -19,17 +131,18 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr ng-repeat="item in pager.items">
+								<tr ng-repeat="item in pager.items ">
 									<td>{{item.id}}</td>
 									<td>{{item.product.name}}</td>
 									<td>{{item.user.fullName}}</td>
 									<td>{{item.rating}}</td>
 									<td>{{item.descriptionReview}}</td>
 									<td><span> <a ng-click="edit(item)"
-											data-toggle="modal" data-target="#exampleModalCenter"
-											  title="Edit">
-											<span class="fe fe-24 fe-edit-2"></a></span>
-											<span class="fe fe-24 fe-delete"></span>
+											data-toggle="modal" data-target=".bd-example-modal-lg"
+											title="Edit"> <span class="fe fe-24 fe-edit-2"></a></span> 
+											&nbsp;
+											<a ng-click="delete(item)" ><span
+										class="fe fe-24 fe-delete"></span></a>
 								</tr>
 							</tbody>
 						</table>

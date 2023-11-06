@@ -1,4 +1,4 @@
-app.controller("review-ctrl", function($scope, $filter, $http) {
+app.controller("voucher-ctrl", function($scope, $filter, $http) {
 	$scope.initialize = function() {
 		$http.get("/rest/products").then(resp => {
 			$scope.products = resp.data;
