@@ -8,7 +8,11 @@
 			<table class="table table-border">
 				<thead class="bg-success" style="font-variant: small-caps;">
 					<tr>
-						<th></th>
+						<th ng-click="toggleSort('fullName')" >
+						Name
+						<span ng-show="isSortedBy('fullName')" ng-class="getSortIconClass('fullName')"></span>
+						</th>
+						
 						<th ng-repeat="role in roles" class="text-center">{{role.name}}</th>
 					</tr>
 				</thead>

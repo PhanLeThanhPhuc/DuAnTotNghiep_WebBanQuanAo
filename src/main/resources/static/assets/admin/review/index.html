@@ -122,22 +122,32 @@
 							class="table table-striped table-bordered zero-configuration">
 							<thead>
 								<tr>
-									<th>ID</th>
-									<th>Product</th>
-									<th>User</th>
-									<th>Rating</th>
-									<th>Description</th>
+									<th ng-click="toggleSort('id')" >ID								
+										<span ng-show="isSortedBy('id')" ng-class="getSortIconClass('id')"></span>
+									</th>
+									<th  ng-click="toggleSort('product.name')">Product
+										<span ng-show="isSortedBy('product.name')" ng-class="getSortIconClass('product.name')"></span>
+									</th>
+									<th ng-click="toggleSort('user.fullName')">User
+										<span ng-show="isSortedBy('user.fullName')" ng-class="getSortIconClass('user.fullName')"></span>
+									</th>
+									<th ng-click="toggleSort('rating')">Rating
+										<span ng-show="isSortedBy('rating')" ng-class="getSortIconClass('rating')"></span>
+									</th>
+									<th ng-click="toggleSort('descriptionReview')">Description
+										<span ng-show="isSortedBy('descriptionReview')" ng-class="getSortIconClass('descriptionReview')"></span>
+									</th>
 									<th></th>
 								</tr>
 							</thead>
 							<tbody>
-								<tr ng-repeat="item in pager.items ">
-									<td>{{item.id}}</td>
+								<tr ng-repeat="item in pager.items  ">
+									<td >{{item.id}}</td>
 									<td>{{item.product.name}}</td>
-									<td>{{item.user.fullName}}</td>
-									<td>{{item.rating}}</td>
-									<td>{{item.descriptionReview}}</td>
-									<td><span> <a ng-click="edit(item)"
+									<td >{{item.user.fullName}}</td>
+									<td >{{item.rating}}</td>
+									<td >{{item.descriptionReview}}</td>
+									<td ><span> <a ng-click="edit(item)"
 											data-toggle="modal" data-target=".bd-example-modal-lg"
 											title="Edit"> <span class="fe fe-24 fe-edit-2"></a></span> 
 											&nbsp;

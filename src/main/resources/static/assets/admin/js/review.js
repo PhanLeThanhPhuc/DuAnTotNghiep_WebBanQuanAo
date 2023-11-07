@@ -91,6 +91,8 @@ app.controller("review-ctrl", function($scope, $filter, $http) {
 	$scope.pager = {
 		page: 0,
 		size: 10,
+		sortColumn: '',
+		sortDirection: '',
 		get filteredItems() {
 			return $filter('filter')($scope.items, $scope.searchText);
 		},
@@ -102,6 +104,9 @@ app.controller("review-ctrl", function($scope, $filter, $http) {
 				this.first();
 			}
 			var filteredItems = this.filteredItems;
+			if ($scope.pager.sortColumn) {
+				filteredItems = $filter('orderBy')(filteredItems, $scope.pager.sortColumn, $scope.pager.sortDirection == 'desc');
+			}
 			var start = this.page * this.size;
 			return filteredItems.slice(start, start + this.size)
 		},
@@ -121,5 +126,22 @@ app.controller("review-ctrl", function($scope, $filter, $http) {
 			this.page--;
 		}
 	}
-}
-);
+	$scope.toggleSort = function(column) {
+		if ($scope.pager.sortColumn == column) {
+			$scope.pager.sortDirection = ($scope.pager.sortDirection == 'asc') ? 'desc' : 'asc';
+		} else {
+			$scope.pager.sortColumn = column;
+			$scope.pager.sortDirection = 'asc';
+		}
+	};
+	$scope.getSortIconClass = function(column) {
+		if ($scope.pager.sortColumn == column) {
+			return 'sort-icon ' + ($scope.pager.sortDirection == 'asc' ? 'asc' : 'desc');
+		}
+	};
+
+	$scope.isSortedBy = function(column) {
+		return $scope.pager.sortColumn == column;
+	};
+
+});

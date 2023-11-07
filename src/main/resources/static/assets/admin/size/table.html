@@ -13,9 +13,15 @@
 							class="table table-striped table-bordered zero-configuration">
 							<thead>
 								<tr>
-									<th>ID</th>
-									<th>Name</th>
-									<th>Available?</th>
+									<th ng-click="toggleSort('id')">ID
+										<span ng-show="isSortedBy('id')" ng-class="getSortIconClass('id')"></span>
+									</th>
+									<th ng-click="toggleSort('name')">Name
+										<span ng-show="isSortedBy('name')" ng-class="getSortIconClass('name')"></span>
+									</th>
+									<th ng-click="toggleSort('status')">Available?
+										<span ng-show="isSortedBy('status')" ng-class="getSortIconClass('status')"></span>
+									</th>
 								</tr>
 							</thead>
 							<tbody>

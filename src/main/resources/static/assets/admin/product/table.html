@@ -13,14 +13,28 @@
 							class="table table-striped table-bordered zero-configuration">
 							<thead>
 								<tr>
-									<th>ID</th>
-									<th>Image</th>
-									<th>Name</th>
-									<th>Category</th>
-									<th>price</th>
-									<th>Sale</th>
-									<th>Available?</th>
-
+									<th ng-click="toggleSort('id')">ID
+										<span ng-show="isSortedBy('id')" ng-class="getSortIconClass('id')"></span>
+									</th>
+									<th ng-click="toggleSort('item.thumbnail')">Image
+										<span ng-show="isSortedBy('item.thumbnail')" ng-class="getSortIconClass('item.thumbnail')"></span>
+									</th>
+									<th ng-click="toggleSort('name')">Name
+										<span ng-show="isSortedBy('name')" ng-class="getSortIconClass('name')"></span>
+									</th>
+									<th ng-click="toggleSort('categoryDdetail.name')">Category
+										<span ng-show="isSortedBy('categoryDdetail.name')" ng-class="getSortIconClass('categoryDdetail.name')"></span>
+									</th>
+									<th ng-click="toggleSort('price')">price
+										<span ng-show="isSortedBy('price')" ng-class="getSortIconClass('price')"></span>
+									</th>
+									<th ng-click="toggleSort('sale')">Sale
+										<span ng-show="isSortedBy('sale')" ng-class="getSortIconClass('sale')"></span>
+									</th>
+									<th ng-click="toggleSort('status')">Available?
+										<span ng-show="isSortedBy('status')" ng-class="getSortIconClass('status')"></span>
+									</th>
+									
 								</tr>
 							</thead>
 							<tbody>

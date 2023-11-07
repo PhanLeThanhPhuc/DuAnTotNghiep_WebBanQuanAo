@@ -60,4 +60,15 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 
+/* sort-icon css */
+.sort-icon {
+  margin-left: 5px;
+}
 
+.sort-icon.asc:before {
+  content: '\25b2'; /* Upward arrow */
+}
+
+.sort-icon.desc:before {
+  content: '\25bc'; /* Downward arrow */
+}
