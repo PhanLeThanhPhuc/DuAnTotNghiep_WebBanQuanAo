@@ -1,0 +1,97 @@
+<!-- Modal -->
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
+	aria-labelledby="myLargeModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLongTitle">Voucher</h5>
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="form-validation">
+					<div class="row px-5">
+						<div class="form-group col-sm-12">
+							<div>Voucher</div>
+							<div class="row px-3">
+								<input ng-model="form.voucher" class="form-control col-sm-8">
+								<button type="button" class="btn btn-secondary col-sm-2"
+									ng-click="generateRandomString()">Random</button>
+							</div>
+
+						</div>
+						<div class="form-group col-sm-6">
+							<div>Star Date</div>
+							<input ng-model="form.startDate" type="datetime-local"
+								class="form-control">
+						</div>
+						<div class="form-group col-sm-6">
+							<div>End Date</div>
+							<input ng-model="form.endDate" type="datetime-local"
+								class="form-control">
+						</div>
+						<div class="form-group col-sm-6">
+							<div>Discount</div>
+							<input ng-model="form.discountPrice" class="form-control">
+						</div>
+						<div class="form-group col-sm-6">
+							<div>Quantity</div>
+							<input ng-model="form.quantity" type="number"
+								class="form-control">
+						</div>
+						<div class="form-group col-sm-6">
+							<div>Min order price</div>
+							<input ng-model="form.min" type="number" class="form-control">
+						</div>
+						<div class="form-group col-sm-6">
+							<div>
+								Max discount:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input
+									type="checkbox" ng-model="form._max"> unlimited
+							</div>
+							<input ng-model="form.maxPrice" type="number"
+								ng-disabled="form._max" class="form-control">
+						</div>
+						<div class="form-group col-sm-6">
+							<div>Min product order</div>
+							<input ng-model="form.minOrderProduct" type="number"
+								class="form-control">
+						</div>
+						<div class="form-group col-sm-6">
+							<div>Available?</div>
+							<label class="switch"> <input ng-model="form.status"
+								ng-value="true" name="available" type="checkbox"> <span
+								 class="slider round"></span>
+							</label>
+						</div>
+						<div class="form-group col-sm-12">
+							<div>
+								Product:&nbsp;&nbsp;&nbsp;<input type="checkbox" ng-model="form.active">
+								All product
+							</div>
+							<select ng-disabled="form.active" class="form-control" 
+								ng-model="product.id"
+								ng-init="product.id = product.id || 'form.productID'">
+								<option value="form.productID">{{form.productID}}</option>
+								<option ng-repeat="product in products" ng-value="product.id">{{product.name}}</option>
+							</select>
+						</div>
+
+						<div class="form-group col-sm-12">
+							<div>Description</div>
+							<textarea ng-model="form.description" rows="3"
+								class="form-control" cols="50"></textarea>
+						</div>
+
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button ng-click="create()" ng-disabled="form.id" class="btn btn-primary" data-dismiss="modal">Create</button>
+				<button ng-click="update()" ng-disabled="!form.id" class="btn btn-success" data-dismiss="modal">Update</button>
+				<button ng-click="reset()" class="btn btn-info">Reset</button>
+			</div>
+		</div>
+	</div>
+</div>
