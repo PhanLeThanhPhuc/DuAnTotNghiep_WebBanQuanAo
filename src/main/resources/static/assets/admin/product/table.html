@@ -7,6 +7,18 @@
 					<div class="form-group col-sm-6">
 						Search: <input ng-model="searchText.$" class="form-control">
 					</div>
+
+					<div >
+						<label> Upload Files: <input type="file" accept="image/*"
+							multiple
+							onchange="angular.element(this).scope().upload(this.files)" />
+						</label>
+						<hr>
+						<label ng-repeat="filename in filenames"
+							title="Double click to delete"> <img
+							ng-src="{{url(filename)}}" ng-dblclick="delete(filename)">
+						</label>
+					</div>
 					<div class="table-responsive">
 						<table
 							class="table table-striped table-bordered zero-configuration">

@@ -144,4 +144,8 @@ app.controller("review-ctrl", function($scope, $filter, $http) {
 		return $scope.pager.sortColumn == column;
 	};
 
+
+	/* star */
+ $scope.stars = Array.from({ length: 5 }, (_, index) => index + 1);
+
 });

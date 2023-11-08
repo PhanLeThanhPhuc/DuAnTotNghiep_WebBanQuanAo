@@ -174,19 +174,37 @@ app.controller("product-ctrl", function($scope,$filter, $http) {
 
 
 	
-	$scope.imageChanged = function(files){
+	$scope.imageChanged = function(files) {
 		var data = new FormData();
-		data.append('file', files[0]);
-		$http.post('/rest/upload/image', data, {
+		data.append('uploadfile', files[0]);
+		$http.post('/rest/upload', data, {
 			transformRequest: angular.identity,
-			headers: {'Content-Type': undefined}
-        }).then(resp => {
-			$scope.form.thumbnail = resp.data.name;
+			headers: { 'Content-Type': undefined }
+		}).then(resp => {
+			$scope.form.thumbnail = resp.data.image;
 		}).catch(error => {
 			alert("Lỗi upload hình ảnh");
 			console.log("Error", error);
 		})
 	}
+	
+	
+	$scope.upload = function (files) {
+        var form = new FormData();
+        for (var i = 0; i < files.length; i++) {
+            form.append("uploadfiles", files[i]);
+        }
+        $http.post('/rest/uploadmulti', form, {
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined}
+        }).then(resp => {
+          	console.log(resp)
+        }).catch(error => {
+            console.log("Errors", error);
+        });
+    };
+	
+	
 	$scope.initialize();
 	$scope.searchText = {};
 	$scope.items = [];

@@ -79,3 +79,60 @@ body .bootstrap-select>.dropdown-toggle {
 body  .bootstrap-select .dropdown-menu {
 	min-width: 350px;
 }
+
+
+
+/* Star Rating Styles */
+.starRating {
+	display: table;
+	margin-bottom: 15px;
+}
+
+.starRating span {
+	color: #888888;
+	cursor: pointer;
+	display: table-cell;
+	position: relative;
+	padding-right: 6px;
+}
+
+.starRating span:last-child {
+	padding-right: 0;
+}
+
+.starRating i {
+	transition: opacity 0.4s;
+}
+
+.starRating .fa-star {
+	color: #ffc000;
+	position: absolute;
+	left: 0;
+	opacity: 0;
+}
+
+.starRating span:hover ~span, .starRated span.active ~span {
+	color: #888888;
+}
+
+.starRating:hover .fa-star, .starRating span:hover ~span .fa-star-o {
+	opacity: 1 !important;
+}
+
+.starRating:hover .fa-star-o, .starRating span:hover ~span .fa-star {
+	opacity: 0 !important;
+}
+
+.starRated .fa-star, .starRated span.active ~span .fa-star-o {
+	opacity: 1;
+}
+
+.starRated .fa-star-o, .starRated span.active ~span .fa-star {
+	opacity: 0;
+}
+
+
+.starRating {
+	margin-left: auto;
+	margin-right: auto;
+}
