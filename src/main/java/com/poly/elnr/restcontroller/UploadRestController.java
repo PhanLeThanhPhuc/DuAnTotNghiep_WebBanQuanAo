@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.poly.elnr.service.ProductService;
 import com.poly.elnr.service.UploadService;
@@ -55,6 +56,25 @@ public class UploadRestController {
 		ObjectNode node = mapper.createObjectNode();
 		node.put("image", uploadService.saveImageUser(multipartFile));
 		return node;
+	}
+	
+	@PostMapping("/rest/uploadmulti")
+	public JsonNode uploadFilemulti(@RequestParam("uploadfiles") MultipartFile[] multipartFiles,
+	                                Model model) throws IOException {
+	    ObjectMapper mapper = new ObjectMapper();
+	    ObjectNode node = mapper.createObjectNode();
+
+	    ArrayNode arrayNode = mapper.createArrayNode();
+
+	    for (MultipartFile multipartFile : multipartFiles) {
+	        if (!multipartFile.isEmpty()) {
+	            String imagePath = uploadService.saveImageUser(multipartFile);
+	            arrayNode.add(imagePath);
+	        }
+	    }
+
+	    node.put("images", arrayNode);
+	    return node;
 	}
 	
 
