@@ -1,5 +1,5 @@
-app.controller("voucher-ctrl", function($scope,$filter, $http){
-	$scope.initialize = function(){
+app.controller("voucher-ctrl", function($scope, $filter, $http, $timeout) {
+	$scope.initialize = function() {
 		$http.get("/rest/products").then(resp => {
 			$scope.products = resp.data;
 		});
@@ -10,21 +10,24 @@ app.controller("voucher-ctrl", function($scope,$filter, $http){
 				item.endDate = new Date(item.endDate)
 			})
 		})
-		
+
 		$scope.reset();
 	}
-	
-	$scope.reset = function(){
+
+	$scope.reset = function() {
 		$scope.form = {
 		}
+		$('#mySelect').selectpicker('deselectAll');
+		$('#mySelect').selectpicker('refresh');
 	}
 
-	$scope.edit = function(item){
+	$scope.edit = function(item) {
 		$scope.form = angular.copy(item);
 		$(".nav-tabs a:eq(0)").tab("show");
 	}
 
-	$scope.create = function(){
+	$scope.create = function() {
+		$scope.showSelectedOptions2();
 		var item = angular.copy($scope.form);
 		$http.post(`/rest/voucher`, item).then(resp => {
 			resp.data.dateInsert = new Date(resp.data.dateInsert)
@@ -37,21 +40,22 @@ app.controller("voucher-ctrl", function($scope,$filter, $http){
 		});
 	}
 
-	$scope.update = function(){
+	$scope.update = function() {
+		$scope.showSelectedOptions2();
 		var item = angular.copy($scope.form);
 		$http.put(`/rest/voucher/${item.id}`, item).then(resp => {
 			var index = $scope.items.findIndex(p => p.id == item.id);
 			$scope.items[index] = item;
 			alert("Cập nhật sản phẩm thành công!");
 		})
-		.catch(error => {
-			alert("Lỗi cập nhật sản phẩm!");
-			console.log("Error", error);
-		});
+			.catch(error => {
+				alert("Lỗi cập nhật sản phẩm!");
+				console.log("Error", error);
+			});
 	}
 
 
-	
+
 	$scope.updateStatus = function(size) {
 		var item = angular.copy(size);
 		if (item.status == false) {
@@ -62,7 +66,7 @@ app.controller("voucher-ctrl", function($scope,$filter, $http){
 		$http.put(`/rest/voucher/${item.id}`, item).then(resp => {
 			var index = $scope.items.findIndex(p => p.id == item.id);
 			$scope.items[index] = item;
-			
+
 			$scope.messege("Cập nhật trạng thái thành công");
 		})
 			.catch(error => {
@@ -131,47 +135,89 @@ app.controller("voucher-ctrl", function($scope,$filter, $http){
 	$scope.isSortedBy = function(column) {
 		return $scope.pager.sortColumn == column;
 	};
-	
-	
-	$scope.messege = (mes) =>{
-	$.toast({
-	    text: mes, // Text that is to be shown in the toast
-	    heading: 'Thông báo', // Optional heading to be shown on the toast
-	    icon: 'success', // Type of toast icon
-	    showHideTransition: 'fade', // fade, slide or plain
-	    allowToastClose: true, // Boolean value true or false
-	    hideAfter: 2000, // false to make it sticky or number representing the miliseconds as time after which toast needs to be hidden
-	    stack: 5, // false if there should be only one toast at a time or a number representing the maximum number of toasts to be shown at a time
-	    position: 'top-right', // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values
-	    textAlign: 'left',  // Text alignment i.e. left, right or center
-	    loader: true,  // Whether to show loader or not. True by default
-	    loaderBg: '#9EC600',  // Background color of the toast loader
-	    beforeShow: function () {}, // will be triggered before the toast is shown
-	    afterShown: function () {}, // will be triggered after the toat has been shown
-	    beforeHide: function () {}, // will be triggered before the toast gets hidden
-	    afterHidden: function () {}  // will be triggered after the toast has been hidden
+
+
+	$scope.messege = (mes) => {
+		$.toast({
+			text: mes, // Text that is to be shown in the toast
+			heading: 'Thông báo', // Optional heading to be shown on the toast
+			icon: 'success', // Type of toast icon
+			showHideTransition: 'fade', // fade, slide or plain
+			allowToastClose: true, // Boolean value true or false
+			hideAfter: 2000, // false to make it sticky or number representing the miliseconds as time after which toast needs to be hidden
+			stack: 5, // false if there should be only one toast at a time or a number representing the maximum number of toasts to be shown at a time
+			position: 'top-right', // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values
+			textAlign: 'left',  // Text alignment i.e. left, right or center
+			loader: true,  // Whether to show loader or not. True by default
+			loaderBg: '#9EC600',  // Background color of the toast loader
+			beforeShow: function() { }, // will be triggered before the toast is shown
+			afterShown: function() { }, // will be triggered after the toat has been shown
+			beforeHide: function() { }, // will be triggered before the toast gets hidden
+			afterHidden: function() { }  // will be triggered after the toast has been hidden
+		});
+	}
+
+
+
+
+	$scope.generateRandomString = function() {
+		var length = Math.floor(Math.random() * 3) + 6; // Random length between 6 and 8
+		var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+		var result = '';
+
+		for (var i = 0; i < length; i++) {
+			var randomIndex = Math.floor(Math.random() * characters.length);
+			result += characters.charAt(randomIndex);
+		}
+
+		$scope.form.voucher = result.toUpperCase();
+	};
+
+
+
+	$scope.$watch('products', function() {
+		$timeout(function() {
+			$('#mySelect').selectpicker('refresh');
+		});
 	});
+
+
+	$scope.showSelectedOptions = function() {
+		if ($scope.form.productID) {
+			var selectedOptionsIds = $scope.form.productID.split(/\s*,\s*/);
+		}
+		var selectedOptions = [];
+
+		$('#mySelect option').each(function() {
+			var optionId = $(this).val();
+			if (selectedOptionsIds.includes(optionId)) {
+				selectedOptions.push(optionId);
+			}
+		});
+
+		$('#mySelect').selectpicker('val', selectedOptions);
+	}
+
+	$scope.$watch('form.productID', function() {
+		$scope.showSelectedOptions();
+
+	});
+
+	$scope.showSelectedOptions2 = function() {
+		var selectedOptions = $('#mySelect').val();
+		var selectedOptionsText = $('#mySelect option:selected').map(function() {
+			return $(this).val();
+		}).get().join(', ');
+
+		$scope.form.productID = selectedOptionsText;
+	}
+
+	$scope.clearSelect = function() {
+		$('#mySelect').selectpicker('deselectAll');
+		$('#mySelect').selectpicker('refresh');
 	}
 	
-	
-	
-	
-	 $scope.generateRandomString = function() {
-      var length = Math.floor(Math.random() * 3) + 6; // Random length between 6 and 8
-      var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-      var result = '';
 
-      for (var i = 0; i < length; i++) {
-        var randomIndex = Math.floor(Math.random() * characters.length);
-        result += characters.charAt(randomIndex);
-      }
-
-      $scope.form.voucher = result.toUpperCase();
-    };
-	
-	
-	
-	
-	
 }
 );
+
