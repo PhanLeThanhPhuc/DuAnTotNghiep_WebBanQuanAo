@@ -1,0 +1,53 @@
+.latch-order {
+    display: block;
+    padding-top: 10px;
+    border-top: 1px solid #e1e1e1;
+    position: relative;
+}
+
+.box-order ul {
+    display: block;
+    overflow: hidden;
+    padding: 0 10px;
+}
+
+.box-order li .img-order img {
+    display: block;
+    overflow: hidden;
+    width: 40px;
+}
+
+.box-order li .text-order {
+    display: block;
+    overflow: hidden;
+    margin-left: 10px;
+}
+
+.text-order__product-name {
+    color: #333;
+    /*font-size: 14px;*/
+}
+
+.box-order li .img-order {
+    float: left;
+    width: 5%;
+}
+
+.box-order li .text-order .amount-color {
+    display: block;
+    overflow: hidden;
+}
+
+.box-order li .amount-color small {
+    display: inline-block;
+    margin-right: 15px;
+    color: #666;
+    font-size: 11px;
+}
+
+.box-order ul li {
+    display: block;
+    overflow: hidden;
+    padding: 10px 0;
+    border-bottom: 1px solid #e6e6e6;
+}

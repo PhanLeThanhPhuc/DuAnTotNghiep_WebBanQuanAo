@@ -287,7 +287,8 @@
 									style="height: 270px;" alt="">
 									<div class="single_product_text">
 										<h5 class="text-truncate mb-3" th:utext="${p.name}"></h5>
-										<h3>[[${p.price}]]</h3>
+										<h3>[[${#numbers.formatDecimal(p.price, 0, 'COMMA',
+											0,'POINT')}]]</h3>
 									</div>
 								</a>
 							</div>

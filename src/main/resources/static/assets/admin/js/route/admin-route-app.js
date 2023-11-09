@@ -40,11 +40,18 @@ app.config(function ($routeProvider) {
       templateUrl: "/assets/admin/review/index.html",
       controller: "review-ctrl"
     })
+
     .when("/voucher", {
       templateUrl: "/assets/admin/voucher/index.html",
       controller: "voucher-ctrl"
     })
     
+
+    .when("/order", {
+      templateUrl: "/assets/admin/order/index.html",
+      controller: "order-ctrl1"
+    })
+
  
     .otherwise({
       template: "<h1 class='text-center'>FPT Polytechnic Administration</h1>"

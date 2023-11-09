@@ -139,6 +139,7 @@ app.controller("user-ctrl", function($scope, $filter, $http) {
 			this.page--;
 		}
 	}
+
 	$scope.toggleSort = function(column) {
 		if ($scope.pager.sortColumn == column) {
 			$scope.pager.sortDirection = ($scope.pager.sortDirection == 'asc') ? 'desc' : 'asc';
@@ -158,7 +159,9 @@ app.controller("user-ctrl", function($scope, $filter, $http) {
 	};
 
 
-	$scope.messege = (mes) => {
+
+	$scope.messege = (mes) =>{
+
 		$.toast({
 			text: mes, // Text that is to be shown in the toast
 			heading: 'Thông báo', // Optional heading to be shown on the toast
@@ -171,6 +174,7 @@ app.controller("user-ctrl", function($scope, $filter, $http) {
 			textAlign: 'left',  // Text alignment i.e. left, right or center
 			loader: true,  // Whether to show loader or not. True by default
 			loaderBg: '#9EC600',  // Background color of the toast loader
+
 			beforeShow: function() { }, // will be triggered before the toast is shown
 			afterShown: function() { }, // will be triggered after the toat has been shown
 			beforeHide: function() { }, // will be triggered before the toast gets hidden

@@ -44,8 +44,10 @@ public class UserController {
 	}
 
 	@GetMapping("user/order")
-	public String userOrder(Model model){
-		model.addAttribute("order", orderService.fillAllOrder());
+	public String userOrder(Model model, Authentication authentication){
+		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+		model.addAttribute("order", orderService.findOrderByIdUser(userDetails.getUsername()));
+		System.out.println();
 		return "user/layout/user-order.html";
 	}
 
@@ -83,11 +85,11 @@ public class UserController {
         return null;
     }
 
-		@ResponseBody
-		@PostMapping("user/upload")
-		public String uploadFile(@RequestParam("uploadfile") MultipartFile multipartFile,
-								 Model model, Authentication authentication) throws IOException {
-			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-			return userService.saveImageUser(multipartFile, userDetails.getUsername());
-		}
+	@ResponseBody
+	@PostMapping("user/upload")
+	public String uploadFile(@RequestParam("uploadfile") MultipartFile multipartFile,
+							 Model model, Authentication authentication) throws IOException {
+		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+		return userService.saveImageUser(multipartFile, userDetails.getUsername());
+	}
 }
