@@ -1,6 +1,7 @@
 package com.poly.elnr.service.serviceImpl;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,8 @@ import jakarta.servlet.ServletContext;
 
 @Service
 public class UploadServiceImpl implements UploadService{
+	@Autowired
+	UploadCloudinaryUtils uploadCloudinaryUtils;
 	@Override
 	public File save(MultipartFile file, String folder) {
 		File dir = new File(this.getClass().getResource("/").getPath()+"/static/assets/user/user/" + folder);
@@ -29,6 +32,12 @@ public class UploadServiceImpl implements UploadService{
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	@Override
+	public String saveImageUser(MultipartFile multipartFile) throws IOException {
+		String imageURL = uploadCloudinaryUtils.uploadFileCloudinary(multipartFile);
+		return imageURL;
 	}
 	
 }

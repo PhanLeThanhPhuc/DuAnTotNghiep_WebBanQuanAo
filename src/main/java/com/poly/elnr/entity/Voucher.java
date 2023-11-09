@@ -57,13 +57,28 @@ public class Voucher implements Serializable{
     @Column(name = "status")
     private boolean status;
     
+   
+    
     @Column(name = "active")
     private boolean active;
     @JsonIgnore
     @OneToMany(mappedBy = "voucher")
     private List<Order> order;
 
-   
+   //add new column
+    
+    @Column(name = "max_price")
+    private double maxPrice;
+    
+    @Column(name = "product_id")
+    private String productID;
+    @Column(name = "min_product")
+    private int minOrderProduct;
+    
+    @Column(name = "ismax")
+    private boolean is_max;
+    @Column(name = "description")
+    private String description;
 
 
 }

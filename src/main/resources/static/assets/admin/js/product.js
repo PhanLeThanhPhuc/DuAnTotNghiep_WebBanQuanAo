@@ -1,4 +1,4 @@
-app.controller("product-ctrl", function($scope, $http) {
+app.controller("product-ctrl", function($scope, $filter, $http) {
 	$scope.initialize = function() {
 		$http.get("/rest/categorydetail").then(resp => {
 			$scope.categories = resp.data;
@@ -9,11 +9,12 @@ app.controller("product-ctrl", function($scope, $http) {
 		$http.get("/rest/description").then(resp => {
 			$scope.description = resp.data;
 		})
+		$http.get("/rest/image").then(resp => {
+			$scope.image = resp.data;
+		})
 		$http.get("/rest/sizes").then(resp => {
 			$scope.sizes = resp.data;
 		})
-
-
 		$http.get("/rest/products").then(resp => {
 			$scope.items = resp.data;
 			$scope.items.forEach(item => {
@@ -26,17 +27,7 @@ app.controller("product-ctrl", function($scope, $http) {
 		});
 		$scope.reset();
 	}
-	$scope.closeCollapsibles = function() {
-		// Close all collapsible elements
-		var collapsibles = document.querySelectorAll('.collapse');
-		for (var i = 0; i < collapsibles.length; i++) {
-			var collapsible = collapsibles[i];
-			if (collapsible.classList.contains('show')) {
-				var collapseInstance = new bootstrap.Collapse(collapsible);
-				collapseInstance.hide();
-			}
-		}
-	};
+
 
 	$scope.reset = function() {
 		$scope.productSize = [];
@@ -50,50 +41,19 @@ app.controller("product-ctrl", function($scope, $http) {
 		$scope.closeCollapsibles();
 	}
 
-	$scope.selected = [];
-	$scope.test = function() {
-		$scope.selected = [];
-	}
 
-	$scope.exist = function(size) {
-		return $scope.selected.indexOf(size) > -1;
-	}
 
-	$scope.toggleSelection = function(item) {
-		var idx = $scope.selected.indexOf(item);
-		if (idx > -1) {
-			$scope.selected.splice(idx, 1);
-		}
-		else {
-			$scope.selected.push(item);
-		}
-	}
-	$scope.size_of = function(form, size) {
-		if ($scope.productSize) {
-			return $scope.productSize.find(ur => ur.size.id == size.id);
-		}
-	}
-	$scope.addsize = function(id) {
-		$scope.selected.forEach(function(productDetail) {
-			productdt = { size: productDetail, product: id }
-			$http.post(`/rest/productsDetail`, productdt).then(resp => {
-				$scope.productSize.push(resp.data);
-			}).catch(error => {
-				alert("Lỗi thêm size sản phẩm!");
-				console.log("Error", error);
-			});
-		});
-		$scope.selected = [];
 
-	}
-
-	$scope.oldDescriptionId = null;
 	$scope.edit = function(item) {
 		$scope.form = angular.copy(item);
-		
+
 		$(".nav-tabs a:eq(0)").tab("show");
 		$http.get(`/rest/productsDetail/${item.id}`).then(resp => {
 			$scope.productSize = resp.data;
+		})
+
+		$http.get(`/rest/image/${item.id}`).then(resp => {
+			$scope.image = resp.data;
 		})
 		$scope.selected = [];
 	}
@@ -113,6 +73,16 @@ app.controller("product-ctrl", function($scope, $http) {
 					$scope.productSize.push(resp.data);
 				}).catch(error => {
 					alert("Lỗi thêm size sản phẩm!");
+					console.log("Error", error);
+				});
+			});
+
+			$scope.displayedImages.forEach(function(image) {
+				images = { image: image, product: $scope.form }
+				$http.post(`/rest/image`, images).then(resp => {
+					$scope.image.push(resp.data);
+				}).catch(error => {
+					alert("Lỗi thêm hinh !");
 					console.log("Error", error);
 				});
 			});
@@ -171,67 +141,77 @@ app.controller("product-ctrl", function($scope, $http) {
 				alert("Lỗi cập nhật!");
 				console.log("Error", error);
 			});
-
 	}
 
-
-	
-	$scope.imageChanged = function(files){
+	$scope.imageChanged = function(files) {
 		var data = new FormData();
-		data.append('file', files[0]);
-		$http.post('/rest/upload/image', data, {
+		data.append('uploadfile', files[0]);
+		$http.post('/rest/upload', data, {
 			transformRequest: angular.identity,
-			headers: {'Content-Type': undefined}
-        }).then(resp => {
-			$scope.form.thumbnail = resp.data.name;
+			headers: { 'Content-Type': undefined }
+		}).then(resp => {
+			$scope.form.thumbnail = resp.data.image;
 		}).catch(error => {
 			alert("Lỗi upload hình ảnh");
 			console.log("Error", error);
 		})
 	}
-	$scope.initialize();
 
-	$scope.pager = {
-		page: 0,
-		size: 10,
-		get items() {
-			if (this.page < 0) {
-				this.last();
-			}
-			if (this.page >= this.count) {
-				this.first();
-			}
-			var start = this.page * this.size;
-			return $scope.items.slice(start, start + this.size)
-		},
-		
-		get count() {
-			return Math.ceil(1.0 * $scope.items.length / this.size);
-		},
-		first() {
-			this.page = 0;
-		},
-		last() {
-			this.page = this.count - 1;
-		},
-		next() {
-			this.page++;
-		},
-		prev() {
-			this.page--;
+	$scope.displayedImages = [];
+	$scope.upload = function(files) {
+		var form = new FormData();
+		for (var i = 0; i < files.length; i++) {
+			form.append("uploadfiles", files[i]);
 		}
+		$http.post('/rest/uploadmulti', form, {
+			transformRequest: angular.identity,
+			headers: { 'Content-Type': undefined }
+		}).then(resp => {
+			resp.data.images.forEach(image => {
+				$scope.displayedImages.push(image);
+			});
+		}).catch(error => {
+			console.log("Errors", error);
+		});
+	};
+
+
+	$scope.selected = [];
+
+	$scope.exist = function(size) {
+		return $scope.selected.indexOf(size) > -1;
+	}
+
+	$scope.toggleSelection = function(item) {
+		var idx = $scope.selected.indexOf(item);
+		if (idx > -1) {
+			$scope.selected.splice(idx, 1);
+		}
+		else {
+			$scope.selected.push(item);
+		}
+	}
+	$scope.size_of = function(form, size) {
+		if ($scope.productSize) {
+			return $scope.productSize.find(ur => ur.size.id == size.id);
+		}
+	}
+	$scope.addsize = function(id) {
+		$scope.selected.forEach(function(productDetail) {
+			productdt = { size: productDetail, product: id }
+			$http.post(`/rest/productsDetail`, productdt).then(resp => {
+				$scope.productSize.push(resp.data);
+			}).catch(error => {
+				alert("Lỗi thêm size sản phẩm!");
+				console.log("Error", error);
+			});
+		});
+		$scope.selected = [];
+
 	}
 
 
-
-
-	$scope.$watch('form.description.id', function(newValue) {
-		if (newValue) {
-			$scope.descriptionDetail(newValue);
-		}
-
-	});
-
+	$scope.oldDescriptionId = null;
 	$scope.descriptionDetail = function(selectedValue) {
 		$http.get("/rest/description/" + selectedValue).then(function(response) {
 			$scope.form.description = response.data;
@@ -273,27 +253,106 @@ app.controller("product-ctrl", function($scope, $http) {
 				console.log("Error", error);
 			});
 	}
-	
-	$scope.messege = (mes) =>{
-	$.toast({
-	    text: mes, // Text that is to be shown in the toast
-	    heading: 'Thông báo', // Optional heading to be shown on the toast
-	    icon: 'success', // Type of toast icon
-	    showHideTransition: 'fade', // fade, slide or plain
-	    allowToastClose: true, // Boolean value true or false
-	    hideAfter: 2000, // false to make it sticky or number representing the miliseconds as time after which toast needs to be hidden
-	    stack: 5, // false if there should be only one toast at a time or a number representing the maximum number of toasts to be shown at a time
-	    position: 'top-right', // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values
-	    textAlign: 'left',  // Text alignment i.e. left, right or center
-	    loader: true,  // Whether to show loader or not. True by default
-	    loaderBg: '#9EC600',  // Background color of the toast loader
-	    beforeShow: function () {}, // will be triggered before the toast is shown
-	    afterShown: function () {}, // will be triggered after the toat has been shown
-	    beforeHide: function () {}, // will be triggered before the toast gets hidden
-	    afterHidden: function () {}  // will be triggered after the toast has been hidden
-	});
+
+	$scope.closeCollapsibles = function() {
+		// Close all collapsible elements
+		var collapsibles = document.querySelectorAll('.collapse');
+		for (var i = 0; i < collapsibles.length; i++) {
+			var collapsible = collapsibles[i];
+			if (collapsible.classList.contains('show')) {
+				var collapseInstance = new bootstrap.Collapse(collapsible);
+				collapseInstance.hide();
+			}
+		}
+	};
+
+
+	$scope.messege = (mes) => {
+		$.toast({
+			text: mes, // Text that is to be shown in the toast
+			heading: 'Thông báo', // Optional heading to be shown on the toast
+			icon: 'success', // Type of toast icon
+			showHideTransition: 'fade', // fade, slide or plain
+			allowToastClose: true, // Boolean value true or false
+			hideAfter: 2000, // false to make it sticky or number representing the miliseconds as time after which toast needs to be hidden
+			stack: 5, // false if there should be only one toast at a time or a number representing the maximum number of toasts to be shown at a time
+			position: 'top-right', // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values
+			textAlign: 'left',  // Text alignment i.e. left, right or center
+			loader: true,  // Whether to show loader or not. True by default
+			loaderBg: '#9EC600',  // Background color of the toast loader
+			beforeShow: function() { }, // will be triggered before the toast is shown
+			afterShown: function() { }, // will be triggered after the toat has been shown
+			beforeHide: function() { }, // will be triggered before the toast gets hidden
+			afterHidden: function() { }  // will be triggered after the toast has been hidden
+		});
 	}
 
+	$scope.initialize();
+	$scope.searchText = {};
+	$scope.items = [];
+	$scope.pager = {
+		page: 0,
+		size: 10,
+		sortColumn: '',
+		sortDirection: '',
+		get filteredItems() {
+			return $filter('filter')($scope.items, $scope.searchText);
+		},
+		get items() {
+			if (this.page < 0) {
+				this.last();
+			}
+			if (this.page >= this.count) {
+				this.first();
+			}
+			var filteredItems = this.filteredItems;
+			if ($scope.pager.sortColumn) {
+				filteredItems = $filter('orderBy')(filteredItems, $scope.pager.sortColumn, $scope.pager.sortDirection == 'desc');
+			}
+			var start = this.page * this.size;
+			return filteredItems.slice(start, start + this.size)
+		},
+		get count() {
+			return Math.ceil(1.0 * this.filteredItems.length / this.size);
+		},
+		first() {
+			this.page = 0;
+		},
+		last() {
+			this.page = this.count - 1;
+		},
+		next() {
+			this.page++;
+		},
+		prev() {
+			this.page--;
+		}
+	}
+	$scope.toggleSort = function(column) {
+		if ($scope.pager.sortColumn == column) {
+			$scope.pager.sortDirection = ($scope.pager.sortDirection == 'asc') ? 'desc' : 'asc';
+		} else {
+			$scope.pager.sortColumn = column;
+			$scope.pager.sortDirection = 'asc';
+		}
+	};
+	$scope.getSortIconClass = function(column) {
+		if ($scope.pager.sortColumn == column) {
+			return 'sort-icon ' + ($scope.pager.sortDirection == 'asc' ? 'asc' : 'desc');
+		}
+	};
+
+	$scope.isSortedBy = function(column) {
+		return $scope.pager.sortColumn == column;
+	};
+
+
+	$scope.$watch('form.description.id', function(newValue) {
+		if (newValue) {
+			$scope.descriptionDetail(newValue);
+		}
+
+	});
 
 
 });

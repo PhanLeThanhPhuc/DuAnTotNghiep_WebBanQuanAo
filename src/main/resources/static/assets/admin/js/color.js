@@ -1,4 +1,4 @@
-app.controller("color-ctrl", function($scope, $http){
+app.controller("color-ctrl", function($scope,$filter, $http){
 	$scope.initialize = function(){
 		$http.get("/rest/colors").then(resp => {
 			$scope.items = resp.data;
@@ -64,34 +64,62 @@ app.controller("color-ctrl", function($scope, $http){
 
 	$scope.initialize();
 
+	$scope.searchText = {};
+	$scope.items = [];
 	$scope.pager = {
 		page: 0,
 		size: 10,
-		get items(){
-			if(this.page < 0){
+		sortColumn: '',
+		sortDirection: '',
+		get filteredItems() {
+			return $filter('filter')($scope.items, $scope.searchText);
+		},
+		get items() {
+			if (this.page < 0) {
 				this.last();
 			}
-			if(this.page >= this.count){
+			if (this.page >= this.count) {
 				this.first();
 			}
-			var start = this.page*this.size;
-			return $scope.items.slice(start, start + this.size)
+			var filteredItems = this.filteredItems;
+			if ($scope.pager.sortColumn) {
+				filteredItems = $filter('orderBy')(filteredItems, $scope.pager.sortColumn, $scope.pager.sortDirection == 'desc');
+			}
+			var start = this.page * this.size;
+			return filteredItems.slice(start, start + this.size)
 		},
-		get count(){
-			return Math.ceil(1.0 * $scope.items.length / this.size);
+		get count() {
+			return Math.ceil(1.0 * this.filteredItems.length / this.size);
 		},
-		first(){
+		first() {
 			this.page = 0;
 		},
-		last(){
+		last() {
 			this.page = this.count - 1;
 		},
-		next(){
+		next() {
 			this.page++;
 		},
-		prev(){
+		prev() {
 			this.page--;
 		}
 	}
+	$scope.toggleSort = function(column) {
+		if ($scope.pager.sortColumn == column) {
+			$scope.pager.sortDirection = ($scope.pager.sortDirection == 'asc') ? 'desc' : 'asc';
+		} else {
+			$scope.pager.sortColumn = column;
+			$scope.pager.sortDirection = 'asc';
+		}
+	};
+	$scope.getSortIconClass = function(column) {
+		if ($scope.pager.sortColumn == column) {
+			return 'sort-icon ' + ($scope.pager.sortDirection == 'asc' ? 'asc' : 'desc');
+		}
+	};
+
+	$scope.isSortedBy = function(column) {
+		return $scope.pager.sortColumn == column;
+	};
 }
 );

@@ -5,25 +5,46 @@
 			<div class="card">
 				<div class="card-body">
 					<h4 class="card-title">User List</h4>
+					<div class="form-group col-sm-6">
+						Search: <input ng-model="searchText.$" class="form-control">
+					</div>
+					
+					
 					<div class="table-responsive">
 						<table
 							class="table table-striped table-bordered zero-configuration">
 							<thead>
 								<tr>
 									<th>Image</th>
-									<th>Fullname</th>
-									<th>SDT</th>
-									<th>Email</th>
-									<th>Giới tính</th>
-									<th>Ngày tạo</th>
-									<th>Ngày cập nhật</th>
-									<th>Trạng thái</th>
+									<th ng-click="toggleSort('fullName')">Fullname
+										<span ng-show="isSortedBy('fullName')" ng-class="getSortIconClass('fullName')"></span>
+									</th>
+									<th ng-click="toggleSort('phone')">SDT
+										<span ng-show="isSortedBy('phone')" ng-class="getSortIconClass('phone')"></span>
+									</th>
+									<th ng-click="toggleSort('email')">Email
+										<span ng-show="isSortedBy('email')" ng-class="getSortIconClass('email')"></span>
+									</th>
+									<th ng-click="toggleSort('gender')">Giới tính
+										<span ng-show="isSortedBy('gender')" ng-class="getSortIconClass('gender')"></span>
+									</th >
+									<th ng-click="toggleSort('date_insert')">Ngày tạo
+										<span ng-show="isSortedBy('date_insert')" ng-class="getSortIconClass('date_insert')"></span>
+									</th>
+									<th ng-click="toggleSort('date_update')">Ngày cập nhật
+										<span ng-show="isSortedBy('date_update')" ng-class="getSortIconClass('date_update')"></span>
+									</th>
+									<th ng-click="toggleSort('status')">Trạng thái
+										<span ng-show="isSortedBy('status')" ng-class="getSortIconClass('status')"></span>
+									</th>
+									<th >										
+									</th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr ng-repeat="item in pager.items">
 									<td><div class="d-flex">
-											<img src="/assets/user/user/image/{{item.image}}" alt=""
+											<img src="{{item.image}}" alt=""
 												style="width: 50px;">
 										</div></td>
 									<td>{{item.fullName}}</td>

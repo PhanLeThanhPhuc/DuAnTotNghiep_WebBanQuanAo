@@ -21,6 +21,10 @@ public interface ReviewService {
 
 	Review update(Review review);
 
+	void delete(Integer id);
+
+	
+
 
 
 

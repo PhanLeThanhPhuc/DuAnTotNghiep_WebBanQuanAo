@@ -2,7 +2,6 @@ package com.poly.elnr.restcontroller;
 
 import java.util.List;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,39 +13,37 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.poly.elnr.entity.Review;
-import com.poly.elnr.service.ReviewService;
+import com.poly.elnr.entity.ImageProduct;
+import com.poly.elnr.service.ImageService;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/rest/review")
-public class ReviewRestController {
-	
+@RequestMapping("/rest/image")
+public class ProductImageRestController {
 	@Autowired
-	ReviewService reviewService;
+	ImageService imageService;
 	
 	@GetMapping
-	public List<Review> findAll() {
-		return reviewService.findAll();
+	public List<ImageProduct> getAll(){
+		return imageService.findAll();
 	}
 	
-	@GetMapping("product/{id}")
-	public List<Review> findByProductID(@PathVariable("id") Integer id) {
-		return reviewService.findByProductID2(id);
+	@GetMapping("{id}")
+	public List<ImageProduct> getOne(@PathVariable("id") Integer id) {
+		return imageService.findByProductId(id);
 	}
 	
 	@PostMapping
-	public Review post(@RequestBody  Review create) {
-		return reviewService.create(create);
-		 
+	public ImageProduct post(@RequestBody ImageProduct image) {
+		imageService.create(image);
+		return image;
 	}
 	@PutMapping("{id}")
-	public Review put(@PathVariable("id") Integer id, @RequestBody Review review) {
-		return reviewService.update(review);
+	public ImageProduct put(@PathVariable("id") Integer id, @RequestBody ImageProduct image) {
+		return imageService.update(image);
 	}
-	
 	@DeleteMapping("{id}")
 	public void delete(@PathVariable("id") Integer id) {
-		reviewService.delete(id);
+		imageService.delete(id);
 	}
 }
