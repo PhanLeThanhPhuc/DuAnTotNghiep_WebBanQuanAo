@@ -1,23 +1,30 @@
 app.controller("cart-ctrl", function($scope, $http) {
 
 	$scope.initialize = () => {
+
 		$http.get("/user/province").then(resp => {
 			$scope.listProvince = resp.data.data;
-			console.log($cart.items.map(item => {
-				return {
-					name: item.product.name ,
-					quantity: item.qty
-				}
-			}));
-			console.log($scope.cart)
 		})
+
+		//user
+		$http.get("/rest/users/userid").then(resp => {
+			if(resp.status == 200){
+				$scope.dataLogin = resp.data;
+			}
+		})
+
+		$http.get("/rest/address").then(resp => {
+			$scope.listAddress = resp.data;
+		})
+
 		$scope.form();
 		$scope.shipFee = 0;
 	}
 
+
 	$scope.form = () =>{
 		$scope.formInformationOrder = {
-			payment : '1'
+			payment : '1',
 		}
 	}
 
@@ -96,14 +103,12 @@ app.controller("cart-ctrl", function($scope, $http) {
 					} else {
 						resp.data.priceBeforeSale=$('.priceBeforeSale').text();
 						resp.data.price=$('.price').text();
+						resp.data.sale=$('.sale').text();
 						resp.data.qty = qtt;
 						this.items.push(resp.data);
 						this.saveToLocalStorage();
 						alert("Thêm sản phẩm thành công");
 					}
-
-
-
 				})
 			}
 		},
@@ -177,8 +182,6 @@ app.controller("cart-ctrl", function($scope, $http) {
 		}
 	}
 
-
-
 	$scope.getShippingFee = () =>{
 
 		var cboAddress = document.querySelectorAll(".country_select");
@@ -220,60 +223,75 @@ app.controller("cart-ctrl", function($scope, $http) {
 
 	}
 
-	// $scope.methodOrder = () =>{
+	getShipAddress = () =>{
+		var idAddress = $scope.formInformationOrder.address;
+		var index = $scope.listAddress.findIndex(p => p.id == parseInt(idAddress));
+		var addressChecked = $scope.listAddress[index];
+
+		var bodyProduct = {
+			service_type_id : 2,
+			to_ward_code: addressChecked.wardId ,
+			to_district_id: parseInt(addressChecked.districtId),
+			weight: $scope.cart.totalWeights,
+			items: $cart.items.map(item => {
+				return {
+					name: item.product.name ,
+					quantity: item.qty
+				}
+			})
+		}
+
+		$http.post(`/user/shipfee`, bodyProduct).then(resp => {
+			if(resp.status === 200){
+				$scope.shipFee = resp.data.data.total;
+				console.log(resp.data.data.expected_delivery_time);
+			}
+		}).catch(error => {
+			alert("Lỗi thêm mới !");
+			console.log("Error", error);
+		});
+	}
+
+	addAddress = () =>{
+		var cboAddress = document.querySelectorAll(".country_select_add");
+
+		var provinceId = cboAddress[0].options[cboAddress[0].selectedIndex].value;
+
+		var districtId = cboAddress[1].options[cboAddress[1].selectedIndex].value;
+
+		var wardId = cboAddress[2].options[cboAddress[2].selectedIndex].value;
+
+		var provinceName = cboAddress[0].options[cboAddress[0].selectedIndex].text;
+
+		var districtName = cboAddress[1].options[cboAddress[1].selectedIndex].text;
+
+		var wardName = cboAddress[2].options[cboAddress[2].selectedIndex].text;
+
+		var objectAddress = {
+			provinceName: provinceName,
+			districtName: districtName,
+			wardName: wardName,
+			addressDetail: $scope.formInformationOrder.addressDetail,
+			provinceId: parseInt(provinceId),
+			districtId: parseInt(districtId),
+			wardId: wardId,
+			user: {
+				id :$scope.dataLogin.idUser
+			}
+		}
+
+		$http.post("/rest/insert-address", objectAddress).then(resp => {
+			if(resp.status === 200){
+				$scope.listAddress.push(resp.data);
+				$scope.message("Thêm địa chỉ thành công");
+			}
+		}).catch(error => {
+			// alert("Lỗi")
+			console.log(error)
+		})
+	}
 
 	purchase = () =>{
-		// $scope.data = {
-		// 	order :{
-		// 		orderDate: new Date(),
-		// 		detailAddress: $scope.formInformationOrder.name,
-		// 		province: $scope.provinceName,
-		// 		district: $scope.districtName,
-		// 		ward: $scope.wardName,
-		// 		email: $scope.formInformationOrder.email,
-		// 		address: $scope.formInformationOrder.addressDetail +' '+ $scope.wardName+' '+ $scope.districtName+' '+ ' '+$scope.provinceName  ,
-		// 		payment: $scope.formInformationOrder.payment ,
-		// 		phone: $scope.formInformationOrder.phone,
-		// 		total: $scope.cart.totalAmount,
-		// 		totalDiscount: $scope.cart.amount,
-		// 		weight : $scope.cart.totalWeights,
-		// 		voucher: {
-		// 			id: 1
-		// 		},
-		// 		orderDetails :
-		// 			$cart.items.map(item => {
-		// 				return {
-		// 					productDetails: { id: item.id },
-		// 					price: item.price.replace(/,/g, ""),
-		// 					discountPrice: item.priceBeforeSale.replace(/,/g, ""),
-		// 					quantity: item.qty,
-		// 				}
-		// 			}),
-		// 	},
-		// 	orderDataGHN : {
-		// 		payment_type_id: 2,
-		// 		to_name: $scope.formInformationOrder.name,
-		// 		to_phone: $scope.formInformationOrder.phone,
-		// 		to_address: $scope.formInformationOrder.addressDetail +' '+ $scope.wardName+' '+ $scope.districtName+' '+ ' '+$scope.provinceName  ,
-		// 		to_ward_code: $scope.wardId ,
-		// 		to_district_id: parseInt($scope.districtId),
-		// 		cod_amount: $scope.cart.totalAmount,
-		// 		// content: "Đơn hàng quần áo ba lỗ không dễ vỡ",
-		// 		weight: $scope.cart.totalWeights,
-		// 		service_type_id: 2,
-		// 		note: $scope.formInformationOrder.note,
-		// 		required_note: "CHOXEMHANGKHONGTHU",
-		// 		items: $cart.items.map(item => {
-		// 			return {
-		// 				name: item.product.name ,
-		// 				quantity: item.qty
-		// 			}
-		// 		})
-		// 	}
-		// }
-		//
-		// console.log('ddđ',$scope.data)
-
 		$scope.data = {
 			province: $scope.provinceName,
 			district: $scope.districtName,
@@ -308,11 +326,13 @@ app.controller("cart-ctrl", function($scope, $http) {
 			if(resp.status === 200){
 				alert("Đặt hàng thành công!");
 				if(resp.data.payment === 1){
-					console.log(resp.data.vnPayUrl);
-					// $cart.clear();
-					// location.href = resp.data.vnPayUrl;
+					console.log(resp.data.urlVnPay);
+					$cart.clear();
+					location.href = resp.data.urlVnPay
 				}else{
-					location.href = resp.data.vnPayUrl;
+					var idorder =resp.data.order.id;
+					$cart.clear();
+					location.href = `/user/information-order?idorder=${idorder}`
 				}
 			}
 		}).catch(error => {
@@ -320,4 +340,25 @@ app.controller("cart-ctrl", function($scope, $http) {
 			console.log(error)
 		})
 	}
+
+	$scope.message = (mes) =>{
+		$.toast({
+			text: mes, // Text that is to be shown in the toast
+			heading: 'Thông báo', // Optional heading to be shown on the toast
+			icon: 'success', // Type of toast icon
+			showHideTransition: 'fade', // fade, slide or plain
+			allowToastClose: true, // Boolean value true or false
+			hideAfter: 2000, // false to make it sticky or number representing the miliseconds as time after which toast needs to be hidden
+			stack: 5, // false if there should be only one toast at a time or a number representing the maximum number of toasts to be shown at a time
+			position: 'top-right', // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values
+			textAlign: 'left',  // Text alignment i.e. left, right or center
+			loader: true,  // Whether to show loader or not. True by default
+			loaderBg: '#9EC600',  // Background color of the toast loader
+			beforeShow: function () {}, // will be triggered before the toast is shown
+			afterShown: function () {}, // will be triggered after the toat has been shown
+			beforeHide: function () {}, // will be triggered before the toast gets hidden
+			afterHidden: function () {}  // will be triggered after the toast has been hidden
+		});
+	}
+
 })

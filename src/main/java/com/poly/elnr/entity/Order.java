@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.poly.elnr.dto.OrderData;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -62,6 +63,9 @@ public class Order implements Serializable{
     @Column(name = "payment")
     private int payment;
 
+    @Column(name = "status_payment")
+    private int statusPayment;
+
     @Column(name = "ship_code")
     private String shipCode;
 
@@ -97,7 +101,8 @@ public class Order implements Serializable{
     @JoinColumn(name = "voucher_id")
     private Voucher voucher;
 
-    @JsonIgnore
+//    @JsonIgnore
+    @JsonManagedReference
     @OneToMany(mappedBy = "order")
     private List<OrderDetail> orderDetails;
 

@@ -18,4 +18,12 @@ public interface OrderService {
 
     Order saveOrder(JsonNode orderData) throws JsonProcessingException;
 
+    Order cancelOrder(int orderId) throws JsonProcessingException;
+
+    Order updateStatusPayment(int idOrder, int statusPayment);
+
+    Order orderGhn(int orderId) throws JsonProcessingException;
+
+    List<Order> findOrderByIdUser(String username);
+
 }

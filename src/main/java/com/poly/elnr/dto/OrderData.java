@@ -10,24 +10,20 @@ import java.util.List;
 
 @Data
 public class OrderData {
-    private String province;
-    private String district;
-    private String ward;
-    private String detailAddress;
-    private String nameUser;
-    private Date orderDate;
-    private String phone;
-    private int payment;
-    private String shipCode;
-    private int shipFee;
-    private String email;
-    private int total;
-    private int totalDiscount;
+    private String to_name;
+    private String to_phone;
+    private String to_address;
+    private String to_province_name;
+    private int cod_amount;
+    private String content;
+    private String to_ward_code;
+    private int to_district_id;
     private int weight;
-    private String wardCode;
-    private int districtId;
-    private List<OrderDetail> orderDetails;
+    private int service_type_id = 2;
+    private int payment_type_id = 2;
+    private String note;
+    private String required_note = "CHOXEMHANGKHONGTHU";
+    private List<Item> items;
 
 }
-
 

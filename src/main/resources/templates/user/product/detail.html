@@ -57,12 +57,14 @@
 								<li><span>Category</span> : [[*{categoryDdetail.name}]]</li>
 								<li><span>Color</span> : [[*{color.name}]]</a></li>
 							<div th:if="*{isSale ==true}">
-								<h4 class="priceBeforeSale" style="text-decoration-line: line-through;">[[${#numbers.formatDecimal(item.price, 0, 'COMMA',
-									0,'POINT')}]]</h4>
-									<h2 class="price">[[${#numbers.formatDecimal(item.discountPrice, 0, 'COMMA',
-										0,'POINT')}]]</h2>
+								<h4 class="sale" >[[*{sale}]]</h4>
+								<h4 class="priceBeforeSale" style="text-decoration-line: line-through;">[[*{price}]]</h4>
+								<h2 class="price">[[${#numbers.formatDecimal(item.discountPrice, 0, 'COMMA',
+									0,'POINT')}]]</h2>
 							</div>
 							<div th:unless="*{isSale ==true}">
+								<h4 class="sale" >[[*{sale}]]</h4>
+								<h4 class="priceBeforeSale" type="hidden" style="text-decoration-line: line-through;">[[*{price}]]</h4>
 								<h2 class="price">[[${#numbers.formatDecimal(item.price, 0, 'COMMA',
 									0,'POINT')}]]</h2>
 							</div>

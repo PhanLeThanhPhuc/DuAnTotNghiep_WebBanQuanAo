@@ -72,7 +72,7 @@
 <!--                            </div>-->
                             <div class="col-md-12 form-group p_star">
                                 <h5 style="font-weight: 600; margin-bottom: 15px">ĐỊA CHỈ NHẬN HÀNG</h5>
-                                <div class="row">
+                                <div class="row" ng-if="dataLogin.statusLogin == false">
                                     <div class="col-md-6 form-group p_star">
                                         <select  onchange="methodDistrict(value)" class="country_select form-control">
                                             <option value="default">Tỉnh</option>
@@ -96,11 +96,26 @@
                                         <span class="placeholder" data-placeholder="Địa chỉ cụ thể"></span>
                                     </div>
                                 </div>
+<!--                                login = true-->
+                                <div class="row" ng-if="dataLogin.statusLogin == true">
+                                    <div ng-repeat="item in listAddress" class="col-md-6 form-group p_star">
+                                        <div class="form-check">
+                                            <input onchange="getShipAddress()" ng-model="formInformationOrder.address" class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" ng-value="{{item.id}}" checked>
+                                            <label class="form-check-label" for="exampleRadios1">
+                                                {{item.addressDetail}}, {{item.wardName}}, {{item.districtName}}, {{item.provinceName}}
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12 form-group p_star text-center">
+                                        <button style="font-size: 10px; font-weight: bold" data-toggle="modal" data-target="#exampleModalCenter" type="button" class="btn btn-outline-warning">Thêm địa chỉ mới</button>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="col-md-12 form-group">
                                 <div class="creat_account">
-                                    <h5 style="font-weight: 600; margin-bottom: 15px">LỜI NHẮN ĐẾN TÀI XẾ</h5>
+                                    <h5 style="font-weight: 600; margin-bottom: 15px">GHI CHÚ</h5>
                                 </div>
                                 <textarea ng-model="formInformationOrder.note" class="form-control" name="message" id="message" rows="1"
                                           placeholder="Order Notes"></textarea>
@@ -179,7 +194,7 @@
                             <div class="payment_item" style="margin-top: 20px">
                                 <label style="font-weight: 600" class="m-0">Hình thức thanh toán:</label>
                                 <div class="radion_btn">
-                                    <input  ng-model="formInformationOrder.payment" value="1" checked type="radio" id="f-option5" name="selector" />
+                                    <input  ng-model="formInformationOrder.payment" value="0" checked type="radio" id="f-option5" name="selector" />
                                     <label for="f-option5">Thanh toán khi nhận hàng</label>
                                     <div class="check"></div>
                                 </div>
@@ -190,7 +205,7 @@
                             </div>
                             <div class="payment_item active">
                                 <div class="radion_btn">
-                                    <input ng-model="formInformationOrder.payment" value="2" type="radio" id="f-option6" name="selector" />
+                                    <input ng-model="formInformationOrder.payment" value="1" type="radio" id="f-option6" name="selector" />
                                     <label for="f-option6">Chuyển khoản qua VnPay</label>
                                     <img src="img/product/single-product/card.jpg" alt="" />
                                     <div class="check"></div>
@@ -229,4 +244,48 @@
             </div>
         </div>
     </section>
+<!--    MODEL ADD ADDRESS-->
+
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Thêm địa chỉ</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row" >
+                        <div class="col-md-6 form-group p_star">
+                            <select  onchange="methodDistrict(value)" class="country_select form-control country_select_add">
+                                <option value="default">Tỉnh</option>
+                                <option ng-repeat="item in listProvince" ng-value="{{item.ProvinceID}}">{{item.ProvinceName}}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 form-group p_star">
+                            <select  onchange="methodWard(value)" class="country_select form-control country_select_add">
+                                <option value="default">Huyện</option>
+                                <option ng-repeat="item in listDistrict" ng-value="{{item.DistrictID}}">{{item.DistrictName}}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 form-group p_star">
+                            <select    class="country_select form-control country_select_add">
+                                <option value="">Xã</option>
+                                <option ng-repeat="item in listWard" ng-value="{{item.WardCode}}">{{item.WardName}}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 form-group p_star">
+                            <input ng-model="formInformationOrder.addressDetail" type="text" class="form-control" id="1" name="name" />
+                            <span class="placeholder" data-placeholder="Địa chỉ cụ thể"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button onclick="addAddress()" type="button" data-dismiss="modal" class="btn btn-primary">Thêm địa chỉ</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </main>

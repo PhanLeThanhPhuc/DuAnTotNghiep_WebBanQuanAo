@@ -5,10 +5,13 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.poly.elnr.entity.Category;
 import com.poly.elnr.entity.Product;
 import com.poly.elnr.repository.ProductRepository;
+
+import java.io.IOException;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +23,7 @@ import com.poly.elnr.repository.ColorRepository;
 import com.poly.elnr.repository.ProductRepository;
 import com.poly.elnr.repository.SizeRepository;
 import com.poly.elnr.service.ProductService;
+import com.poly.elnr.utils.UploadCloudinaryUtils;
 
 
 @Service
@@ -34,7 +38,8 @@ public class ProductServiceImpl implements ProductService {
 	@Autowired
 	ProductRepository productRepository;
 
-	
+	@Autowired
+	UploadCloudinaryUtils uploadCloudinaryUtils;
 	
 	public List<Product> findAll() {
 		// TODO Auto-generated method stub
@@ -111,6 +116,14 @@ public class ProductServiceImpl implements ProductService {
 	public Product update(Product product) {
 		// TODO Auto-generated method stub
 		return productRepository.save(product);
+	}
+
+
+	@Override
+	public String saveImage(MultipartFile multipartFile) throws IOException {
+		// TODO Auto-generated method stub
+		String imageURL = uploadCloudinaryUtils.uploadFileCloudinary(multipartFile);
+		return imageURL;
 	}
 
 

@@ -4,6 +4,7 @@ import java.util.List;
 
 
 import com.poly.elnr.dto.ChangePassword;
+import com.poly.elnr.entity.Order;
 import com.poly.elnr.utils.UploadCloudinaryUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Date;
@@ -182,4 +183,19 @@ public class UserServiceImpl implements UserService {
 
 		return user;
 	}
+
+	@Override
+	public int idUser(String username) {
+		Users user = new Users();
+		if(RegexUtils.isPhoneNumber(username)) {
+			user = userRepository.findByPhone(username);
+			return user.getId();
+		}else{
+			user = userRepository.findEmail(username);
+			if(user.getPhone() !=  null){
+				return user.getId();
+			}
+		}
+        return 0;
+    }
 }

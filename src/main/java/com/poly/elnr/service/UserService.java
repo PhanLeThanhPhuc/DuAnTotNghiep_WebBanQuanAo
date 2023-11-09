@@ -37,4 +37,6 @@ public interface UserService {
 	String saveImageUser(MultipartFile multipartFile, String username) throws IOException;
 
 	Users findByUserNamePhoneAndEmail(String username);
+
+	int idUser(String username);
 }

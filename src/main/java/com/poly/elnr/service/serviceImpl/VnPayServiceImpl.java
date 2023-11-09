@@ -26,7 +26,7 @@ import org.springframework.stereotype.Service;
 public class VnPayServiceImpl implements VnPayService {
 
 	@Override
-	public String createOrder(int total, String orderInfor, String urlReturn) {
+	public String createOrder(int total, String orderInfor, String urlReturn, int orderId) {
 		
 		String vnp_TxnRef = VNPayConfig.getRandomNumber(8);
         Map<String, String> vnp_Params = new HashMap<>();
@@ -36,10 +36,10 @@ public class VnPayServiceImpl implements VnPayService {
         vnp_Params.put("vnp_Amount", String.valueOf(total*100));
         vnp_Params.put("vnp_CurrCode", "VND");
         
-        vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
+        vnp_Params.put("vnp_TxnRef", String.valueOf(orderId));
         vnp_Params.put("vnp_OrderInfo", orderInfor);
         vnp_Params.put("vnp_OrderType", VnPayConstant.orderType);
-
+//        vnp_Params.put("vnp_OrderId", String.valueOf(orderId));
        
         vnp_Params.put("vnp_Locale", VnPayConstant.locate);
 

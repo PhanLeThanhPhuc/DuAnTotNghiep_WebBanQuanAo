@@ -8,8 +8,8 @@
                     <!-- Tabs nav -->
                     <div class="nav flex-column nav-pills nav-pills-custom" id="v-pills-tab" role="tablist"
                          aria-orientation="vertical">
-                        <a class="nav-link mb-3 p-3 shadow " id="v-pills-home-tab" data-toggle="pill"
-                           href="v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="false">
+                        <a class="nav-link mb-3 p-3 shadow "
+                           th:href="@{/user/info}" role="tab" aria-controls="v-pills-home" aria-selected="false">
                             <i class="fa fa-user-circle-o mr-2"></i>
                             <span class="font-weight-bold small text-uppercase text-a">Thông tin cá nhân</span></a>
 
@@ -44,10 +44,20 @@
                                 <tbody>
                                 <tr th:each="order : ${order}">
                                     <th scope="row">[[${order.id}]]</th>
-                                    <td>[[${order.orderDate}]]</td>
-                                    <td>[[${#numbers.formatDecimal(order.total, 0, 'COMMA', 0, 'POINT')}]]</td>
+                                    <td>
+                                        <span th:text="${#dates.format(order.orderDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                                    </td>
+                                    <td>
+                                        <span style="color: red; font-weight: 600">[[${#numbers.formatDecimal(order.total, 0, 'COMMA', 0, 'POINT')}]]₫</span>
+                                    </td>
+                                    <td th:if="${order.status eq 0}">
+                                        <span class="badge badge-secondary">Chờ xác nhận</span>
+                                    </td>
                                     <td th:if="${order.status eq 1}">
-                                        <span>Đang xử lí</span>
+                                        <span class="badge badge-warning">Chờ lấy hàng</span>
+
+                                    <td th:if="${order.status eq 2}">
+                                        <span class="badge badge-danger">Đã hủy</span>
                                     </td>
                                     <td>
                                         <a th:href="@{|order-detail?idOrder=${order.id}|}" class="btn btn-primary">Chi tiết</a>
