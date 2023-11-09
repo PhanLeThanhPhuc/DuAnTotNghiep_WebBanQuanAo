@@ -1,5 +1,6 @@
 package com.poly.elnr.restcontroller;
 
+import java.io.IOException;
 import java.util.List;
 
 
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.poly.elnr.entity.Category;
 import com.poly.elnr.entity.Product;
@@ -22,6 +24,8 @@ import com.poly.elnr.entity.ProductDetails;
 import com.poly.elnr.service.CategoryService;
 import com.poly.elnr.service.ProductDetailService;
 import com.poly.elnr.service.ProductService;
+
+import jakarta.websocket.server.PathParam;
 
 
 
@@ -55,6 +59,5 @@ public class ProductRestController {
 		productService.delete(id);
 	}
 	
-	
-	
+		
 }

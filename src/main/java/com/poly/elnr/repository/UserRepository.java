@@ -22,4 +22,5 @@ public interface UserRepository extends JpaRepository<Users, Integer> {
 	
 	@Query("SELECT DISTINCT ar.user FROM Authority ar where ar.role.id IN ('ROLE_USER')")
 	public List<Users> findAllUserByIdRole();
+
 }

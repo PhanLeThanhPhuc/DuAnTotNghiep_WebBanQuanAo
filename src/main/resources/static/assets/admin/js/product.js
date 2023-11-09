@@ -90,7 +90,7 @@ app.controller("product-ctrl", function($scope, $http) {
 	$scope.oldDescriptionId = null;
 	$scope.edit = function(item) {
 		$scope.form = angular.copy(item);
-		$scope.oldDescriptionId = $scope.form.description.id;
+		
 		$(".nav-tabs a:eq(0)").tab("show");
 		$http.get(`/rest/productsDetail/${item.id}`).then(resp => {
 			$scope.productSize = resp.data;
@@ -154,35 +154,41 @@ app.controller("product-ctrl", function($scope, $http) {
 		});
 	}
 
-	$scope.delete = function(item) {
-		if (confirm("Bạn muốn xóa sản phẩm này?")) {
-			$http.delete(`/rest/products/${item.id}`).then(resp => {
-				var index = $scope.items.findIndex(p => p.id == item.id);
-				$scope.items.splice(index, 1);
-				$scope.reset();
-				alert("Xóa sản phẩm thành công!");
-			}).catch(error => {
-				alert("Lỗi xóa sản phẩm!");
-				console.log("Error", error);
-			})
+	$scope.updateStatus = function(product) {
+		var item = angular.copy(product);
+		item.dateUpdate = new Date();
+		if (item.status == false) {
+			item.status = true;
+		} else {
+			item.status = false;
 		}
+		$http.put(`/rest/products/${item.id}`, item).then(resp => {
+			var index = $scope.items.findIndex(p => p.id == item.id);
+			$scope.items[index] = item;
+			$scope.messege("Cập nhật trạng thái thành công");
+		})
+			.catch(error => {
+				alert("Lỗi cập nhật!");
+				console.log("Error", error);
+			});
+
 	}
 
 
-	$scope.imageChanged = function(files) {
+	
+	$scope.imageChanged = function(files){
 		var data = new FormData();
 		data.append('file', files[0]);
 		$http.post('/rest/upload/image', data, {
 			transformRequest: angular.identity,
-			headers: { 'Content-Type': undefined }
-		}).then(resp => {
+			headers: {'Content-Type': undefined}
+        }).then(resp => {
 			$scope.form.thumbnail = resp.data.name;
 		}).catch(error => {
 			alert("Lỗi upload hình ảnh");
 			console.log("Error", error);
 		})
 	}
-
 	$scope.initialize();
 
 	$scope.pager = {
@@ -198,6 +204,7 @@ app.controller("product-ctrl", function($scope, $http) {
 			var start = this.page * this.size;
 			return $scope.items.slice(start, start + this.size)
 		},
+		
 		get count() {
 			return Math.ceil(1.0 * $scope.items.length / this.size);
 		},
@@ -248,6 +255,7 @@ app.controller("product-ctrl", function($scope, $http) {
 	}
 
 	$scope.resetDescription = function() {
+		$scope.oldDescriptionId = $scope.form.description.id;
 		$scope.form.description = {
 		}
 	}
@@ -264,6 +272,26 @@ app.controller("product-ctrl", function($scope, $http) {
 				alert("Lỗi cập nhật !");
 				console.log("Error", error);
 			});
+	}
+	
+	$scope.messege = (mes) =>{
+	$.toast({
+	    text: mes, // Text that is to be shown in the toast
+	    heading: 'Thông báo', // Optional heading to be shown on the toast
+	    icon: 'success', // Type of toast icon
+	    showHideTransition: 'fade', // fade, slide or plain
+	    allowToastClose: true, // Boolean value true or false
+	    hideAfter: 2000, // false to make it sticky or number representing the miliseconds as time after which toast needs to be hidden
+	    stack: 5, // false if there should be only one toast at a time or a number representing the maximum number of toasts to be shown at a time
+	    position: 'top-right', // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values
+	    textAlign: 'left',  // Text alignment i.e. left, right or center
+	    loader: true,  // Whether to show loader or not. True by default
+	    loaderBg: '#9EC600',  // Background color of the toast loader
+	    beforeShow: function () {}, // will be triggered before the toast is shown
+	    afterShown: function () {}, // will be triggered after the toat has been shown
+	    beforeHide: function () {}, // will be triggered before the toast gets hidden
+	    afterHidden: function () {}  // will be triggered after the toast has been hidden
+	});
 	}
 
 
