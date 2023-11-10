@@ -6,6 +6,8 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.poly.elnr.dto.OrderData;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -49,6 +51,9 @@ public class Order implements Serializable{
     @Column(name = "detail_address")
     private String detailAddress;
 
+    @Column(name = "name_user")
+    private String nameUser;
+
     @Column(name = "order_date")
     private Date orderDate;
 
@@ -58,23 +63,35 @@ public class Order implements Serializable{
     @Column(name = "payment")
     private int payment;
 
+    @Column(name = "status_payment")
+    private int statusPayment;
+
     @Column(name = "ship_code")
     private String shipCode;
 
     @Column(name = "ship_fee")
-    private double shipFee;
+    private int shipFee;
 
     @Column(name = "email")
     private String email;
 
+    @Column(name = "phone")
+    private String phone;
+
     @Column(name = "total")
-    private double total;
+    private int total;
     
     @Column(name = "total_discount")
-    private double totalDiscount;
+    private int totalDiscount;
     
     @Column(name = "weight")
-    private double weight;
+    private int weight;
+
+    @Column(name = "ward_code")
+    private String wardCode;
+
+    @Column(name = "district_id")
+    private int districtId;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -84,7 +101,8 @@ public class Order implements Serializable{
     @JoinColumn(name = "voucher_id")
     private Voucher voucher;
 
-    @JsonIgnore
+//    @JsonIgnore
+    @JsonManagedReference
     @OneToMany(mappedBy = "order")
     private List<OrderDetail> orderDetails;
 

@@ -13,8 +13,8 @@
                             <i class="fa fa-user-circle-o mr-2"></i>
                             <span class="font-weight-bold small text-uppercase text-a">Thông tin cá nhân</span></a>
 
-                        <a class="nav-link mb-3 p-3 shadow " id="v-pills-profile-tab" data-toggle="pill"
-                           href="v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="true">
+                        <a class="nav-link mb-3 p-3 shadow "
+                           th:href="@{/user/order}" role="tab" aria-controls="v-pills-profile" aria-selected="true">
                             <i class="fa fa-calendar-minus-o mr-2"></i>
                             <span class="font-weight-bold small text-uppercase text-a">Thông tin đơn hàng</span></a>
 
@@ -60,10 +60,6 @@
                                         <label>Số điện thoại</label>
                                         <input disabled th:field="*{phone}" type="text" class="form-control">
                                         <button th:if="${account.phone == null}" data-toggle="modal" data-target="#exampleModalCenter" style="font-size: 9px; font-weight: bold" class="btn btn-primary px-1 mt-1">Thêm số điện thoại</button>
-                                    </div>
-                                    <div class="form-group col-sm-6">
-                                        <label>Địa chỉ</label>
-                                        <input type="text" class="form-control">
                                     </div>
                                     <div class="form-group col-sm-6">
                                         <label>Email</label>

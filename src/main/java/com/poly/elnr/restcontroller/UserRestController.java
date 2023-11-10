@@ -1,9 +1,13 @@
 package com.poly.elnr.restcontroller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +34,22 @@ public class UserRestController {
 		return userService.create(user);
 		 
 	}
+
+	@GetMapping("/userid")
+	public Map<String, Object> findIdUser(Authentication authentication){
+		Map<String, Object> model = new HashMap<>();
+		if(authentication == null){
+			System.out.println("Chua login");
+			model.put("statusLogin", false);
+			return model;
+		}else{
+			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+			model.put("statusLogin", true);
+			model.put("idUser", userService.idUser(userDetails.getUsername()));
+			return model;
+		}
+	}
+
 	
 	@PutMapping("{id}")
 	public Users put(@PathVariable("id") Integer id, @RequestBody Users user) {
@@ -52,4 +72,16 @@ public class UserRestController {
 	public Users getOne(@PathVariable("id") Integer id) {
 		return userService.findById(id);
 	}
+
+	@GetMapping("/login")
+	public boolean statusLogin(Authentication authentication) {
+		if(authentication == null){
+			System.out.println("Chua login");
+			return false;
+		}else{
+			System.out.println("Da login");
+			return true;
+		}
+	}
+
 }
