@@ -27,22 +27,17 @@
 							</thead>
 
 							<tbody>
-								<tr ng-repeat="item in pager.listCategory">
+								<tr ng-click="fillCategoryDetail(item.id)" ng-repeat="item in pager.listCategory">
 									<td>{{item.id}}</td>
 									<td>{{item.name}}</td>
 									<td>{{item.dateInsert | date : 'dd-MM-yyyy hh:mm'}}</td>
 									<td>{{item.dateUpdate | date : 'dd-MM-yyyy hh:mm'}}</td>
 									<td>{{item.status ? 'Hoạt động' : 'Không hoạt động'}}</td>
 									<td><span>
-									<a  ng-click="fillCategoryDetail(item.id)" data-toggle="tooltip"
-											 data-placement="top" title="Edit"><i
-												class="fa fa-pencil color-muted m-r-5"></i> </a>
+									
 									<button data-toggle="modal" data-target="#exampleModalCenter"  ng-click="editCategory(item)" data-toggle="tooltip"
 										data-placement="top" title="updaye">Sửa </button>
-									<a
-											ng-click="delete(item)" data-toggle="tooltip"
-											data-placement="top" title="Delete"><i
-												class="fa fa-close color-danger"></i></a></span>
+									</span>
 								</tr>
 							</tbody>
 						</table>

@@ -1,11 +1,17 @@
 app.controller("category-ctrl", function($scope, $http){
 	$scope.initialize = function(){
-		$scope.pageLoaded = false;
 		$http.get("/rest/categories").then(resp => {
 			$scope.listCategory = resp.data;
-			console.log($scope.listCategory);
 			$scope.listCategory.forEach(item => {
+				item.dateInsert = new Date(item.dateInsert);
+				item.dateUpdate = new Date(item.dateUpdate);
+			})
+		});
+		$http.get("/rest/categorydetail").then(resp => {
+			$scope.listCategoryDetail = resp.data;
+			$scope.listCategoryDetail.forEach(item => {
 				item.dateInsert = new Date(item.dateInsert)
+				item.dateUpdate = new Date(item.dateUpdate)
 			})
 		});
 		$scope.reset();

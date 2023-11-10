@@ -22,6 +22,10 @@ public class CategoryDetailRestController {
 	public List<CategoryDetail> findAll() {
 		return categorydetailService.findAll();
 	}
+	@GetMapping("{id}")
+	public List<CategoryDetail> findAllByCategoryID(@PathVariable("id") Integer id ) {
+		return categorydetailService.findByCategoryID(id);
+	}
 	
 	@PostMapping
 	public CategoryDetail post(@RequestBody  CategoryDetail create) {
