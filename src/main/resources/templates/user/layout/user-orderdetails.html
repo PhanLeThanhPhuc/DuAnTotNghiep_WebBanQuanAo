@@ -29,7 +29,14 @@
                     <div class="tab-content" id="v-pills-tabContent">
                         <div class="tab-pane fade shadow rounded bg-white show active p-4" id="v-pills-home"
                              role="tabpanel" aria-labelledby="v-pills-home-tab">
-                            <h6>CHI TIẾT ĐƠN HÀNG #[[${order.id}]]</h6>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <h6>CHI TIẾT ĐƠN HÀNG #[[${order.id}]]</h6>
+                                </div>
+                                <div style="text-align: right" class="col-sm-6">
+                                    <a href="">Hủy đơn hàng</a>
+                                </div>
+                            </div>
                             <div class="row">
                                 <div class="col-lg-6 col-lx-4">
                                     <div class="single_confirmation_details p-3">
