@@ -75,8 +75,15 @@ app.controller("authority-ctrl", function($scope, $http,$filter, $location){
 	    afterHidden: function () {}  // will be triggered after the toast has been hidden
 	});
 	}
-	
-	
+	//$scope.messege = (mes) =>{
+	//swal({
+  //title: mes,
+  //text: "Here's a custom image.",
+  //imageUrl: "images/thumbs-up.jpg"
+//});
+//}
+
+
 	
 	$scope.searchText = {};
 	$scope.items = [];
