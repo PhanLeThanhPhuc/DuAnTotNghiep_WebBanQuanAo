@@ -1,4 +1,4 @@
-app.controller("order-ctrl1", function($scope, $http){
+app.controller("order-ctrl", function($scope, $http){
 
     $scope.initialize = function(){
 

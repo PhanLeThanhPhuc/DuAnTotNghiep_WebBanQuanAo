@@ -45,7 +45,7 @@ app.config(function ($routeProvider) {
 
     .when("/order", {
       templateUrl: "/assets/admin/order/index.html",
-      controller: "order-ctrl1"
+      controller: "order-ctrl"
     })
 
  
