@@ -33,7 +33,7 @@ public class OrderController {
         //0 fail, 1 success
         int paymentStatus =vnPayService.orderReturn(request);
         int idorder = Integer.parseInt(request.getParameter("vnp_TxnRef"));
-
+        System.out.println("THời gian thanh toán: "+ request.getParameter("vnp_PayDate"));
         Order order = new Order();
 
         if(paymentStatus==1){

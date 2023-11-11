@@ -48,8 +48,17 @@ app.config(function ($routeProvider) {
       controller: "order-ctrl"
     })
 
- 
-    .otherwise({
+    .when("/revenue_statistic", {
+      templateUrl: "/assets/admin/statistics/revenue_statistic.html",
+      controller: "statistic-ctrl"
+    })
+
+      .when("/revenue_user", {
+        templateUrl: "/assets/admin/user/user_statistic.html",
+        controller: "user-statistic-ctrl"
+      })
+
+      .otherwise({
       template: "<h1 class='text-center'>FPT Polytechnic Administration</h1>"
     });
 });

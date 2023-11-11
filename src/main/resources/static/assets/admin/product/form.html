@@ -34,50 +34,50 @@
 						<div class="col-sm-6">
 							<div class="row">
 								<div class="form-group col-sm-6">
-									<div>Name</div>
+									<div>Tên sản phẩm</div>
 									<input ng-model="form.name" class="form-control">
 								</div>
 								<div class="form-group col-sm-6">
-									<div>Price</div>
+									<div>Giá</div>
 									<input ng-model="form.price" class="form-control">
 								</div>
 								<div class="form-group col-sm-6">
-									<div>Discount Price</div>
+									<div>Số tiền giảm</div>
 									<input ng-model="form.discountPrice" class="form-control">
 								</div>
 								<div class="form-group col-sm-6">
-									<div>Sale?</div>
+									<div>Giảm giá ?</div>
 									<div class="form-control">
 										<label> <input ng-model="form.sale" ng-value="true"
-											name="sale" type="radio">Yes
+											name="sale" type="radio">Có 
 										</label> <label class="radio-inline"> <input
 											ng-model="form.sale" ng-value="false" name="sale"
-											type="radio">No
+											type="radio">Không
 										</label>
 									</div>
 								</div>
 							</div>
 							<div class="row">
 								<div type="hidden" class="form-group col-sm-6">
-									<div>Thumbnail</div>
+									<div>Ảnh</div>
 									<input type="file" class="form-control" id="image"
 										onchange="angular.element(this).scope().imageChanged(this.files)">
 								</div>
 								<div class="form-group col-sm-6">
-									<div>Color</div>
+									<div>Màu sắc</div>
 									<select ng-model="form.color.id" class="form-control">
 										<option ng-repeat="c in colors" ng-value="c.id">{{c.name}}</option>
 									</select>
 								</div>
 								<div class="form-group col-sm-6">
-									<div>Category</div>
+									<div>Loại</div>
 									<select ng-model="form.categoryDdetail.id" class="form-control"
 										ng-change="test(form.categoryDdetail.id)">
 										<option ng-repeat="cate in categories" ng-value="cate.id">{{cate.name}}</option>
 									</select>
 								</div>
 								<div class="form-group col-sm-6">
-									<div>Available?</div>
+									<div>Trạng thái?</div>
 									<label class="switch"> <input ng-model="form.status"
 										ng-value="true" name="available" type="checkbox"> <span
 										class="slider round"></span>
@@ -89,23 +89,23 @@
 						<div class="col-sm-5 ">
 							<div class=" px-5  row">
 								<div class="form-group col-sm-12">
-									<div>Image</div>
+									<div>Ảnh chi tiết</div>
 									<input class="form-control" type="file" accept="image/*"
 										multiple
 										onchange="angular.element(this).scope().upload(this.files)" />
 								</div>
 								<div class="form-group col-sm-12">
-									<div>Insert Date</div>
+									<div>Ngày tạo</div>
 									<input ng-model="form.dateInsert" type="date"
 										class="form-control">
 								</div>
 								<div class="form-group col-sm-12">
-									<div>Update Date</div>
+									<div>Ngày cập nhật</div>
 									<input ng-model="form.dateUpdate" type="date"
 										class="form-control">
 								</div>
 								<div class="form-group col-sm-12">
-									<div>Description</div>
+									<div>Mô tả</div>
 									<select ng-model="form.description.id" class="form-control">
 										<option ng-repeat="d in description" ng-value="d.id">{{d.name}}</option>
 									</select>
@@ -114,7 +114,7 @@
 									<a ref="" class="btn btn-light "
 										style="margin: 5px; margin-top: 15px;"
 										data-target="#description" data-toggle="collapse">
-										Description Detail</a>
+										Mô tả chi tiết</a>
 								</div>
 							</div>
 						</div>
@@ -131,7 +131,7 @@
 								<div class=" text-center">
 									<a ref="" class="btn btn-light "
 										style="margin: 5px; margin-top: 15px;" data-target="#addsize"
-										data-toggle="collapse">Add Size</a>
+										data-toggle="collapse">Thêm kích thước</a>
 								</div>
 								<div id="addsize" class="collapse">
 									<div class="row">
@@ -159,39 +159,39 @@
 							<div class=" px-5 m-2">
 								<div class=" p-2 row border border-dark">
 									<div class="form-group col-sm-6">
-										<div>Name</div>
+										<div>Tên</div>
 										<input ng-model="form.description.name" class="form-control">
 									</div>
 									<div class="form-group col-sm-6">
-										<div>Weight</div>
+										<div>Cân nặng</div>
 										<input ng-model="form.description.weight" class="form-control">
 									</div>
 									<div class="form-group col-sm-6">
-										<div>Material</div>
+										<div>Chất liệu</div>
 										<input ng-model="form.description.material"
 											class="form-control">
 									</div>
 									<div class="form-group col-sm-6">
-										<div>Technology</div>
+										<div>Công nghệ</div>
 										<input ng-model="form.description.technology"
 											class="form-control">
 									</div>
 									<div class="form-group col-sm-6">
-										<div>Manufacture</div>
+										<div>Sản xuất</div>
 										<input ng-model="form.description.manufacture"
 											class="form-control">
 									</div>
 									<div class="form-group col-sm-12">
-										<div>Description</div>
+										<div>Mô tả</div>
 										<textarea ng-model="form.description.description" rows="4"
 											class="form-control" cols="50"></textarea>
 									</div>
 
 									<div class="col-sm-12 panel-footer text-right">
 										<button ng-click="createDescription()"
-											ng-disabled="form.description.id" class="btn btn-primary">Create</button>
+											ng-disabled="form.description.id" class="btn btn-primary">Tạo</button>
 										<button ng-click="updateDescription()"
-											ng-disabled="!form.description.id" class="btn btn-success ">Update</button>
+											ng-disabled="!form.description.id" class="btn btn-success ">Cập nhật</button>
 										<button ng-click="resetDescription()" class="btn btn-info">Clear</button>
 									</div>
 								</div>

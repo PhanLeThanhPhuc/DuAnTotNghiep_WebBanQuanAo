@@ -61,7 +61,7 @@ public class UserController {
 			Order order = orderService.fillOrderById(idOrder);
 			int total = 0;
 			if(order.getVoucher() == null){
-				total = (int) ((order.getTotal() + order.getShipFee()) - order.getVoucher().getDiscountPrice());
+				total = (int) ((order.getTotal() + order.getShipFee()));
 			}else{
 				total = (int) ((order.getTotalDiscount() + order.getShipFee()) - order.getVoucher().getDiscountPrice());
 			}
@@ -89,7 +89,7 @@ public class UserController {
 		//0 fail, 1 success
 		int paymentStatus =vnPayService.orderReturn(request);
 		int idorder = Integer.parseInt(request.getParameter("vnp_TxnRef"));
-
+		System.out.println("THời gian thanh toán: "+ request.getParameter("vnp_PayDate"));
 		Order order = new Order();
 
 		if(paymentStatus==1){

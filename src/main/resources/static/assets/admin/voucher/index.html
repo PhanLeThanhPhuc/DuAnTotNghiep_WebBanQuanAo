@@ -3,7 +3,7 @@
 		<div class="card-body">
 			<div class="row">
 				<div class="form-group col-sm-6">
-					Search: <input ng-model="searchText.$" class="form-control">
+					Tìm kiếm: <input ng-model="searchText.$" class="form-control">
 				</div>
 				<div class="text-right col-sm-6">
 					<button ng-click="reset()" type="button" class="btn btn-primary "
@@ -15,26 +15,26 @@
 				<table class="table table-striped table-bordered zero-configuration">
 					<thead>
 						<tr>
-							<th ng-click="toggleSort('id')">ID <span
+							<th ng-click="toggleSort('id')">Mã số giảm giá <span
 								ng-show="isSortedBy('id')" ng-class="getSortIconClass('id')"></span>
 							</th>
-							<th ng-click="toggleSort('voucher')">Voucher <span
+							<th ng-click="toggleSort('voucher')">Mã giảm giá <span
 								ng-show="isSortedBy('voucher')"
 								ng-class="getSortIconClass('voucher')"></span>
 							</th>
-							<th ng-click="toggleSort('startDate')">startDate <span
+							<th ng-click="toggleSort('startDate')">Ngày bắt đầu <span
 								ng-show="isSortedBy('startDate')"
 								ng-class="getSortIconClass('startDate')"></span>
 							</th>
-							<th ng-click="toggleSort('endDate')">endDate <span
+							<th ng-click="toggleSort('endDate')">Ngày kết thúc <span
 								ng-show="isSortedBy('endDate')"
 								ng-class="getSortIconClass('endDate')"></span>
 							</th>
-							<th ng-click="toggleSort('quantity')">quantity <span
+							<th ng-click="toggleSort('quantity')">Số lượng <span
 								ng-show="isSortedBy('quantity')"
 								ng-class="getSortIconClass('quantity')"></span>
 							</th>
-							<th ng-click="toggleSort('status')">status <span
+							<th ng-click="toggleSort('status')">Trạng thái <span
 								ng-show="isSortedBy('status')"
 								ng-class="getSortIconClass('status')"></span>
 							</th>

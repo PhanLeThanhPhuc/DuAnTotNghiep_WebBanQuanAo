@@ -11,6 +11,7 @@ import com.poly.elnr.service.VoucherService;
 
 @Service
 public class VoucherServiceImpl implements VoucherService{
+
 	@Autowired 
 	VoucherRepository voucherRepository;
 

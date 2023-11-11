@@ -15,17 +15,16 @@
 					<div class="col-lg-7 col-xl-7">
 						<div class="product_slider_img">
 <!--							/// bỏ này vào mất 50% ảnh-->
-<!--							<div id="vertical">-->
-							<div id="">
+							<div id="vertical">
+<!--							<div id="">-->
 								<div style="height: auto !important;"
-									th:attr="data-thumb=@{|/assets/user/user/image/*{thumbnail}|}">
-									<img th:src="@{|/assets/user/user/image/*{thumbnail}|}" />
+									th:attr="data-thumb=@{*{thumbnail}}">
+									<img th:src="@{*{thumbnail}}" />
 								</div>
-								
-								
+
 								<div th:each="img : ${images}"
-									th:attr="data-thumb=@{|/assets/user/user/image/${img.image}|}">
-									<img th:src="@{|/assets/user/user/image/${img.image}|}" />
+									th:attr="data-thumb=@{${img.image}}">
+									<img th:src="@{${img.image}}" />
 								</div>
 								
 							</div>
