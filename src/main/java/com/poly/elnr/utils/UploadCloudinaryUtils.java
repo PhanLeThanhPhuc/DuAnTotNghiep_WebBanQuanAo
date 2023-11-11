@@ -26,4 +26,5 @@ public class UploadCloudinaryUtils {
                 .get("url")
                 .toString();
     }
+
 }

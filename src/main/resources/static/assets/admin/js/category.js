@@ -2,6 +2,7 @@ app.controller("category-ctrl", function($scope, $filter, $http) {
 	$scope.initialize = function() {
 		$http.get("/rest/categories").then(resp => {
 			$scope.items = resp.data;
+			console.log("cate", $scope.items)
 			$scope.items.forEach(item => {
 				item.dateInsert = new Date(item.dateInsert);
 				item.dateUpdate = new Date(item.dateUpdate);
@@ -153,7 +154,8 @@ app.controller("category-ctrl", function($scope, $filter, $http) {
 		item.dateUpdate = new Date();
 		$http.post(`/rest/categorydetail`, item).then(resp => {
 			if (resp.status == 200) {
-				$scope.items.push(resp.data);
+				var indexcategory = $scope.items.findIndex(c => c.id == $scope.Category.id )
+				$scope.items[indexcategory].category_detail.push(resp.data);
 				$scope.message("Thêm mới danh mục thành công!");
 				}
 			$scope.reset();
