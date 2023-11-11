@@ -9,9 +9,7 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 		$http.get("/rest/description").then(resp => {
 			$scope.description = resp.data;
 		})
-		$http.get("/rest/image").then(resp => {
-			$scope.image = resp.data;
-		})
+
 		$http.get("/rest/sizes").then(resp => {
 			$scope.sizes = resp.data;
 		})
@@ -38,6 +36,7 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 			status: true,
 			thumbnail: "cloud-upload.jpg"
 		}
+		$scope.displayedImages = [];
 		$scope.closeCollapsibles();
 	}
 
@@ -56,6 +55,7 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 			$scope.image = resp.data;
 		})
 		$scope.selected = [];
+		$scope.displayedImages = [];
 	}
 
 
@@ -142,7 +142,7 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 				console.log("Error", error);
 			});
 	}
-
+	$scope.image=[];
 	$scope.imageChanged = function(files) {
 		var data = new FormData();
 		data.append('uploadfile', files[0]);

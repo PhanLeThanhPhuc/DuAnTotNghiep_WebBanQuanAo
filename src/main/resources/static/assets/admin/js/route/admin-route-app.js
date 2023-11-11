@@ -20,10 +20,6 @@ app.config(function ($routeProvider) {
       templateUrl: "/assets/admin/size/index.html",
       controller: "size-ctrl"
     })
-    .when("/categorydetail-table", {
-      templateUrl: "/assets/admin/category_detail/form.html",
-      controller: "categorydetail-ctrl"
-    })
     .when("/authority", {
       templateUrl: "/assets/admin/authority/index.html",
       controller: "authority-ctrl"
@@ -49,7 +45,7 @@ app.config(function ($routeProvider) {
 
     .when("/order", {
       templateUrl: "/assets/admin/order/index.html",
-      controller: "order-ctrl1"
+      controller: "order-ctrl"
     })
 
  
