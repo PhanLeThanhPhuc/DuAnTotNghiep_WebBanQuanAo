@@ -125,7 +125,6 @@ app.controller("cart-ctrl", function($scope, $http) {
 					} else {
 						resp.data.priceBeforeSale=$('.priceBeforeSale').text();
 						resp.data.price=$('.price').text().replace(/,/g, "");
-						resp.data.sale=$('.sale').text();
 						resp.data.qty = qtt;
 						this.items.push(resp.data);
 						this.saveToLocalStorage();
