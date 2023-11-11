@@ -107,6 +107,15 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 				console.log("Error", error);
 			});
 		});
+		$scope.displayedImages.forEach(function(image) {
+			images = { image: image, product: $scope.form }
+			$http.post(`/rest/image`, images).then(resp => {
+				$scope.image.push(resp.data);
+			}).catch(error => {
+				alert("Lỗi thêm hinh !");
+				console.log("Error", error);
+			});
+		});
 
 		if ($scope.form.description.id == null) {
 			$scope.form.description.id = $scope.oldDescriptionId;
@@ -142,7 +151,7 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 				console.log("Error", error);
 			});
 	}
-	$scope.image=[];
+	$scope.image = [];
 	$scope.imageChanged = function(files) {
 		var data = new FormData();
 		data.append('uploadfile', files[0]);
