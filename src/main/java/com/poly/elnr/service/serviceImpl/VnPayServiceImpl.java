@@ -27,8 +27,7 @@ public class VnPayServiceImpl implements VnPayService {
 
 	@Override
 	public String createOrder(int total, String orderInfor, String urlReturn, int orderId) {
-		
-		String vnp_TxnRef = VNPayConfig.getRandomNumber(8);
+
         Map<String, String> vnp_Params = new HashMap<>();
         vnp_Params.put("vnp_Version", VnPayConstant.vnp_Version);
         vnp_Params.put("vnp_Command", VnPayConstant.vnp_Command);
@@ -43,7 +42,7 @@ public class VnPayServiceImpl implements VnPayService {
        
         vnp_Params.put("vnp_Locale", VnPayConstant.locate);
 
-        urlReturn += VnPayConstant.vnp_Returnurl;
+//        urlReturn += VnPayConstant.vnp_Returnurl;
         vnp_Params.put("vnp_ReturnUrl", urlReturn);
         vnp_Params.put("vnp_IpAddr", VnPayConstant.vnp_IpAddr);
 

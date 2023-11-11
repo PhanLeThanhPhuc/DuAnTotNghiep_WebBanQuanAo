@@ -8,8 +8,8 @@
                     <!-- Tabs nav -->
                     <div class="nav flex-column nav-pills nav-pills-custom" id="v-pills-tab" role="tablist"
                          aria-orientation="vertical">
-                        <a class="nav-link mb-3 p-3 shadow " id="v-pills-home-tab" data-toggle="pill"
-                           href="v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="false">
+                        <a class="nav-link mb-3 p-3 shadow "
+                           th:href="@{/user/info}" role="tab" aria-controls="v-pills-home" aria-selected="false">
                             <i class="fa fa-user-circle-o mr-2"></i>
                             <span  class="font-weight-bold small text-uppercase text-a">Thông tin cá nhân</span></a>
 
@@ -36,7 +36,7 @@
                                         <h6>THÔNG TIN KHÁCH HÀNG</h6>
                                         <ul>
                                             <li>
-                                                <p>Tên:</p><span> Thành Phúc</span>
+                                                <p>Tên:</p><span> [[${order.nameUser}]]</span>
                                             </li>
                                             <li>
                                                 <p>Địa chỉ:</p><span>[[${order.detailAddress}]], [[${order.ward}]], [[${order.province}]], [[${order.district}]]</span>
@@ -45,7 +45,7 @@
                                                 <p>Số điện thoại:</p><span> [[${order.phone}]]</span>
                                             </li>
                                             <li>
-                                                <p>Email:</p><span> Phuc@gmail.com</span>
+                                                <p>Email:</p><span> [[${order.email}]]</span>
                                             </li>
                                         </ul>
                                     </div>
@@ -80,10 +80,16 @@
                                             </li>
                                             <li>
                                                 <p>Thanh toán:</p>
-                                                <span th:if="${order.payment eq 0}"> Tiền mặt</span>
-                                                <span th:if="${order.payment eq 1}"> VN-PAY</span><br>
-                                                <span style="  font-style: italic" th:if="${order.statusPayment eq 0}"> Thanh toán không thành công</span>
-                                                <span style="  font-style: italic" th:if="${order.statusPayment eq 1}"> Thanh toán thành công</span>
+                                                <th:block th:if="${order.payment eq 0}">
+                                                    <span > Tiền mặt</span><br>
+                                                    <a th:if="${order.status!=2}"; data-toggle="modal" style="color: blue; text-transform: none;" data-target="#exampleModalCenter">Hoặc chọn hình thức thanh toán khác</a>
+                                                </th:block>
+                                                <th:block th:if="${order.payment eq 1}">
+                                                    <span > VN-PAY</span>
+                                                    <span style="  font-style: italic; color: red;" th:if="${order.statusPayment eq 0}"> (Thanh toán không thành công)</span><br>
+                                                    <a th:if="${order.statusPayment != 1 || order.status == 2   }" data-toggle="modal" data-target="#exampleModalCenter">Chọn hình thức thanh toán khác</a>
+                                                    <span style="  font-style: italic; color: seagreen" class="text-success" th:if="${order.statusPayment eq 1}"> (Thanh toán thành công)</span>
+                                                </th:block>
                                             </li>
                                             <li>
 
@@ -154,23 +160,26 @@
                                                 <th scope="col" colspan="3"></th>
                                                 <th scope="col" style="font-size: 14px">TẠM TÍNH: </th>
                                                 <th scope="col">
-                                                    [[${#numbers.formatDecimal(subTotal, 0, 'COMMA', 0, 'POINT')}]]
+                                                    [[${#numbers.formatDecimal(subTotal, 0, 'COMMA', 0, 'POINT')}]]đ
                                                 </th>
                                             </tr>
-                                            <tr>
+                                            <tr th:if="${order.voucher != null}">
                                                 <th scope="col" colspan="3"></th>
                                                 <th scope="col" style="font-size: 14px">ÁP DỤNG VOUCHER: </th>
-
+                                                <th scope="col" colspan="3">
+                                                    - [[${#numbers.formatDecimal(order.voucher.discountPrice, 0, 'COMMA', 0, 'POINT')}]]đ</th>
                                             </tr>
                                             <tr>
                                                 <th scope="col" colspan="3"></th>
                                                 <th scope="col" style="font-size: 14px">PHÍ SHIP: </th>
-                                                <th scope="col" colspan="3">[[${order.shipFee}]]</th>
+                                                <th scope="col" colspan="3">
+                                                    [[${#numbers.formatDecimal(order.shipFee, 0, 'COMMA', 0, 'POINT')}]]đ</th>
                                             </tr>
                                             <tr>
                                                 <th scope="col" colspan="3"></th>
                                                 <th scope="col" style="font-size: 14px">TỔNG TIỀN THANH TOÁN: </th>
-                                                <th scope="col" colspan="3">[[${order.total}]]</th>
+                                                <th scope="col" colspan="3">[[${#numbers.formatDecimal(order.total + order.shipFee - order.voucher.discountPrice, 0, 'COMMA',
+                                                    0,'POINT')}]]đ</th>
                                             </tr>
                                             </tfoot>
                                         </table>
@@ -210,4 +219,43 @@
             </div>
         </div>
     </section>
+
+
+<!--    input-->
+    <input type="hidden" id="inputIdOrder" th:value="${order.id}"/>
+
+    <!-- Modal Payment -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <form id="paymentForm" action="/submitPayment" method="post">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">CHỌN HÌNH THỨC THANH TOÁN</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="paymentMethod" id="cashPayment" value="0" checked>
+                            <label class="form-check-label" for="cashPayment">
+                                Thanh toán bằng tiền mặt
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="paymentMethod" id="vnPayPayment" value="1">
+                            <label class="form-check-label" for="vnPayPayment">
+                                Thanh toán qua Vn-Pay
+                            </label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+<!--                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
+                        <button type="button" class="btn btn-primary" onclick="submitForm()">Áp dụng</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 </main>

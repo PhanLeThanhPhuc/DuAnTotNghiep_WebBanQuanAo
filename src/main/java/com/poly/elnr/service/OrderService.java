@@ -26,4 +26,8 @@ public interface OrderService {
 
     List<Order> findOrderByIdUser(String username);
 
+    Order updatePayment(int idOrder, int statusPayment);
+
+    Order updatePaymentAndStatusPayment(int idOrder, int statusPayment, int payment);
+
 }

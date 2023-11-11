@@ -48,4 +48,9 @@ public class VoucherRestController {
 	public void delete(@PathVariable("id") Integer id) {
 		voucherService.delete(id);
 	}
+
+	@GetMapping("/date")
+	public List<Voucher> findVoucherDate(){
+		return voucherService.findAllVoucherDate();
+	}
 }

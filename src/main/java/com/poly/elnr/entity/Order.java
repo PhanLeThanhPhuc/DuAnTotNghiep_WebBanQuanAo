@@ -4,10 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.poly.elnr.dto.OrderData;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -57,6 +54,9 @@ public class Order implements Serializable{
     @Column(name = "order_date")
     private Date orderDate;
 
+    @Column(name = "expected_delivery_time")
+    private Date expectedDeliveryTime;
+
     @Column(name = "status")
     private int status;
 
@@ -89,6 +89,9 @@ public class Order implements Serializable{
 
     @Column(name = "ward_code")
     private String wardCode;
+
+    @Column(name = "note")
+    private String note;
 
     @Column(name = "district_id")
     private int districtId;

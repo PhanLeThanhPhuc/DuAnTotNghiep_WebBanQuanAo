@@ -163,7 +163,11 @@
                                 <p class="phone"><span>Trạng thái đơn hàng: </span><span class="badge badge-pill badge-secondary" ng-if="objectOrder.status == 0">Chờ xác nhận</span>
                                     <span class="badge badge-pill badge-warning" ng-if="objectOrder.status == 1">Chờ lấy hàng</span>
                                     <span class="badge badge-pill badge-danger" ng-if="objectOrder.status == 2">Hủy</span></p>
-                                <p class="address"><span>Tổng tiền: </span> <span style=" color: red; font-weight: 600">{{objectOrder.total | currency:'' :0 }}</span> </p>
+                                <p ng-if="objectOrder.voucher != null" class="name">Áp dụng voucher: {{objectOrder.voucher.voucher}} (Giảm <span style="color: red">{{objectOrder.voucher.discountPrice | currency:'' :0 }}đ</span> cho hóa đơn)</p>
+                                <p class="address"><span>Tổng tiền: </span> <span style=" color: red; font-weight: 600">{{objectOrder.total + objectOrder.shipFee - objectOrder.voucher.discountPrice | currency:'' :0 }}</span> </p>
+<!--                                <button type="button" class="btn btn-lg btn-danger" data-toggle="popover" title="Popover title" data-content="And here's some amazing content. It's very engaging. Right?">Click to toggle popover</button>-->
+<!--                                <a href="#" title="Dismissible popover" data-toggle="popover" data-trigger="focus"-->
+<!--                                   data-content="Click anywhere in the document to close this popover">Click me</a>-->
                             </div>
                         </div>
                         <div class="styles__StyledSection-sc-ri73gr-1 gQjSfs">
@@ -187,9 +191,9 @@
                         <div class="styles__StyledSection-sc-ri73gr-1 gQjSfs">
                             <div class="title">Hình thức giao hàng</div>
                             <div class="content">
-                                <p>Giao vào Thứ sáu, 10/11</p>
+                                <p>Thời gian dự kiến giao hàng: {{objectOrder.expectedDeliveryTime |date:'HH:mm - dd-MM-yyyy '}}</p>
                                 <p>Đơn vị vận chuyển Giao Hàng Nhanh</p>
-                                <p>Phí vận chuyển: <span style=" color: red; font-weight: 600">{{objectOrder.shipFee | currency:'' :0 }}</span>Đ</p>
+                                <p>Phí vận chuyển: <span style=" color: red; font-weight: 600">{{objectOrder.shipFee | currency:'' :0 }}đ</span></p>
                             </div>
                         </div>
                     </div>
@@ -255,3 +259,8 @@
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function () {
+        $('[data-toggle="popover"]').popover();
+    });
+</script>

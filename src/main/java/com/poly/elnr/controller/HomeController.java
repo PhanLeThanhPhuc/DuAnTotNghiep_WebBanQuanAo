@@ -12,7 +12,6 @@ public class HomeController {
 
 	@GetMapping("admin/index")
 	public String viewAdmin(Model model) {
-
 		return"redirect:/assets/admin/layout/index.html";
 	}
 

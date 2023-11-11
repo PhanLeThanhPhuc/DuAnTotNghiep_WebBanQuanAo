@@ -1,10 +1,10 @@
 app.controller("order-ctrl1", function($scope, $http){
 
-    $scope.initialize = function(){
+    $scope.initialize = () =>{
 
         $http.get("/rest/orders").then(resp => {
             $scope.listOrders = resp.data;
-            console.log($scope.listOrders);
+            // console.log("list order",$scope.listOrders);
         });
         // $scope.reset();
     }
@@ -13,6 +13,7 @@ app.controller("order-ctrl1", function($scope, $http){
 
     $scope.editOrder = (order) =>{
         $scope.objectOrder = order;
+        console.log(" order",$scope.objectOrder);
     }
 
     $scope.confirmOrder = (orderId) =>{
@@ -20,7 +21,7 @@ app.controller("order-ctrl1", function($scope, $http){
            if(resp.status ===200){
                var index = $scope.listOrders.findIndex(p => p.id == orderId);
                $scope.listOrders[index] = resp.data;
-               console.log("ssss",resp.data);
+               console.log("Data xac nhạn: ",resp.data);
                $scope.message(`Xác nhận đơn hàng ${orderId} thành công`)
            }
         });

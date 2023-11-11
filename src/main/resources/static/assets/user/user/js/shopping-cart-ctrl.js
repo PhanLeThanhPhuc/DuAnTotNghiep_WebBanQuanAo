@@ -1,26 +1,49 @@
 app.controller("cart-ctrl", function($scope, $http) {
 
-	$scope.initialize = () => {
+	$scope.initialize = async () => {
 
-		$http.get("/user/province").then(resp => {
-			$scope.listProvince = resp.data.data;
-		})
+			//get province
+			await $http.get("/user/province").then(resp => {
+				$scope.listProvince = resp.data.data;
+			})
 
-		//user
-		$http.get("/rest/users/userid").then(resp => {
-			if(resp.status == 200){
-				$scope.dataLogin = resp.data;
-			}
-		})
+			//get user or status login
+			await $http.get("/rest/users/userid").then(resp => {
+				if(resp.status == 200){
+					$scope.dataLogin = resp.data;
+					console.log($scope.dataLogin)
+				}
+			})
 
-		$http.get("/rest/address").then(resp => {
-			$scope.listAddress = resp.data;
-		})
+			//get address user
+			await $http.get("/rest/address").then(resp => {
+				$scope.listAddress = resp.data;
+			})
 
-		$scope.form();
-		$scope.shipFee = 0;
+			//voucher
+			await $http.get("/rest/voucher/date").then(resp => {
+				$scope.listVoucherDate = resp.data;
+				console.log("VOUCHER: ",$scope.listVoucherDate)
+			})
+
+			$scope.form();
+			$scope.shipFee = 0;
+			$scope.findInfoUser();
+			$scope.discoutVoucher=0;
+			$scope.voucherId = '';
+		console.log("san pham",$scope.cart)
 	}
 
+	$scope.findInfoUser = () =>{
+		console.log('Data from API:', $scope.dataLogin);
+		if($scope.dataLogin.statusLogin){
+			$scope.formInformationOrder.name = $scope.dataLogin.user.fullName;
+			$scope.formInformationOrder.phone = $scope.dataLogin.user.phone;
+			$scope.formInformationOrder.email = $scope.dataLogin.user.email;
+			document.getElementById("phone").disabled = true;
+			$scope.$apply();
+		}
+	}
 
 	$scope.form = () =>{
 		$scope.formInformationOrder = {
@@ -42,7 +65,6 @@ app.controller("cart-ctrl", function($scope, $http) {
 		if(district_id !== "default") {
 			$http.get(`/user/ward?district_id=${district_id}`).then(resp => {
 				$scope.listWard = resp.data.data;
-				// console.log($scope.listWard)
 			})
 		}else{
 			clearCbbWard();
@@ -69,11 +91,9 @@ app.controller("cart-ctrl", function($scope, $http) {
 		$scope.soluong = size;
 	};
 
-
 	$scope.sizeid = function(idff) {
 		$scope.sizeidf = idff;
 	};
-
 
 	var $cart = $scope.cart = {
 		qtyyy: 1,
@@ -102,7 +122,7 @@ app.controller("cart-ctrl", function($scope, $http) {
 						alert("Vượt quá số lượng cho phép !!!");
 					} else {
 						resp.data.priceBeforeSale=$('.priceBeforeSale').text();
-						resp.data.price=$('.price').text();
+						resp.data.price=$('.price').text().replace(/,/g, "");
 						resp.data.sale=$('.sale').text();
 						resp.data.qty = qtt;
 						this.items.push(resp.data);
@@ -122,7 +142,7 @@ app.controller("cart-ctrl", function($scope, $http) {
 			this.saveToLocalStorage();
 		},
 		amt_of(item) { // tính thành tiền của 1 sản phẩm
-			return item.price.replace(/,/g, "") * item.qty;
+			return item.price * item.qty;
 		},
 		get count() { // tính tổng số lượng các mặt hàng trong giỏ
 			return this.items
@@ -142,7 +162,11 @@ app.controller("cart-ctrl", function($scope, $http) {
 		},
 
 		get totalAmount () {
-			return this.amount + $scope.shipFee;
+			return this.amount ;
+		},
+
+		get totalDiscount () {
+			return this.amount - $scope.discoutVoucher;
 		},
 		cartChange(size, product, qti) {
 
@@ -168,7 +192,7 @@ app.controller("cart-ctrl", function($scope, $http) {
 
 	$cart.loadFromLocalStorage();
 
-	checkCbbAddres = () => {
+	getValueComboBoxAddress = () => {
 		var cboAddress = document.querySelectorAll(".country_select");
 
 		var province = cboAddress[0].options[cboAddress[0].selectedIndex].value;
@@ -184,19 +208,62 @@ app.controller("cart-ctrl", function($scope, $http) {
 
 	$scope.getShippingFee = () =>{
 
-		var cboAddress = document.querySelectorAll(".country_select");
+		$scope.provinceId ;
 
-		$scope.provinceId = cboAddress[0].options[cboAddress[0].selectedIndex].value;
+		$scope.districtId ;
 
-		$scope.districtId = cboAddress[1].options[cboAddress[1].selectedIndex].value;
+		$scope.wardId ;
 
-		$scope.wardId = cboAddress[2].options[cboAddress[2].selectedIndex].value;
+		$scope.provinceName ;
 
-		$scope.provinceName = cboAddress[0].options[cboAddress[0].selectedIndex].text;
+		$scope.districtName;
 
-		$scope.districtName = cboAddress[1].options[cboAddress[1].selectedIndex].text;
+		$scope.wardName ;
 
-		$scope.wardName = cboAddress[2].options[cboAddress[2].selectedIndex].text;
+		$scope.formInformationOrder.addressDetail;
+
+		function shipFeeLogin(){
+			///////////lay address từ users
+			var idAddress = $scope.formInformationOrder.address;
+			var index = $scope.listAddress.findIndex(p => p.id == parseInt(idAddress));
+			var addressChecked = $scope.listAddress[index];
+
+			$scope.provinceId =addressChecked.provinceId;
+
+			$scope.districtId =addressChecked.districtId;
+
+			$scope.wardId =addressChecked.wardId;
+
+			$scope.provinceName =addressChecked.provinceName;
+
+			$scope.districtName=addressChecked.districtName;
+
+			$scope.wardName =addressChecked.wardName;
+
+			$scope.formInformationOrder.addressDetail = addressChecked.addressDetail;
+		}
+
+		function shipFeeNoLogin (){
+			var cboAddress = document.querySelectorAll(".country_select");
+
+			$scope.provinceId = cboAddress[0].options[cboAddress[0].selectedIndex].value;
+
+			$scope.districtId = cboAddress[1].options[cboAddress[1].selectedIndex].value;
+
+			$scope.wardId = cboAddress[2].options[cboAddress[2].selectedIndex].value;
+
+			$scope.provinceName = cboAddress[0].options[cboAddress[0].selectedIndex].text;
+
+			$scope.districtName = cboAddress[1].options[cboAddress[1].selectedIndex].text;
+
+			$scope.wardName = cboAddress[2].options[cboAddress[2].selectedIndex].text;
+		}
+
+		if($scope.dataLogin.statusLogin){
+			shipFeeLogin();
+		}else{
+			shipFeeNoLogin();
+		}
 
 		var bodyProduct = {
 			service_type_id : 2,
@@ -223,35 +290,6 @@ app.controller("cart-ctrl", function($scope, $http) {
 
 	}
 
-	getShipAddress = () =>{
-		var idAddress = $scope.formInformationOrder.address;
-		var index = $scope.listAddress.findIndex(p => p.id == parseInt(idAddress));
-		var addressChecked = $scope.listAddress[index];
-
-		var bodyProduct = {
-			service_type_id : 2,
-			to_ward_code: addressChecked.wardId ,
-			to_district_id: parseInt(addressChecked.districtId),
-			weight: $scope.cart.totalWeights,
-			items: $cart.items.map(item => {
-				return {
-					name: item.product.name ,
-					quantity: item.qty
-				}
-			})
-		}
-
-		$http.post(`/user/shipfee`, bodyProduct).then(resp => {
-			if(resp.status === 200){
-				$scope.shipFee = resp.data.data.total;
-				console.log(resp.data.data.expected_delivery_time);
-			}
-		}).catch(error => {
-			alert("Lỗi thêm mới !");
-			console.log("Error", error);
-		});
-	}
-
 	addAddress = () =>{
 		var cboAddress = document.querySelectorAll(".country_select_add");
 
@@ -276,7 +314,7 @@ app.controller("cart-ctrl", function($scope, $http) {
 			districtId: parseInt(districtId),
 			wardId: wardId,
 			user: {
-				id :$scope.dataLogin.idUser
+				id :$scope.dataLogin.user.id
 			}
 		}
 
@@ -292,6 +330,12 @@ app.controller("cart-ctrl", function($scope, $http) {
 	}
 
 	purchase = () =>{
+
+		// var voucher ={
+		// 	$scope.voucherId === '' ? '' : `id: ${$scope.voucherId}`
+		// }
+		// console.log("re",voucher);
+
 		$scope.data = {
 			province: $scope.provinceName,
 			district: $scope.districtName,
@@ -303,15 +347,16 @@ app.controller("cart-ctrl", function($scope, $http) {
 			phone : $scope.formInformationOrder.phone,
 			payment: $scope.formInformationOrder.payment ,
 			shipCode: "",
+			note: $scope.formInformationOrder.note,
 			shipFee: $scope.shipFee,
 			email: $scope.formInformationOrder.email,
 			total: $scope.cart.totalAmount,
-			totalDiscount: $scope.cart.totalAmount,
+			totalDiscount: $scope.cart.totalDiscount,
 			weight : $scope.cart.totalWeights,
 			wardCode: $scope.wardId ,
 			districtId: parseInt($scope.districtId),
 			// user: { id: 1 },
-			// voucher: { id: 2 },
+			voucher: {id : $scope.voucherId},
 			orderDetails: $cart.items.map(item => {
 				return {
 					productDetails: { id: item.id },
@@ -341,6 +386,69 @@ app.controller("cart-ctrl", function($scope, $http) {
 		})
 	}
 
+
+	// discout
+	$scope.addVoucher = () => {
+		///reset
+		$cart.loadFromLocalStorage();
+
+		const voucher = document.getElementById("inputvoucher").value;
+		const foundVoucher = $scope.listVoucherDate.find(v => v.voucher === voucher);
+		if (foundVoucher) {
+			console.log("CÓ voucher");
+			var index = $scope.listVoucherDate.findIndex(v => v.voucher === voucher);
+			$scope.objectVoucher =  $scope.listVoucherDate[index];
+			if (foundVoucher.quantity === 0) {
+				var smallElement = document.getElementById("errorVoucher");
+				smallElement.innerHTML = "Voucher đã hết số lượng!";
+				console.log("voucher đã hết số lượng");
+			} else if ($scope.cart.count < foundVoucher.minOrderProduct) {
+				var smallElement = document.getElementById("errorVoucher");
+				smallElement.innerHTML = "Số lượng mặt hàng không đủ để áp dụng voucher!";
+				console.log("số lượng mặt hàng không đủ áp dụng voucher");
+			} else if ($scope.cart.amount < foundVoucher.min) {
+				var smallElement = document.getElementById("errorVoucher");
+				smallElement.innerHTML = "Số tiền đơn hàng phải lớn hơn", foundVoucher.min, "để áp dụng voucher!";
+				console.log("Số tiền đơn hàng phải lớn hơn", foundVoucher.min, "");
+			} else {
+				console.log("Đủ điều kiện áp dụng", foundVoucher.min, "");
+				if (foundVoucher.productID === "") {
+					console.log("Áp dụng cho tất cả sản phẩm");
+					$scope.voucherId = $scope.objectVoucher.id;
+					$scope.discoutVoucher = $scope.objectVoucher.discountPrice;
+					$scope.totalVoucher = $scope.cart.totalAmount -$scope.discoutVoucher;
+					var smallElement = document.getElementById("errorVoucher");
+					smallElement.innerHTML = "Đã áp dụng voucher!";
+					console.log("Total khi ap voucher: ",$scope.totalVoucher);
+				} else {
+					for (const item of $scope.cart.items) {
+						const productIDs = foundVoucher.productID.split(',').map(id => id.trim());
+						const cartItemId = String(item.id);
+
+						if (productIDs.includes(cartItemId)) {
+							$scope.voucherId = $scope.objectVoucher.id;
+							console.log("Có sản phẩm: ", cartItemId);
+							$scope.discoutVoucher = $scope.objectVoucher.discountPrice;
+							$scope.totalVoucher = $scope.cart.totalAmount -$scope.discoutVoucher;
+							var smallElement = document.getElementById("errorVoucher");
+							smallElement.innerHTML = "Đã áp dụng voucher!";
+						} else {
+							var smallElement = document.getElementById("errorVoucher");
+							smallElement.innerHTML = "Sản phẩm không được áp dụng mã giảm giá này!";
+							// $scope.message("Sản phẩm không được áp dụng mã giảm giá!");
+						}
+					}
+				}
+			}
+		} else {
+			var smallElement = document.getElementById("errorVoucher");
+			smallElement.innerHTML = "Mã voucher không khả dụng!";
+		}
+	};
+
+
+
+
 	$scope.message = (mes) =>{
 		$.toast({
 			text: mes, // Text that is to be shown in the toast
@@ -360,5 +468,4 @@ app.controller("cart-ctrl", function($scope, $http) {
 			afterHidden: function () {}  // will be triggered after the toast has been hidden
 		});
 	}
-
 })
