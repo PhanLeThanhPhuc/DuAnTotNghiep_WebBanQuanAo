@@ -4,9 +4,9 @@
 		<div class="col-12">
 			<div class="card">
 				<div class="card-body">
-					<h4 class="card-title">User List</h4>
+					<h4 class="card-title">Danh sách người dùng</h4>
 					<div class="form-group col-sm-6">
-						Search: <input ng-model="searchText.$" class="form-control">
+						Tìm kiếm: <input ng-model="searchText.$" class="form-control">
 					</div>
 					
 					
@@ -16,25 +16,25 @@
 							<thead>
 								<tr>
 									<th>Image</th>
-									<th ng-click="toggleSort('fullName')">Fullname
+									<th ng-click="toggleSort('fullName')">Họ và tên
 										<span ng-show="isSortedBy('fullName')" ng-class="getSortIconClass('fullName')"></span>
 									</th>
-									<th ng-click="toggleSort('phone')">Phone
+									<th ng-click="toggleSort('phone')">Số điện thoại
 										<span ng-show="isSortedBy('phone')" ng-class="getSortIconClass('phone')"></span>
 									</th>
 									<th ng-click="toggleSort('email')">Email
 										<span ng-show="isSortedBy('email')" ng-class="getSortIconClass('email')"></span>
 									</th>
-									<th ng-click="toggleSort('gender')">Gender
+									<th ng-click="toggleSort('gender')">Giới tính
 										<span ng-show="isSortedBy('gender')" ng-class="getSortIconClass('gender')"></span>
 									</th >
-									<th ng-click="toggleSort('date_insert')">Create Date
+									<th ng-click="toggleSort('date_insert')">Ngày tạo
 										<span ng-show="isSortedBy('date_insert')" ng-class="getSortIconClass('date_insert')"></span>
 									</th>
-									<th ng-click="toggleSort('date_update')">Update date
+									<th ng-click="toggleSort('date_update')">Ngày cập nhật
 										<span ng-show="isSortedBy('date_update')" ng-class="getSortIconClass('date_update')"></span>
 									</th>
-									<th ng-click="toggleSort('status')">Status
+									<th ng-click="toggleSort('status')">Trạng thái
 										<span ng-show="isSortedBy('status')" ng-class="getSortIconClass('status')"></span>
 									</th>
 									<th >										
@@ -76,17 +76,17 @@
 			<nav>
 				<ul class="pagination">
 					<li class="page-item"><a class="page-link" href=""
-						ng-click="pager.first()">First</a></li>
+						ng-click="pager.first()">Đầu</a></li>
 					<li class="page-item"><a class="page-link" href=""
-						ng-click="pager.prev()">Previous</a></li>
+						ng-click="pager.prev()">Trước</a></li>
 					<li class="page-item"><a class="page-link" href="">{{pager.page
-							+ 1}} of {{pager.count}}</a></li>
+							+ 1}} / {{pager.count}}</a></li>
 
 
 					<li class="page-item"><a class="page-link" href=""
-						ng-click="pager.next()">Next</a></li>
+						ng-click="pager.next()">Tiếp</a></li>
 					<li class="page-item"><a class="page-link" href=""
-						ng-click="pager.last()">Last</a></li>
+						ng-click="pager.last()">Cuối</a></li>
 				</ul>
 			</nav>
 		</div>

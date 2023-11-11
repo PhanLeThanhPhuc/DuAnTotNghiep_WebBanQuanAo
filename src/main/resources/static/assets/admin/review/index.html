@@ -135,14 +135,14 @@
 
 					<div class="row">
 						<div class="form-group col-sm-6">
-							Search: <input ng-model="searchText.$" class="form-control">
+							Tìm kiếm: <input ng-model="searchText.$" class="form-control">
 
 						</div>
 						<div class="form-group col-sm-6">
-							<div>Product</div>
+							<div>Sản phẩm</div>
 							<select class="form-control" ng-model="product.id"
 								ng-init="product.id = product.id || 'all'">
-								<option value="all">All</option>
+								<option value="all">Tất cả</option>
 								<option ng-repeat="product in products" ng-value="product.id">{{product.name}}</option>
 							</select>
 						</div>
@@ -153,22 +153,22 @@
 							class="table table-striped table-bordered zero-configuration">
 							<thead>
 								<tr>
-									<th ng-click="toggleSort('id')">ID <span
+									<th ng-click="toggleSort('id')">Mã số <span
 										ng-show="isSortedBy('id')" ng-class="getSortIconClass('id')"></span>
 									</th>
-									<th ng-click="toggleSort('product.name')">Product <span
+									<th ng-click="toggleSort('product.name')">Sản phẩm <span
 										ng-show="isSortedBy('product.name')"
 										ng-class="getSortIconClass('product.name')"></span>
 									</th>
-									<th ng-click="toggleSort('user.fullName')">User <span
+									<th ng-click="toggleSort('user.fullName')">Người dùng <span
 										ng-show="isSortedBy('user.fullName')"
 										ng-class="getSortIconClass('user.fullName')"></span>
 									</th>
-									<th style="width:105px;" ng-click="toggleSort('rating')">Rating <span
+									<th style="width:105px;" ng-click="toggleSort('rating')">loại đánh giá <span
 										ng-show="isSortedBy('rating')"
 										ng-class="getSortIconClass('rating')"></span>
 									</th>
-									<th ng-click="toggleSort('descriptionReview')">Description
+									<th ng-click="toggleSort('descriptionReview')">Nội dung đánh giá
 										<span ng-show="isSortedBy('descriptionReview')"
 										ng-class="getSortIconClass('descriptionReview')"></span>
 									</th>

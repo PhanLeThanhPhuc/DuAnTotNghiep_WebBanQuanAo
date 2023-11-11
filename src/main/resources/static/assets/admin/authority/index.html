@@ -9,10 +9,11 @@
 				</div>	
 			</div>
 			<div class="table-responsive">
+			
 				<table class="table table-striped table-bordered zero-configuration">
 					<thead class="bg-primary-light" style=" text-transform: uppercase;">
 						<tr>
-							<th style="color:white;font-weight: bolder;" ng-click="toggleSort('fullName')">Name <span
+							<th style="color:white;font-weight: bolder;" ng-click="toggleSort('fullName')">Họ và tên <span
 								ng-show="isSortedBy('fullName')"
 								ng-class="getSortIconClass('fullName')"></span>
 							</th>
@@ -29,24 +30,32 @@
 					</tr>
 					</tbody>
 				</table>
-				<div class="bootstrap-pagination text-center">
-					<nav>
-						<ul class="pagination">
-							<li class="page-item"><a class="page-link" href=""
-								ng-click="pager.first()">First</a></li>
-							<li class="page-item"><a class="page-link" href=""
-								ng-click="pager.prev()">Previous</a></li>
-							<li class="page-item"><a class="page-link" href="">{{pager.page
-									+ 1}} of {{pager.count}}</a></li>
-							<li class="page-item"><a class="page-link" href=""
-								ng-click="pager.next()">Next</a></li>
-							<li class="page-item"><a class="page-link" href=""
-								ng-click="pager.last()">First</a></li>
-						</ul>
-					</nav>
+				</div>
+				<div class="row">
+		<div class="col-4"></div>
+		<div class="bootstrap-pagination col-4 text-center" style="overflow: hidden;">
+			<nav>
+				<ul class="pagination">
+					<li class="page-item"><a class="page-link" href=""
+						ng-click="pager.first()">Đầu</a></li>
+					<li class="page-item"><a class="page-link" href=""
+						ng-click="pager.prev()">Trước</a></li>
+					<li class="page-item"><a class="page-link" href="">{{pager.page
+							+ 1}} / {{pager.count}}</a></li>
+
+
+					<li class="page-item"><a class="page-link" href=""
+						ng-click="pager.next()">Tiếp</a></li>
+					<li class="page-item"><a class="page-link" href=""
+						ng-click="pager.last()">Cuối</a></li>
+				</ul>
+			</nav>
+		</div>
+		<div class="col-4"></div>
+		</div>
+				
 				</div>
 			</div>
 		</div>
-	</div>
-</div>
+
 
