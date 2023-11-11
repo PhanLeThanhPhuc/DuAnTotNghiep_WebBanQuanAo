@@ -17,4 +17,6 @@ public interface VoucherService {
 
 	void delete(Integer id);
 
+	List<Voucher> findAllVoucherDate();
+
 }

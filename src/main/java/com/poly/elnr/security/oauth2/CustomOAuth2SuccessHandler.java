@@ -40,6 +40,7 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
 
                 response.sendRedirect("/user/index");
                 return;
+
             }
 //            } else if (authority.getAuthority().equals("SELLER")) {
 //

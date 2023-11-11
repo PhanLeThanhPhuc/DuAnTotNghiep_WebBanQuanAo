@@ -1,11 +1,11 @@
-app.controller("user-ctrl", function($scope,$filter, $http) {
+app.controller("user-ctrl", function($scope, $filter, $http) {
 	$scope.initialize = function() {
 		$http.get("/rest/users").then(resp => {
 			$scope.items = resp.data;
 			$scope.items.forEach(item => {
 				item.date_insert = new Date(item.date_insert)
 				item.date_update = new Date(item.date_update)
-
+				
 			})
 		});
 		$scope.reset();
@@ -18,7 +18,15 @@ app.controller("user-ctrl", function($scope,$filter, $http) {
 
 		}
 	}
+	$scope.showPassword = false;
+	$scope.inputType = 'password';
 
+	$scope.togglePasswordVisibility = function() {
+		$scope.showPassword = !$scope.showPassword;
+		$scope.inputType = $scope.showPassword ? 'text' : 'password';
+	};
+	
+	
 	$scope.edit = function(item) {
 		$scope.form = angular.copy(item);
 		$(".nav-tabs a:eq(0)").tab("show");
@@ -45,7 +53,7 @@ app.controller("user-ctrl", function($scope,$filter, $http) {
 			var index = $scope.items.findIndex(p => p.id == item.id);
 			$scope.items[index] = item;
 			alert("Cập nhật người dùng thành công!");
-			
+
 		})
 			.catch(error => {
 				alert("Lỗi cập nhật!");
@@ -73,21 +81,22 @@ app.controller("user-ctrl", function($scope,$filter, $http) {
 			});
 
 	}
-
+	
 	$scope.imageChanged = function(files) {
 		var data = new FormData();
-		data.append('file', files[0]);
-		$http.post('/rest/upload/image', data, {
+		data.append('uploadfile', files[0]);
+		$http.post('/rest/upload', data, {
 			transformRequest: angular.identity,
 			headers: { 'Content-Type': undefined }
 		}).then(resp => {
-			$scope.form.image = resp.data.name;
+			$scope.form.image = resp.data.image;
 		}).catch(error => {
 			alert("Lỗi upload hình ảnh");
 			console.log("Error", error);
 		})
 	}
 
+	
 	$scope.initialize();
 
 	$scope.searchText = {};
@@ -130,6 +139,7 @@ app.controller("user-ctrl", function($scope,$filter, $http) {
 			this.page--;
 		}
 	}
+
 	$scope.toggleSort = function(column) {
 		if ($scope.pager.sortColumn == column) {
 			$scope.pager.sortDirection = ($scope.pager.sortDirection == 'asc') ? 'desc' : 'asc';
@@ -147,26 +157,29 @@ app.controller("user-ctrl", function($scope,$filter, $http) {
 	$scope.isSortedBy = function(column) {
 		return $scope.pager.sortColumn == column;
 	};
-	
-	
+
+
+
 	$scope.messege = (mes) =>{
-	$.toast({
-	    text: mes, // Text that is to be shown in the toast
-	    heading: 'Thông báo', // Optional heading to be shown on the toast
-	    icon: 'success', // Type of toast icon
-	    showHideTransition: 'fade', // fade, slide or plain
-	    allowToastClose: true, // Boolean value true or false
-	    hideAfter: 2000, // false to make it sticky or number representing the miliseconds as time after which toast needs to be hidden
-	    stack: 5, // false if there should be only one toast at a time or a number representing the maximum number of toasts to be shown at a time
-	    position: 'top-right', // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values
-	    textAlign: 'left',  // Text alignment i.e. left, right or center
-	    loader: true,  // Whether to show loader or not. True by default
-	    loaderBg: '#9EC600',  // Background color of the toast loader
-	    beforeShow: function () {}, // will be triggered before the toast is shown
-	    afterShown: function () {}, // will be triggered after the toat has been shown
-	    beforeHide: function () {}, // will be triggered before the toast gets hidden
-	    afterHidden: function () {}  // will be triggered after the toast has been hidden
-	});
+
+		$.toast({
+			text: mes, // Text that is to be shown in the toast
+			heading: 'Thông báo', // Optional heading to be shown on the toast
+			icon: 'success', // Type of toast icon
+			showHideTransition: 'fade', // fade, slide or plain
+			allowToastClose: true, // Boolean value true or false
+			hideAfter: 2000, // false to make it sticky or number representing the miliseconds as time after which toast needs to be hidden
+			stack: 5, // false if there should be only one toast at a time or a number representing the maximum number of toasts to be shown at a time
+			position: 'top-right', // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values
+			textAlign: 'left',  // Text alignment i.e. left, right or center
+			loader: true,  // Whether to show loader or not. True by default
+			loaderBg: '#9EC600',  // Background color of the toast loader
+
+			beforeShow: function() { }, // will be triggered before the toast is shown
+			afterShown: function() { }, // will be triggered after the toat has been shown
+			beforeHide: function() { }, // will be triggered before the toast gets hidden
+			afterHidden: function() { }  // will be triggered after the toast has been hidden
+		});
 	}
 }
 

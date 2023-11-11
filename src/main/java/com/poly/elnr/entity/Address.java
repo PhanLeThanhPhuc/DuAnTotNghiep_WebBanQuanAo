@@ -32,17 +32,26 @@ public class Address implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "province")
-    private String province;
+    @Column(name = "province_name")
+    private String provinceName;
 
-    @Column(name = "district")
-    private String district;
+    @Column(name = "district_name")
+    private String districtName;
 
-    @Column(name = "ward")
-    private String ward;
+    @Column(name = "ward_name")
+    private String wardName;
 
     @Column(name = "address_detail")
-    private String address_detail;
+    private String addressDetail;
+
+    @Column(name = "province_id")
+    private int provinceId;
+
+    @Column(name = "district_id")
+    private int districtId;
+
+    @Column(name = "ward_id")
+    private String wardId;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

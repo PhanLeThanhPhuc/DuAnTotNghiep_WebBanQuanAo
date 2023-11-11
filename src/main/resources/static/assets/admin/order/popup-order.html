@@ -1,0 +1,266 @@
+
+<style>
+    .modal-dialog{
+        max-width: 1300px !important;
+    }
+    .heading {
+        font-family: Inter, Helvetica, Arial, sans-serif;
+        text-size-adjust: 100%;
+        color: rgb(36, 36, 36);
+        line-height: 1.5;
+        box-sizing: border-box;
+        font-size: 13px;
+        text-transform: uppercase;
+        font-weight: 600;
+        /*margin: 20px 0px 0px;*/
+        display: flex;
+        -webkit-box-align: center;
+        align-items: center;
+    }
+
+    .created-date {
+        font-family: Inter, Helvetica, Arial, sans-serif;
+        text-size-adjust: 100%;
+        font-size: 13px;
+        color: rgb(36, 36, 36);
+        line-height: 1.5;
+        box-sizing: border-box;
+        /* display: flex; */
+        align-items: flex-end;
+        flex-direction: column;
+        margin: 10px;
+    }
+
+    .cRRvpz {
+        display: flex;
+        margin: 10px 0px 20px;
+    }
+
+    .cRRvpz>div:first-child {
+        margin-left: 0px;
+    }
+
+    .cRRvpz>div {
+        width: 25%;
+        margin: 0px 5px;
+    }
+
+    .gQjSfs {
+        margin: 10px 0px 20px;
+        display: flex;
+        flex-direction: column;
+        color: rgba(0, 0, 0, 0.65);
+    }
+
+    .gQjSfs .title {
+        font-size: 13px;
+        font-weight: 600;
+        text-transform: uppercase;
+        /*margin: 0px 0px 15px;*/
+        color: rgb(36, 36, 36);
+        color: black;
+    }
+
+    .gQjSfs .content {
+        display: flex;
+        flex-direction: column;
+        background-color: rgb(255, 255, 255);
+        padding: 10px;
+        border-radius: 4px;
+        height: 100%;
+        color: black;
+    }
+
+    .gQjSfs .name {
+        /*text-transform: uppercase;*/
+        color: black;
+    }
+
+    .cRRvpz .name {
+        color: rgb(36, 36, 36);
+        /*font-weight: bold;*/
+        color: black;
+    }
+
+    .cRRvpz p {
+        color: black;
+        margin: 5px 0px 0px;
+    }
+
+
+    /* cbgg */
+    .ulproduct {
+        display: block;
+        overflow: hidden;
+        padding: 0 10px;
+    }
+
+    .ulproduct li {
+        display: block;
+        overflow: hidden;
+        padding: 10px 0;
+    }
+
+    .ulproduct li .img-order {
+        float: left;
+        /*width: 11%;*/
+    }
+
+    .ulproduct li .img-order img {
+        display: block;
+        overflow: hidden;
+        width: 60px;
+    }
+
+    .ulproduct li .text-order {
+        display: block;
+        overflow: hidden;
+        margin-left: 80px;
+    }
+
+    .ulproduct li .text-order .amount-color {
+        display: block;
+        overflow: hidden;
+    }
+
+    .ulproduct li .amount-color small {
+        display: inline-block;
+        margin-right: 10px;
+        color: #666;
+        font-size: 11px;
+    }
+
+    td {
+        /*padding: 0 !important;*/
+        height: 100px !important;
+        vertical-align: middle !important;
+    }
+    tr th{
+        font-weight: bold !important;
+        color: black !important;
+    }
+</style>
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Chi tiết đơn hàng</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div>
+
+                    <div class="styles__StyledGroupSection-sc-ri73gr-0 cRRvpz">
+                        <div class="styles__StyledSection-sc-ri73gr-1 gQjSfs">
+                            <div class="title">Thông tin đơn hàng</div>
+                            <div class="content">
+                                <p class="name">Mã đơn hàng: {{objectOrder.id}}</p>
+                                <p class="name">Mã vận đơn: {{objectOrder.shipCode}}</p>
+                                <p class="address"><span>Ngày đặt hàng: </span> {{objectOrder.orderDate | date:'yyyy-MM-dd HH:mm:ss'}} </p>
+                                <p class="phone"><span>Trạng thái đơn hàng: </span><span class="badge badge-pill badge-secondary" ng-if="objectOrder.status == 0">Chờ xác nhận</span>
+                                    <span class="badge badge-pill badge-warning" ng-if="objectOrder.status == 1">Chờ lấy hàng</span>
+                                    <span class="badge badge-pill badge-danger" ng-if="objectOrder.status == 2">Hủy</span></p>
+                                <p ng-if="objectOrder.voucher != null" class="name">Áp dụng voucher: {{objectOrder.voucher.voucher}} (Giảm <span style="color: red">{{objectOrder.voucher.discountPrice | currency:'' :0 }}đ</span> cho hóa đơn)</p>
+                                <p class="address"><span>Tổng tiền: </span> <span style=" color: red; font-weight: 600">{{objectOrder.total + objectOrder.shipFee - objectOrder.voucher.discountPrice | currency:'' :0 }}</span> </p>
+<!--                                <button type="button" class="btn btn-lg btn-danger" data-toggle="popover" title="Popover title" data-content="And here's some amazing content. It's very engaging. Right?">Click to toggle popover</button>-->
+<!--                                <a href="#" title="Dismissible popover" data-toggle="popover" data-trigger="focus"-->
+<!--                                   data-content="Click anywhere in the document to close this popover">Click me</a>-->
+                            </div>
+                        </div>
+                        <div class="styles__StyledSection-sc-ri73gr-1 gQjSfs">
+                            <div class="title">Địa chỉ người nhận</div>
+                            <div class="content">
+                                <p class="name"> Tên :{{objectOrder.nameUser}}</p>
+                                <p class="address"><span>Địa chỉ: </span> {{objectOrder.detailAddress}}, {{objectOrder.ward}}, {{objectOrder.district}}, {{objectOrder.province}} </p>
+                                <p class="phone"><span>Điện thoại: </span>{{objectOrder.phone}}</p>
+                            </div>
+                        </div>
+                        <div class="styles__StyledSection-sc-ri73gr-1 gQjSfs">
+                            <div class="title">Hình thức thanh toán</div>
+                            <div class="content">
+                                <p class="">{{objectOrder.payment == 0 ? 'Tiền mặt' : 'Chuyển khoản qua Vn-Pay'}}</p>
+                                <p ng-if="objectOrder.payment == 1" class="cc-info description orange">
+                                    <span class="badge badge-pill badge-danger" ng-if="objectOrder.statusPayment == 0">Thanh toán thất bại</span>
+                                    <span class="badge badge-pill badge-success" ng-if="objectOrder.statusPayment == 1">Thanh toán thành công</span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="styles__StyledSection-sc-ri73gr-1 gQjSfs">
+                            <div class="title">Hình thức giao hàng</div>
+                            <div class="content">
+                                <p>Thời gian dự kiến giao hàng: {{objectOrder.expectedDeliveryTime |date:'HH:mm - dd-MM-yyyy '}}</p>
+                                <p>Đơn vị vận chuyển Giao Hàng Nhanh</p>
+                                <p>Phí vận chuyển: <span style=" color: red; font-weight: 600">{{objectOrder.shipFee | currency:'' :0 }}đ</span></p>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="table">
+                     <tr>
+                        <th>SẢN PHẨM</th>
+                        <th>GIÁ</th>
+                        <th>TỔNG</th>
+                    </tr>
+
+                        <tbody>
+                        <tr ng-repeat="item in objectOrder.orderDetails">
+                            <td>
+                                <ul class="ulproduct">
+                                    <li>
+                                        <a href="/camera-giam-sat/camera-ip-360-do-1080p-imou-ranger-2c-a22ep-l"
+                                           target="_blank" class="img-order">
+                                            <img data-src="/assets/user/user/image/{{item.productDetails.product.thumbnail}}"
+                                                 src="/assets/user/user/image/{{item.productDetails.product.thumbnail}}" loading="lazy"
+                                                 class=" ls-is-cached lazyloaded">
+                                        </a>
+                                        <div class="text-order">
+                                            <a href="/assets/user/user/image/{{item.productDetails.product.thumbnail}}" target="_blank"
+                                               class="text-order__product-name"
+                                               style="font-size: 13px">{{item.productDetails.product.name}}</a>
+                                            <div class="amount-color">
+                                                <small> Màu: <small>{{item.productDetails.product.color.name}}
+                                                </small>
+                                                </small>
+                                                <small> Size: <small>{{item.productDetails.size.name}}</small>
+                                                </small>
+                                                <small> Số lượng: <small>{{item.quantity}}</small>
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </td>
+                            <td>
+                                <!--                                                <span style="font-size: 13px; color: red; font-weight: 600">01001₫</span><br>-->
+                                <!--                                                <span style="font-size: 13px; color: black; font-weight: 600; text-decoration:line-through;">01001₫</span>-->
+                                <div >
+                                <span style="font-size: 13px; color: red; font-weight: 600; ">
+                                    {{item.price | currency:'' :0 }}₫</span><br>
+                                    <span style="font-size: 13px; color: black; font-weight: 600; text-decoration:line-through;">{{item.discountPrice | currency:'' :0 }}₫</span>
+                                </div>
+
+                            </td>
+                            <td>
+                            <span style="font-size: 14px; color: red; font-weight: 600">{{item.price * item.quantity | currency:'' :0 }}₫</span><br>
+                            </td>
+                        </tr>
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button ng-if="objectOrder.status == 0" ng-click="confirmOrder(objectOrder.id)" type="button" data-dismiss="modal" class="btn btn-primary">Xác nhận đơn hàng</button>
+                <button ng-if="objectOrder.status != 2" type="button" ng-click="cancelOrder(objectOrder.id)" type="button" data-dismiss="modal" class="btn btn-primary">Hủy</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('[data-toggle="popover"]').popover();
+    });
+</script>

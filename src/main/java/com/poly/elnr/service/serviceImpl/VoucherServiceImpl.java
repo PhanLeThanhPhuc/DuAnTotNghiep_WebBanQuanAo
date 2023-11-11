@@ -41,9 +41,10 @@ public class VoucherServiceImpl implements VoucherService{
 		
 	}
 
-	
-
-	
+	@Override
+	public List<Voucher> findAllVoucherDate() {
+		return voucherRepository.fillAllVoucherDate();
+	}
 
 
 }

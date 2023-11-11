@@ -16,5 +16,7 @@ public interface CategoryDetailService {
 
 
 	public CategoryDetail update(CategoryDetail create);
+
+	public List<CategoryDetail> findByCategoryID(Integer id);
 	
 }
