@@ -18,18 +18,16 @@
 							<th ng-click="toggleSort('id')" style="width: 10%;">ID <span
 								ng-show="isSortedBy('id')" ng-class="getSortIconClass('id')"></span>
 							</th>
-							<th ng-click="toggleSort('name')" style="width: 20%;">Name <span
+							<th ng-click="toggleSort('name')" style="width: 20%;">Loại <span
 								ng-show="isSortedBy('name')" ng-class="getSortIconClass('name')"></span></th>
-							<th ng-click="toggleSort('dateInsert')" style="width: 20%;">Date
-								create <span ng-show="isSortedBy('dateInsert')"
+							<th ng-click="toggleSort('dateInsert')" style="width: 20%;"> Ngày tạo<span ng-show="isSortedBy('dateInsert')"
 								ng-class="getSortIconClass('dateInsert')"></span>
 							</th>
-							<th ng-click="toggleSort('dateUpdate')" style="width: 20%;">Date
-								update <span ng-show="isSortedBy('dateUpdate')"
+							<th ng-click="toggleSort('dateUpdate')" style="width: 20%;">Ngày cập nhật <span ng-show="isSortedBy('dateUpdate')"
 								ng-class="getSortIconClass('dateUpdate')"></span>
 							</th>
-							<th ng-click="toggleSort('status')" style="width: 20%;">Status</th>
-							<th style="width: 20%;">Action</th>
+							<th ng-click="toggleSort('status')" style="width: 20%;">Trạng thái</th>
+							<th style="width: 20%;">Hoạt động</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -82,15 +80,15 @@
 					<nav>
 						<ul class="pagination">
 							<li class="page-item"><a class="page-link" href=""
-								ng-click="pager.first()">First</a></li>
+								ng-click="pager.first()">Đầu</a></li>
 							<li class="page-item"><a class="page-link" href=""
-								ng-click="pager.prev()">Previous</a></li>
+								ng-click="pager.prev()">Trước</a></li>
 							<li class="page-item"><a class="page-link" href="">{{pager.page
 									+ 1}} of {{pager.count}}</a></li>
 							<li class="page-item"><a class="page-link" href=""
-								ng-click="pager.next()">Next</a></li>
+								ng-click="pager.next()">Tiếp</a></li>
 							<li class="page-item"><a class="page-link" href=""
-								ng-click="pager.last()">First</a></li>
+								ng-click="pager.last()">Cuối</a></li>
 						</ul>
 					</nav>
 				</div>
