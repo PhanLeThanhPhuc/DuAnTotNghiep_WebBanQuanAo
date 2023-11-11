@@ -8,7 +8,7 @@
 					<div class="row">
 						<div class="col-sm-4 text-center">
 							<label for="image"> <img class=""
-								ng-src="{{form.image ? '/assets/user/user/image/' + form.image : '/assets/user/user/image/cloud-upload.jpg'}}"
+								ng-src="{{form.image ? '/assets/user/user/image/' + form.image : '/assets/user/user/image/cloud_upload.png'}}"
 								style="max-width: 80%; height: 310px">
 							</label>
 						</div>
@@ -25,13 +25,13 @@
 									<div class="form mt-3">
 										<label class="radio-inline ml-3"> <input
 											ng-model="form.gender" ng-value="1" name="gender"
-											type="radio">Nam
+											type="radio"> &nbsp  Nam
 										</label> <label class="radio-inline ml-3"> <input
 											ng-model="form.gender" ng-value="0" name="gender"
-											type="radio">Nữ
+											type="radio">  &nbsp Nữ
 										</label> <label class="radio-inline ml-3"> <input
 											ng-model="form.gender" ng-value="2" name="gender"
-											type="radio">Khác
+											type="radio">  &nbsp Khác
 										</label>
 									</div>
 								</div>
@@ -48,7 +48,7 @@
 										class="form-control">
 								</div>
 							</div>
-							<div class="row">
+							<div class="row mt-3">
 								<div class="form-group col-sm-6">
 									<div>DATE INSERT</div>
 									<input ng-model="form.date_insert" type="date"
@@ -61,7 +61,7 @@
 										class="form-control">
 								</div>
 							</div>
-							<div class="row">
+							<div class="row mt-3">
 								<div class="form-group col-sm-6">
 									<div>PHONE</div>
 									<input ng-model="form.phone"
@@ -85,14 +85,14 @@
 				<div class="panel-footer text-center">
 					<button ng-click="create()" ng-disabled="form.id"
 						class="btn btn-primary">
-						<b class="glyphicon glyphicon-plus"></b> Create
+						<b class="glyphicon glyphicon-plus"></b> <i class="fa-solid fa-plus"></i> &nbsp Create
 					</button>
 					<button ng-click="update()" ng-disabled="!form.id"
 						class="btn btn-success">
-						<b class="glyphicon glyphicon-save"></b> Update
+						<b class="glyphicon glyphicon-save"></b><i class="fa-solid fa-wrench"></i> &nbsp Update
 					</button>
 					<button ng-click="reset()" class="btn btn-info">
-						<b class="glyphicon glyphicon-refresh"></b> Reset
+						<b class="glyphicon glyphicon-refresh"></b><i class="fa-solid fa-spinner"></i>  &nbsp Reset
 					</button>
 				</div>
 			</div>

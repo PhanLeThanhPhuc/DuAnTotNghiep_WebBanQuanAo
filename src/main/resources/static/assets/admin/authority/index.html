@@ -8,12 +8,12 @@
 			<table class="table table-border">
 				<thead class="bg-success" style="font-variant: small-caps;">
 					<tr>
-						<th ng-click="toggleSort('fullName')" >
+						<th class="text-dark" ng-click="toggleSort('fullName')" >
 						Name
 						<span ng-show="isSortedBy('fullName')" ng-class="getSortIconClass('fullName')"></span>
 						</th>
 						
-						<th ng-repeat="role in roles" class="text-center">{{role.name}}</th>
+						<th ng-repeat="role in roles" class="text-center text-dark">{{role.name}}</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -27,7 +27,10 @@
 				</tbody>
 			</table>
 		</div>
-		<div class="bootstrap-pagination text-center">
+		
+		<div class="row">
+		<div class="col-4"></div>
+		<div class="bootstrap-pagination col-4 text-center">
 			<nav>
 				<ul class="pagination">
 					<li class="page-item"><a class="page-link" href=""
@@ -45,5 +48,8 @@
 				</ul>
 			</nav>
 		</div>
+		<div class="col-4"></div>
+		</div>
+		
 	</div>
 </div>

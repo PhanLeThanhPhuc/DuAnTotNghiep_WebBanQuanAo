@@ -17,22 +17,22 @@
 									<th ng-click="toggleSort('fullName')">Fullname
 										<span ng-show="isSortedBy('fullName')" ng-class="getSortIconClass('fullName')"></span>
 									</th>
-									<th ng-click="toggleSort('phone')">SDT
+									<th ng-click="toggleSort('phone')">Phone
 										<span ng-show="isSortedBy('phone')" ng-class="getSortIconClass('phone')"></span>
 									</th>
 									<th ng-click="toggleSort('email')">Email
 										<span ng-show="isSortedBy('email')" ng-class="getSortIconClass('email')"></span>
 									</th>
-									<th ng-click="toggleSort('gender')">Giới tính
+									<th ng-click="toggleSort('gender')">Gender
 										<span ng-show="isSortedBy('gender')" ng-class="getSortIconClass('gender')"></span>
 									</th >
-									<th ng-click="toggleSort('date_insert')">Ngày tạo
+									<th ng-click="toggleSort('date_insert')">Create Date
 										<span ng-show="isSortedBy('date_insert')" ng-class="getSortIconClass('date_insert')"></span>
 									</th>
-									<th ng-click="toggleSort('date_update')">Ngày cập nhật
+									<th ng-click="toggleSort('date_update')">Update date
 										<span ng-show="isSortedBy('date_update')" ng-class="getSortIconClass('date_update')"></span>
 									</th>
-									<th ng-click="toggleSort('status')">Trạng thái
+									<th ng-click="toggleSort('status')">Status
 										<span ng-show="isSortedBy('status')" ng-class="getSortIconClass('status')"></span>
 									</th>
 								</tr>
@@ -64,25 +64,30 @@
 
 						</table>
 
-						<div class="bootstrap-pagination text-center">
-							<nav>
-								<ul class="pagination">
-									<li class="page-item"><a class="page-link" href=""
-										ng-click="pager.first()">First</a></li>
-									<li class="page-item"><a class="page-link" href=""
-										ng-click="pager.prev()">Previous</a></li>
-									<li class="page-item"><a class="page-link" href="">{{pager.page
-											+ 1}} of {{pager.count}}</a></li>
-
-
-									<li class="page-item"><a class="page-link" href=""
-										ng-click="pager.next()">Next</a></li>
-									<li class="page-item"><a class="page-link" href=""
-										ng-click="pager.last()">First</a></li>
-								</ul>
-							</nav>
-						</div>
+						
 					</div>
+					<div class="row">
+		<div class="col-4"></div>
+		<div class="bootstrap-pagination col-4 text-center">
+			<nav>
+				<ul class="pagination">
+					<li class="page-item"><a class="page-link" href=""
+						ng-click="pager.first()">First</a></li>
+					<li class="page-item"><a class="page-link" href=""
+						ng-click="pager.prev()">Previous</a></li>
+					<li class="page-item"><a class="page-link" href="">{{pager.page
+							+ 1}} of {{pager.count}}</a></li>
+
+
+					<li class="page-item"><a class="page-link" href=""
+						ng-click="pager.next()">Next</a></li>
+					<li class="page-item"><a class="page-link" href=""
+						ng-click="pager.last()">Last</a></li>
+				</ul>
+			</nav>
+		</div>
+		<div class="col-4"></div>
+		</div>
 				</div>
 			</div>
 		</div>
