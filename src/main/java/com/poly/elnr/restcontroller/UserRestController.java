@@ -45,7 +45,7 @@ public class UserRestController {
 		}else{
 			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 			model.put("statusLogin", true);
-			model.put("idUser", userService.idUser(userDetails.getUsername()));
+			model.put("user", userService.findByUserNamePhoneAndEmail(userDetails.getUsername()));
 			return model;
 		}
 	}
@@ -71,17 +71,6 @@ public class UserRestController {
 	@GetMapping("{id}")
 	public Users getOne(@PathVariable("id") Integer id) {
 		return userService.findById(id);
-	}
-
-	@GetMapping("/login")
-	public boolean statusLogin(Authentication authentication) {
-		if(authentication == null){
-			System.out.println("Chua login");
-			return false;
-		}else{
-			System.out.println("Da login");
-			return true;
-		}
 	}
 
 }

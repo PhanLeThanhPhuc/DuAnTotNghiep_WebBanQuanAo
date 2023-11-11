@@ -52,14 +52,17 @@
                         <h5 style="font-weight: 600; margin-bottom: 15px">THÔNG TIN KHÁCH HÀNG</h5>
                         <form class="row contact_form" action="#" method="post" novalidate="novalidate">
                             <div class="col-md-6 form-group p_star">
-                                <input ng-model="formInformationOrder.name" type="text" class="form-control" id="first" name="name" />
-                                <span class="placeholder" data-placeholder="Họ và tên"></span>
+                                <label >Họ và tên</label>
+                                <input ng-model="formInformationOrder.name" type="text" placeholder="Thông tin người nhận hàng"class="form-control" id="first" name="name" />
+<!--                                <span class="placeholder" data-placeholder="Họ và tên"></span>-->
                             </div>
                             <div class="col-md-6 form-group p_star">
-                                <input ng-model="formInformationOrder.phone" type="text" class="form-control" id="last" name="name" />
-                                <span class="placeholder" data-placeholder="Số điện thoại"></span>
+                                <label >Số điện thoại</label>
+                                <input ng-model="formInformationOrder.phone" placeholder="Số điện thoại nhận hàng" type="text" class="form-control" id="phone" name="name" />
+<!--                                <span class="placeholder" data-placeholder="Số điện thoại"></span>-->
                             </div>
                             <div class="col-md-12 form-group">
+                                <label >Email</label>
                                 <input ng-model="formInformationOrder.email" type="text" class="form-control" id="company" name="company" placeholder="Email(Nhận thông tin về hóa đơn)" />
                             </div>
 <!--                            <div class="col-md-6 form-group p_star">-->
@@ -86,21 +89,21 @@
                                         </select>
                                     </div>
                                     <div class="col-md-6 form-group p_star">
-                                        <select  onchange="checkCbbAddres()" id="wardSelect" class="country_select form-control">
+                                        <select  onchange="getValueComboBoxAddress()" id="wardSelect" class="country_select form-control">
                                             <option value="">Xã</option>
                                             <option ng-repeat="item in listWard" ng-value="{{item.WardCode}}">{{item.WardName}}</option>
                                         </select>
                                     </div>
                                     <div class="col-md-6 form-group p_star">
-                                        <input ng-model="formInformationOrder.addressDetail" type="text" class="form-control" id="1" name="name" />
-                                        <span class="placeholder" data-placeholder="Địa chỉ cụ thể"></span>
+                                        <input placeholder="Địa chỉ cụ thể" ng-model="formInformationOrder.addressDetail" type="text" class="form-control" id="1" name="name" />
+
                                     </div>
                                 </div>
 <!--                                login = true-->
                                 <div class="row" ng-if="dataLogin.statusLogin == true">
                                     <div ng-repeat="item in listAddress" class="col-md-6 form-group p_star">
                                         <div class="form-check">
-                                            <input onchange="getShipAddress()" ng-model="formInformationOrder.address" class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" ng-value="{{item.id}}" checked>
+                                            <input ng-change="getShippingFee()" ng-model="formInformationOrder.address" class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" ng-value="{{item.id}}" checked>
                                             <label class="form-check-label" for="exampleRadios1">
                                                 {{item.addressDetail}}, {{item.wardName}}, {{item.districtName}}, {{item.provinceName}}
                                             </label>
@@ -155,11 +158,11 @@
 <!--                                                <span style="font-size: 13px; color: black; font-weight: 600; text-decoration:line-through;">01001₫</span>-->
 
                                                 <div ng-if="item.priceBeforeSale ==''">
-                                                    <span style="font-size: 13px; color: red; font-weight: 600">{{item.price }}₫</span><br>
+                                                    <span style="font-size: 13px; color: red; font-weight: 600">{{item.price  | currency:'' :0 }}₫</span><br>
                                                 </div>
                                                 <div ng-if="item.priceBeforeSale !=''">
-                                                    <span style="font-size: 13px; color: black; font-weight: 600; ">{{item.price }}₫</span><br>
-                                                    <span style="font-size: 13px; color: red; font-weight: 600; text-decoration:line-through;" >{{item.priceBeforeSale }}₫</span>
+                                                    <span style="font-size: 13px; color: black; font-weight: 600; ">{{item.price  | currency:'' :0 }}₫</span><br>
+                                                    <span style="font-size: 13px; color: red; font-weight: 600; text-decoration:line-through;" >{{item.priceBeforeSale  | currency:'' :0 }}₫</span>
                                                 </div>
 
                                             </td>
@@ -167,8 +170,6 @@
                                                 <span style="font-size: 14px; color: red; font-weight: 600">{{cart.amt_of(item) | currency:'' :0 }}₫</span><br>
                                             </td>
                                         </tr>
-
-
                                         </tbody>
                                     </table>
                                 </li>
@@ -182,10 +183,12 @@
                                             <label style="font-weight: 600">Mã giảm giá:</label>
                                         </div>
                                         <div class="col-sm-8">
-                                            <input type="text" style="width: 100%" class="form-control" id="" name="company" placeholder="Nhập mã giảm giá" />
+                                            <input type="text" style="width: 100%" class="form-control" id="inputvoucher" name="company" placeholder="Nhập mã giảm giá" />
+                                            <span style="color: red !important;" id="errorVoucher" class="form-text text-muted"></span>
                                         </div>
+
                                         <div class="col-sm-4">
-                                            <button type="submit" class="btn btn-primary" style="width: 100%">Submit</button>
+                                            <button ng-click="addVoucher()" type="submit" class="btn btn-primary" style="width: 100%">Submit</button>
                                         </div>
                                     </div>
                                 </li>
@@ -199,8 +202,7 @@
                                     <div class="check"></div>
                                 </div>
                                 <p>
-                                    Please send a check to Store Name, Store Street, Store Town,
-                                    Store State / County, Store Postcode.
+                                   Thanh toán bằng tiền mặt khi nhận hàng
                                 </p>
                             </div>
                             <div class="payment_item active">
@@ -211,14 +213,8 @@
                                     <div class="check"></div>
                                 </div>
                                 <p>
-                                    Please send a check to Store Name, Store Street, Store Town,
-                                    Store State / County, Store Postcode.
+                                   Chuyển khoản với Vn-Pay
                                 </p>
-                            </div>
-                            <div class="creat_account">
-                                <input type="checkbox" id="f-option4" name="selector" />
-                                <label for="f-option4">I’ve read and accept the </label>
-                                <a href="#">terms & conditions*</a>
                             </div>
                             <ul class="list list_2">
                                 <li>
@@ -231,13 +227,20 @@
                                         <span>{{ shipFee | currency:'' :0  }}₫</span>
                                     </a>
                                 </li>
+                                <li ng-if="$scope.discoutVoucher != ''">
+                                    <a href="#">Áp dụng voucher
+                                        <span>- {{ discoutVoucher | currency:'' :0  }}₫</span>
+                                    </a>
+                                </li>
                                 <li>
                                     <a href="#">Tổng tiền
-                                        <span>{{cart.totalAmount | currency:'' :0}}₫</span>
+                                        <span>{{cart.totalAmount + shipFee - discoutVoucher  | currency:'' :0}}₫</span>
                                     </a>
                                 </li>
                             </ul>
-                            <button type="submit" onclick="purchase()">Proceed to Paypal</button>
+                             <div style="text-align: center">
+                                <button style="display: inline ;" class="btn_3 px-5" type="submit" onclick="purchase()">Đặt hàng</button>
+                            </div>
                         </div>
                     </div>
                 </div>

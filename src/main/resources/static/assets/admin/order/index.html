@@ -31,16 +31,16 @@
                                 <td>{{item.phone}}</td>
                                 <td>{{item.detailAddress}}, {{item.ward}}, {{item.district}}, {{item.province}}</td>
                                 <td>
-                                    <span ng-if="item.status == 0">Chờ xác nhận</span>
-                                    <span ng-if="item.status == 1">Chờ lấy hàng</span>
-                                    <span ng-if="item.status == 2">Hủy</span>
+                                    <span class="badge badge-pill badge-secondary" ng-if="item.status == 0">Chờ xác nhận</span>
+                                    <span class="badge badge-pill badge-warning" ng-if="item.status == 1">Chờ lấy hàng</span>
+                                    <span class="badge badge-pill badge-danger" ng-if="item.status == 2">Hủy</span>
                                 </td>
                                 <td>{{item.payment == 0 ? 'Tiền mặt' : 'Chuyển khoản'}}</td>
                                 <td><span> <a ng-click="editOrder(item)"
                                               data-toggle="modal" data-target="#exampleModalCenter"
                                               title="Edit">
 											<span class="fe fe-24 fe-edit-2"></a></span>
-                                    <span class="fe fe-24 fe-delete"></span>
+<!--                                    <span class="fe fe-24 fe-delete"></span>-->
                             </tr>
                             </tbody>
                         </table>
