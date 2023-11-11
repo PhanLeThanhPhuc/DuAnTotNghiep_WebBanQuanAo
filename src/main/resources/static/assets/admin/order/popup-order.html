@@ -157,25 +157,25 @@
                         <div class="styles__StyledSection-sc-ri73gr-1 gQjSfs">
                             <div class="title">Thông tin đơn hàng</div>
                             <div class="content">
-                                <p class="name">Mã đơn hàng: {{objectOrder.id}}</p>
-                                <p class="name">Mã vận đơn: {{objectOrder.shipCode}}</p>
-                                <p class="address"><span>Ngày đặt hàng: </span> {{objectOrder.orderDate | date:'yyyy-MM-dd HH:mm:ss'}} </p>
-                                <p class="phone"><span>Trạng thái đơn hàng: </span><span class="badge badge-pill badge-secondary" ng-if="objectOrder.status == 0">Chờ xác nhận</span>
+                                <p class="name"><span style="font-weight: 600">Mã đơn hàng:</span> {{objectOrder.id}}</p>
+                                <p class="name"><span  style="font-weight: 600">Mã vận đơn:</span> {{objectOrder.shipCode}}</p>
+                                <p class="address"><span  style="font-weight: 600">Ngày đặt hàng: </span> {{objectOrder.orderDate | date:'yyyy-MM-dd HH:mm:ss'}} </p>
+                                <p class="phone"><span  style="font-weight: 600">Trạng thái đơn hàng: </span><span class="badge badge-pill badge-secondary" ng-if="objectOrder.status == 0">Chờ xác nhận</span>
                                     <span class="badge badge-pill badge-warning" ng-if="objectOrder.status == 1">Chờ lấy hàng</span>
                                     <span class="badge badge-pill badge-danger" ng-if="objectOrder.status == 2">Hủy</span></p>
-                                <p ng-if="objectOrder.voucher != null" class="name">Áp dụng voucher: {{objectOrder.voucher.voucher}} (Giảm <span style="color: red">{{objectOrder.voucher.discountPrice | currency:'' :0 }}đ</span> cho hóa đơn)</p>
-                                <p class="address"><span>Tổng tiền: </span> <span style=" color: red; font-weight: 600">{{objectOrder.total + objectOrder.shipFee - objectOrder.voucher.discountPrice | currency:'' :0 }}</span> </p>
+                                <p ng-if="objectOrder.voucher != null" class="name"  style="font-weight: 600">Áp dụng voucher: <span style="font-weight: 600">{{objectOrder.voucher.voucher}}</span> (Giảm <span style="color: red">{{objectOrder.voucher.discountPrice | currency:'' :0 }}đ</span> cho hóa đơn)</p>
+                                <p class="address"><span  style="font-weight: 600">Tổng tiền: </span> <span style=" color: red; font-weight: 600">{{objectOrder.total + objectOrder.shipFee - objectOrder.voucher.discountPrice | currency:'' :0 }}</span> </p>
 <!--                                <button type="button" class="btn btn-lg btn-danger" data-toggle="popover" title="Popover title" data-content="And here's some amazing content. It's very engaging. Right?">Click to toggle popover</button>-->
 <!--                                <a href="#" title="Dismissible popover" data-toggle="popover" data-trigger="focus"-->
 <!--                                   data-content="Click anywhere in the document to close this popover">Click me</a>-->
                             </div>
                         </div>
                         <div class="styles__StyledSection-sc-ri73gr-1 gQjSfs">
-                            <div class="title">Địa chỉ người nhận</div>
+                            <div class="title"  style="font-weight: 600">Địa chỉ người nhận</div>
                             <div class="content">
-                                <p class="name"> Tên :{{objectOrder.nameUser}}</p>
-                                <p class="address"><span>Địa chỉ: </span> {{objectOrder.detailAddress}}, {{objectOrder.ward}}, {{objectOrder.district}}, {{objectOrder.province}} </p>
-                                <p class="phone"><span>Điện thoại: </span>{{objectOrder.phone}}</p>
+                                <p class="name"> <span style="font-weight: 600">Tên:</span>{{objectOrder.nameUser}}</p>
+                                <p class="address"><span  style="font-weight: 600">Địa chỉ: </span> {{objectOrder.detailAddress}}, {{objectOrder.ward}}, {{objectOrder.district}}, {{objectOrder.province}} </p>
+                                <p class="phone"><span  style="font-weight: 600">Điện thoại: </span>{{objectOrder.phone}}</p>
                             </div>
                         </div>
                         <div class="styles__StyledSection-sc-ri73gr-1 gQjSfs">
@@ -191,9 +191,9 @@
                         <div class="styles__StyledSection-sc-ri73gr-1 gQjSfs">
                             <div class="title">Hình thức giao hàng</div>
                             <div class="content">
-                                <p>Thời gian dự kiến giao hàng: {{objectOrder.expectedDeliveryTime |date:'HH:mm - dd-MM-yyyy '}}</p>
+                                <p><span  style="font-weight: 600">Thời gian dự kiến giao hàng:</span> {{objectOrder.expectedDeliveryTime |date:' dd-MM-yyyy '}}</p>
                                 <p>Đơn vị vận chuyển Giao Hàng Nhanh</p>
-                                <p>Phí vận chuyển: <span style=" color: red; font-weight: 600">{{objectOrder.shipFee | currency:'' :0 }}đ</span></p>
+                                <p><span  style="font-weight: 600">Phí vận chuyển:</span> <span style=" color: red; font-weight: 600">{{objectOrder.shipFee | currency:'' :0 }}đ</span></p>
                             </div>
                         </div>
                     </div>

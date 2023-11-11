@@ -79,7 +79,9 @@
                                     Số điện thoại nhận hàng: <span style="font-weight: normal; color: black;">[[${order.phone}]]</span>
                                 </p>
                                 <p class="text-info">
-                                    Tổng tiền: <span style="font-weight: normal; color: red; font-weight: 600">[[${#numbers.formatDecimal(order.total + order.shipFee - order.voucher.discountPrice, 0, 'COMMA',
+                                    Tổng tiền: <span th:if="${order.voucher != null}"  style="font-weight: normal; color: red; font-weight: 600">[[${#numbers.formatDecimal(order.total + order.shipFee - order.voucher.discountPrice, 0, 'COMMA',
+												0,'POINT')}]]đ</span>
+                                    <span th:if="${order.voucher == null}"  style="font-weight: normal; color: red; font-weight: 600">[[${#numbers.formatDecimal(order.total + order.shipFee , 0, 'COMMA',
 												0,'POINT')}]]đ</span>
                                 </p>
                                 <p class="text-info">

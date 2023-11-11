@@ -68,10 +68,17 @@ public class OrderRestController {
 
     public String vnPay(Order order){
         int idOrder = order.getId();
-        int total = order.getTotal();
+        int total = 0;
+        if(order.getVoucher() == null){
+             total = (int) ((order.getTotal() + order.getShipFee()) - order.getVoucher().getDiscountPrice());
+        }else{
+             total = (int) ((order.getTotalDiscount() + order.getShipFee()) - order.getVoucher().getDiscountPrice());
+        }
+
         System.out.println();
         String content = "Thanh toán đơn hàng ";
         String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
+        baseUrl += "/user/payment-order-user";
         System.out.println(baseUrl);
         String vnpayUrl = vnPayService.createOrder(total, content, baseUrl,idOrder);
         return  vnpayUrl;
