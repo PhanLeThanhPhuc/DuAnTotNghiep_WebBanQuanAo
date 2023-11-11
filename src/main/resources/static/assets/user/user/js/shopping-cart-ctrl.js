@@ -1,7 +1,7 @@
 app.controller("cart-ctrl", function($scope, $http) {
 
 	$scope.initialize = async () => {
-
+			// $scope.listAddress =[];
 			//get province
 			await $http.get("/user/province").then(resp => {
 				$scope.listProvince = resp.data.data;
@@ -18,6 +18,7 @@ app.controller("cart-ctrl", function($scope, $http) {
 			//get address user
 			await $http.get("/rest/address").then(resp => {
 				$scope.listAddress = resp.data;
+				console.log("ADđress", $scope.listAddress)
 			})
 
 			//voucher
@@ -25,6 +26,7 @@ app.controller("cart-ctrl", function($scope, $http) {
 				$scope.listVoucherDate = resp.data;
 				console.log("VOUCHER: ",$scope.listVoucherDate)
 			})
+
 
 			$scope.form();
 			$scope.shipFee = 0;
@@ -222,6 +224,7 @@ app.controller("cart-ctrl", function($scope, $http) {
 		$scope.formInformationOrder.addressDetail;
 
 		function shipFeeLogin(){
+
 			///////////lay address từ users
 			var idAddress = $scope.formInformationOrder.address;
 			var index = $scope.listAddress.findIndex(p => p.id == parseInt(idAddress));
@@ -320,6 +323,7 @@ app.controller("cart-ctrl", function($scope, $http) {
 		$http.post("/rest/insert-address", objectAddress).then(resp => {
 			if(resp.status === 200){
 				$scope.listAddress.push(resp.data);
+				console.log("Địa chỉ res: ",$scope.listAddress )
 				$scope.message("Thêm địa chỉ thành công");
 			}
 		}).catch(error => {
@@ -329,11 +333,6 @@ app.controller("cart-ctrl", function($scope, $http) {
 	}
 
 	purchase = () =>{
-
-		// var voucher ={
-		// 	$scope.voucherId === '' ? '' : `id: ${$scope.voucherId}`
-		// }
-		// console.log("re",voucher);
 
 		$scope.data = {
 			province: $scope.provinceName,
@@ -370,7 +369,7 @@ app.controller("cart-ctrl", function($scope, $http) {
 			if(resp.status === 200){
 				alert("Đặt hàng thành công!");
 				if(resp.data.payment === 1){
-					console.log(resp.data.urlVnPay);
+					// console.log(resp.data.urlVnPay);
 					$cart.clear();
 					location.href = resp.data.urlVnPay
 				}else{

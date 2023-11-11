@@ -2,6 +2,7 @@ app.controller("category-ctrl", function($scope, $filter, $http) {
 	$scope.initialize = function() {
 		$http.get("/rest/categories").then(resp => {
 			$scope.items = resp.data;
+			console.log("cate", $scope.items)
 			$scope.items.forEach(item => {
 				item.dateInsert = new Date(item.dateInsert);
 				item.dateUpdate = new Date(item.dateUpdate);

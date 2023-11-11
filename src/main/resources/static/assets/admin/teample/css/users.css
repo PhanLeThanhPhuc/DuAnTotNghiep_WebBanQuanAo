@@ -1,0 +1,3 @@
+.form label.radio-inline input[type="radio"] {
+    transform: scale(1.5); /* Điều chỉnh kích thước bằng cách thay đổi giá trị "1.5" thành giá trị bạn muốn */
+  }

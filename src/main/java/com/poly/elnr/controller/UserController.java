@@ -59,7 +59,13 @@ public class UserController {
 			baseUrl += "/user/payment-order-user";
 			String content = "Thanh toán đơn hàng ";
 			Order order = orderService.fillOrderById(idOrder);
-			String urlPayment = vnPayService.createOrder(order.getTotal(), content, baseUrl,idOrder);
+			int total = 0;
+			if(order.getVoucher() == null){
+				total = (int) ((order.getTotal() + order.getShipFee()) - order.getVoucher().getDiscountPrice());
+			}else{
+				total = (int) ((order.getTotalDiscount() + order.getShipFee()) - order.getVoucher().getDiscountPrice());
+			}
+			String urlPayment = vnPayService.createOrder(total, content, baseUrl,idOrder);
 			return "redirect:"+urlPayment;
 		}
 	}
