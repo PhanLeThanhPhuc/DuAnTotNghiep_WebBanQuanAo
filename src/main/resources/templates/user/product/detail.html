@@ -49,7 +49,6 @@
 									0,'POINT')}]]</h2>
 							</div>
 							<div th:unless="*{isSale ==true}">
-								<h4 class="priceBeforeSale" type="hidden" style="text-decoration-line: line-through;">[[*{price}]]</h4>
 								<h2 class="price">[[${#numbers.formatDecimal(item.price, 0, 'COMMA',
 									0,'POINT')}]]</h2>
 							</div>

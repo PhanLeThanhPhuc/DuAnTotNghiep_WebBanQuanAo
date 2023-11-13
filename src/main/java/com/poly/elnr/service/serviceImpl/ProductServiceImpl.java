@@ -1,8 +1,5 @@
 package com.poly.elnr.service.serviceImpl;
 
-import java.util.List;
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -124,6 +121,13 @@ public class ProductServiceImpl implements ProductService {
 		// TODO Auto-generated method stub
 		String imageURL = uploadCloudinaryUtils.uploadFileCloudinary(multipartFile);
 		return imageURL;
+	}
+
+
+	@Override
+	public Optional<Product> findByID2(Integer id) {
+		// TODO Auto-generated method stub
+		return productRepository.findById(id);
 	}
 
 

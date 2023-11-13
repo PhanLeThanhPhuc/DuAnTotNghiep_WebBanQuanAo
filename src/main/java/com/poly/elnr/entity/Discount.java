@@ -41,9 +41,14 @@ public class Discount implements Serializable {
     @Column(name = "active")
     private boolean active;
     
-    @JsonIgnore
-    @OneToMany(mappedBy = "discount")
-    private List<DiscountDetail> discountDetail;
+    @Column(name = "product_id")
+    private String product_id;
+
+
+    @Column(name = "allproduct")
+    private boolean allproduct;
+    
+    
     
     
     

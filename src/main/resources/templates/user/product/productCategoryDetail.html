@@ -1,5 +1,5 @@
 <html xmlns:th="http://www.thymeleaf.org"
-	  th:replace="~{/user/layout/index :: dynamic(~{::main})}">
+	th:replace="~{/user/layout/index :: dynamic(~{::main})}">
 <main>
 	<section class="cat_product_area section_padding">
 		<div class="container">
@@ -15,13 +15,13 @@
 									<ul class="list">
 
 										<input type="hidden" name="idCategoryDetail"
-											   th:value="${idCategoryDetail}">
+											th:value="${idCategoryDetail}">
 										<!--                                        <input type="hidden" name="sort" th:value="${sortValue}">-->
 										<li th:each="item : ${sizeMenu}"><a class="size">[[${item.name}]]</a>
 											<span> <input onclick="clickCheckbox()"
-														  th:checked="${#lists.contains(sizeId, item.id)}" name="size"
-														  th:value="${item.id}" type="checkbox"
-														  class="form-check-input">
+												th:checked="${#lists.contains(sizeId, item.id)}" name="size"
+												th:value="${item.id}" type="checkbox"
+												class="form-check-input">
 										</span></li>
 									</ul>
 								</div>
@@ -34,27 +34,27 @@
 									<ul class="list">
 										<li th:each="item : ${colorMenu}"><a class="color">[[${item.name}]]</a>
 											<span> <input onclick="clickCheckbox()"
-														  th:checked="${#lists.contains(colorId, item.id)}"
-														  name="color" th:value="${item.id}" type="checkbox"
-														  class="form-check-input checkbox-sidebar">
+												th:checked="${#lists.contains(colorId, item.id)}"
+												name="color" th:value="${item.id}" type="checkbox"
+												class="form-check-input checkbox-sidebar">
 										</span></li>
 										<li><a class="color" type="button" id="popoverButton">Khác>></a>
 											<div id="customPopover" class="custom-popover"
-												 style="display: none;">
+												style="display: none;">
 												<div class="custom-popover-header">Chọn màu</div>
 												<div class="custom-popover-content col-sm-12 row">
 													<div th:each="item : ${colorPopover}"
-														 class="col-sm-3 container-checkbox">
+														class="col-sm-3 container-checkbox">
 														<div class="custom-control custom-checkbox">
 															<input th:checked="${#lists.contains(colorId, item.id)}"
-																   name="color" th:value="${item.id}" type="checkbox"
-																   class="form-check-input checkbox-popover"> <a
+																name="color" th:value="${item.id}" type="checkbox"
+																class="form-check-input checkbox-popover"> <a
 																class="color">[[${item.name}]]</a>
 														</div>
 													</div>
 												</div>
 												<button onclick="buttonPopover()" type="button"
-														class="btn btn-danger">Xác nhận</button>
+													class="btn btn-danger">Xác nhận</button>
 											</div></li>
 									</ul>
 								</div>
@@ -65,7 +65,7 @@
 						<div class="row">
 							<div class="col-lg-12">
 								<div
-										class="product_top_bar d-flex justify-content-between align-items-center">
+									class="product_top_bar d-flex justify-content-between align-items-center">
 									<div class="single_product_menu">
 										<p>
 											Hiện đang có <span>[[${product.totalElements}]]</span> sản
@@ -75,16 +75,16 @@
 									<div class="single_product_menu d-flex">
 										<h5>Short by :</h5>
 										<select onchange="document.getElementById('form').submit();"
-												name="sort" class="form-control"
-												id="exampleFormControlSelect1">
+											name="sort" class="form-control"
+											id="exampleFormControlSelect1">
 											<option th:selected="${sortValue == 'price-asc'}"
-													th:value="price-asc">Giá thấp đến cao</option>
+												th:value="price-asc">Giá thấp đến cao</option>
 											<option th:selected="${sortValue == 'price-desc'}"
-													th:value="price-desc">Giá cao đến thấp</option>
+												th:value="price-desc">Giá cao đến thấp</option>
 											<option th:selected="${sortValue == 'name-az'}"
-													th:value="name-az">A-Z</option>
+												th:value="name-az">A-Z</option>
 											<option th:selected="${sortValue == 'name-za'}"
-													th:value="name-za">Z-A</option>
+												th:value="name-za">Z-A</option>
 										</select>
 									</div>
 								</div>
@@ -93,20 +93,28 @@
 
 						<div class="row align-items-center latest_product_inner">
 							<div th:each="item : ${product.content}"
-								 class="col-lg-4 col-sm-6">
+								class="col-lg-4 col-sm-6">
 
 								<div class="single_product_item">
-									<a th:href="@{|/user/product-detail?product-id=${item.id}|}"> <img
-											th:src="@{|/assets/user/user/image/${item.thumbnail}|}">
+									<a th:href="@{|/user/product-detail?product-id=${item.id}|}">
+										<img th:src="@{|/assets/user/user/image/${item.thumbnail}|}">
 										<div class="single_product_text">
 											<h4>[[${item.name}]]</h4>
 											<h6>Màu: [[${item.color.name}]]</h6>
 											<h6>
 												Size: <span th:each="itemsize : ${item.productDetails}"
-															class="size">[[${itemsize.size.name}]]</span>
+													class="size">[[${itemsize.size.name}]]</span>
 											</h6>
-											<h3>[[${#numbers.formatDecimal(item.price, 0, 'COMMA',
-												0,'POINT')}]]₫</h3>
+											<div th:if="${item.isSale == true}">
+												<h4 style="text-decoration-line: line-through;">[[${#numbers.formatDecimal(item.price,
+													0, 'COMMA', 0,'POINT')}]]₫</h4>
+												<h3>[[${#numbers.formatDecimal(item.discountPrice, 0,
+													'COMMA', 0,'POINT')}]]₫</h3>
+											</div>
+											<div th:unless="${item.isSale ==true}">
+												<h3 class="price">[[${#numbers.formatDecimal(item.price,
+													0, 'COMMA', 0,'POINT')}]]₫</h3>
+											</div>
 										</div>
 									</a>
 								</div>
