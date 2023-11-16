@@ -147,8 +147,12 @@ app.controller("cart-ctrl", function($scope, $http) {
 			}else{
 				return item.product.discountPrice  * item.qty;
 			}
-			
 		},
+
+		amtNoDiscount(item) { // tính thành tiền của 1 sản phẩm k discount
+			return item.product.price * item.qty;
+		},
+
 		get count() { // tính tổng số lượng các mặt hàng trong giỏ
 			return this.items
 				.map(item => item.qty)
@@ -166,8 +170,10 @@ app.controller("cart-ctrl", function($scope, $http) {
 				.reduce((total, amt) => total += amt, 0);
 		},
 
-		get totalAmount() {
-			return this.amount;
+		get totalNoDiscount() {
+			return this.items
+				.map(item => this.amtNoDiscount(item))
+				.reduce((total, amt) => total += amt, 0);
 		},
 
 		get totalDiscount() {
@@ -364,8 +370,8 @@ app.controller("cart-ctrl", function($scope, $http) {
 			note: $scope.formInformationOrder.note,
 			shipFee: $scope.shipFee,
 			email: $scope.formInformationOrder.email,
-			total: $scope.cart.totalAmount,
-			totalDiscount: $scope.cart.totalDiscount,
+			total: $scope.cart.amount + $scope.discoutVoucher,
+			totalDiscount: $scope.cart.totalNoDiscount -  $scope.cart.amount + $scope.discoutVoucher,
 			weight: $scope.cart.totalWeights,
 			wardCode: $scope.wardId,
 			districtId: parseInt($scope.districtId),
@@ -374,12 +380,14 @@ app.controller("cart-ctrl", function($scope, $http) {
 			orderDetails: $cart.items.map(item => {
 				return {
 					productDetails: { id: item.id },
-					price: item.price.replace(/,/g, ""),
-					discountPrice: item.priceBeforeSale.replace(/,/g, ""),
+					price: $cart.amt_of(item),
+					discountPrice: item.product.sale === true ? (item.product.price * item.qty) - $cart.amt_of(item) : 0,
 					quantity: item.qty,
 				}
 			}),
 		};
+
+		console.log("Order: ", $scope.data);
 
 		$http.post("/user/order", $scope.data,).then(resp => {
 			if (resp.status === 200) {
@@ -404,8 +412,7 @@ app.controller("cart-ctrl", function($scope, $http) {
 	// discout
 	$scope.addVoucher = () => {
 		///reset
-		
-
+		$scope.discoutVoucher =0;
 		const voucher = document.getElementById("inputvoucher").value;
 		const foundVoucher = $scope.listVoucherDate.find(v => v.voucher === voucher);
 		if (foundVoucher) {
@@ -437,8 +444,9 @@ app.controller("cart-ctrl", function($scope, $http) {
 				} else {
 					for (const item of $scope.cart.items) {
 						const productIDs = foundVoucher.productID.split(',').map(id => id.trim());
-						const cartItemId = String(item.id);
-
+						const cartItemId = String(item.product.id);
+						console.log("cartItemId",cartItemId);
+						console.log("productIDs",productIDs);
 						if (productIDs.includes(cartItemId)) {
 							$scope.voucherId = $scope.objectVoucher.id;
 							console.log("Có sản phẩm: ", cartItemId);
@@ -459,9 +467,5 @@ app.controller("cart-ctrl", function($scope, $http) {
 			smallElement.innerHTML = "Mã voucher không khả dụng!";
 		}
 	};
-
-
-
-
 
 })

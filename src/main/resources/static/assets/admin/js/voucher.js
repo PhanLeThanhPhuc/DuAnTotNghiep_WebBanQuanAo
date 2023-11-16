@@ -10,7 +10,6 @@ app.controller("voucher-ctrl", function($scope, $filter, $http, $timeout) {
 				item.endDate = new Date(item.endDate)
 			})
 		})
-
 		$scope.reset();
 	}
 
@@ -24,6 +23,7 @@ app.controller("voucher-ctrl", function($scope, $filter, $http, $timeout) {
 	$scope.edit = function(item) {
 		$scope.form = angular.copy(item);
 		$(".nav-tabs a:eq(0)").tab("show");
+		checkboxAllProduct();
 	}
 
 	$scope.create = function() {
@@ -216,6 +216,16 @@ app.controller("voucher-ctrl", function($scope, $filter, $http, $timeout) {
 		$('#mySelect').selectpicker('refresh');
 	}
 
+	 checkboxAllProduct = () => {
+		var checkbox = document.getElementById('all-product');
+		if (checkbox.checked) {
+			console.log('Checkbox is checked');
+			$scope.clearSelect();
+			document.getElementById('mySelect').disabled = true;
+		} else {
+			document.getElementById('mySelect').disabled = false;
+		}
+	}
 
 }
 );

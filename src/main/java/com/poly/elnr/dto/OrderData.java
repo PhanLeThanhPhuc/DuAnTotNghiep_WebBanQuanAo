@@ -20,7 +20,7 @@ public class OrderData {
     private int to_district_id;
     private int weight;
     private int service_type_id = 2;
-    private int payment_type_id = 2;
+    private int payment_type_id = 1;
     private String note;
     private String required_note = "CHOXEMHANGKHONGTHU";
     private List<Item> items;

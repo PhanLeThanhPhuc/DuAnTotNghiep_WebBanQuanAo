@@ -235,10 +235,13 @@
                             <td>
                                 <!--                                                <span style="font-size: 13px; color: red; font-weight: 600">01001₫</span><br>-->
                                 <!--                                                <span style="font-size: 13px; color: black; font-weight: 600; text-decoration:line-through;">01001₫</span>-->
-                                <div >
-                                <span style="font-size: 13px; color: red; font-weight: 600; ">
-                                    {{item.price | currency:'' :0 }}₫</span><br>
-                                    <span style="font-size: 13px; color: black; font-weight: 600; text-decoration:line-through;">{{item.discountPrice | currency:'' :0 }}₫</span>
+                                <div ng-if="item.discountPrice != 0" >
+                                    <span  style="font-size: 13px; color: red; font-weight: 600; ">{{item.price | currency:'' :0 }}₫</span><br>
+                                    <span style="font-size: 13px; color: black; font-weight: 600; text-decoration:line-through;">{{item.discountPrice + item.price | currency:'' :0 }}₫</span>
+                                </div>
+                                <div ng-if="item.discountPrice == 0" >
+                                    <span  style="font-size: 13px; color: red; font-weight: 600; ">{{item.price | currency:'' :0 }}₫</span><br>
+<!--                                    <span style="font-size: 13px; color: black; font-weight: 600; text-decoration:line-through;">{{item.discountPrice + item.price | currency:'' :0 }}₫</span>-->
                                 </div>
 
                             </td>
