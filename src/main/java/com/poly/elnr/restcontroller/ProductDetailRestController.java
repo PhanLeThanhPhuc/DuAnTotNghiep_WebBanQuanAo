@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.poly.elnr.entity.ProductDetails;
+import com.poly.elnr.service.DiscountCheckService;
+import com.poly.elnr.service.DiscountService;
 import com.poly.elnr.service.ProductDetailService;
 
 @CrossOrigin("*")
@@ -26,6 +28,8 @@ public class ProductDetailRestController {
 	@Autowired
 	ProductDetailService detailService;
 	
+	@Autowired
+	DiscountCheckService discountCheckService;
 	
 	@GetMapping("{id}")
 	public List<ProductDetails> getProductDetail(@PathVariable("id") Integer id) {
@@ -44,6 +48,6 @@ public class ProductDetailRestController {
 
 	@GetMapping(value="size/{id}/{sizeid}" )
 	public ProductDetails getProductSize(@PathVariable("id") Integer id,@PathVariable("sizeid") Integer sizeid) {
-		return detailService.findProductDetial(id,sizeid);
+		return discountCheckService.getProductDetails(detailService.findProductDetial(id,sizeid));
 	}
 }

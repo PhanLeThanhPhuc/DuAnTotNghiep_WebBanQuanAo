@@ -31,11 +31,9 @@ public class Discount implements Serializable {
     private int discount;
     
     @Column(name = "startdate")
-    @Temporal(TemporalType.DATE)
     private Date startdate;
     
     @Column(name = "enddate")
-    @Temporal(TemporalType.DATE)
     private Date enddate;
     
     @Column(name = "active")

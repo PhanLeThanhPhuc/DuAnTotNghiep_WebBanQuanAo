@@ -1,44 +1,44 @@
 app.controller("cart-ctrl", function($scope, $http) {
 
 	$scope.initialize = async () => {
-			// $scope.listAddress =[];
-			//get province
-			await $http.get("/user/province").then(resp => {
-				$scope.listProvince = resp.data.data;
-			})
+		// $scope.listAddress =[];
+		//get province
+		await $http.get("/user/province").then(resp => {
+			$scope.listProvince = resp.data.data;
+		})
 
-			//get user or status login
-			await $http.get("/rest/users/userid").then(resp => {
-				if(resp.status == 200){
-					$scope.dataLogin = resp.data;
-					console.log($scope.dataLogin)
-				}
-			})
+		//get user or status login
+		await $http.get("/rest/users/userid").then(resp => {
+			if (resp.status == 200) {
+				$scope.dataLogin = resp.data;
+				console.log($scope.dataLogin)
+			}
+		})
 
-			//get address user
-			await $http.get("/rest/address").then(resp => {
-				$scope.listAddress = resp.data;
-				console.log("ADđress", $scope.listAddress)
-			})
+		//get address user
+		await $http.get("/rest/address").then(resp => {
+			$scope.listAddress = resp.data;
+			console.log("ADđress", $scope.listAddress)
+		})
 
-			//voucher
-			await $http.get("/rest/voucher/date").then(resp => {
-				$scope.listVoucherDate = resp.data;
-				console.log("VOUCHER: ",$scope.listVoucherDate)
-			})
+		//voucher
+		await $http.get("/rest/voucher/date").then(resp => {
+			$scope.listVoucherDate = resp.data;
+			console.log("VOUCHER: ", $scope.listVoucherDate)
+		})
 
 
-			$scope.form();
-			$scope.shipFee = 0;
-			$scope.findInfoUser();
-			$scope.discoutVoucher=0;
-			$scope.voucherId = '';
-		console.log("san pham",$scope.cart)
+		$scope.form();
+		$scope.shipFee = 0;
+		$scope.findInfoUser();
+		$scope.discoutVoucher = 0;
+		$scope.voucherId = '';
+		console.log("san pham", $scope.cart)
 	}
 
-	$scope.findInfoUser = () =>{
+	$scope.findInfoUser = () => {
 		console.log('Data from API:', $scope.dataLogin);
-		if($scope.dataLogin.statusLogin){
+		if ($scope.dataLogin.statusLogin) {
 			$scope.formInformationOrder.name = $scope.dataLogin.user.fullName;
 			$scope.formInformationOrder.phone = $scope.dataLogin.user.phone;
 			$scope.formInformationOrder.email = $scope.dataLogin.user.email;
@@ -47,14 +47,14 @@ app.controller("cart-ctrl", function($scope, $http) {
 		}
 	}
 
-	$scope.form = () =>{
+	$scope.form = () => {
 		$scope.formInformationOrder = {
-			payment : '1',
+			payment: '1',
 		}
 	}
 
-	methodDistrict = (province_id) =>{
-		if(province_id !== "default") {
+	methodDistrict = (province_id) => {
+		if (province_id !== "default") {
 			$http.get(`/user/district?province_id=${province_id}`).then(resp => {
 				$scope.listDistrict = resp.data.data;
 			})
@@ -63,19 +63,19 @@ app.controller("cart-ctrl", function($scope, $http) {
 		$scope.shipFee = 0;
 	}
 
-	methodWard = (district_id) =>{
-		if(district_id !== "default") {
+	methodWard = (district_id) => {
+		if (district_id !== "default") {
 			$http.get(`/user/ward?district_id=${district_id}`).then(resp => {
 				$scope.listWard = resp.data.data;
 			})
-		}else{
+		} else {
 			clearCbbWard();
 		}
 		// checkCbbAddres();
 		$scope.shipFee = 0;
 	}
 
-	clearCbbWard = () =>{
+	clearCbbWard = () => {
 		var wardSelect = document.getElementById('wardSelect');
 		wardSelect.options.length = 0;
 		const option = document.createElement("option");
@@ -87,7 +87,7 @@ app.controller("cart-ctrl", function($scope, $http) {
 	$scope.initialize();
 
 	// quản lý giỏ hàng
-	$scope.soluong=$('.soluong').text();
+	$scope.soluong = $('.soluong').text();
 
 	$scope.sizeClick = function(size) {
 		$scope.soluong = size;
@@ -123,8 +123,7 @@ app.controller("cart-ctrl", function($scope, $http) {
 					if (qtt > sol) {
 						alert("Vượt quá số lượng cho phép !!!");
 					} else {
-						resp.data.priceBeforeSale=$('.priceBeforeSale').text();
-						resp.data.price=$('.price').text().replace(/,/g, "");
+
 						resp.data.qty = qtt;
 						this.items.push(resp.data);
 						this.saveToLocalStorage();
@@ -143,7 +142,12 @@ app.controller("cart-ctrl", function($scope, $http) {
 			this.saveToLocalStorage();
 		},
 		amt_of(item) { // tính thành tiền của 1 sản phẩm
-			return item.price * item.qty;
+			if(item.product.sale==false){
+				return item.product.price * item.qty;
+			}else{
+				return item.product.discountPrice  * item.qty;
+			}
+			
 		},
 		get count() { // tính tổng số lượng các mặt hàng trong giỏ
 			return this.items
@@ -162,11 +166,11 @@ app.controller("cart-ctrl", function($scope, $http) {
 				.reduce((total, amt) => total += amt, 0);
 		},
 
-		get totalAmount () {
-			return this.amount ;
+		get totalAmount() {
+			return this.amount;
 		},
 
-		get totalDiscount () {
+		get totalDiscount() {
 			return this.amount - $scope.discoutVoucher;
 		},
 		cartChange(size, product, qti) {
@@ -182,12 +186,24 @@ app.controller("cart-ctrl", function($scope, $http) {
 		},
 		saveToLocalStorage() { // lưu giỏ hàng vào local storage
 
-			var json = JSON.stringify(angular.copy(this.items));
+			var cartData = this.items.map(item => ({
+				qty: item.qty,
+				productId: item.product.id,
+				sizeId: item.size.id
+			}));
+			var json = JSON.stringify(cartData);
 			localStorage.setItem("cart", json);
 		},
 		loadFromLocalStorage() { // đọc giỏ hàng từ local storage
 			var json = localStorage.getItem("cart");
-			this.items = json ? JSON.parse(json) : [];
+			product = json ? JSON.parse(json) : [];
+			
+			product.forEach(product => {
+            $http.get(`/rest/productsDetail/size/${product.productId}/` + product.sizeId).then(resp => {
+				resp.data.qty =product.qty
+                this.items.push(resp.data); 
+            });
+        });
 		}
 	}
 
@@ -202,50 +218,50 @@ app.controller("cart-ctrl", function($scope, $http) {
 
 		var ward = cboAddress[2].options[cboAddress[2].selectedIndex].value;
 
-		if(province !== "default" && district !== "default" && ward !== "default"){
+		if (province !== "default" && district !== "default" && ward !== "default") {
 			$scope.getShippingFee();
 		}
 	}
 
-	$scope.getShippingFee = () =>{
+	$scope.getShippingFee = () => {
 
-		$scope.provinceId ;
+		$scope.provinceId;
 
-		$scope.districtId ;
+		$scope.districtId;
 
-		$scope.wardId ;
+		$scope.wardId;
 
-		$scope.provinceName ;
+		$scope.provinceName;
 
 		$scope.districtName;
 
-		$scope.wardName ;
+		$scope.wardName;
 
 		$scope.formInformationOrder.addressDetail;
 
-		function shipFeeLogin(){
+		function shipFeeLogin() {
 
 			///////////lay address từ users
 			var idAddress = $scope.formInformationOrder.address;
 			var index = $scope.listAddress.findIndex(p => p.id == parseInt(idAddress));
 			var addressChecked = $scope.listAddress[index];
 
-			$scope.provinceId =addressChecked.provinceId;
+			$scope.provinceId = addressChecked.provinceId;
 
-			$scope.districtId =addressChecked.districtId;
+			$scope.districtId = addressChecked.districtId;
 
-			$scope.wardId =addressChecked.wardId;
+			$scope.wardId = addressChecked.wardId;
 
-			$scope.provinceName =addressChecked.provinceName;
+			$scope.provinceName = addressChecked.provinceName;
 
-			$scope.districtName=addressChecked.districtName;
+			$scope.districtName = addressChecked.districtName;
 
-			$scope.wardName =addressChecked.wardName;
+			$scope.wardName = addressChecked.wardName;
 
 			$scope.formInformationOrder.addressDetail = addressChecked.addressDetail;
 		}
 
-		function shipFeeNoLogin (){
+		function shipFeeNoLogin() {
 			var cboAddress = document.querySelectorAll(".country_select");
 
 			$scope.provinceId = cboAddress[0].options[cboAddress[0].selectedIndex].value;
@@ -261,27 +277,27 @@ app.controller("cart-ctrl", function($scope, $http) {
 			$scope.wardName = cboAddress[2].options[cboAddress[2].selectedIndex].text;
 		}
 
-		if($scope.dataLogin.statusLogin){
+		if ($scope.dataLogin.statusLogin) {
 			shipFeeLogin();
-		}else{
+		} else {
 			shipFeeNoLogin();
 		}
 
 		var bodyProduct = {
-			service_type_id : 2,
-			to_ward_code: $scope.wardId ,
+			service_type_id: 2,
+			to_ward_code: $scope.wardId,
 			to_district_id: parseInt($scope.districtId),
 			weight: $scope.cart.totalWeights,
 			items: $cart.items.map(item => {
 				return {
-					name: item.product.name ,
+					name: item.product.name,
 					quantity: item.qty
 				}
 			})
 		}
 
 		$http.post(`/user/shipfee`, bodyProduct).then(resp => {
-			if(resp.status === 200){
+			if (resp.status === 200) {
 				$scope.shipFee = resp.data.data.total;
 				console.log(resp.data.data.expected_delivery_time);
 			}
@@ -292,7 +308,7 @@ app.controller("cart-ctrl", function($scope, $http) {
 
 	}
 
-	addAddress = () =>{
+	addAddress = () => {
 		var cboAddress = document.querySelectorAll(".country_select_add");
 
 		var provinceId = cboAddress[0].options[cboAddress[0].selectedIndex].value;
@@ -316,14 +332,14 @@ app.controller("cart-ctrl", function($scope, $http) {
 			districtId: parseInt(districtId),
 			wardId: wardId,
 			user: {
-				id :$scope.dataLogin.user.id
+				id: $scope.dataLogin.user.id
 			}
 		}
 
 		$http.post("/rest/insert-address", objectAddress).then(resp => {
-			if(resp.status === 200){
+			if (resp.status === 200) {
 				$scope.listAddress.push(resp.data);
-				console.log("Địa chỉ res: ",$scope.listAddress )
+				console.log("Địa chỉ res: ", $scope.listAddress)
 				$scope.message("Thêm địa chỉ thành công");
 			}
 		}).catch(error => {
@@ -332,7 +348,7 @@ app.controller("cart-ctrl", function($scope, $http) {
 		})
 	}
 
-	purchase = () =>{
+	purchase = () => {
 
 		$scope.data = {
 			province: $scope.provinceName,
@@ -342,19 +358,19 @@ app.controller("cart-ctrl", function($scope, $http) {
 			nameUser: $scope.formInformationOrder.name,
 			orderDate: new Date(),
 			// status: 0,
-			phone : $scope.formInformationOrder.phone,
-			payment: $scope.formInformationOrder.payment ,
+			phone: $scope.formInformationOrder.phone,
+			payment: $scope.formInformationOrder.payment,
 			shipCode: "",
 			note: $scope.formInformationOrder.note,
 			shipFee: $scope.shipFee,
 			email: $scope.formInformationOrder.email,
 			total: $scope.cart.totalAmount,
 			totalDiscount: $scope.cart.totalDiscount,
-			weight : $scope.cart.totalWeights,
-			wardCode: $scope.wardId ,
+			weight: $scope.cart.totalWeights,
+			wardCode: $scope.wardId,
 			districtId: parseInt($scope.districtId),
 			// user: { id: 1 },
-			voucher: {id : $scope.voucherId},
+			voucher: { id: $scope.voucherId },
 			orderDetails: $cart.items.map(item => {
 				return {
 					productDetails: { id: item.id },
@@ -366,14 +382,14 @@ app.controller("cart-ctrl", function($scope, $http) {
 		};
 
 		$http.post("/user/order", $scope.data,).then(resp => {
-			if(resp.status === 200){
+			if (resp.status === 200) {
 				alert("Đặt hàng thành công!");
-				if(resp.data.payment === 1){
+				if (resp.data.payment === 1) {
 					// console.log(resp.data.urlVnPay);
 					$cart.clear();
 					location.href = resp.data.urlVnPay
-				}else{
-					var idorder =resp.data.order.id;
+				} else {
+					var idorder = resp.data.order.id;
 					$cart.clear();
 					location.href = `/user/information-order?idorder=${idorder}`
 				}
@@ -395,7 +411,7 @@ app.controller("cart-ctrl", function($scope, $http) {
 		if (foundVoucher) {
 			console.log("CÓ voucher");
 			var index = $scope.listVoucherDate.findIndex(v => v.voucher === voucher);
-			$scope.objectVoucher =  $scope.listVoucherDate[index];
+			$scope.objectVoucher = $scope.listVoucherDate[index];
 			if (foundVoucher.quantity === 0) {
 				var smallElement = document.getElementById("errorVoucher");
 				smallElement.innerHTML = "Voucher đã hết số lượng!";
@@ -414,10 +430,10 @@ app.controller("cart-ctrl", function($scope, $http) {
 					console.log("Áp dụng cho tất cả sản phẩm");
 					$scope.voucherId = $scope.objectVoucher.id;
 					$scope.discoutVoucher = $scope.objectVoucher.discountPrice;
-					$scope.totalVoucher = $scope.cart.totalAmount -$scope.discoutVoucher;
+					$scope.totalVoucher = $scope.cart.totalAmount - $scope.discoutVoucher;
 					var smallElement = document.getElementById("errorVoucher");
 					smallElement.innerHTML = "Đã áp dụng voucher!";
-					console.log("Total khi ap voucher: ",$scope.totalVoucher);
+					console.log("Total khi ap voucher: ", $scope.totalVoucher);
 				} else {
 					for (const item of $scope.cart.items) {
 						const productIDs = foundVoucher.productID.split(',').map(id => id.trim());
@@ -427,7 +443,7 @@ app.controller("cart-ctrl", function($scope, $http) {
 							$scope.voucherId = $scope.objectVoucher.id;
 							console.log("Có sản phẩm: ", cartItemId);
 							$scope.discoutVoucher = $scope.objectVoucher.discountPrice;
-							$scope.totalVoucher = $scope.cart.totalAmount -$scope.discoutVoucher;
+							$scope.totalVoucher = $scope.cart.totalAmount - $scope.discoutVoucher;
 							var smallElement = document.getElementById("errorVoucher");
 							smallElement.innerHTML = "Đã áp dụng voucher!";
 						} else {
@@ -447,23 +463,5 @@ app.controller("cart-ctrl", function($scope, $http) {
 
 
 
-	$scope.message = (mes) =>{
-		$.toast({
-			text: mes, // Text that is to be shown in the toast
-			heading: 'Thông báo', // Optional heading to be shown on the toast
-			icon: 'success', // Type of toast icon
-			showHideTransition: 'fade', // fade, slide or plain
-			allowToastClose: true, // Boolean value true or false
-			hideAfter: 2000, // false to make it sticky or number representing the miliseconds as time after which toast needs to be hidden
-			stack: 5, // false if there should be only one toast at a time or a number representing the maximum number of toasts to be shown at a time
-			position: 'top-right', // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values
-			textAlign: 'left',  // Text alignment i.e. left, right or center
-			loader: true,  // Whether to show loader or not. True by default
-			loaderBg: '#9EC600',  // Background color of the toast loader
-			beforeShow: function () {}, // will be triggered before the toast is shown
-			afterShown: function () {}, // will be triggered after the toat has been shown
-			beforeHide: function () {}, // will be triggered before the toast gets hidden
-			afterHidden: function () {}  // will be triggered after the toast has been hidden
-		});
-	}
+
 })

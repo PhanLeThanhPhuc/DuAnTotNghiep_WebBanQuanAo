@@ -181,11 +181,10 @@ app.controller("voucher-ctrl", function($scope, $filter, $http, $timeout) {
 		});
 	});
 
-
+	$scope.form.productID="";
 	$scope.showSelectedOptions = function() {
-		if ($scope.form.productID) {
-			var selectedOptionsIds = $scope.form.productID.split(/\s*,\s*/);
-		}
+	
+		var selectedOptionsIds = $scope.form.productID.split(/\s*,\s*/);
 		var selectedOptions = [];
 
 		$('#mySelect option').each(function() {
@@ -216,7 +215,7 @@ app.controller("voucher-ctrl", function($scope, $filter, $http, $timeout) {
 		$('#mySelect').selectpicker('deselectAll');
 		$('#mySelect').selectpicker('refresh');
 	}
-	
+
 
 }
 );

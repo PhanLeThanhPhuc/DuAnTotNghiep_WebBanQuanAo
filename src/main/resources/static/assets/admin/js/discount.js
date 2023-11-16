@@ -22,9 +22,9 @@ app.controller("discount-ctrl", function($scope, $filter, $http, $timeout) {
 	}
 
 	$scope.edit = function(item) {
-		$('#mySelect').selectpicker('deselectAll');
-		$('#mySelect').selectpicker('refresh');
+
 		$scope.form = angular.copy(item);
+
 	}
 
 	$scope.create = function() {
@@ -53,6 +53,8 @@ app.controller("discount-ctrl", function($scope, $filter, $http, $timeout) {
 				alert("Lỗi cập nhật sản phẩm!");
 				console.log("Error", error);
 			});
+
+
 	}
 
 
@@ -170,13 +172,11 @@ app.controller("discount-ctrl", function($scope, $filter, $http, $timeout) {
 		});
 	});
 
-
+	$scope.form.product_id = "";
 	$scope.showSelectedOptions = function() {
-		if ($scope.form.product_id) {
-			var selectedOptionsIds = $scope.form.product_id.split(/\s*,\s*/);
-		}
+		
+		var selectedOptionsIds = $scope.form.product_id.split(/\s*,\s*/);
 		var selectedOptions = [];
-
 		$('#mySelect option').each(function() {
 			var optionId = $(this).val();
 			if (selectedOptionsIds.includes(optionId)) {
@@ -205,7 +205,7 @@ app.controller("discount-ctrl", function($scope, $filter, $http, $timeout) {
 		$('#mySelect').selectpicker('deselectAll');
 		$('#mySelect').selectpicker('refresh');
 	}
-	
+
 
 }
 );

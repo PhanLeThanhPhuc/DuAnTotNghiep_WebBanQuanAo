@@ -4,6 +4,7 @@ import com.poly.elnr.dto.ChangePassword;
 import com.poly.elnr.entity.Order;
 import com.poly.elnr.entity.Users;
 import com.poly.elnr.service.CategoryDetailService;
+import com.poly.elnr.service.DiscountCheckService;
 import com.poly.elnr.service.OrderService;
 import com.poly.elnr.service.UserService;
 
@@ -45,6 +46,10 @@ public class UserController {
 
 	@Autowired
 	HttpServletRequest request;
+	
+
+	@Autowired
+	DiscountCheckService discountCheckService;
 
 	@PostMapping("/submitPayment/{paymentMethod}/{idOrder}")
 	public String submitPayment(@PathVariable int paymentMethod, @PathVariable int idOrder) {
@@ -72,6 +77,8 @@ public class UserController {
 
 	@GetMapping("user/index")
 	public String index(Model model) {
+		
+		model.addAttribute("sale",discountCheckService.getDiscountedProducts());
 		return "user/layout/home";
 	}
 

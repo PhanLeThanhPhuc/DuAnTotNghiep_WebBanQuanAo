@@ -43,9 +43,8 @@ public class ProductRestController {
 	
 	@GetMapping
 	public List<Product> getAll() {
-		List<Product> a= productService.findAll();
-		List<Product> updatedProductList =discountCheckService.getAllDiscountProducts(a);
-		return updatedProductList;
+
+		return productService.findAll();
 	}
 	@GetMapping("{id}")
 	public Product getOne(@PathVariable("id") Integer id) {

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.poly.elnr.entity.Review;
 import com.poly.elnr.service.DiscountCheckService;
+import com.poly.elnr.service.DiscountService;
 import com.poly.elnr.service.ImageService;
 import com.poly.elnr.service.ProductDetailService;
 
@@ -47,7 +48,10 @@ public class ProductController {
 
 	@Autowired
 	DiscountCheckService discountCheckService;
-
+	
+	@Autowired
+	DiscountService discountService;
+	
 	@RequestMapping("productcategory")
 	public String viewProductCategory(Model model, @RequestParam("idCategory") int idCategory,
 			@RequestParam(name = "size", required = false) List<Integer> sizeId,
