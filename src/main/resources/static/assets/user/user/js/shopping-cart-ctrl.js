@@ -404,8 +404,7 @@ app.controller("cart-ctrl", function($scope, $http) {
 	// discout
 	$scope.addVoucher = () => {
 		///reset
-		
-
+		$scope.discoutVoucher =0;
 		const voucher = document.getElementById("inputvoucher").value;
 		const foundVoucher = $scope.listVoucherDate.find(v => v.voucher === voucher);
 		if (foundVoucher) {
