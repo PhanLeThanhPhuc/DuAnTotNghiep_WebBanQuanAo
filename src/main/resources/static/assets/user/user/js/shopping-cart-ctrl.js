@@ -404,7 +404,7 @@ app.controller("cart-ctrl", function($scope, $http) {
 	// discout
 	$scope.addVoucher = () => {
 		///reset
-		$cart.loadFromLocalStorage();
+		
 
 		const voucher = document.getElementById("inputvoucher").value;
 		const foundVoucher = $scope.listVoucherDate.find(v => v.voucher === voucher);
