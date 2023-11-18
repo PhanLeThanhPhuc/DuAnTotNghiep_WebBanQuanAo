@@ -1,0 +1,53 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Thống kê doanh thu</h4>
+                    <div class="row">
+                        <div class="form-group col-sm-4">
+                            Tổng doanh thu: <span style="color: red; font-weight: bold">{{totalPrice | currency:'' :0}}đ</span>
+                        </div>
+                        <div class="col-sm-8">
+                            <div class="row" style="display: flex; justify-content: flex-end;">
+                                <div class="form-group mb-3 mr-2">
+                                    <label for="example-date">Từ ngày</label>
+                                    <input ng-model="startDate"  class="form-control" id="start-date" type="date" name="date">
+                                </div>
+                                <div class="form-group mb-3 mr-2">
+                                    <label for="example-date">Đến ngày</label>
+                                    <input ng-model="endDate" class="form-control" id="end-date" type="date" name="date">
+                                </div>
+                                <div class="form-group mb-3 mr-5" id="div-button">
+                                    <label for="example-date">   </label>
+                                    <button ng-click="filterTotalDate()" type="button" class="btn mb-2 btn-primary" style="margin-left: 5px; margin-top: 8px;">Lọc</button>
+                                </div>
+                                <div class="form-group mr-3">
+                                    <label for="simple-select2">Lựa chọn</label>
+                                    <select onchange="defaulStatistic()" class="form-control select2" id="cbb-statistic">
+                                        <option  value="default">Chọn...</option>
+                                        <option value="today">Hôm nay</option>
+                                        <option value="week">Tuần này</option>
+                                        <option value="month">Tháng này</option>
+                                        <option value="custom">Tùy chỉnh</option>
+                                    </select>
+                                </div>
+                                <div class="form-group mr-3">
+                                    <label for="simple-select2">Sắp xếp</label>
+                                    <select class="form-control select2" id="simple-select2">
+                                        <option value="CA">Chọn...</option>
+                                        <option value="AK">Tăng dần</option>
+                                        <option value="HI">Giảm dần</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <canvas id="myChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

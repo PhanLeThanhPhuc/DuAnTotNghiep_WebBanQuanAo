@@ -2,19 +2,32 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	th:replace="~{/user/layout/index :: dynamic (~{::main})}">
 
-<main th:object="${item}">
 
-	<div class="product_image_area section_padding">
-		<div class="container">
-			<div class="row s_product_inner justify-content-between">
-				<div class="col-lg-7 col-xl-7">
-					<div class="product_slider_img">
-						<!--							/// bỏ này vào mất 50% ảnh-->
-						<!--							<div id="vertical">-->
-						<div id="">
-							<div style="height: auto !important;"
-								th:attr="data-thumb=@{|/assets/user/user/image/*{thumbnail}|}">
-								<img th:src="@{|/assets/user/user/image/*{thumbnail}|}" />
+	<main th:object="${item}">
+		<!-- breadcrumb start-->
+
+		<!-- breadcrumb start-->
+		<!--================End Home Banner Area =================-->
+
+		<!--================Single Product Area =================-->
+		<div class="product_image_area section_padding">
+			<div class="container">
+				<div class="row s_product_inner justify-content-between">
+					<div class="col-lg-7 col-xl-7">
+						<div class="product_slider_img">
+<!--							/// bỏ này vào mất 50% ảnh-->
+							<div id="vertical">
+<!--							<div id="">-->
+								<div style="height: auto !important;"
+									th:attr="data-thumb=@{*{thumbnail}}">
+									<img th:src="@{*{thumbnail}}" />
+								</div>
+
+								<div th:each="img : ${images}"
+									th:attr="data-thumb=@{${img.image}}">
+									<img th:src="@{${img.image}}" />
+								</div>
+								
 							</div>
 
 

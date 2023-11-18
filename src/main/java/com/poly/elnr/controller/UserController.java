@@ -97,7 +97,7 @@ public class UserController {
 		//0 fail, 1 success
 		int paymentStatus =vnPayService.orderReturn(request);
 		int idorder = Integer.parseInt(request.getParameter("vnp_TxnRef"));
-
+		System.out.println("THời gian thanh toán: "+ request.getParameter("vnp_PayDate"));
 		Order order = new Order();
 
 		if(paymentStatus==1){
@@ -132,12 +132,13 @@ public class UserController {
 	public ResponseEntity<String> updatePassword (@RequestBody ChangePassword changePassword,  Authentication authentication){
 
 		String oldPassword = passwordEncoder.encode(changePassword.getOldPassword());
+		String newPassword = passwordEncoder.encode(changePassword.getNewPassword());
 
 		if (authentication != null) {
 			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 			Users user = userService.findByUserNameLogin(userDetails.getUsername());
 			if (passwordEncoder.matches(changePassword.getOldPassword(), user.getPassword())) {
-				userService.changePassword(oldPassword, userDetails.getUsername());
+					userService.changePassword(newPassword, userDetails.getUsername());
 				return new ResponseEntity<>("{ \"message\": \"Cập nhật mật khẩu thành công.\" }", HttpStatus.OK);
 			}else{
 				return new ResponseEntity<>("{ \"error\": \"Mật khẩu cũ không đúng.\" }", HttpStatus.BAD_REQUEST);
@@ -159,4 +160,5 @@ public class UserController {
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		return userService.saveImageUser(multipartFile, userDetails.getUsername());
 	}
+
 }

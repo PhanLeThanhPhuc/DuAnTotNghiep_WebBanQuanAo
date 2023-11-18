@@ -2,7 +2,10 @@ package com.poly.elnr.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.poly.elnr.dto.OrderDTO;
 import com.poly.elnr.dto.OrderData;
+import com.poly.elnr.dto.PhoneTotalDTO;
+import com.poly.elnr.dto.TotalWithUserOrderDTO;
 import com.poly.elnr.entity.Order;
 
 import java.util.List;
@@ -29,5 +32,11 @@ public interface OrderService {
     Order updatePayment(int idOrder, int statusPayment);
 
     Order updatePaymentAndStatusPayment(int idOrder, int statusPayment, int payment);
+
+    List<OrderDTO> findAllTotal();
+
+    List<PhoneTotalDTO> findTop10ByPhonePriceWithDate();
+
+    List<TotalWithUserOrderDTO> findTotalByPhoneAndDateRange();
 
 }

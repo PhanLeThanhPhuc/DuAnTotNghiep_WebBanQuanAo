@@ -1,5 +1,4 @@
 app = angular.module("app", ["ngRoute"]);
-
 app.config(function($routeProvider) {
 	$routeProvider
 		.when("/category", {
@@ -52,7 +51,15 @@ app.config(function($routeProvider) {
 			templateUrl: "/assets/admin/discount/index.html",
 			controller: "discount-ctrl"
 		})
+ .when("/revenue_statistic", {
+      templateUrl: "/assets/admin/statistics/revenue_statistic.html",
+      controller: "statistic-ctrl"
+    })
 
+      .when("/revenue_user", {
+        templateUrl: "/assets/admin/statistics/revenue_user.html",
+        controller: "user-statistic-ctrl"
+      })
 
 		.otherwise({
 			template: "<h1 class='text-center'>FPT Polytechnic Administration</h1>"

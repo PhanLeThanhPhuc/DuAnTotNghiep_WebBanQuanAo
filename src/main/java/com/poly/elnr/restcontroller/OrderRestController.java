@@ -71,6 +71,7 @@ public class OrderRestController {
         int total = 0;
         if(order.getVoucher() == null){
              total = (int) ((order.getTotal() + order.getShipFee()) );
+
         }else{
              total = (int) ((order.getTotal() + order.getShipFee()) - order.getVoucher().getDiscountPrice());
         }

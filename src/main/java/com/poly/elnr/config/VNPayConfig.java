@@ -9,6 +9,7 @@ import javax.crypto.spec.SecretKeySpec;
 import com.poly.elnr.constant.VnPayConstant;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.stereotype.Component;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
@@ -16,6 +17,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
+@Component
 public class VNPayConfig {
 
     public static String md5(String message) {
