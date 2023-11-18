@@ -84,7 +84,7 @@ public class OrderServiceImpl implements OrderService {
               order.getVoucher().getId();
               voucherId.setId(order.getVoucher().getId());
               Voucher voucher = voucherRepository.findById(order.getVoucher().getId()).get();
-              int quantity =  voucher.getQuantity() - order.getVoucher().getQuantity();
+              int quantity =  voucher.getQuantity() - 1;
               voucher.setQuantity(quantity);
               voucherRepository.save(voucher);
           }

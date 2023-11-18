@@ -4,7 +4,7 @@
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLongTitle">Voucher</h5>
+				<h5 class="modal-title" id="exampleModalLongTitle">Discount</h5>
 				<button type="button" class="close" data-dismiss="modal"
 					aria-label="Close">
 					<span aria-hidden="true">&times;</span>
@@ -14,61 +14,39 @@
 				<div class="form-validation">
 					<div class="row px-5">
 						<div class="form-group col-sm-12">
-							<div>Voucher</div>
+							<div>Discount</div>
 							<div class="row px-3">
-								<input ng-model="form.voucher" class="form-control col-sm-8">
-								<button type="button" class="btn btn-secondary col-sm-2"
-									ng-click="generateRandomString()">Random</button>
+								<input ng-model="form.name" class="form-control col-sm-10">
+								
 							</div>
 
 						</div>
 						<div class="form-group col-sm-6">
 							<div>Star Date</div>
-							<input ng-model="form.startDate" type="datetime-local"
+							<input ng-model="form.startdate" type="datetime-local"
 								class="form-control">
 						</div>
 						<div class="form-group col-sm-6">
 							<div>End Date</div>
-							<input ng-model="form.endDate" type="datetime-local"
+							<input ng-model="form.enddate" type="datetime-local"
 								class="form-control">
 						</div>
 						<div class="form-group col-sm-6">
-							<div>Discount</div>
-							<input ng-model="form.discountPrice" class="form-control">
+							<div>Discount(%)</div>
+							<input ng-model="form.discount" class="form-control">
 						</div>
-						<div class="form-group col-sm-6">
-							<div>Quantity</div>
-							<input ng-model="form.quantity" type="number"
-								class="form-control">
-						</div>
-						<div class="form-group col-sm-6">
-							<div>Min order price</div>
-							<input ng-model="form.min" type="number" class="form-control">
-						</div>
-						<div class="form-group col-sm-6">
-							<div>
-								Max discount:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input
-									type="checkbox" ng-model="form._max"> unlimited
-							</div>
-							<input ng-model="form.maxPrice" type="number"
-								ng-disabled="form._max" class="form-control">
-						</div>
-						<div class="form-group col-sm-6">
-							<div>Min product order</div>
-							<input ng-model="form.minOrderProduct" type="number"
-								class="form-control">
-						</div>
+						
 						<div class="form-group col-sm-6">
 							<div>Available?</div>
-							<label class="switch"> <input ng-model="form.status"
+							<label class="switch"> <input ng-model="form.active"
 								ng-value="true" name="available" type="checkbox"> <span
 								class="slider round"></span>
 							</label>
 						</div>
 						<div class="form-group col-sm-12">
 							<div>
-								Product:&nbsp;&nbsp;&nbsp;<input id="all-product" onclick="checkboxAllProduct()" type="checkbox"
-									ng-model="form.active"> All product
+								Product:&nbsp;&nbsp;&nbsp;<input type="checkbox"
+									ng-model="form.allproduct"> All product
 							</div>
 							<div class="row">
 								<div class="py-1 col-lg-9">
@@ -84,14 +62,10 @@
 										Select</button>
 								</div>
 							</div>
-							<input type="hidden" ng-model="form.productID"
+							<input type="hidden" ng-model="form.product_id" 
 								id="selectedOptionsInput" class="form-control">
 						</div>
-						<div class="form-group col-sm-12">
-							<div>Description</div>
-							<textarea ng-model="form.description" rows="3"
-								class="form-control" cols="50"></textarea>
-						</div>
+						
 					</div>
 				</div>
 			</div>

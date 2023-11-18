@@ -157,14 +157,13 @@
 <!--                                                <span style="font-size: 13px; color: red; font-weight: 600">01001₫</span><br>-->
 <!--                                                <span style="font-size: 13px; color: black; font-weight: 600; text-decoration:line-through;">01001₫</span>-->
 
-                                                <div ng-if="item.priceBeforeSale ==''">
-                                                    <span style="font-size: 13px; color: red; font-weight: 600">{{item.price  | currency:'' :0 }}₫</span><br>
+                                                <div ng-if="item.product.sale ==false">
+                                                    <span style="font-size: 13px; color: red; font-weight: 600">{{item.product.price  | currency:'' :0 }}₫</span><br>
                                                 </div>
-                                                <div ng-if="item.priceBeforeSale !=''">
-                                                    <span style="font-size: 13px; color: black; font-weight: 600; ">{{item.price  | currency:'' :0 }}₫</span><br>
-                                                    <span style="font-size: 13px; color: red; font-weight: 600; text-decoration:line-through;" >{{item.priceBeforeSale  | currency:'' :0 }}₫</span>
+                                                <div ng-if="item.product.sale == true">
+                                                    <span style="font-size: 13px; color: black; font-weight: 600;" >{{item.product.discountPrice  | currency:'' :0 }}₫</span><br>
+                                                    <span style="font-size: 13px; color: red; font-weight: 600;text-decoration:line-through; ">{{item.product.price  | currency:'' :0 }}₫</span>
                                                 </div>
-
                                             </td>
                                             <td>
                                                 <span style="font-size: 14px; color: red; font-weight: 600">{{cart.amt_of(item) | currency:'' :0 }}₫</span><br>
@@ -234,7 +233,7 @@
                                 </li>
                                 <li>
                                     <a href="#">Tổng tiền
-                                        <span>{{cart.totalAmount + shipFee - discoutVoucher  | currency:'' :0}}₫</span>
+                                        <span>{{cart.amount + shipFee - discoutVoucher  | currency:'' :0}}₫</span>
                                     </a>
                                 </li>
                             </ul>

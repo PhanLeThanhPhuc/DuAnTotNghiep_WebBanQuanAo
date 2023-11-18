@@ -34,4 +34,7 @@ public interface ProductService {
 	public Product update(Product product);
 
 	public String saveImage(MultipartFile multipartFile)throws IOException;
+	
+	
+	Optional<Product> findByID2(Integer id);
 }

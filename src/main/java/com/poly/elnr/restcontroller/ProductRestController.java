@@ -22,6 +22,7 @@ import com.poly.elnr.entity.Category;
 import com.poly.elnr.entity.Product;
 import com.poly.elnr.entity.ProductDetails;
 import com.poly.elnr.service.CategoryService;
+import com.poly.elnr.service.DiscountCheckService;
 import com.poly.elnr.service.ProductDetailService;
 import com.poly.elnr.service.ProductService;
 
@@ -37,8 +38,12 @@ public class ProductRestController {
 	@Autowired
 	ProductService productService;
 	
+	@Autowired
+	DiscountCheckService discountCheckService;
+	
 	@GetMapping
 	public List<Product> getAll() {
+
 		return productService.findAll();
 	}
 	@GetMapping("{id}")

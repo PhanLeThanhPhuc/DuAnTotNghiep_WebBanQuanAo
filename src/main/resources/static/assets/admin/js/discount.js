@@ -1,15 +1,16 @@
-app.controller("voucher-ctrl", function($scope, $filter, $http, $timeout) {
+app.controller("discount-ctrl", function($scope, $filter, $http, $timeout) {
 	$scope.initialize = function() {
 		$http.get("/rest/products").then(resp => {
 			$scope.products = resp.data;
 		});
-		$http.get("/rest/voucher").then(resp => {
+		$http.get("/rest/discount").then(resp => {
 			$scope.items = resp.data;
 			$scope.items.forEach(item => {
-				item.startDate = new Date(item.startDate)
-				item.endDate = new Date(item.endDate)
+				item.startdate = new Date(item.startdate)
+				item.enddate = new Date(item.enddate)
 			})
 		})
+
 		$scope.reset();
 	}
 
@@ -21,15 +22,15 @@ app.controller("voucher-ctrl", function($scope, $filter, $http, $timeout) {
 	}
 
 	$scope.edit = function(item) {
+
 		$scope.form = angular.copy(item);
-		$(".nav-tabs a:eq(0)").tab("show");
-		checkboxAllProduct();
+
 	}
 
 	$scope.create = function() {
 		$scope.showSelectedOptions2();
 		var item = angular.copy($scope.form);
-		$http.post(`/rest/voucher`, item).then(resp => {
+		$http.post(`/rest/discount`, item).then(resp => {
 			resp.data.dateInsert = new Date(resp.data.dateInsert)
 			$scope.items.push(resp.data);
 			$scope.reset();
@@ -43,7 +44,7 @@ app.controller("voucher-ctrl", function($scope, $filter, $http, $timeout) {
 	$scope.update = function() {
 		$scope.showSelectedOptions2();
 		var item = angular.copy($scope.form);
-		$http.put(`/rest/voucher/${item.id}`, item).then(resp => {
+		$http.put(`/rest/discount/${item.id}`, item).then(resp => {
 			var index = $scope.items.findIndex(p => p.id == item.id);
 			$scope.items[index] = item;
 			alert("Cập nhật sản phẩm thành công!");
@@ -52,18 +53,20 @@ app.controller("voucher-ctrl", function($scope, $filter, $http, $timeout) {
 				alert("Lỗi cập nhật sản phẩm!");
 				console.log("Error", error);
 			});
+
+
 	}
 
 
 
 	$scope.updateStatus = function(size) {
 		var item = angular.copy(size);
-		if (item.status == false) {
-			item.status = true;
+		if (item.active == false) {
+			item.active = true;
 		} else {
-			item.status = false;
+			item.active = false;
 		}
-		$http.put(`/rest/voucher/${item.id}`, item).then(resp => {
+		$http.put(`/rest/discount/${item.id}`, item).then(resp => {
 			var index = $scope.items.findIndex(p => p.id == item.id);
 			$scope.items[index] = item;
 
@@ -160,18 +163,6 @@ app.controller("voucher-ctrl", function($scope, $filter, $http, $timeout) {
 
 
 
-	$scope.generateRandomString = function() {
-		var length = Math.floor(Math.random() * 3) + 6; // Random length between 6 and 8
-		var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-		var result = '';
-
-		for (var i = 0; i < length; i++) {
-			var randomIndex = Math.floor(Math.random() * characters.length);
-			result += characters.charAt(randomIndex);
-		}
-
-		$scope.form.voucher = result.toUpperCase();
-	};
 
 
 
@@ -181,12 +172,11 @@ app.controller("voucher-ctrl", function($scope, $filter, $http, $timeout) {
 		});
 	});
 
-	$scope.form.productID="";
+	$scope.form.product_id = "";
 	$scope.showSelectedOptions = function() {
-	
-		var selectedOptionsIds = $scope.form.productID.split(/\s*,\s*/);
+		
+		var selectedOptionsIds = $scope.form.product_id.split(/\s*,\s*/);
 		var selectedOptions = [];
-
 		$('#mySelect option').each(function() {
 			var optionId = $(this).val();
 			if (selectedOptionsIds.includes(optionId)) {
@@ -197,7 +187,7 @@ app.controller("voucher-ctrl", function($scope, $filter, $http, $timeout) {
 		$('#mySelect').selectpicker('val', selectedOptions);
 	}
 
-	$scope.$watch('form.productID', function() {
+	$scope.$watch('form.product_id', function() {
 		$scope.showSelectedOptions();
 
 	});
@@ -208,7 +198,7 @@ app.controller("voucher-ctrl", function($scope, $filter, $http, $timeout) {
 			return $(this).val();
 		}).get().join(', ');
 
-		$scope.form.productID = selectedOptionsText;
+		$scope.form.product_id = selectedOptionsText;
 	}
 
 	$scope.clearSelect = function() {
@@ -216,16 +206,6 @@ app.controller("voucher-ctrl", function($scope, $filter, $http, $timeout) {
 		$('#mySelect').selectpicker('refresh');
 	}
 
-	 checkboxAllProduct = () => {
-		var checkbox = document.getElementById('all-product');
-		if (checkbox.checked) {
-			console.log('Checkbox is checked');
-			$scope.clearSelect();
-			document.getElementById('mySelect').disabled = true;
-		} else {
-			document.getElementById('mySelect').disabled = false;
-		}
-	}
 
 }
 );

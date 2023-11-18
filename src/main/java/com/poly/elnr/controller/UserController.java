@@ -1,9 +1,11 @@
 	package com.poly.elnr.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.poly.elnr.dto.ChangePassword;
 import com.poly.elnr.entity.Order;
 import com.poly.elnr.entity.Users;
 import com.poly.elnr.service.CategoryDetailService;
+import com.poly.elnr.service.DiscountCheckService;
 import com.poly.elnr.service.OrderService;
 import com.poly.elnr.service.UserService;
 
@@ -45,6 +47,10 @@ public class UserController {
 
 	@Autowired
 	HttpServletRequest request;
+	
+
+	@Autowired
+	DiscountCheckService discountCheckService;
 
 	@PostMapping("/submitPayment/{paymentMethod}/{idOrder}")
 	public String submitPayment(@PathVariable int paymentMethod, @PathVariable int idOrder) {
@@ -61,9 +67,9 @@ public class UserController {
 			Order order = orderService.fillOrderById(idOrder);
 			int total = 0;
 			if(order.getVoucher() == null){
-				total = (int) ((order.getTotal() + order.getShipFee()) - order.getVoucher().getDiscountPrice());
+				total = (int) ((order.getTotal() + order.getShipFee()));
 			}else{
-				total = (int) ((order.getTotalDiscount() + order.getShipFee()) - order.getVoucher().getDiscountPrice());
+				total = (int) ((order.getTotal() + order.getShipFee()) - order.getVoucher().getDiscountPrice());
 			}
 			String urlPayment = vnPayService.createOrder(total, content, baseUrl,idOrder);
 			return "redirect:"+urlPayment;
@@ -72,6 +78,8 @@ public class UserController {
 
 	@GetMapping("user/index")
 	public String index(Model model) {
+		
+		model.addAttribute("sale",discountCheckService.getDiscountedProducts());
 		return "user/layout/home";
 	}
 
@@ -137,6 +145,12 @@ public class UserController {
 		}
         return null;
     }
+
+	@GetMapping("user/cancel-order")
+	public String cancelOrder (@RequestParam("idorder") int idorder) throws JsonProcessingException {
+		orderService.cancelOrder(idorder);
+		return "redirect:/user/order-detail?idOrder="+idorder;
+	}
 
 	@ResponseBody
 	@PostMapping("user/upload")
