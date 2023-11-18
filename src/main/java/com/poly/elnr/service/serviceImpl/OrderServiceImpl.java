@@ -7,6 +7,7 @@ import com.poly.elnr.dto.OrderDTO;
 import com.poly.elnr.dto.OrderData;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.poly.elnr.dto.PhoneTotalDTO;
+import com.poly.elnr.dto.TotalWithUserOrderDTO;
 import com.poly.elnr.entity.*;
 import com.poly.elnr.repository.*;
 //import com.poly.elnr.service.ApiGHNService;
@@ -216,7 +217,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<PhoneTotalDTO> findTotalByPhoneAndDateRange() {
+    public List<PhoneTotalDTO> findTop10ByPhonePriceWithDate() {
+        return orderRepository.findTop10ByPhonePriceWithDate();
+    }
+
+    @Override
+    public List<TotalWithUserOrderDTO> findTotalByPhoneAndDateRange() {
         return orderRepository.findTotalByPhoneAndDateRange();
     }
 

@@ -54,7 +54,7 @@ app.config(function ($routeProvider) {
     })
 
       .when("/revenue_user", {
-        templateUrl: "/assets/admin/user/user_statistic.html",
+        templateUrl: "/assets/admin/statistics/revenue_user.html",
         controller: "user-statistic-ctrl"
       })
 

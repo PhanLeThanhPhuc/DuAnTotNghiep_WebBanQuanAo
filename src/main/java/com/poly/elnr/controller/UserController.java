@@ -124,12 +124,13 @@ public class UserController {
 	public ResponseEntity<String> updatePassword (@RequestBody ChangePassword changePassword,  Authentication authentication){
 
 		String oldPassword = passwordEncoder.encode(changePassword.getOldPassword());
+		String newPassword = passwordEncoder.encode(changePassword.getNewPassword());
 
 		if (authentication != null) {
 			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 			Users user = userService.findByUserNameLogin(userDetails.getUsername());
 			if (passwordEncoder.matches(changePassword.getOldPassword(), user.getPassword())) {
-				userService.changePassword(oldPassword, userDetails.getUsername());
+					userService.changePassword(newPassword, userDetails.getUsername());
 				return new ResponseEntity<>("{ \"message\": \"Cập nhật mật khẩu thành công.\" }", HttpStatus.OK);
 			}else{
 				return new ResponseEntity<>("{ \"error\": \"Mật khẩu cũ không đúng.\" }", HttpStatus.BAD_REQUEST);
@@ -145,4 +146,5 @@ public class UserController {
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		return userService.saveImageUser(multipartFile, userDetails.getUsername());
 	}
+
 }

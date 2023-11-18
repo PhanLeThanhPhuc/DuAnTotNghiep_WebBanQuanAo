@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.poly.elnr.dto.OrderDTO;
 import com.poly.elnr.dto.OrderData;
 import com.poly.elnr.dto.PhoneTotalDTO;
+import com.poly.elnr.dto.TotalWithUserOrderDTO;
 import com.poly.elnr.entity.Order;
 
 import java.util.List;
@@ -34,7 +35,8 @@ public interface OrderService {
 
     List<OrderDTO> findAllTotal();
 
-    List<PhoneTotalDTO> findTotalByPhoneAndDateRange();
+    List<PhoneTotalDTO> findTop10ByPhonePriceWithDate();
 
+    List<TotalWithUserOrderDTO> findTotalByPhoneAndDateRange();
 
 }

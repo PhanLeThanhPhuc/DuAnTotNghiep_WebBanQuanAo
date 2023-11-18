@@ -2,6 +2,7 @@ package com.poly.elnr.repository;
 
 import com.poly.elnr.dto.OrderDTO;
 import com.poly.elnr.dto.PhoneTotalDTO;
+import com.poly.elnr.dto.TotalWithUserOrderDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -25,9 +26,17 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
     @Query("SELECT new com.poly.elnr.dto.OrderDTO(SUM(o.total), o.orderDate) FROM Order o GROUP BY o.orderDate")
     List<OrderDTO> findAllTotal();
 
-    @Query("SELECT new com.poly.elnr.dto.PhoneTotalDTO(o.phone, SUM(o.total) , CAST(o.orderDate AS date)) " +
+    @Query("SELECT new com.poly.elnr.dto.TotalWithUserOrderDTO(o.phone, SUM(o.total) , CAST(o.orderDate AS date)) " +
             "FROM Order o " +
             "GROUP BY o.phone, CAST(o.orderDate AS date)")
-    List<PhoneTotalDTO> findTotalByPhoneAndDateRange();
+    List<TotalWithUserOrderDTO> findTotalByPhoneAndDateRange();
+
+    @Query("SELECT new com.poly.elnr.dto.PhoneTotalDTO(o.phone, SUM(o.total), COUNT(o.phone)) " +
+            "FROM Order o " +
+            "WHERE MONTH(o.orderDate) = MONTH(CURRENT_DATE) AND YEAR(o.orderDate) = YEAR(CURRENT_DATE) " +
+            "GROUP BY o.phone " +
+            "ORDER BY SUM(o.total) DESC " +
+            "LIMIT 10")
+    List<PhoneTotalDTO> findTop10ByPhonePriceWithDate();
 
 }
