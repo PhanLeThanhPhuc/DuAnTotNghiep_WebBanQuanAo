@@ -1,6 +1,7 @@
 
-<div xmlns:th="http://www.thymeleaf.org"
+<html xmlns:th="http://www.thymeleaf.org"
 	th:replace="~{/user/layout/index :: dynamic (~{::main})}">
+
 
 	<main th:object="${item}">
 		<!-- breadcrumb start-->
@@ -28,263 +29,257 @@
 								</div>
 								
 							</div>
+
+
+							<div th:each="img : ${images}"
+								th:attr="data-thumb=@{|/assets/user/user/image/${img.image}|}">
+								<img th:src="@{|/assets/user/user/image/${img.image}|}" />
+							</div>
+
 						</div>
 					</div>
-					<div class="col-lg-5 col-xl-4">
-						<div class="s_product_text">
-							<h5>
-								previous <span>|</span> next
-							</h5>
-							<h3>[[*{name}]]</h3>
-							
-							
+				</div>
+				<div class="col-lg-5 col-xl-4">
+					<div class="s_product_text">
+						<h5>
+							previous <span>|</span> next
+						</h5>
+						<h3>[[*{name}]]</h3>
 
-							<ul class="list">
-								<li><span>Category</span> : [[*{categoryDdetail.name}]]</li>
-								<li><span>Color</span> : [[*{color.name}]]</a></li>
+
+
+						<ul class="list">
+							<li><span>Category</span> : [[*{categoryDdetail.name}]]</li>
+							<li><span>Color</span> : [[*{color.name}]]</a></li>
 							<div th:if="*{isSale ==true}">
-								<h4 class="priceBeforeSale" style="text-decoration-line: line-through;">[[*{price}]]</h4>
-								<h2 class="price">[[${#numbers.formatDecimal(item.discountPrice, 0, 'COMMA',
-									0,'POINT')}]]</h2>
+								<h4 class="priceBeforeSale"
+									style="text-decoration-line: line-through;">[[*{price}]]</h4>
+								<h2 class="price">[[${#numbers.formatDecimal(item.discountPrice,
+									0, 'COMMA', 0,'POINT')}]]</h2>
 							</div>
 							<div th:unless="*{isSale ==true}">
-								<h4 class="priceBeforeSale" type="hidden" style="text-decoration-line: line-through;">[[*{price}]]</h4>
-								<h2 class="price">[[${#numbers.formatDecimal(item.price, 0, 'COMMA',
-									0,'POINT')}]]</h2>
+								<h2 class="price">[[${#numbers.formatDecimal(item.price, 0,
+									'COMMA', 0,'POINT')}]]</h2>
 							</div>
-								<nav class="radio-button">
-									<div th:each="a: ${sizes}">
-										<input type="radio" th:id="${a.size.id}" name="x"
-											th:attr="ng-click=@{|sizeClick(${a.quantity});sizeid(${a.size.id})|}"
-											th:value="${a.quantity}" /> <label th:for="${a.size.id}">[[${a.size.name}]]</label>
-									</div>
-								</nav>
-								<p>Số lượng sản phẩm: {{soluong}}</p>
-								<h2 class="soluong" style="display: none;" >[[${soluong}]]</h2>
-								
-								<!-- .container-outer -->
-
-							</ul>
-
-							<p>[[*{description.description}]]</p>
-							<div
-								class="card_area d-flex justify-content-between align-items-center">
-								<div class="product_count">
-									<span class="inumber-decrement"> <i class="ti-minus"></i></span>
-									<input class="input-number" type="number" value="1" min="0"
-										ng-model="cart.qtyyy"> <span class="number-increment">
-										<i class="ti-plus"></i>
-									</span>
+							<nav class="radio-button">
+								<div th:each="a: ${sizes}">
+									<input type="radio" th:id="${a.size.id}" name="x"
+										th:attr="ng-click=@{|sizeClick(${a.quantity});sizeid(${a.size.id})|}"
+										th:value="${a.quantity}" /> <label th:for="${a.size.id}">[[${a.size.name}]]</label>
 								</div>
-								<a th:attr="ng-click=@{|cart.add(*{id})|}" class="btn_3">add
-									to cart</a> 
-								</a>
+							</nav>
+							<p>Số lượng sản phẩm: {{soluong}}</p>
+							<h2 class="soluong" style="display: none;">[[${soluong}]]</h2>
+
+							<!-- .container-outer -->
+
+						</ul>
+
+						<p>[[*{description.description}]]</p>
+						<div
+							class="card_area d-flex justify-content-between align-items-center">
+							<div class="product_count">
+								<span class="inumber-decrement"> <i class="ti-minus"></i></span>
+								<input class="input-number" type="number" value="1" min="0"
+									ng-model="cart.qtyyy"> <span class="number-increment">
+									<i class="ti-plus"></i>
+								</span>
 							</div>
+							<a th:attr="ng-click=@{|cart.add(*{id})|}" class="btn_3">add
+								to cart</a> </a>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
+	</div>
 
 
 
-		<!--================End Single Product Area =================-->
+	<!--================End Single Product Area =================-->
 
-		<!--================Product Description Area =================-->
-		<section class="product_description_area">
-			<div class="container">
-				<ul class="nav nav-tabs" id="myTab" role="tablist">
-					<li class="nav-item"><a class="nav-link" id="home-tab"
-						data-toggle="tab" href="#home" role="tab" aria-controls="home"
-						aria-selected="true">Mô tả</a></li>
-					
-					<li class="nav-item"><a class="nav-link active"
-						id="review-tab" data-toggle="tab" href="#review" role="tab"
-						aria-controls="review" aria-selected="false">Đánh giá</a></li>
-				</ul>
-				<div class="tab-content" id="myTabContent">
-					<div class="tab-pane fade" id="home" role="tabpanel"
-						aria-labelledby="home-tab">
-						<div >
-							<table class="table">
-								<tbody>
-									<tr>
-										<td>
-											Name
-										</td>
-										<td>
-											[[*{name}]]
-										</td>
-									</tr>
-									<tr>
-										<td>
-											Manufacture
-										</td>
-										<td >
-											[[*{description.manufacture}]]
-										</td>
-									</tr>
-									<tr>
-										<td>
-											Technology
-										</td>
-										<td  >
-											[[*{description.technology}]]
-										</td>
-									</tr>
-									<tr>
-										<td>
-											Weight
-										</td>
-										<td>
-											[[*{description.weight}]]
-										</td>
-									</tr>
-									<tr>
-										<td>
-											Material
-										</td>
-										<td>
-											[[*{description.material}]]
-										</td>
-									</tr>
-									
-									
-									
-								</tbody>
-							</table>
-						</div>
-						<p style="margin:40px;margin-top:20px; font-size:18px;">[[*{description.description}]]</p>
+	<!--================Product Description Area =================-->
+	<section class="product_description_area">
+		<div class="container">
+			<ul class="nav nav-tabs" id="myTab" role="tablist">
+				<li class="nav-item"><a class="nav-link" id="home-tab"
+					data-toggle="tab" href="#home" role="tab" aria-controls="home"
+					aria-selected="true">Mô tả</a></li>
+
+				<li class="nav-item"><a class="nav-link active" id="review-tab"
+					data-toggle="tab" href="#review" role="tab" aria-controls="review"
+					aria-selected="false">Đánh giá</a></li>
+			</ul>
+			<div class="tab-content" id="myTabContent">
+				<div class="tab-pane fade" id="home" role="tabpanel"
+					aria-labelledby="home-tab">
+					<div>
+						<table class="table">
+							<tbody>
+								<tr>
+									<td>Name</td>
+									<td>[[*{name}]]</td>
+								</tr>
+								<tr>
+									<td>Manufacture</td>
+									<td>[[*{description.manufacture}]]</td>
+								</tr>
+								<tr>
+									<td>Technology</td>
+									<td>[[*{description.technology}]]</td>
+								</tr>
+								<tr>
+									<td>Weight</td>
+									<td>[[*{description.weight}]]</td>
+								</tr>
+								<tr>
+									<td>Material</td>
+									<td>[[*{description.material}]]</td>
+								</tr>
+
+
+
+							</tbody>
+						</table>
 					</div>
-					
-					
-					<div class="tab-pane fade	 show active" id="review" role="tabpanel"
-						aria-labelledby="review-tab">
-						<div class="row">
-							<div class="col-lg-12">
-								<div  class="row total_rate">
-									<div class="col-6">
-										<div class="box_total">
-											<h5>Overall</h5>
-											<h4 th:text="${rating}"></h4>
-											<h6>([[${ratingTotal}]] Reviews)</h6>
-										</div>
-									</div>
-									<div class="col-6">
-										<div class="rating_list">
-											<h3>Based on [[${ratingTotal}]] Reviews</h3>
-											<ul class="list">
-												<li><a href="#">5 Star <i class="fa fa-star"></i> <i
-														class="fa fa-star"></i> <i class="fa fa-star"></i> <i
-														class="fa fa-star"></i> <i class="fa fa-star"></i>[[${rating5}]]
-												</a></li>
-												<li><a href="#">4 Star <i class="fa fa-star"></i> <i
-														class="fa fa-star"></i> <i class="fa fa-star"></i> <i
-														class="fa fa-star"></i> <i class="fa fa-star"></i> [[${rating4}]]
-												</a></li>
-												<li><a href="#">3 Star <i class="fa fa-star"></i> <i
-														class="fa fa-star"></i> <i class="fa fa-star"></i> <i
-														class="fa fa-star"></i> <i class="fa fa-star"></i>[[${rating3}]]
-												</a></li>
-												<li><a href="#">2 Star <i class="fa fa-star"></i> <i
-														class="fa fa-star"></i> <i class="fa fa-star"></i> <i
-														class="fa fa-star"></i> <i class="fa fa-star"></i> [[${rating2}]]
-												</a></li>
-												<li><a href="#">1 Star <i class="fa fa-star"></i> <i
-														class="fa fa-star"></i> <i class="fa fa-star"></i> <i
-														class="fa fa-star"></i> <i class="fa fa-star"></i> [[${rating1}]]
-												</a></li>
-											</ul>
-										</div>
+					<p style="margin: 40px; margin-top: 20px; font-size: 18px;">[[*{description.description}]]</p>
+				</div>
+
+
+				<div class="tab-pane fade	 show active" id="review" role="tabpanel"
+					aria-labelledby="review-tab">
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="row total_rate">
+								<div class="col-6">
+									<div class="box_total">
+										<h5>Overall</h5>
+										<h4 th:text="${rating}"></h4>
+										<h6>([[${ratingTotal}]] Reviews)</h6>
 									</div>
 								</div>
-								<div class="review_list">
-									<div th:each="review : ${reviews}" class="review_item">
-										<div class="media">
-											<div class="d-flex">
-												<img class="rounded-circle" style="width:50px;" th:src="@{|/assets/user/user/image/${review.User.image}|}"  alt="" />
-											</div>
-											<div class="media-body">
-												<h4>[[${review.User.fullName}]]</h4>
-												
-												
-												<i th:if="${review.rating >=1}" class="fa fa-star"></i>
-							                    <i th:if="${review.rating >=2}" class="fa fa-star"></i>
-							                    <i th:if="${review.rating >=3}" class="fa fa-star"></i>
-							                    <i th:if="${review.rating >=4}" class="fa fa-star"></i>
-							                    <i th:if="${review.rating ==5}" class="fa fa-star"></i>
-							                      
-							                      <p>[[${review.dateReview}]]</p>
-											</div>
-										</div >				
-											<div th:if="${review.image != ''}">
-												<img  style="width:100px; margin-left:50px;margin-top:20px" th:src="@{|/assets/user/user/image/${review.image}|}"  alt="" />
-											</div>
-										<p style="margin-left:50px;">[[${review.descriptionReview}]]</p>
+								<div class="col-6">
+									<div class="rating_list">
+										<h3>Based on [[${ratingTotal}]] Reviews</h3>
+										<ul class="list">
+											<li><a href="#">5 Star <i class="fa fa-star"></i> <i
+													class="fa fa-star"></i> <i class="fa fa-star"></i> <i
+													class="fa fa-star"></i> <i class="fa fa-star"></i>[[${rating5}]]
+											</a></li>
+											<li><a href="#">4 Star <i class="fa fa-star"></i> <i
+													class="fa fa-star"></i> <i class="fa fa-star"></i> <i
+													class="fa fa-star"></i> <i class="fa fa-star"></i>
+													[[${rating4}]]
+											</a></li>
+											<li><a href="#">3 Star <i class="fa fa-star"></i> <i
+													class="fa fa-star"></i> <i class="fa fa-star"></i> <i
+													class="fa fa-star"></i> <i class="fa fa-star"></i>[[${rating3}]]
+											</a></li>
+											<li><a href="#">2 Star <i class="fa fa-star"></i> <i
+													class="fa fa-star"></i> <i class="fa fa-star"></i> <i
+													class="fa fa-star"></i> <i class="fa fa-star"></i>
+													[[${rating2}]]
+											</a></li>
+											<li><a href="#">1 Star <i class="fa fa-star"></i> <i
+													class="fa fa-star"></i> <i class="fa fa-star"></i> <i
+													class="fa fa-star"></i> <i class="fa fa-star"></i>
+													[[${rating1}]]
+											</a></li>
+										</ul>
 									</div>
-									
-									<form id="form" th:action="@{|product-detail|}" method="get">
-							
-							
-							<div class="col-lg-12">
-								<div class="pageination">
-									<nav aria-label="Page navigation example">
-										<ul class="pagination justify-content-center " id="pagination"></ul>
-									</nav>
-									<input id="page" name="p" type="hidden">
 								</div>
 							</div>
-							<input th:value="*{id}" name="product-id" type="hidden">
-							</form>
+							<div class="review_list">
+								<div th:each="review : ${reviews}" class="review_item">
+									<div class="media">
+										<div class="d-flex">
+											<img class="rounded-circle" style="width: 50px;"
+												th:src="@{|/assets/user/user/image/${review.User.image}|}"
+												alt="" />
+										</div>
+										<div class="media-body">
+											<h4>[[${review.User.fullName}]]</h4>
+
+
+											<i th:if="${review.rating >=1}" class="fa fa-star"></i> <i
+												th:if="${review.rating >=2}" class="fa fa-star"></i> <i
+												th:if="${review.rating >=3}" class="fa fa-star"></i> <i
+												th:if="${review.rating >=4}" class="fa fa-star"></i> <i
+												th:if="${review.rating ==5}" class="fa fa-star"></i>
+
+											<p>[[${review.dateReview}]]</p>
+										</div>
+									</div>
+									<div th:if="${review.image != ''}">
+										<img style="width: 100px; margin-left: 50px; margin-top: 20px"
+											th:src="@{|/assets/user/user/image/${review.image}|}" alt="" />
+									</div>
+									<p style="margin-left: 50px;">[[${review.descriptionReview}]]</p>
 								</div>
-								
+
+								<form id="form" th:action="@{|product-detail|}" method="get">
+
+
+									<div class="col-lg-12">
+										<div class="pageination">
+											<nav aria-label="Page navigation example">
+												<ul class="pagination justify-content-center "
+													id="pagination"></ul>
+											</nav>
+											<input id="page" name="p" type="hidden">
+										</div>
+									</div>
+									<input th:value="*{id}" name="product-id" type="hidden">
+								</form>
 							</div>
-							
-							
+
 						</div>
+
+
 					</div>
 				</div>
 			</div>
-		</section>
-		
-		<!--================End Product Description Area =================-->
+		</div>
+	</section>
 
-		<section class="product_list best_seller">
-			<div class="container">
-				<div class="row justify-content-center">
-					<div class="col-lg-12">
-						<div class="section_tittle text-center">
-							<h4 style="font-weight:  bold">
-								Sản phẩm cùng loại <span></span>
-							</h4>
-						</div>
-					</div>
-				</div>
-				<div class="row align-items-center justify-content-between">
-					<div class="col-lg-12">
-						<div class="best_product_slider owl-carousel">
-							<div th:each="p:*{categoryDdetail.product}"
-								class="single_product_item">
+	<!--================End Product Description Area =================-->
 
-								<a th:href="@{|/user/product-detail?product-id=${p.id}|}">
-									<img th:src="@{|/assets/user/user/image/${p.thumbnail}|}"
-									style="height: 270px;" alt="">
-									<div class="single_product_text">
-										<h5 class="text-truncate mb-3" th:utext="${p.name}"></h5>
-										<h3>[[${#numbers.formatDecimal(p.price, 0, 'COMMA',
-											0,'POINT')}]]</h3>
-									</div>
-								</a>
-							</div>
-
-						</div>
+	<section class="product_list best_seller">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-lg-12">
+					<div class="section_tittle text-center">
+						<h4 style="font-weight: bold">
+							Sản phẩm cùng loại <span></span>
+						</h4>
 					</div>
 				</div>
 			</div>
-		</section>
-		<!-- product_list part end-->
-		
-		<script th:inline="javascript">
+			<div class="row align-items-center justify-content-between">
+				<div class="col-lg-12">
+					<div class="best_product_slider owl-carousel">
+						<div th:each="p:*{categoryDdetail.product}"
+							class="single_product_item">
+
+							<a th:href="@{|/user/product-detail?product-id=${p.id}|}"> <img
+								th:src="@{|/assets/user/user/image/${p.thumbnail}|}"
+								style="height: 270px;" alt="">
+								<div class="single_product_text">
+									<h5 class="text-truncate mb-3" th:utext="${p.name}"></h5>
+									<h3>[[${#numbers.formatDecimal(p.price, 0, 'COMMA',
+										0,'POINT')}]]</h3>
+								</div>
+							</a>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- product_list part end-->
+
+	<script th:inline="javascript">
 		/*<![CDATA[*/
 		$(function() {
 			window.pagObj = $('#pagination').twbsPagination({
@@ -307,4 +302,4 @@
 
 
 
-	</main>
+</main>

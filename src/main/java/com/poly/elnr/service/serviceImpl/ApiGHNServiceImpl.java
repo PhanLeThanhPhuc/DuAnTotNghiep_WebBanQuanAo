@@ -94,13 +94,13 @@ public class ApiGHNServiceImpl implements ApiGHNService {
         if(order.getVoucher() == null){
             orderData.setCod_amount(order.getTotal());
         }else {
-            orderData.setCod_amount(order.getTotalDiscount());
+            orderData.setCod_amount((int) (order.getTotal()-order.getVoucher().getDiscountPrice()));
         }
         orderData.setContent("Testcontent");
         orderData.setTo_ward_code(order.getWardCode());
         orderData.setTo_district_id(order.getDistrictId());
         orderData.setWeight(order.getWeight());
-        orderData.setNote("test note");
+        orderData.setNote(order.getNote());
         List<Item> items = new ArrayList<>();
         order.getOrderDetails().forEach(list->{
             Item itemEntity = new Item();
