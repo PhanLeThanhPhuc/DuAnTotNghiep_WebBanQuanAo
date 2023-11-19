@@ -29,8 +29,8 @@ public class Description implements Serializable{
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-	@Column(name = "quantity")
-    private int quantity;
+	@Column(name = "name")
+    private String name;
 
     @Column(name = "weight")
     private String weight;

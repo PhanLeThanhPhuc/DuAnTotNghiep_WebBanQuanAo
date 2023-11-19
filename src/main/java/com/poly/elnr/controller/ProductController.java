@@ -2,11 +2,11 @@ package com.poly.elnr.controller;
 
 import java.util.List;
 
-
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.poly.elnr.entity.Review;
+import com.poly.elnr.service.DiscountCheckService;
+import com.poly.elnr.service.DiscountService;
 import com.poly.elnr.service.ImageService;
 import com.poly.elnr.service.ProductDetailService;
 
@@ -44,13 +46,22 @@ public class ProductController {
 	@Autowired
 	ImageService imageService;
 
+	@Autowired
+	DiscountCheckService discountCheckService;
+	
+	@Autowired
+	DiscountService discountService;
+	
 	@RequestMapping("productcategory")
 	public String viewProductCategory(Model model, @RequestParam("idCategory") int idCategory,
 			@RequestParam(name = "size", required = false) List<Integer> sizeId,
 			@RequestParam(name = "color", required = false) List<Integer> colorId,
 			@RequestParam(name = "sort", required = false) Optional<String> sort,
 			@RequestParam(name = "p", required = false) Optional<Integer> p) {
-		model.addAttribute("product", productService.findProductByCategoryFilter(idCategory, colorId, sizeId, sort, p));
+		Page<Product> products = productService.findProductByCategoryFilter(idCategory, colorId, sizeId, sort, p);
+		List<Product> productList = products.getContent();
+		List<Product> updatedProductList = discountCheckService.getAllDiscountProducts(productList);
+		model.addAttribute("product", new PageImpl<>(updatedProductList, products.getPageable(), products.getTotalElements()));
 		model.addAttribute("sizeId", sizeId != null ? sizeId : 0);
 		model.addAttribute("colorId", colorId != null ? colorId : 0);
 		model.addAttribute("sortValue", sort.orElse("price-asc"));
@@ -64,8 +75,13 @@ public class ProductController {
 			@RequestParam(name = "color", required = false) List<Integer> colorId,
 			@RequestParam(name = "sort", required = false) Optional<String> sort,
 			@RequestParam(name = "p", required = false) Optional<Integer> p) {
+
+		Page<Product> products = productService.findProductByCategoryDetailFilter(idCategoryDetail, colorId, sizeId,
+				sort, p);
+		List<Product> productList = products.getContent();
+		List<Product> updatedProductList = discountCheckService.getAllDiscountProducts(productList);
 		model.addAttribute("product",
-				productService.findProductByCategoryDetailFilter(idCategoryDetail, colorId, sizeId, sort, p));
+				new PageImpl<>(updatedProductList, products.getPageable(), products.getTotalElements()));
 		model.addAttribute("sizeId", sizeId != null ? sizeId : 0);
 		model.addAttribute("colorId", colorId != null ? colorId : 0);
 		model.addAttribute("sortValue", sort.orElse("price-asc"));
@@ -94,10 +110,13 @@ public class ProductController {
 			model.addAttribute("rating2", 0);
 			model.addAttribute("rating1", 0);
 		}
+		
+
 		model.addAttribute("images", imageService.findByProductID(id));
 		model.addAttribute("reviews", reviewService.findByProductID(id, p));
 		model.addAttribute("sizes", detailService.findByProductID(id));
-		model.addAttribute("item", productService.findById(id));
+		model.addAttribute("soluong", detailService.findByProductID(id).stream().mapToInt(n -> n.getQuantity()).sum());
+		model.addAttribute("item",discountCheckService.saveDiscountProduct(productService.findById(id)));
 		return "user/product/detail";
 	}
 

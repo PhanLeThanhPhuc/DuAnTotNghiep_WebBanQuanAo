@@ -1,51 +1,126 @@
-<div class="nk-sidebar">
-            <div class="nk-nav-scroll">
-                <ul class="metismenu" id="menu">
-                    <li>
-                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
-                            <i class="icon-envelope menu-icon"></i> <span class="nav-text">QUẢN LÍ DANH MỤC </span>
-                        </a>
-                        <ul aria-expanded="false">
-                            <li><a href="#!category-form">Danh mục</a></li>
-                            <li><a href="#!category-table">Danh sách danh mục </a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
-                            <i class="icon-envelope menu-icon"></i> <span class="nav-text">QUẢN LÍ SẢN PHẨM</span>
-                        </a>
-                        <ul aria-expanded="false">
-                            <li><a href="#!color-table">Danh sách màu sắc </a></li>
-                            <li><a href="#!color-form">Form màu sắc</a></li>
-                            <li><a href="#!categorydetail-form">Sản phẩm</a></li>
-                             <li><a href="#!categorydetail-table">Sản phẩm</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
-                            <i class="icon-envelope menu-icon"></i> <span class="nav-text">QUẢN LÍ HÓA ĐƠN</span>
-                        </a>
-                        <ul aria-expanded="false">
-                            <li><a href="#!user-table">Danh sách người dùng</a></li>
-                             <li><a href="#!user-form">Form người dùng</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
-                            <i class="icon-envelope menu-icon"></i> <span class="nav-text">QUẢN LÍ kHUYẾN MÃI</span>
-                        </a>
-                        <ul aria-expanded="false">
-                            <li><a href="./email-inbox.html">Màu sắc</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
-                            <i class="icon-envelope menu-icon"></i> <span class="nav-text">THỐNG KÊ</span>
-                        </a>
-                        <ul aria-expanded="false">
-                            <li><a href="./email-inbox.html">Màu sắc</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
+<a href="#"
+	class="btn collapseSidebar toggle-btn d-lg-none text-muted ml-2 mt-3"
+	data-toggle="toggle"> <i class="fe fe-x"><span class="sr-only"></span></i>
+</a>
+<nav class="vertnav navbar navbar-light">
+	<!-- nav bar -->
+	<div class="w-100 mb-4 d-flex">
+		<a class="navbar-brand mx-auto mt-2 flex-fill text-center"
+			href="./index.html"> <svg version="1.1" id="logo"
+				class="navbar-brand-img brand-sm" xmlns="http://www.w3.org/2000/svg"
+				xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+				viewBox="0 0 120 120" xml:space="preserve">
+              <g>
+                <polygon class="st0"
+					points="78,105 15,105 24,87 87,87 	" />
+                <polygon class="st0" points="96,69 33,69 42,51 105,51 	" />
+                <polygon class="st0" points="78,33 15,33 24,15 87,15 	" />
+              </g>
+            </svg>
+
+		</a>
+	</div>
+	<ul class="navbar-nav flex-fill w-100 mb-2">
+		<li class="nav-item dropdown"><a href="#dashboard"
+			data-toggle="collapse" aria-expanded="false"
+			class="dropdown-toggle nav-link"> <i class="fe fe-home fe-16"></i>
+				<span class="ml-3 item-text">Dashboard</span><span class="sr-only">(current)</span>
+		</a>
+			<ul class="collapse list-unstyled pl-4 w-100" id="dashboard">
+				<li class="nav-item active"><a class="nav-link pl-3"
+					href="./index.html"><span class="ml-1 item-text">Default</span></a>
+				</li>
+				<li class="nav-item"><a class="nav-link pl-3"
+					href="./dashboard-analytics.html"><span class="ml-1 item-text">Analytics</span></a></li>
+				<li class="nav-item"><a class="nav-link pl-3"
+					href="./dashboard-sales.html"><span class="ml-1 item-text">E-commerce</span></a>
+				</li>
+				<li class="nav-item"><a class="nav-link pl-3"
+					href="./dashboard-saas.html"><span class="ml-1 item-text">Saas
+							Dashboard</span></a></li>
+				<li class="nav-item"><a class="nav-link pl-3"
+					href="./dashboard-system.html"><span class="ml-1 item-text">Systems</span></a>
+				</li>
+			</ul></li>
+	</ul>
+	<p class="text-muted nav-heading mt-4 mb-1">
+		<span>Components</span>
+	</p>
+	<ul class="navbar-nav flex-fill w-100 mb-2">
+		<li class="nav-item dropdown"><a href="#ui-elements"
+			data-toggle="collapse" aria-expanded="false"
+			class="dropdown-toggle nav-link"> <i class="fe fe-box fe-16"></i>
+				<span class="ml-3 item-text">Sản phẩm</span>
+		</a>
+			<ul class="collapse list-unstyled pl-4 w-100" id="ui-elements">
+				<li class="nav-item"><a class="nav-link pl-3" href="#!color"><span
+						class="ml-1 item-text">Màu sắc</span> </a></li>
+				<li class="nav-item"><a class="nav-link pl-3" href="#!product"><span
+						class="ml-1 item-text">Chi tiết sản phẩm</span> </a></li>
+				<li class="nav-item"><a class="nav-link pl-3" href="#!size"><span
+						class="ml-1 item-text">Kích thước</span> </a></li>
+
+			</ul>
+		</li>
+		<li class="nav-item w-100"><a class="nav-link" href="#!user">
+				<i class="fa-solid fa-user"></i> <span class="ml-3 item-text">Người dùng</span>
+		</a></li>
+		<li class="nav-item w-100"><a class="nav-link" href="#!category">
+				<i class="fe fe-calendar fe-16"></i> <span class="ml-3 item-text">Loại</span>
+		</a></li>
+		<li class="nav-item w-100"><a class="nav-link" href="#!review">
+				<i class="fe fe-calendar fe-16"></i> <span class="ml-3 item-text">Đánh giá</span>
+		</a></li>
+		<li class="nav-item w-100"><a class="nav-link" href="#!discount">
+				<i class="fe fe-calendar fe-16"></i> <span class="ml-3 item-text">Giảm giá</span>
+		</a></li>
+		<li class="nav-item w-100"><a class="nav-link" href="#!voucher">
+				<i class="fe fe-calendar fe-16"></i> <span class="ml-3 item-text">Phiếu giảm giá</span>
+		</a></li>
+		</li>
+		<li class="nav-item w-100"><a class="nav-link" href="#!authority">
+				<i class="fe fe-calendar fe-16"></i> <span class="ml-3 item-text">Phân quyền</span>
+		</a></li>
+		 <li class="nav-item w-100">
+            <a class="nav-link" href="#!order">
+              <i class="fe fe-layers fe-16"></i>
+              <span class="ml-3 item-text">Đơn hàng</span>
+            </a>
+          </li>
+		<li class="nav-item dropdown"><a href="#tables"
+			data-toggle="collapse" aria-expanded="false"
+			class="dropdown-toggle nav-link"> <i class="fe fe-grid fe-16"></i>
+				<span class="ml-3 item-text">Statistics</span>
+		</a>
+			<ul class="collapse list-unstyled pl-4 w-100" id="tables">
+				<li class="nav-item"><a class="nav-link pl-3"
+					href="#!revenue_user"><span class="ml-1 item-text">Thống kê user</span></a></li>
+<!--				<li class="nav-item"><a class="nav-link pl-3"-->
+<!--					href="./table_advanced.html"><span class="ml-1 item-text">Thống kê đơn hàng</span></a></li>-->
+				<li class="nav-item"><a class="nav-link pl-3"
+				href="#!revenue_statistic"><span class="ml-1 item-text">Thống kê doanh thu</span></a></li>
+			</ul>
+		</li>
+		<li class="nav-item dropdown"><a href="#charts"
+			data-toggle="collapse" aria-expanded="false"
+			class="dropdown-toggle nav-link"> <i
+				class="fe fe-pie-chart fe-16"></i> <span class="ml-3 item-text">Charts</span>
+		</a>
+			<ul class="collapse list-unstyled pl-4 w-100" id="charts">
+				<li class="nav-item"><a class="nav-link pl-3"
+					href="./chart-inline.html"><span class="ml-1 item-text">Inline
+							Chart</span></a></li>
+				<li class="nav-item"><a class="nav-link pl-3"
+					href="./chart-chartjs.html"><span class="ml-1 item-text">Chartjs</span></a>
+				</li>
+				<li class="nav-item"><a class="nav-link pl-3"
+					href="./chart-apexcharts.html"><span class="ml-1 item-text">ApexCharts</span></a>
+				</li>
+				<li class="nav-item"><a class="nav-link pl-3"
+					href="./datamaps.html"><span class="ml-1 item-text">Datamaps</span></a>
+				</li>
+			</ul></li>
+	</ul>
+
+</nav>
+

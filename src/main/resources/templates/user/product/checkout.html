@@ -1,0 +1,293 @@
+
+<div xmlns:th="http://www.thymeleaf.org"
+     th:replace="~{/user/layout/index :: dynamic (~{::main})}">
+
+<main>
+    <style>
+        .ulproduct{
+            display: block;
+            overflow: hidden;
+            padding: 0 10px;
+        }
+        .ulproduct li {
+            display: block;
+            overflow: hidden;
+            padding: 10px 0;
+        }
+        .ulproduct li .img-order {
+            float: left;
+            /*width: 11%;*/
+        }
+        .ulproduct li .img-order img {
+            display: block;
+            overflow: hidden;
+            width: 60px;
+        }
+        .ulproduct li .text-order {
+            display: block;
+            overflow: hidden;
+            margin-left: 80px;
+        }
+        .ulproduct li .text-order .amount-color {
+            display: block;
+            overflow: hidden;
+        }
+        .ulproduct li .amount-color small {
+            display: inline-block;
+            margin-right: 10px;
+            color: #666;
+            font-size: 11px;
+        }
+        td{
+            padding: 0 !important;
+            vertical-align: middle !important;
+        }
+
+    </style>
+    <section class="checkout_area padding_top">
+        <div class="container">
+            <div class="billing_details">
+                <div class="row">
+                    <div class="col-lg-5">
+                        <h5 style="font-weight: 600; margin-bottom: 15px">THÔNG TIN KHÁCH HÀNG</h5>
+                        <form class="row contact_form" action="#" method="post" novalidate="novalidate">
+                            <div class="col-md-6 form-group p_star">
+                                <label >Họ và tên</label>
+                                <input ng-model="formInformationOrder.name" type="text" placeholder="Thông tin người nhận hàng"class="form-control" id="first" name="name" />
+<!--                                <span class="placeholder" data-placeholder="Họ và tên"></span>-->
+                            </div>
+                            <div class="col-md-6 form-group p_star">
+                                <label >Số điện thoại</label>
+                                <input ng-model="formInformationOrder.phone" placeholder="Số điện thoại nhận hàng" type="text" class="form-control" id="phone" name="name" />
+<!--                                <span class="placeholder" data-placeholder="Số điện thoại"></span>-->
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label >Email</label>
+                                <input ng-model="formInformationOrder.email" type="text" class="form-control" id="company" name="company" placeholder="Email(Nhận thông tin về hóa đơn)" />
+                            </div>
+<!--                            <div class="col-md-6 form-group p_star">-->
+<!--                                <input type="text" class="form-control" id="number" name="number" />-->
+<!--                                <span class="placeholder" data-placeholder="Phone number"></span>-->
+<!--                            </div>-->
+<!--                            <div class="col-md-6 form-group p_star">-->
+<!--                                <input type="text" class="form-control" id="email" name="compemailany" />-->
+<!--                                <span class="placeholder" data-placeholder="Email Address"></span>-->
+<!--                            </div>-->
+                            <div class="col-md-12 form-group p_star">
+                                <h5 style="font-weight: 600; margin-bottom: 15px">ĐỊA CHỈ NHẬN HÀNG</h5>
+                                <div class="row" ng-if="dataLogin.statusLogin == false">
+                                    <div class="col-md-6 form-group p_star">
+                                        <select  onchange="methodDistrict(value)" class="country_select form-control">
+                                            <option value="default">Tỉnh</option>
+                                            <option ng-repeat="item in listProvince" ng-value="{{item.ProvinceID}}">{{item.ProvinceName}}</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 form-group p_star">
+                                        <select  onchange="methodWard(value)" class="country_select form-control">
+                                            <option value="default">Huyện</option>
+                                            <option ng-repeat="item in listDistrict" ng-value="{{item.DistrictID}}">{{item.DistrictName}}</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 form-group p_star">
+                                        <select  onchange="getValueComboBoxAddress()" id="wardSelect" class="country_select form-control">
+                                            <option value="">Xã</option>
+                                            <option ng-repeat="item in listWard" ng-value="{{item.WardCode}}">{{item.WardName}}</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 form-group p_star">
+                                        <input placeholder="Địa chỉ cụ thể" ng-model="formInformationOrder.addressDetail" type="text" class="form-control" id="1" name="name" />
+
+                                    </div>
+                                </div>
+<!--                                login = true-->
+                                <div class="row" ng-if="dataLogin.statusLogin == true">
+                                    <div ng-repeat="item in listAddress" class="col-md-6 form-group p_star">
+                                        <div class="form-check">
+                                            <input ng-change="getShippingFee()" ng-model="formInformationOrder.address" class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" ng-value="{{item.id}}" checked>
+                                            <label class="form-check-label" for="exampleRadios1">
+                                                {{item.addressDetail}}, {{item.wardName}}, {{item.districtName}}, {{item.provinceName}}
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12 form-group p_star text-center">
+                                        <button style="font-size: 10px; font-weight: bold" data-toggle="modal" data-target="#exampleModalCenter" type="button" class="btn btn-outline-warning">Thêm địa chỉ mới</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 form-group">
+                                <div class="creat_account">
+                                    <h5 style="font-weight: 600; margin-bottom: 15px">GHI CHÚ</h5>
+                                </div>
+                                <textarea ng-model="formInformationOrder.note" class="form-control" name="message" id="message" rows="1"
+                                          placeholder="Order Notes"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-lg-7">
+                        <div class="order_box">
+                            <h2 style="font-weight: 600">THÔNG TIN ĐƠN HÀNG</h2>
+                            <ul class="list">
+                                <li>
+                                    <table class="table">
+                                        <tbody>
+                                        <tr ng-repeat="item in cart.items">
+                                            <td>
+                                                <ul class="ulproduct">
+                                                    <li>
+                                                        <a  href="/camera-giam-sat/camera-ip-360-do-1080p-imou-ranger-2c-a22ep-l" target="_blank" class="img-order">
+                                                            <img data-src="/assets/user/user/image/{{item.product.thumbnail}}" src="/assets/user/user/image/{{item.product.thumbnail}}" loading="lazy" class=" ls-is-cached lazyloaded">
+                                                        </a>
+                                                        <div class="text-order">
+                                                            <a  href="/assets/user/user/image/{{item.product.thumbnail}}" target="_blank" class="text-order__product-name" style="font-size: 13px">{{item.product.name}}</a>
+                                                            <div  class="amount-color">
+                                                                <small > Màu: <small>{{item.product.color.name}}
+                                                                </small>
+                                                                </small>
+                                                                <small > Size: <small >{{item.size.name}}</small>
+                                                                </small>
+                                                                <small > Số lượng: <small >{{item.qty}}</small>
+                                                                </small></div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </td>
+                                            <td>
+<!--                                                <span style="font-size: 13px; color: red; font-weight: 600">01001₫</span><br>-->
+<!--                                                <span style="font-size: 13px; color: black; font-weight: 600; text-decoration:line-through;">01001₫</span>-->
+
+                                                <div ng-if="item.product.sale ==false">
+                                                    <span style="font-size: 13px; color: red; font-weight: 600">{{item.product.price  | currency:'' :0 }}₫</span><br>
+                                                </div>
+                                                <div ng-if="item.product.sale == true">
+                                                    <span style="font-size: 13px; color: black; font-weight: 600;" >{{item.product.discountPrice  | currency:'' :0 }}₫</span><br>
+                                                    <span style="font-size: 13px; color: red; font-weight: 600;text-decoration:line-through; ">{{item.product.price  | currency:'' :0 }}₫</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span style="font-size: 14px; color: red; font-weight: 600">{{cart.amt_of(item) | currency:'' :0 }}₫</span><br>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </li>
+                                <li>
+                                    <label style="font-weight: 600">
+                                        Phí ship:
+                                        <span style="font-weight: 600; color: red">{{ shipFee | currency:'' :0  }}₫</span>
+                                    </label>
+                                    <div class="row mt-2">
+                                        <div class="col-sm-12">
+                                            <label style="font-weight: 600">Mã giảm giá:</label>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <input type="text" style="width: 100%" class="form-control" id="inputvoucher" name="company" placeholder="Nhập mã giảm giá" />
+                                            <span style="color: red !important;" id="errorVoucher" class="form-text text-muted"></span>
+                                        </div>
+
+                                        <div class="col-sm-4">
+                                            <button ng-click="addVoucher()" type="submit" class="btn btn-primary" style="width: 100%">Submit</button>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+
+                            <div class="payment_item" style="margin-top: 20px">
+                                <label style="font-weight: 600" class="m-0">Hình thức thanh toán:</label>
+                                <div class="radion_btn">
+                                    <input  ng-model="formInformationOrder.payment" value="0" checked type="radio" id="f-option5" name="selector" />
+                                    <label for="f-option5">Thanh toán khi nhận hàng</label>
+                                    <div class="check"></div>
+                                </div>
+                                <p>
+                                   Thanh toán bằng tiền mặt khi nhận hàng
+                                </p>
+                            </div>
+                            <div class="payment_item active">
+                                <div class="radion_btn">
+                                    <input ng-model="formInformationOrder.payment" value="1" type="radio" id="f-option6" name="selector" />
+                                    <label for="f-option6">Chuyển khoản qua VnPay</label>
+                                    <img src="img/product/single-product/card.jpg" alt="" />
+                                    <div class="check"></div>
+                                </div>
+                                <p>
+                                   Chuyển khoản với Vn-Pay
+                                </p>
+                            </div>
+                            <ul class="list list_2">
+                                <li>
+                                    <a href="#">Tạm tính
+                                        <span>{{cart.amount | currency:'' :0}}₫</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">Phí ship
+                                        <span>{{ shipFee | currency:'' :0  }}₫</span>
+                                    </a>
+                                </li>
+                                <li ng-if="$scope.discoutVoucher != ''">
+                                    <a href="#">Áp dụng voucher
+                                        <span>- {{ discoutVoucher | currency:'' :0  }}₫</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">Tổng tiền
+                                        <span>{{cart.amount + shipFee - discoutVoucher  | currency:'' :0}}₫</span>
+                                    </a>
+                                </li>
+                            </ul>
+                             <div style="text-align: center">
+                                <button style="display: inline ;" class="btn_3 px-5" type="submit" onclick="purchase()">Đặt hàng</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+<!--    MODEL ADD ADDRESS-->
+
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Thêm địa chỉ</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row" >
+                        <div class="col-md-6 form-group p_star">
+                            <select  onchange="methodDistrict(value)" class="country_select form-control country_select_add">
+                                <option value="default">Tỉnh</option>
+                                <option ng-repeat="item in listProvince" ng-value="{{item.ProvinceID}}">{{item.ProvinceName}}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 form-group p_star">
+                            <select  onchange="methodWard(value)" class="country_select form-control country_select_add">
+                                <option value="default">Huyện</option>
+                                <option ng-repeat="item in listDistrict" ng-value="{{item.DistrictID}}">{{item.DistrictName}}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 form-group p_star">
+                            <select    class="country_select form-control country_select_add">
+                                <option value="">Xã</option>
+                                <option ng-repeat="item in listWard" ng-value="{{item.WardCode}}">{{item.WardName}}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 form-group p_star">
+                            <input ng-model="formInformationOrder.addressDetail" type="text" class="form-control" id="1" name="name" />
+                            <span class="placeholder" data-placeholder="Địa chỉ cụ thể"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button onclick="addAddress()" type="button" data-dismiss="modal" class="btn btn-primary">Thêm địa chỉ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

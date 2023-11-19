@@ -11,6 +11,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -53,7 +54,8 @@ public class Category implements Serializable{
     private boolean status;
 
 
-    @JsonIgnore
+//    @JsonIgnore
+    @JsonManagedReference
     @OneToMany(mappedBy = "category")
 	List<CategoryDetail> category_detail;
 

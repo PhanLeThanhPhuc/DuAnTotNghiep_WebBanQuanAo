@@ -1,0 +1,91 @@
+<div class="container-fluid">
+	<div class="row justify-content-center">
+		<div class="col-lg-12">
+			<div class="card">
+				<div class="card-body">
+					<h4 class="card-title">Danh sách sản phẩm</h4>
+					<div class="form-group col-sm-6">
+						Tìm kiếm: <input ng-model="searchText.$" class="form-control">
+					</div>
+					<div class="table-responsive">
+						<table
+							class="table table-striped table-bordered zero-configuration">
+							<thead>
+								<tr>
+									<th ng-click="toggleSort('id')">Mã sản phẩm <span
+										ng-show="isSortedBy('id')" ng-class="getSortIconClass('id')"></span>
+									</th>
+									<th ng-click="toggleSort('item.thumbnail')">Ảnh <span
+										ng-show="isSortedBy('item.thumbnail')"
+										ng-class="getSortIconClass('item.thumbnail')"></span>
+									</th>
+									<th ng-click="toggleSort('name')">Tên sản phẩm <span
+										ng-show="isSortedBy('name')"
+										ng-class="getSortIconClass('name')"></span>
+									</th>
+									<th ng-click="toggleSort('categoryDdetail.name')">Loai sản phẩm
+										<span ng-show="isSortedBy('categoryDdetail.name')"
+										ng-class="getSortIconClass('categoryDdetail.name')"></span>
+									</th>
+									<th ng-click="toggleSort('price')">Giá <span
+										ng-show="isSortedBy('price')"
+										ng-class="getSortIconClass('price')"></span>
+									</th>
+									<th ng-click="toggleSort('sale')">Giảm giá <span
+										ng-show="isSortedBy('sale')"
+										ng-class="getSortIconClass('sale')"></span>
+									</th>
+									<th ng-click="toggleSort('status')">Trạng thái? <span
+										ng-show="isSortedBy('status')"
+										ng-class="getSortIconClass('status')"></span>
+									</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="item in pager.items  ">
+									<td>{{item.id}}</td>
+									<td><div class="d-flex">
+											<img src="/assets/user/user/image/{{item.thumbnail}}" alt=""
+												style="width: 50px;">
+										</div></td>
+									<td>{{item.name}}</td>
+									<td>{{item.categoryDdetail.name}}</td>
+									<td>{{item.price}}đ</td>
+									<td>{{item.sale?'Yes':'No'}}</td>
+									<td><label class="switch"> <input
+											ng-model="item.status" ng-value="true" name="available"
+											type="checkbox"> <span ng-click="updateStatus(item)"
+											class="slider round"></span>
+									</label></td>
+									<td><span> <a ng-click="edit(item)"
+											data-toggle="tooltip" data-placement="top" title="Edit">
+												<span class="fe fe-24 fe-edit-2">
+										</a>
+								</tr>
+							</tbody>
+						</table>
+						<div class="bootstrap-pagination text-center">
+							<nav>
+								<ul class="pagination">
+									<li class="page-item"><a class="page-link" href=""
+										ng-click="pager.first()">First</a></li>
+									<li class="page-item"><a class="page-link" href=""
+										ng-click="pager.prev()">Previous</a></li>
+									<li class="page-item"><a class="page-link" href="">{{pager.page
+											+ 1}} of {{pager.count}}</a></li>
+
+
+									<li class="page-item"><a class="page-link" href=""
+										ng-click="pager.next()">Next</a></li>
+									<li class="page-item"><a class="page-link" href=""
+										ng-click="pager.last()">Last</a></li>
+								</ul>
+							</nav>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

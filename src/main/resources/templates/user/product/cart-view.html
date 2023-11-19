@@ -1,140 +1,89 @@
 
-<div xmlns:th="http://www.thymeleaf.org"
+<html xmlns:th="http://www.thymeleaf.org"
 	th:replace="~{/user/layout/index :: dynamic (~{::main})}">
-	<main>
+<main>
 
-		<!--================Home Banner Area =================-->
-		<!-- breadcrumb start-->
-		<section class="breadcrumb breadcrumb_bg">
-			<div class="container">
-				<div class="row justify-content-center">
-					<div class="col-lg-8">
-						<div class="breadcrumb_iner">
-							<div class="breadcrumb_iner_item">
-								<h2>Cart Products</h2>
-								<p>
-									Home <span>-</span>Cart Products
-								</p>
-							</div>
-						</div>
+	<section class="cart_area padding_top">
+		<div class="container" th:fragment="cart_frag">
+			<div class="cart_inner">
+				<div class="table-responsive">
+					<table class="table">
+						<thead>
+							<tr>
+								<th style="font-weight: bold" scope="col">Sản phẩm</th>
+								<th style="font-weight: bold" scope="col">Giá</th>
+								<th style="font-weight: bold" scope="col">Kích thước</th>
+								<th style="font-weight: bold" scope="col">Số lượng</th>
+								<th style="font-weight: bold" scope="col">Tổng tiền</th>
+								<th style="font-weight: bold" scope="col">Xóa</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="item in cart.items">
+								<td>
+									<div class="media">
+										<div class="d-flex">
+											<img src="/assets/user/user/image/{{item.product.thumbnail}}"
+												alt="" style="width: 50px;">
+										</div>
+										<div class="media-body">
+											<p>{{item.product.name}}</p>
+										</div>
+									</div>
+								</td>
+
+								<td>
+									<div ng-if="item.product.sale ==false">
+										<h4 style=" color: red; font-weight: 600">{{item.product.price }}</h4>
+									</div>
+
+									<div ng-if="item.product.sale == true">
+										<h5 style="text-decoration-line: line-through;">{{item.product.price
+											}}</h5>
+										<h4 style=" color: red; font-weight: 600">{{item.product.discountPrice }}</h4>
+									</div>
+								</td>
+								<td>
+									<h5>{{item.size.name}}</h5>
+								</td>
+								<td>
+									<div class="product_count">
+										<input type="number"
+											ng-change="cart.cartChange({{item.size.id}},{{item.product.id}},{{item.qty}})"
+											ng-model="item.qty" min="1">
+									</div>
+								</td>
+
+								<td>
+									<h5>${{cart.amt_of(item) | currency:'' :0 }}</h5>
+								</td>
+								<td class="align-middle"><button
+										class="btn btn-sm btn-primary"
+										ng-click="cart.remove(item.product.id,item.size.id)">
+										<i class="fa fa-times"></i>
+									</button></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td>
+									<h5>Tạm tính</h5>
+								</td>
+								<td>
+									<h5>${{cart.amount | currency:'' :0}}</h5>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<div class="checkout_btn_inner float-right">
+						<a class="btn_1" href="#">Tiếp tục mua sắm</a> <a
+							class="btn_1 checkout_btn_1" href="/user/checkout">Thanh toán</a>
 					</div>
 				</div>
 			</div>
-		</section>
-		<!-- breadcrumb start-->
-
-		<!--================Cart Area =================-->
-		<section class="cart_area padding_top">
-			<div class="container" th:fragment="cart_frag">
-				<div class="cart_inner">
-					<div class="table-responsive">
-						<table class="table">
-							<thead>
-								<tr>
-									<th scope="col">Product</th>
-									<th scope="col">Price</th>
-									<th scope="col">Size</th>
-									<th scope="col">Quantity</th>
-									<th scope="col">Total</th>
-									<th scope="col">Remove</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr ng-repeat="item in cart.items">
-									<td>
-										<div class="media">
-											<div class="d-flex">
-												<img src="\teample\img\product\product_1.png" alt=""
-													style="width: 50px;">
-											</div>
-											<div class="media-body">
-												<p>{{item.product.name}}</p>
-											</div>
-										</div>
-									</td>
-
-									<td>
-										<h5>{{item.product.price}}</h5>
-									</td>
-									<td>
-										<h5>{{item.size.name}}</h5>
-									</td>
-									<td>
-										<div class="product_count">
-											 <input type="number"
-												ng-change="cart.cartChange({{item.size.id}},{{item.product.id}},{{item.qty}})" ng-model="item.qty"
-												 min="1" > 
-										</div>
-									</td>
-							
-									<td>
-										<h5>${{cart.amt_of(item) }}</h5>
-									</td>
-									<td class="align-middle"><button
-											class="btn btn-sm btn-primary"
-											ng-click="cart.remove(item.product.id,item.size.id)">
-											<i class="fa fa-times"></i>
-										</button></td>
-								</tr>
-								<tr class="bottom_button">
-									<td><a class="btn_1" href="#">Update Cart</a></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td>
-										<div class="cupon_text float-right">
-											<a class="btn_1" href="#">Close Coupon</a>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td>
-										<h5>Subtotal</h5>
-									</td>
-									<td>
-										<h5>$2160.00</h5>
-									</td>
-								</tr>
-								<tr class="shipping_area">
-									<td></td>
-									<td></td>
-									<td></td>
-
-									<td>
-										<h5>Shipping</h5>
-									</td>
-									<td></td>
-									<td>
-										<div class="shipping_box">
-											<ul class="list">
-												<li><a href="#">Flat Rate: $5.00</a></li>
-												<li><a href="#">Free Shipping</a></li>
-												<li><a href="#">Flat Rate: $10.00</a></li>
-												<li class="active"><a href="#">Local Delivery:
-														$2.00</a></li>
-											</ul>
-											<h6>
-												Calculate Shipping <i class="fa fa-caret-down"
-													aria-hidden="true"></i>
-											</h6>
-
-										</div>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-						<div class="checkout_btn_inner float-right">
-							<a class="btn_1" href="#">Continue Shopping</a> <a
-								class="btn_1 checkout_btn_1" href="#">Proceed to checkout</a>
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
-		<!--================End Cart Area =================-->
-	</main>
+		</div>
+	</section>
+	<!--================End Cart Area =================-->
+</main>

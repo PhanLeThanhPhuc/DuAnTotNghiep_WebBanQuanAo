@@ -21,4 +21,35 @@ public class SizeServiceImpl implements SizeService {
 		return sizeRepository.findByStatusTrue();
 	}
 
+	public List<Size> findAll() {
+		// TODO Auto-generated method stub
+		return sizeRepository.findAll();
+	}
+
+	@Override
+	public Size findById(Integer id) {
+		// TODO Auto-generated method stub
+		return sizeRepository.findById(id).get();
+	}
+
+	@Override
+	public void create(Size size) {
+		// TODO Auto-generated method stub
+		sizeRepository.save(size);
+		
+	}
+
+	@Override
+	public Size update(Size size) {
+		// TODO Auto-generated method stub
+		return sizeRepository.save(size);
+	}
+
+	@Override
+	public void delete(Integer id) {
+		// TODO Auto-generated method stub
+		sizeRepository.deleteById(id);
+		
+	}
+
 }

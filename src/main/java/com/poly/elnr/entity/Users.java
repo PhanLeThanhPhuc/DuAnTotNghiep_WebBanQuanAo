@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,7 +15,9 @@ import org.hibernate.annotations.BatchSize;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+//@Data
+@Getter
+@Setter
 @Table(name="users")
 @Entity
 public class Users implements Serializable{
@@ -48,6 +49,18 @@ public class Users implements Serializable{
     @Column(name = "status")
     private boolean status;
 
+    @Column(name = "signup")
+    private boolean signup;
+
+    @Column(name = "is_password_reset")
+    private boolean isPasswordReset;
+
+    @Column(name = "otp")
+    private int otp;
+
+    @Column(name = "time_otp")
+    private Date timeOtp;
+
     @Column(name = "date_insert")
     private Date date_insert;
     
@@ -57,11 +70,10 @@ public class Users implements Serializable{
     @Column(name = "image")
     private String image;
 
-
-
     @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Address> addresses;
+
     @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Review> reviews;

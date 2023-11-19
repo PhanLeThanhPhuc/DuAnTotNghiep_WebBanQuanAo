@@ -2,6 +2,7 @@ package com.poly.elnr.entity;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -35,10 +36,17 @@ public class OrderDetail implements Serializable{
     @Column(name = "quantity")
     private int quantity;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id")
-    private Product product;
+    @Column(name = "price")
+    private double price;
 
+    @Column(name = "discount_price")
+    private double discountPrice;
+
+    @ManyToOne
+    @JoinColumn(name = "product_detail_id")
+    private ProductDetails productDetails;
+
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;

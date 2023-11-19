@@ -26,6 +26,18 @@ public class ProductDetailServiceImpl implements ProductDetailService{
 		// TODO Auto-generated method stub
 		return dao.findProductDetial(id, sizeid);
 	}
+
+	@Override
+	public ProductDetails create(ProductDetails productdetail) {
+		// TODO Auto-generated method stub
+		return dao.save(productdetail);
+	}
+
+	@Override
+	public ProductDetails update(ProductDetails productdetail) {
+		// TODO Auto-generated method stub
+		return dao.save(productdetail);
+	}
 	
 
 	

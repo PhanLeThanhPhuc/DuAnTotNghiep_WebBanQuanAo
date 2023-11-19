@@ -1,0 +1,169 @@
+
+<div xmlns:th="http://www.thymeleaf.org"
+     th:replace="~{/user/layout/index :: dynamic (~{::main})}">
+
+    <main>
+        <style>
+            .text-info {
+                font-weight: bold;
+                padding: 0;
+                margin: 0;
+                padding-bottom: 6px;
+            }
+
+            .ulproduct {
+                display: block;
+                overflow: hidden;
+                padding: 0 10px;
+            }
+
+            .ulproduct li {
+                display: block;
+                overflow: hidden;
+                padding: 10px 0;
+            }
+
+            .ulproduct li .img-order {
+                float: left;
+                /*width: 11%;*/
+            }
+
+            .ulproduct li .img-order img {
+                display: block;
+                overflow: hidden;
+                width: 60px;
+            }
+
+            .ulproduct li .text-order {
+                display: block;
+                overflow: hidden;
+                margin-left: 80px;
+            }
+
+            .ulproduct li .text-order .amount-color {
+                display: block;
+                overflow: hidden;
+            }
+
+            .ulproduct li .amount-color small {
+                display: inline-block;
+                margin-right: 10px;
+                color: #666;
+                font-size: 11px;
+            }
+
+            td {
+                padding: 0 !important;
+                vertical-align: middle !important;
+            }
+        </style>
+        <section class="section_padding">
+            <div class="container" >
+                <div class="row">
+                    <div class="col-sm-8 m-auto text-center">
+                        <div class="m-3">
+                            <h4 style="font-weight: bold;">ĐẶT HÀNG THÀNH CÔNG</h4>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="col-sm-8 m-auto p-2" style=" background-color: beige; ">
+                            <h6>ĐƠN HÀNG: [[${order.id}]]</h6>
+                            <div style="margin-left: 10px;">
+                                <p class="text-info">
+                                    Người nhận hàng: <span style="font-weight: normal; color: black;">[[${order.nameUser}]]</span>
+                                </p>
+                                <p class="text-info">
+                                    Địa chỉ: <span style="font-weight: normal; color: black;">[[${order.detailAddress}]], [[${order.ward}]], [[${order.district}]], [[${order.province}]]</span>
+                                </p>
+                                <p class="text-info">
+                                    Số điện thoại nhận hàng: <span style="font-weight: normal; color: black;">[[${order.phone}]]</span>
+                                </p>
+                                <p class="text-info">
+                                    Tổng tiền: <span th:if="${order.voucher != null}"  style="font-weight: normal; color: red; font-weight: 600">[[${#numbers.formatDecimal(order.total + order.shipFee - order.voucher.discountPrice, 0, 'COMMA',
+												0,'POINT')}]]đ</span>
+                                    <span th:if="${order.voucher == null}"  style="font-weight: normal; color: red; font-weight: 600">[[${#numbers.formatDecimal(order.total + order.shipFee , 0, 'COMMA',
+												0,'POINT')}]]đ</span>
+                                </p>
+                                <p class="text-info">
+                                    <th:block th:if="${order.payment == 0 }">
+                                        Hình thức thanh toán: <span style="font-weight: normal; color: black; font-style: italic">Thanh toán khi nhận hàng</span>
+                                    </th:block>
+                                    <th:block th:if="${order.payment ==1 }">
+                                        Hình thức thanh toán: <span style="font-weight: normal; color: black;">Chuyển khoản qua Vn-Pay
+                                         <span style="color: red" th:if="${order.statusPayment== 0}">(Thanh toán thất bại)</span>
+                                         <span style="color: seagreen" th:if="${order.statusPayment== 1}">(Thanh toán thành công)</span>
+                                    </span>
+                                    </th:block>
+                                </p>
+                                <div class="text-center mt-2">
+                                    <button style="font-weight: bold; width: 30%; height: 40px;" type="button"
+                                            class="btn btn-outline-primary">Chi tiết đơn hàng</button>
+                                </div>
+                            </div>
+                        </div>
+<!--                        <div class="col-sm-8 m-auto p-2" style="border-radius: 10px; padding-top: 20px !important;">-->
+<!--                            <h6>Chọn hình thức thanh toán: </h6>-->
+<!--                            <div style="margin-left: 10px;" class="mt-3">-->
+<!--                                <div class="form-check mb-2">-->
+<!--                                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1"-->
+<!--                                           value="option1" checked>-->
+<!--                                    <label class="form-check-label" for="exampleRadios1">-->
+<!--                                        Thanh toán bằng tiền mặt-->
+<!--                                    </label>-->
+<!--                                </div>-->
+<!--                                <div class="form-check mb-2">-->
+<!--                                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2"-->
+<!--                                           value="option2">-->
+<!--                                    <label class="form-check-label" for="exampleRadios2">-->
+<!--                                        Thanh toán qua VN-PAY-->
+<!--                                    </label>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="text-center mt-3">-->
+<!--                                <button style="font-weight: bold; width: 50%; height: 40px;" type="button"-->
+<!--                                        class="btn btn-warning">Xác nhận-->
+<!--                                    thanh-->
+<!--                                    toán</button>-->
+<!--                            </div>-->
+<!--                        </div>-->
+                        <div class="col-sm-8 m-auto p-2" style=" background-color: beige; border-radius: 10px; margin-top: 20px !important;">
+                            <h6>Chi tiết giỏ hàng: </h6>
+                            <div style="margin-left: 10px;">
+                                <table class="table">
+                                    <tbody>
+                                    <tr th:each="item : ${order.orderDetails}">
+                                        <td>
+                                            <ul class="ulproduct">
+                                                <li>
+                                                    <a href="/camera-giam-sat/camera-ip-360-do-1080p-imou-ranger-2c-a22ep-l"
+                                                       target="_blank" class="img-order">
+                                                        <img data-src="/quan4.jpg" th:src="@{|/assets/user/user/image/${item.productDetails.product.thumbnail}|}" loading="lazy"
+                                                             class=" ls-is-cached lazyloaded">
+                                                    </a>
+                                                    <div class="text-order">
+                                                        <a th:src="@{|/assets/user/user/image/${item.productDetails.product.thumbnail}|}"
+                                                           target="_blank" class="text-order__product-name"
+                                                           style="font-size: 13px">[[${item.productDetails.product.name}]]</a>
+                                                        <div class="amount-color">
+                                                            <small> Màu: <small>[[${item.productDetails.product.color.name}]]
+                                                            </small>
+                                                            </small>
+                                                            <small> Size: <small>[[${item.productDetails.size.name}]]</small>
+                                                            </small>
+                                                            <small> Số lượng: <small>item.quantity</small>
+                                                            </small>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>

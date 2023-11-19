@@ -15,6 +15,16 @@ public interface ReviewService {
 
 	List<Review> findByProductID2(Integer id);
 
+	List<Review> findAll();
+
+	Review create(Review create);
+
+	Review update(Review review);
+
+	void delete(Integer id);
+
+	
+
 
 
 

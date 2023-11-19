@@ -4,11 +4,11 @@ public class VnPayConstant {
 
 	public static final String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
 
-	public static final String vnp_Returnurl = "/vnpay-payment";
+//	public static final String vnp_Returnurl = "/vnpay-payment";
 
-	public static final String vnp_TmnCode = "FPGOYIS9";
+	public static final String vnp_TmnCode = "NQ983X78";
 
-	public static final String vnp_HashSecret = "UAGBAAOEKYXXDWPAGUWHPESFDOICELYB";
+	public static final String vnp_HashSecret = "HSASHWUEYXLZWUAWVSWFAQOJSXKLQFTK";
 
 	public static final String vnp_apiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction";
 

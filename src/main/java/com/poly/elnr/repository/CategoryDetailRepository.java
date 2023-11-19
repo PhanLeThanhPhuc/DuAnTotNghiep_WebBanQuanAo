@@ -12,5 +12,8 @@ import com.poly.elnr.entity.CategoryDetail;
 @Repository
 public interface CategoryDetailRepository extends JpaRepository<CategoryDetail, Long> {
 
+	@Query("select p from CategoryDetail p where p.category.id=?1")
+	List<CategoryDetail> findByCategoryID(Integer id);
+
 	
 }

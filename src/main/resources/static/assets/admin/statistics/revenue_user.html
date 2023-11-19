@@ -1,0 +1,116 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Top 10 khách hàng mua hàng nhiều nhất</h4>
+                    <div class="row">
+                        <div class="form-group col-sm-4">
+                            Tổng doanh thu: <span style="color: red; font-weight: bold">{{totalPrice | currency:'' :0}}đ</span>
+                        </div>
+                        <div class="col-sm-8">
+                            <div class="row" style="display: flex; justify-content: flex-end;">
+                                <div class="form-group mb-3 mr-2">
+                                    <label for="example-date">Từ ngày</label>
+                                    <input ng-model="startDate"  class="form-control" id="start-date" type="date" name="date">
+                                </div>
+                                <div class="form-group mb-3 mr-2">
+                                    <label for="example-date">Đến ngày</label>
+                                    <input ng-model="endDate" class="form-control" id="end-date" type="date" name="date">
+                                </div>
+                                <div class="form-group mb-3 mr-5" id="div-button">
+                                    <label for="example-date">   </label>
+                                    <button ng-click="buttonFilterWithDate()" type="button" class="btn mb-2 btn-primary" style="margin-left: 5px; margin-top: 8px;">Lọc</button>
+                                </div>
+                                <div class="form-group mr-3">
+                                    <label for="simple-select2">Lựa chọn</label>
+                                    <select onchange="defaulStatistic()" class="form-control select2" id="cbb-statistic">
+                                        <option  value="default">Chọn...</option>
+                                        <option value="today">Hôm nay</option>
+                                        <option value="week">Tuần này</option>
+                                        <option value="month">Tháng này</option>
+                                        <option value="custom">Tùy chỉnh</option>
+                                    </select>
+                                </div>
+                                <div class="form-group mr-3">
+                                    <label for="simple-select2">Sắp xếp</label>
+                                    <select class="form-control select2" id="simple-select2">
+                                        <option value="CA">Chọn...</option>
+                                        <option value="AK">Tăng dần</option>
+                                        <option value="HI">Giảm dần</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <canvas id="myChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table
+                                class="table table-striped table-bordered zero-configuration">
+                            <thead>
+                            <tr>
+                                <th ng-click="toggleSort('fullName')">Khách hàng
+                                    <span ng-show="isSortedBy('fullName')" ng-class="getSortIconClass('fullName')"></span>
+                                </th>
+                                <th ng-click="toggleSort('phone')">Tổng tiền
+                                    <span ng-show="isSortedBy('phone')" ng-class="getSortIconClass('phone')"></span>
+                                </th>
+                                <th ng-click="toggleSort('phone')">Số lượng đơn hàng
+                                    <span ng-show="isSortedBy('phone')" ng-class="getSortIconClass('phone')"></span>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="item in pager.listData">
+                                <td>{{item.phone}}</td>
+                                <td>{{item.total | currency:'' :0}}</td>
+                                <td>{{item.quantityOrder}}</td>
+                                <td><span> <a ng-click="edit(item)"
+                                              data-toggle="tooltip" data-placement="top" title="Edit">
+											<span class="fe fe-24 fe-edit-2"></a> </span>
+                            </tr>
+
+
+                            </tbody>
+
+                        </table>
+
+
+                    </div>
+                    <div class="row">
+                        <div class="col-4"></div>
+                        <div class="bootstrap-pagination col-4 text-center">
+                            <nav>
+                                <ul class="pagination">
+                                    <li class="page-item"><a class="page-link" href=""
+                                                             ng-click="pager.first();firstChart()">Đầu</a></li>
+                                    <li class="page-item"><a class="page-link" href=""
+                                                             ng-click="pager.prev()">Trước</a></li>
+                                    <li class="page-item"><a class="page-link" href="">{{pager.page
+                                        + 1}} / {{pager.count}}</a></li>
+
+
+                                    <li class="page-item"><a class="page-link" href=""
+                                                             ng-click="pager.next()">Tiếp</a></li>
+                                    <li class="page-item"><a class="page-link" href=""
+                                                             ng-click="pager.last()">Cuối</a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                        <div class="col-4"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

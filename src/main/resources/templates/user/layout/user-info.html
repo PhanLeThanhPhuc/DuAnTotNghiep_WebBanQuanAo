@@ -1,0 +1,183 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{/user/layout/index :: dynamic(~{::main})}">
+<main>
+    <section class="section_padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <!-- Tabs nav -->
+                    <div class="nav flex-column nav-pills nav-pills-custom" id="v-pills-tab" role="tablist"
+                         aria-orientation="vertical">
+                        <a class="nav-link mb-3 p-3 shadow active" id="v-pills-home-tab" data-toggle="pill"
+                           href="v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="false">
+                            <i class="fa fa-user-circle-o mr-2"></i>
+                            <span class="font-weight-bold small text-uppercase text-a">Thông tin cá nhân</span></a>
+
+                        <a class="nav-link mb-3 p-3 shadow "
+                           th:href="@{/user/order}" role="tab" aria-controls="v-pills-profile" aria-selected="true">
+                            <i class="fa fa-calendar-minus-o mr-2"></i>
+                            <span class="font-weight-bold small text-uppercase text-a">Thông tin đơn hàng</span></a>
+
+                        <a class="nav-link mb-3 p-3 shadow" id="v-pills-messages-tab" data-toggle="pill"
+                           href="v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">
+                            <i class="fa fa-star mr-2"></i>
+                            <span class="font-weight-bold small text-uppercase text-a">Địa chỉ</span></a>
+                    </div>
+                </div>
+
+
+                <div class="col-md-9">
+                    <!-- Tabs content -->
+                    <div class="tab-content" id="v-pills-tabContent">
+                        <div class="tab-pane fade shadow rounded bg-white show active p-4" id="v-pills-home"
+                             role="tabpanel" aria-labelledby="v-pills-home-tab">
+                            <div class="text-center pb-2">
+                                <img id="profileImage"  width="150px" th:src="${account.image}" alt="profile" class="img-avt rounded-circle mb-3">
+                                <form id="upload-file-form">
+                                    <label for="upload-file-input"></label>
+                                    <input  width="100px" id="upload-file-input" type="file" name="uploadfile" accept="*" />
+                                </form>
+                                <div class="mb-3">
+                                    <h5 class="font-upper font-bold">[[${account.fullName}]]</h5>
+                                    <h6 class="c-text-xl">
+                                        <font color="red">
+                                            <b>User</b>
+                                        </font>
+                                    </h6>
+                                </div>
+                            </div>
+                            <form th:object="${account}"  >
+                                <div class="col-sm-12 row">
+                                    <div class="form-group col-sm-6">
+                                        <label>Họ và tên</label>
+                                        <input th:field="*{fullName}" type="text" class="form-control">
+                                    </div>
+<!--                                    <div class="form-group col-sm-6">-->
+<!--                                        <label>Ngày sinh</label>-->
+<!--                                        <input type="date" th:field="*{fullName}" class="form-control">-->
+<!--                                    </div>-->
+                                    <div class="form-group col-sm-6">
+                                        <label>Số điện thoại</label>
+                                        <input disabled th:field="*{phone}" type="text" class="form-control">
+                                        <button th:if="${account.phone == null}" data-toggle="modal" data-target="#exampleModalCenter" style="font-size: 9px; font-weight: bold" class="btn btn-primary px-1 mt-1">Thêm số điện thoại</button>
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label>Email</label>
+                                        <input th:field="*{email}" type="text" class="form-control">
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label>Giới tính</label>
+                                        <div class="radio-container">
+                                            <label class="radio-inline">
+                                                <input type="radio" name="dmđ" th:value="${gender}"  th:checked="${account.gender == 0}"> Nam
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="dmđ" th:value="${gender}" th:checked="${account.gender == 1}"> Nữ
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="dmđ" th:value="${gender}" th:checked="${account.gender == 2}"> Khác
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Cập nhật thông tin</button>
+                                <button data-toggle="modal" data-target="#exampleModalCenter1" type="submit" class="btn btn-primary">Đổi mật khẩu</button>
+                            </form>
+                        </div>
+
+                        <div class="tab-pane fade shadow rounded bg-white p-4" id="v-pills-profile" role="tabpanel"
+                             aria-labelledby="v-pills-profile-tab">
+
+                        </div>
+
+                        <div class="tab-pane fade shadow rounded bg-white p-5" id="v-pills-messages" role="tabpanel"
+                             aria-labelledby="v-pills-messages-tab">
+                            <h4 class="font-italic mb-4">Reviews</h4>
+                            <p class="font-italic text-muted mb-2">Lorem ipsum dolor sit amet, consectetur adipisicing
+                                elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+                                minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
+                                eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa
+                                qui officia deserunt mollit anim id est laborum.</p>
+                        </div>
+
+                        <div class="tab-pane fade shadow rounded bg-white p-5" id="v-pills-settings" role="tabpanel"
+                             aria-labelledby="v-pills-settings-tab">
+                            <h4 class="font-italic mb-4">Confirm booking</h4>
+                            <p class="font-italic text-muted mb-2">Lorem ipsum dolor sit amet, consectetur adipisicing
+                                elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+                                minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
+                                eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa
+                                qui officia deserunt mollit anim id est laborum.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<!--    POPUP ADD SĐT-->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle" style="font-weight: bold">THÊM SỐ ĐIỆN THOẠI</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form th:object="${account}">
+                        <div class="col-sm-12 row">
+                            <div class="col-sm-12">
+                                <label>Nhập số điện thoại</label>
+                                <input type="number" class="form-control">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Gửi mã</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--    POPUP doi mat khau-->
+    <div class="modal fade" id="exampleModalCenter1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle1" style="font-weight: bold">THÊM SỐ ĐIỆN THOẠI</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form th:object="${account}">
+                        <div class="col-sm-12">
+                            <div class="row">
+                                <label>Nhập mật khẩu cũ</label>
+                                <input id="old-password" type="password" class="form-control">
+
+                                <label>Nhập mật khẩu mới</label>
+                                <input id="new-password" type="password" class="form-control">
+
+                                <label>Nhập lại mật khẩu mới</label>
+                                <input id="enter-the-password" type="password" class="form-control">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button id="close" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button id="update-password-button" type="button" class="btn btn-primary">Đổi mật khẩu</button>
+                    <button onclick="check()" type="button"
+                            class="btn btn-primary">fff</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

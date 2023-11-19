@@ -35,6 +35,29 @@ public class ReviewServiceImpl implements ReviewService{
 	}
 
 	
+	public List<Review> findAll() {
+		// TODO Auto-generated method stub
+		return reviewRepository.findAll();
+	}
+
+	
+	public Review create(Review create) {
+		// TODO Auto-generated method stub
+		return reviewRepository.save(create);
+	}
+
+	public Review update(Review review) {
+		// TODO Auto-generated method stub
+		return reviewRepository.save(review);
+	}
+
+	
+	public void delete(Integer id) {
+		// TODO Auto-generated method stub
+		reviewRepository.deleteById(id);
+	}
+
+	
 	
 
 	

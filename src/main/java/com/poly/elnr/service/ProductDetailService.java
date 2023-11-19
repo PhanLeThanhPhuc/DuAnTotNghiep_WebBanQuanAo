@@ -11,6 +11,10 @@ public interface ProductDetailService {
 
 	ProductDetails findProductDetial(Integer id, Integer sizeid);
 
+	public ProductDetails create(ProductDetails productdetail);
+
+	public ProductDetails update(ProductDetails productdetail);
+
 
 
 

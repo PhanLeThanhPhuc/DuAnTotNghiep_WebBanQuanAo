@@ -96,8 +96,8 @@
 								class="col-lg-4 col-sm-6">
 
 								<div class="single_product_item">
-									<a th:href="@{|/user/product-detail?product-id=${item.id}|}"> <img
-										th:src="@{|/assets/user/user/image/${item.thumbnail}|}">
+									<a th:href="@{|/user/product-detail?product-id=${item.id}|}">
+										<img th:src="@{|/assets/user/user/image/${item.thumbnail}|}">
 										<div class="single_product_text">
 											<h4>[[${item.name}]]</h4>
 											<h6>Màu: [[${item.color.name}]]</h6>
@@ -105,8 +105,16 @@
 												Size: <span th:each="itemsize : ${item.productDetails}"
 													class="size">[[${itemsize.size.name}]]</span>
 											</h6>
-											<h3>[[${#numbers.formatDecimal(item.price, 0, 'COMMA',
-												0,'POINT')}]]</h3>
+											<div th:if="${item.isSale == true}">
+												<h4 style="text-decoration-line: line-through;">[[${#numbers.formatDecimal(item.price,
+													0, 'COMMA', 0,'POINT')}]]₫</h4>
+												<h3>[[${#numbers.formatDecimal(item.discountPrice, 0,
+													'COMMA', 0,'POINT')}]]₫</h3>
+											</div>
+											<div th:unless="${item.isSale ==true}">
+												<h3 class="price">[[${#numbers.formatDecimal(item.price,
+													0, 'COMMA', 0,'POINT')}]]₫</h3>
+											</div>
 										</div>
 									</a>
 								</div>

@@ -1,49 +1,67 @@
 app = angular.module("app", ["ngRoute"]);
+app.config(function($routeProvider) {
+	$routeProvider
+		.when("/category", {
+			templateUrl: "/assets/admin/category/index.html",
+			controller: "category-ctrl"
+		})
 
-app.config(function ($routeProvider) {
-  $routeProvider
-    
-    .when("/category-table", {
-      templateUrl: "/assets/admin/category/table.html",
-      controller: "category-ctrl"
+		.when("/color", {
+			templateUrl: "/assets/admin/color/index.html",
+			controller: "color-ctrl"
+		})
+		.when("/product", {
+			templateUrl: "/assets/admin/product/index.html",
+			controller: "product-ctrl"
+		})
+
+		.when("/size", {
+			templateUrl: "/assets/admin/size/index.html",
+			controller: "size-ctrl"
+		})
+		.when("/authority", {
+			templateUrl: "/assets/admin/authority/index.html",
+			controller: "authority-ctrl"
+		})
+		.when("/unauthorized", {
+			templateUrl: "/assets/admin/authority/unauthorized.html",
+			controller: "authority-ctrl"
+		})
+		.when("/user", {
+			templateUrl: "/assets/admin/user/index.html",
+			controller: "user-ctrl"
+		})
+		.when("/review", {
+			templateUrl: "/assets/admin/review/index.html",
+			controller: "review-ctrl"
+		})
+
+		.when("/voucher", {
+			templateUrl: "/assets/admin/voucher/index.html",
+			controller: "voucher-ctrl"
+		})
+
+
+		.when("/order", {
+			templateUrl: "/assets/admin/order/index.html",
+			controller: "order-ctrl"
+		})
+
+		.when("/discount", {
+			templateUrl: "/assets/admin/discount/index.html",
+			controller: "discount-ctrl"
+		})
+ .when("/revenue_statistic", {
+      templateUrl: "/assets/admin/statistics/revenue_statistic.html",
+      controller: "statistic-ctrl"
     })
-    .when("/category-form", {
-      templateUrl: "/assets/admin/category/form.html",
-      controller: "category-ctrl"
-    })
-    .when("/color-table", {
-      templateUrl: "/assets/admin/color/table.html",
-      controller: "color-ctrl"
-    })
-    .when("/color-form", {
-      templateUrl: "/assets/admin/color/form.html",
-      controller: "color-ctrl"
-    })
-    .when("/categorydetail-form", {
-      templateUrl: "/assets/admin/category_detail/table.html",
-      controller: "categorydetail-ctrl"
-    })
-    .when("/categorydetail-table", {
-      templateUrl: "/assets/admin/category_detail/form.html",
-      controller: "categorydetail-ctrl"
-    })
-    .when("/user-table", {
-      templateUrl: "/assets/admin/customer/table.html",
-      controller: "user-ctrl"
-    })
-    .when("/user-form", {
-      templateUrl: "/assets/admin/customer/form.html",
-      controller: "user-ctrl"
-    })
-    .when("/authorize", {
-      templateUrl: "/assets/admin/authority/index.html",
-      controller: "authority-ctrl"
-    })
-    .when("/unauthorized", {
-      templateUrl: "/assets/admin/authority/unauthorized.html",
-      controller: "authority-ctrl"
-    })
-    .otherwise({
-      template: "<h1 class='text-center'>FPT Polytechnic Administration</h1>"
-    });
+
+      .when("/revenue_user", {
+        templateUrl: "/assets/admin/statistics/revenue_user.html",
+        controller: "user-statistic-ctrl"
+      })
+
+		.otherwise({
+			template: "<h1 class='text-center'>FPT Polytechnic Administration</h1>"
+		});
 });
