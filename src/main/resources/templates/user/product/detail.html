@@ -1,8 +1,10 @@
 
 <html xmlns:th="http://www.thymeleaf.org"
+
 	  th:replace="~{/user/layout/index :: dynamic (~{::main})}">
 
 <main th:object="${item}">
+
 
 	<div class="product_image_area section_padding">
 		<div class="container">
@@ -13,43 +15,74 @@
 						<!--							<div id="vertical">-->
 						<div id="">
 							<div style="height: auto !important;"
+
 								 th:attr="data-thumb=@{|/assets/user/user/image/*{thumbnail}|}">
+
 								<img th:src="@{|/assets/user/user/image/*{thumbnail}|}" />
 							</div>
 
 
-							<div th:each="img : ${images}"
-								 th:attr="data-thumb=@{|/assets/user/user/image/${img.image}|}">
-								<img th:src="@{|/assets/user/user/image/${img.image}|}" />
+	<!--================Single Product Area =================-->
+	<div class="product_image_area section_padding">
+		<div class="container">
+			<div class="row s_product_inner justify-content-between">
+				<div class="col-lg-7 col-xl-7">
+					<div class="product_slider_img">
+						<!--							/// bỏ này vào mất 50% ảnh-->
+						<div id="vertical">
+							<!--							<div id="">-->
+							<div style="height: auto !important;"
+								th:attr="data-thumb=@{*{thumbnail}}">
+								<img th:src="@{*{thumbnail}}" />
 							</div>
 
+							<div th:each="img : ${images}"
+
+								th:attr="data-thumb=@{${img.image}}">
+								<img th:src="@{${img.image}}" />
+							</div>
+						</div>
+					</div>
+					<div th:if="${isDiscount}" class="container-fluid mt-5"
+						style="background-image: url('/assets/user/teample/img/sale.jpg'); height: 50px; border-radius: 5px; background-size: cover;">
+						<div class="d-flex align-items-center pt-2">
+							<h3 style="font-weight: bolder; display: inline-block;">Flash
+								Sale</h3>
+							&emsp;&emsp;
+							<h5 style="display: inline-block; color: white;" id="countdown"></h5>
 						</div>
 					</div>
 				</div>
+
 				<div class="col-lg-5 col-xl-4">
 					<div class="s_product_text">
-						<h5>
-							previous <span>|</span> next
-						</h5>
-						<h3>[[*{name}]]</h3>
-
-
-
+						<h1 style="font-weight: bold;">[[*{name}]]</h1>
 						<ul class="list">
 							<li><span>Category</span> : [[*{categoryDdetail.name}]]</li>
 							<li><span>Color</span> : [[*{color.name}]]</a></li>
+
+							<h3>[[${datesale}]]</h3>
+
+
+
 							<div th:if="*{isSale ==true}">
-								<h4 class="priceBeforeSale"
-									style="text-decoration-line: line-through;">[[*{price}]]</h4>
-								<h2 class="price">[[${#numbers.formatDecimal(item.discountPrice,
-									0, 'COMMA', 0,'POINT')}]]</h2>
+								<h4 style="text-decoration-line: line-through; margin: 0px;">
+									[[${#numbers.formatDecimal(item.price, 0, 'COMMA', 0,
+									'POINT')}]]₫</h4>
+								<h2 style="display: inline-block; margin-right: 5px;">
+									[[${#numbers.formatDecimal(item.discountPrice, 0, 'COMMA', 0,
+									'POINT')}]]₫</h2>
+
+								<span class="badge badge-warning"
+									style="color: red; font-weight: 600">[[${#numbers.formatDecimal((100-(item.discountPrice
+									/ item.price) * 100), 0, 'COMMA', 0, 'POINT')}]]%</span>
 							</div>
 							<div th:unless="*{isSale ==true}">
 								<h2 class="price">[[${#numbers.formatDecimal(item.price, 0,
-									'COMMA', 0,'POINT')}]]</h2>
+									'COMMA', 0,'POINT')}]]₫</h2>
 							</div>
 							<nav class="radio-button">
-								<div th:each="a: ${sizes}">
+								<div th:each="a: ${sizes}" th:if="${a.size.status}">
 									<input type="radio" th:id="${a.size.id}" name="x"
 										   th:attr="ng-click=@{|sizeClick(${a.quantity});sizeid(${a.size.id})|}"
 										   th:value="${a.quantity}" /> <label th:for="${a.size.id}">[[${a.size.name}]]</label>
@@ -248,13 +281,38 @@
 						<div th:each="p:*{categoryDdetail.product}"
 							 class="single_product_item">
 
-							<a th:href="@{|/user/product-detail?product-id=${p.id}|}"> <img
-									th:src="@{|/assets/user/user/image/${p.thumbnail}|}"
-									style="height: 270px;" alt="">
-								<div class="single_product_text">
-									<h5 class="text-truncate mb-3" th:utext="${p.name}"></h5>
-									<h3>[[${#numbers.formatDecimal(p.price, 0, 'COMMA',
-										0,'POINT')}]]</h3>
+
+							<a th:href="@{|/user/product-detail?product-id=${p.id}|}">
+								<div style="background-color: white;" class="rounded-top">
+									<img class=" px-4 pt-2 pb-0"
+										th:src="@{|/assets/user/user/image/${p.thumbnail}|}"
+										style="height: 280px;">
+								</div>
+								<div class="single_product_text px-4 rounded-bottom">
+									<h4>[[${p.name}]]</h4>
+									<h6>Màu: [[${p.color.name}]]</h6>
+									<h6>
+										Size: <span th:each="itemsize : ${p.productDetails}"
+											class="size">[[${itemsize.size.name}]]</span>
+									</h6>
+
+									<div th:if="${p.isSale == true}">
+										<h4 style="text-decoration-line: line-through; margin: 0px;">
+											[[${#numbers.formatDecimal(p.price, 0, 'COMMA', 0,
+											'POINT')}]]₫</h4>
+										<h3 style="display: inline-block; margin-right: 5px;">
+											[[${#numbers.formatDecimal(p.discountPrice, 0, 'COMMA', 0,
+											'POINT')}]]₫</h3>
+
+										<span class="badge badge-warning"
+											style="color: red; font-weight: 600">[[${#numbers.formatDecimal((100-(p.discountPrice
+											/ p.price) * 100), 0, 'COMMA', 0, 'POINT')}]]%</span>
+									</div>
+
+									<div th:unless="${p.isSale ==true}">
+										<h3 class="price">[[${#numbers.formatDecimal(p.price, 0,
+											'COMMA', 0,'POINT')}]]₫</h3>
+									</div>
 								</div>
 							</a>
 						</div>

@@ -51,8 +51,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button ng-click="createCategoryDetail()" type="button" data-dismiss="modal" class="btn btn-primary">Thêm</button>
-                <button type="button" ng-click="updateCategoryDetail()" type="button" data-dismiss="modal" class="btn btn-primary">Sửa</button>
+                <button ng-click="createCategoryDetail()" type="button" data-dismiss="modal" class="btn btn-primary"  ng-disabled="formCategoryDetail.id">Thêm</button>
+                <button type="button" ng-click="updateCategoryDetail()" type="button" data-dismiss="modal" class="btn btn-primary" ng-disabled="!formCategoryDetail.id">Sửa</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>

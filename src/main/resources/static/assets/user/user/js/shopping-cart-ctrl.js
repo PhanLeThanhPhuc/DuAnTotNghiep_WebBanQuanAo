@@ -6,6 +6,10 @@ app.controller("cart-ctrl", function($scope, $http) {
 		await $http.get("/user/province").then(resp => {
 			$scope.listProvince = resp.data.data;
 		})
+		 $http.get("/rest/productsDetail/date").then(resp => {
+			$scope.dateEnd = new Date(resp.data);
+	
+		})
 
 		//get user or status login
 		await $http.get("/rest/users/userid").then(resp => {
@@ -472,6 +476,33 @@ app.controller("cart-ctrl", function($scope, $http) {
 			smallElement.innerHTML = "Mã voucher không khả dụng!";
 		}
 	};
+	
+	
+	
+	
+
+function updateCountdown() {
+  const currentDate = new Date();
+  const timeDifference = $scope.dateEnd - currentDate;
+  if (timeDifference > 0) {
+    const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+    document.getElementById('countdown').innerHTML = `
+      ${days} ngày, ${hours} giờ, ${minutes} phút, ${seconds} giây
+    `;
+   
+  }
+}
+
+setInterval(updateCountdown, 1000);
+updateCountdown();
+
+
+})
+
 
 	$scope.registerPhoneNumber = async () => {
 
@@ -555,3 +586,4 @@ app.controller("cart-ctrl", function($scope, $http) {
 	}
 
 })
+

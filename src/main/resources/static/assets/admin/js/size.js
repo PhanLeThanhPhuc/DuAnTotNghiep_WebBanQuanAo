@@ -22,9 +22,9 @@ app.controller("size-ctrl", function($scope,$filter, $http){
 			resp.data.dateInsert = new Date(resp.data.dateInsert)
 			$scope.items.push(resp.data);
 			$scope.reset();
-			alert("Thêm mới sản phẩm thành công!");
+			alert("Thêm mới kích thước thành công!");
 		}).catch(error => {
-			alert("Lỗi thêm mới sản phẩm!");
+			alert("Lỗi thêm mới kích thước!");
 			console.log("Error", error);
 		});
 	}
@@ -34,10 +34,10 @@ app.controller("size-ctrl", function($scope,$filter, $http){
 		$http.put(`/rest/sizes/${item.id}`, item).then(resp => {
 			var index = $scope.items.findIndex(p => p.id == item.id);
 			$scope.items[index] = item;
-			alert("Cập nhật sản phẩm thành công!");
+			alert("Cập nhật kích thước thành công!");
 		})
 		.catch(error => {
-			alert("Lỗi cập nhật sản phẩm!");
+			alert("Lỗi cập nhật kích thước!");
 			console.log("Error", error);
 		});
 	}
