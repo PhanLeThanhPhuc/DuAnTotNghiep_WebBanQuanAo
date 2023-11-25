@@ -33,10 +33,28 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
 
     @Query("SELECT new com.poly.elnr.dto.PhoneTotalDTO(o.phone, SUM(o.total), COUNT(o.phone)) " +
             "FROM Order o " +
-            "WHERE MONTH(o.orderDate) = MONTH(CURRENT_DATE) AND YEAR(o.orderDate) = YEAR(CURRENT_DATE) " +
+//            "WHERE MONTH(o.orderDate) = MONTH(CURRENT_DATE) AND YEAR(o.orderDate) = YEAR(CURRENT_DATE) " +
             "GROUP BY o.phone " +
-            "ORDER BY SUM(o.total) DESC " +
-            "LIMIT 10")
+            "ORDER BY SUM(o.total) DESC ")
     List<PhoneTotalDTO> findTop10ByPhonePriceWithDate();
+
+    @Query("SELECT new com.poly.elnr.dto.PhoneTotalDTO(o.phone, SUM(o.total), COUNT(o.phone)) " +
+            "FROM Order o " +
+            "WHERE o.orderDate BETWEEN :startDate AND :endDate " +
+            "GROUP BY o.phone " +
+            "ORDER BY SUM(o.total) DESC ")
+    List<PhoneTotalDTO> findTop10PhoneTotalsByDateRange(
+            @Param("startDate") Date startDate,
+            @Param("endDate") Date endDate
+    );
+
+    @Query("SELECT new com.poly.elnr.dto.PhoneTotalDTO(o.phone, SUM(o.total), COUNT(o.phone)) " +
+            "FROM Order o " +
+            "WHERE CAST(o.orderDate AS date) = CAST(CURRENT_TIMESTAMP AS date) " +
+            "GROUP BY o.phone " +
+            "ORDER BY SUM(o.total) DESC ")
+    List<PhoneTotalDTO> findTop10PhoneTotalsForToday();
+
+
 
 }

@@ -1,0 +1,32 @@
+<!--        MODEL-->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Voucher</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-2">
+                    <span style="font-weight: 600;" class="card-text">Hạn sử dụng</span><br>
+                    <span><span>Từ ngày </span>{{objectvoucherDetail.startDate | date:'dd-MM-yyyy HH:mm:ss'}} <span>đến ngày</span> {{objectvoucherDetail.endDate | date:'dd-MM-yyyy HH:mm:ss'}}</span>
+                </div>
+                <div class="mb-2">
+                    <span style="font-weight: 600;" class="card-text">Điều kiện áp dụng</span><br>
+                    <span>Áp dụng cho đơn hàng từ {{objectvoucherDetail.min | currency:'' :0}}đ trở lên, đơn hàng có từ {{objectvoucherDetail.minOrderProduct | currency:'' :0}} sản phẩm trở lên</span>
+                </div>
+                <div class="mb-2">
+                    <span style="font-weight: 600;" class="card-text">Ưu đãi</span><br>
+                    <span>Giảm {{objectvoucherDetail.discountPrice | currency:'' :0}}đ cho giá trị đơn hàng</span>
+                </div>
+                <div class="mb-2">
+                    <span style="font-weight: 600;" class="card-text">Sản phẩm áp dụng</span><br>
+                    <span ng-repeat="product in listProduct" >{{product.name}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

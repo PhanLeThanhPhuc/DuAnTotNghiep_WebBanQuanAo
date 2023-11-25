@@ -44,7 +44,12 @@ app.controller("cart-ctrl", function($scope, $http) {
 			$scope.formInformationOrder.email = $scope.dataLogin.user.email;
 			document.getElementById("phone").disabled = true;
 			$scope.$apply();
+			console.log("phone:",$scope.dataLogin.user.phone)
 		}
+		if($scope.dataLogin.user.phone === null){
+			$('#exampleModalCenter3').modal('show');
+		}
+
 	}
 
 	$scope.form = () => {
@@ -467,5 +472,86 @@ app.controller("cart-ctrl", function($scope, $http) {
 			smallElement.innerHTML = "Mã voucher không khả dụng!";
 		}
 	};
+
+	$scope.registerPhoneNumber = async () => {
+
+		const phoneNumber = "0"+$scope.registerPhone;
+		const email = $scope.formInformationOrder.email;
+		console.log("Phone: ",phoneNumber);
+		await $http.get(`/rest/users/register-phone?phone=${phoneNumber}&email=${email}`).then(resp => {
+
+			console.log("data",resp.data)
+			if(resp.data.data == null){
+				console.log("message",resp.data.message)
+			}else{
+
+				const currentTime = new Date();
+
+				const otpCreationTime = new Date(resp.data.data.timeOtp)
+
+				const elapsedTime = Math.floor((currentTime - otpCreationTime) / 1000);
+				const remainingTime = 60 - elapsedTime;
+
+				countdownotp(remainingTime)
+
+				// console.log("Thời gian còn lại",remainingTime);
+				$("#exampleModalCenter3").modal("hide");
+				// Đóng modal sử dụng jQuery khi nút "Close" được click
+				$("#exampleModalCenter4").modal("show");
+
+			}
+		})
+	}
+
+
+
+	$scope.comfirmOtp = async () => {
+		const otp = $scope.otp;
+		const phoneNumber = $scope.registerPhone;
+		const email = $scope.formInformationOrder.email;
+		await $http.get(`/rest/users/confirm-otp?otp=${otp}&phone=${phoneNumber}&email=${email}`).then(resp => {
+			console.log("respose: ", resp.data);
+			if(resp.status === 'timeout'){
+				var smallElement = document.getElementById("messageOtp");
+				smallElement.innerHTML = resp.data.message;
+			}else if (resp.status === 'true'){
+				var smallElement = document.getElementById("messageOtp");
+				smallElement.innerHTML = resp.data.message;
+			}else{
+				var smallElement = document.getElementById("messageOtp");
+				smallElement.innerHTML = resp.data.message;
+			}
+		})
+	}
+
+	countdownotp = (second) =>{
+		// Thời gian bắt đầu đếm ngược (theo giây)
+		var initialSeconds = second; // Ví dụ: 5 phút = 300 giây
+
+		// Lấy thẻ div để hiển thị đồng hồ đếm ngược
+		var countdownElement = document.getElementById('countdown');
+
+		// Tính tổng số giây
+		var totalSeconds = initialSeconds;
+
+		// Cập nhật đồng hồ đếm ngược sau mỗi giây
+		var countdownInterval = setInterval(function () {
+			// Kiểm tra nếu hết thời gian
+			if (totalSeconds <= 0) {
+				clearInterval(countdownInterval);
+				countdownElement.innerHTML = "Hết giờ!";
+			} else {
+				// Tính phút và giây còn lại
+				var remainingMinutes = Math.floor(totalSeconds / 60);
+				var remainingSeconds = totalSeconds % 60;
+
+				// Hiển thị đồng hồ đếm ngược
+				countdownElement.innerHTML = remainingMinutes + ' phút ' + remainingSeconds + ' giây';
+
+				// Giảm tổng số giây đi 1
+				totalSeconds--;
+			}
+		}, 1000); // 1000 milliseconds = 1 giây
+	}
 
 })

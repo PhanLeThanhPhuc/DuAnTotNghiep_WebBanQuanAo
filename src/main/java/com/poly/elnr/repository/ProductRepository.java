@@ -3,9 +3,7 @@ package com.poly.elnr.repository;
 import java.util.List;
 
 
-
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.domain.Pageable;
@@ -27,10 +25,6 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 			+ "WHERE p.id =?1 and pd.size.id =?2")
 	Product findProductSize(Integer id, Integer sizeid);
 
-
-
-
-
 	@Query("SELECT DISTINCT p FROM Product p "
 			+ "INNER JOIN p.productDetails pd "
 			+ "WHERE p.categoryDdetail.id =:idCategoryDetail "
@@ -50,6 +44,9 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 													@Param("colorId") List<Integer> colorId,
 													@Param("sizeId") List<Integer> sizeId,
 													Pageable pageable);
-	
+
+	@EntityGraph(attributePaths = {"categoryDdetail", "color", "description"})
+	@Query("SELECT p FROM Product p where p.id IN :IdProduct")
+	List<Product> findByIdsProduct(@Param("IdProduct") int[] IdProduct);
 }
 	

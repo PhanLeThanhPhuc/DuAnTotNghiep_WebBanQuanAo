@@ -3,6 +3,7 @@ package com.poly.elnr.service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import com.poly.elnr.dto.ChangePassword;
 import com.poly.elnr.utils.CustomOAuth2User;
@@ -39,4 +40,8 @@ public interface UserService {
 	Users findByUserNamePhoneAndEmail(String username);
 
 	int idUser(String username);
+
+	Users registerPhoneNumber(String phone, String email);
+
+	boolean checkOtp(String otp, String email, String phone);
 }

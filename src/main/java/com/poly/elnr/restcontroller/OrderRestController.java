@@ -10,6 +10,7 @@ import com.poly.elnr.service.VnPayService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -84,5 +85,11 @@ public class OrderRestController {
         String vnpayUrl = vnPayService.createOrder(total, content, baseUrl,idOrder);
         return  vnpayUrl;
     }
+
+    @GetMapping("rest/orders/update-status")
+    public ResponseEntity<?> updateOrder(@RequestParam("idOrder") int idOrder, @RequestParam("statusOrder") int statusOrder) {
+        return ResponseEntity.ok(orderService.updateStatusOrder(idOrder,statusOrder));
+    }
+
 
 }

@@ -160,9 +160,14 @@
                                 <p class="name"><span style="font-weight: 600">Mã đơn hàng:</span> {{objectOrder.id}}</p>
                                 <p class="name"><span  style="font-weight: 600">Mã vận đơn:</span> {{objectOrder.shipCode}}</p>
                                 <p class="address"><span  style="font-weight: 600">Ngày đặt hàng: </span> {{objectOrder.orderDate | date:'yyyy-MM-dd HH:mm:ss'}} </p>
-                                <p class="phone"><span  style="font-weight: 600">Trạng thái đơn hàng: </span><span class="badge badge-pill badge-secondary" ng-if="objectOrder.status == 0">Chờ xác nhận</span>
+                                <p class="phone">
+                                    <span  style="font-weight: 600">Trạng thái đơn hàng: </span>
+                                    <span class="badge badge-pill badge-secondary" ng-if="objectOrder.status == 0">Chờ xác nhận</span>
                                     <span class="badge badge-pill badge-warning" ng-if="objectOrder.status == 1">Chờ lấy hàng</span>
-                                    <span class="badge badge-pill badge-danger" ng-if="objectOrder.status == 2">Hủy</span></p>
+                                    <span class="badge badge-pill badge-danger" ng-if="objectOrder.status == 2">Hủy</span>
+                                    <span class="badge badge-pill badge-info" ng-if="objectOrder.status == 4">Đang giao</span>
+                                    <span class="badge badge-pill badge-success" ng-if="objectOrder.status == 5">Đã giao</span>
+                                </p>
                                 <p ng-if="objectOrder.voucher != null" class="name"  style="font-weight: 600">Áp dụng voucher: <span style="font-weight: 600">{{objectOrder.voucher.voucher}}</span> (Giảm <span style="color: red">{{objectOrder.voucher.discountPrice | currency:'' :0 }}đ</span> cho hóa đơn)</p>
                                 <p class="address"><span  style="font-weight: 600">Tổng tiền: </span> <span style=" color: red; font-weight: 600">{{objectOrder.total + objectOrder.shipFee - objectOrder.voucher.discountPrice | currency:'' :0 }}</span> </p>
 <!--                                <button type="button" class="btn btn-lg btn-danger" data-toggle="popover" title="Popover title" data-content="And here's some amazing content. It's very engaging. Right?">Click to toggle popover</button>-->
@@ -257,6 +262,8 @@
             </div>
             <div class="modal-footer">
                 <button ng-if="objectOrder.status == 0" ng-click="confirmOrder(objectOrder.id)" type="button" data-dismiss="modal" class="btn btn-primary">Xác nhận đơn hàng</button>
+                <button ng-click="delivering(objectOrder.id)" type="button" data-dismiss="modal" class="btn btn-primary">Giao hàng</button>
+                <button ng-click="successOrder(objectOrder.id)" type="button" data-dismiss="modal" class="btn btn-primary">Giao thành công</button>
                 <button ng-if="objectOrder.status != 2" type="button" ng-click="cancelOrder(objectOrder.id)" type="button" data-dismiss="modal" class="btn btn-primary">Hủy</button>
             </div>
         </div>

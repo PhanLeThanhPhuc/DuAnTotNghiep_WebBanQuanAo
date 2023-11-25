@@ -1,49 +1,53 @@
 app.controller("statistic-ctrl", function($scope, $filter, $http) {
 
-        $scope.listTotalDate = [];
+    $scope.listTotalDate = [];
+    $scope.date =[];
+    $scope.total =[];
+    $scope.totalPrice = 0;
+
+    $scope.initialize = async function() {
+        await $http.get("/rest/orderTotal").then(resp => {
+            $scope.map = new Map();
+            if (resp.status === 200){
+                console.log("Dữ liệu từ database: ",resp.data);
+                $scope.listTotalDate = resp.data;
+                $scope.map = processData($scope.listTotalDate);
+
+                // $scope.TotalInToday();
+                // console.log("Map data: ", $scope.map);
+                const tenDaysAgoArray = $scope.arrayTenDayAgo();
+                processTenDaysAgoArray(tenDaysAgoArray,$scope.map);
+            }
+        });
+        $scope.total.reverse();
+        $scope.date.reverse();
+        $scope.chart();
+        defaulStatistic();
+        $scope.getHoursOfDay();
+    }
+    $scope.initialize();
+
+    processData = (arr) => {
+        // $scope.listTotalDate =arr;
+        var map = new Map();
+        for (let i = 0; i <arr.length; i++) {
+            const date = $scope.formatDate(arr[i].order_date);
+            if (map.has(date)) {
+                let value = map.get(date);
+                value += arr[i].total;
+                map.set(date, value);
+            } else {
+                map.set(date, arr[i].total);
+            }
+        }
+        return map;
+    }
+
+    processTenDaysAgoArray =(tenDaysAgoArray, map) => {
+        console.log("MAP: ",map);
+        console.log("tenDaysAgoArray: ",tenDaysAgoArray);
         $scope.date =[];
         $scope.total =[];
-        $scope.totalPrice = 0;
-
-        $scope.initialize = async function() {
-            await $http.get("/rest/orderTotal").then(resp => {
-                $scope.map = new Map();
-                if (resp.status === 200){
-                    $scope.listTotalDate = resp.data;
-                    $scope.map = processData($scope.listTotalDate);
-                    console.log("Map data: ", $scope.map);
-                    const tenDaysAgoArray = $scope.arrayTenDayAgo();
-                    processTenDaysAgoArray(tenDaysAgoArray,$scope.map);
-                }
-            });
-            $scope.total.reverse();
-            $scope.date.reverse();
-            $scope.chart();
-            defaulStatistic();
-        }
-        $scope.initialize();
-
-         processData = (arr) => {
-            $scope.listTotalDate =arr;
-             var map = new Map();
-            for (let i = 0; i <arr.length; i++) {
-                const date = $scope.formatDate(arr[i].order_date);
-                if (map.has(date)) {
-                    let value = map.get(date);
-                    value += arr[i].total;
-                    map.set(date, value);
-                } else {
-                    map.set(date, arr[i].total);
-                }
-            }
-            return map;
-        }
-
-     processTenDaysAgoArray =(tenDaysAgoArray, map) => {
-         console.log("MAP: ",map);
-         console.log("tenDaysAgoArray: ",tenDaysAgoArray);
-         $scope.date =[];
-         $scope.total =[];
         for (let i = 0; i < tenDaysAgoArray.length; i++) {
             const date = tenDaysAgoArray[i];
             if (map.has(date)) {
@@ -57,12 +61,17 @@ app.controller("statistic-ctrl", function($scope, $filter, $http) {
         }
         $scope.totalPrice=0;
         $scope.totalPrice = $scope.calculateTotalPrice($scope.total);
+        $scope.messageTotalPrice = `Tổng doanh thu trong 10 ngày trước:`;
 
     }
 
     $scope.chart = () => {
         const ctx = document.getElementById('myChart');
-        new Chart(ctx, {
+        if ($scope.myChart) {
+            $scope.myChart.destroy();
+        }
+
+        $scope.myChart = new Chart(ctx, {
             type: 'line',
             data: {
                 labels: $scope.date,
@@ -94,51 +103,29 @@ app.controller("statistic-ctrl", function($scope, $filter, $http) {
         });
     }
 
+
     $scope.calculateTotalPrice = (arr) => {
         return arr.reduce((acc, val) => acc + val, 0);
     };
 
-    $scope.filterTotalDate = () =>{
-
+    $scope.filterTotalDate = () => {
+        var listTotalDateCopy = []
         var startDateFormat = $scope.startDate;
         var endDateFormat = $scope.endDate;
 
-        $scope.listFilterNow = $scope.listTotalDate.filter(o => {
+        var listTotalDateCopy = $scope.listTotalDate;
+
+        $scope.listFilterNow = listTotalDateCopy.filter(o => {
             const formattedOrderDate = $scope.formatDate(o.order_date);
             return formattedOrderDate >= $scope.formatDate(startDateFormat) && formattedOrderDate <= $scope.formatDate(endDateFormat);
         });
 
         var map = processData($scope.listFilterNow);
-        const tenDaysAgoArray = getDates(startDateFormat,endDateFormat);
-        processTenDaysAgoArray(tenDaysAgoArray,map);
+        const tenDaysAgoArray = getDates(startDateFormat, endDateFormat);
+        processTenDaysAgoArray(tenDaysAgoArray, map);
         $scope.chart();
-
-    }
-
-    $scope.totalToDay = () =>{
-        $scope.date =[];
-        $scope.total =[];
-        const today = new Date();
-        const dateFormat = $scope.formatDate(today);
-        var listTotalToDay = $scope.listTotalDate.filter( o =>{
-            console.log("a", $scope.formatDate(o.order_date));
-            console.log("to day", dateFormat);
-            const formattedOrderDate = $scope.formatDate(o.order_date);
-            return formattedOrderDate === dateFormat;
-        });
-        var map = processData(listTotalToDay);
-
-        for (const [key, value] of map) {
-            // console.log(key, value);
-            $scope.date.push(key);
-            $scope.total.push(value);
-        }
-        $scope.totalPrice=0;
-        $scope.totalPrice = $scope.calculateTotalPrice($scope.total);
-        $scope.chart();
-        console.log("listdate to day", map);
-        console.log("listdate to day", $scope.totalPrice);
-    }
+        // console.log("arr",$scope.listTotalDate)
+    };
 
     $scope.formatDate = function(date) {
         return $filter('date')(date, 'dd/MM/yyyy');
@@ -167,9 +154,9 @@ app.controller("statistic-ctrl", function($scope, $filter, $http) {
         document.getElementById('end-date').value = today.toISOString().substring(0,10);
         console.log("date",today.toISOString().substring(0,10));
         var index = days.length -1;
-        const startDate = new Date(Date.parse(days[index]));
-        console.log(startDate.toISOString().substring(0,10));
-        document.getElementById('start-date').value = startDate.toISOString().substring(0,10);
+        const startDate = days[index]
+        console.log("date start: ", formatDate(startDate));
+        document.getElementById('start-date').value = formatDate(startDate)
         return days;
         // console.log(days);
     }
@@ -188,7 +175,7 @@ app.controller("statistic-ctrl", function($scope, $filter, $http) {
             document.getElementById("end-date").disabled = true;
             document.getElementById("start-date").disabled = true;
         } else if (valuecbb === 'today'){
-            $scope.totalToDay();
+            $scope.TotalInToday();
             document.getElementById("div-button").style.display = "none";
             document.getElementById("end-date").disabled = true;
             document.getElementById("start-date").disabled = true;
@@ -230,16 +217,18 @@ app.controller("statistic-ctrl", function($scope, $filter, $http) {
                 $scope.total.push(value);
             } else {
                 $scope.date.push(formatDayMonth(tenDaysAgoArray[i]));
-                console.log("datedawdea", tenDaysAgoArray[i])
+                // console.log("datedawdea", tenDaysAgoArray[i])
                 $scope.total.push(0);
             }
         }
-        $scope.totalPrice = $scope.calculateTotalPrice($scope.total);
-        $scope.chart();
         document.getElementById('start-date').value =formatDate(tenDaysAgoArray[0]);
         var index = tenDaysAgoArray.length-1;
-        console.log(index)
         document.getElementById('end-date').value =formatDate(tenDaysAgoArray[index]);
+        $scope.totalPrice=0;
+        $scope.totalPrice = $scope.calculateTotalPrice($scope.total);
+        $scope.messageTotalPrice = `Tổng doanh thu tháng này`;
+        $scope.chart();
+        $scope.$apply();
     }
 
 
@@ -272,13 +261,13 @@ app.controller("statistic-ctrl", function($scope, $filter, $http) {
         for (let hour = 0; hour < 24; hour++) {
 
             const formattedHour = hour.toString().padStart(2, '0');
-            const currentTime = `${formattedHour}:00:00`;
+            // const currentTime = `${formattedHour}:00:00`;
 
 
-            hours.push(currentTime);
+            hours.push(formattedHour);
         }
 
-        console.log("Mảng chứa giờ ", hours);
+        // console.log("Mảng chứa giờ ", hours);
         return hours;
     }
 
@@ -291,6 +280,80 @@ app.controller("statistic-ctrl", function($scope, $filter, $http) {
             currentDate.setDate(currentDate.getDate() + 1);
         }
         return dates;
+    }
+
+    $scope.formatHours = (arr) => {
+        const listTotal = [];
+        for (let i = 0; i < arr.length; i++) {
+            var item = arr[i];
+            var hour = formatTime(item.order_date). split(':')[0]; // Lấy giờ từ order_date
+            item.order_date = hour;
+            listTotal.push(item);
+        }
+        return listTotal;
+    }
+
+     formatTime = (dateString) => {
+        let date = new Date(dateString);
+        let formattedTime = date.toLocaleTimeString();
+        return formattedTime;
+    }
+
+    $scope.TotalInToday = () =>{
+        console.log("Data list", $scope.listTotalDate);
+
+        // Make a copy of the original array
+        var listTotalDateCopy = angular.copy($scope.listTotalDate);
+
+        var today = new Date();
+        var todayFormatted = today.toLocaleDateString('en-GB', { timeZone: 'Asia/Ho_Chi_Minh' });
+
+        // Use the copied array for filtering
+        var filteredData = listTotalDateCopy.filter(item => {
+            var itemDate = new Date(item.order_date);
+            var itemDateFormatted = itemDate.toLocaleDateString('en-GB', { timeZone: 'Asia/Ho_Chi_Minh' });
+            return itemDateFormatted === todayFormatted;
+        });
+
+        var listHour = $scope.getHoursOfDay();
+        var listHourFormatDatabase = $scope.formatHours(filteredData);
+
+        console.log("listHour", listHour);
+        console.log("listHourFormatDatabase", listHourFormatDatabase);
+
+        var map = new Map();
+        for (let i = 0; i <listHourFormatDatabase.length; i++) {
+            const date = listHourFormatDatabase[i].order_date
+            console.log("date", date)
+            if (map.has(date)) {
+                let value = map.get(date);
+                value += listHourFormatDatabase[i].total;
+                map.set(date, value);
+            } else {
+                map.set(date, listHourFormatDatabase[i].total);
+            }
+        }
+        $scope.date =[];
+        $scope.total =[];
+        for (let i = 0; i < listHour.length; i++) {
+            if (map.has(listHour[i])) {
+                let value = map.get(listHour[i]);
+                $scope.date.push(listHour[i]+':00');
+                console.log("value", value)
+                $scope.total.push(value);
+            } else {
+                $scope.date.push(listHour[i]+':00');
+                $scope.total.push(0);
+            }
+        }
+        $scope.chart();
+        console.log("total hours", map)
+        $scope.totalPrice=0;
+        $scope.totalPrice = $scope.calculateTotalPrice($scope.total);
+        $scope.messageTotalPrice = `Tổng doanh thu ngày ngày hôm nay`;
+        document.getElementById('start-date').value =today.toISOString().split('T')[0];
+        document.getElementById('end-date').value =today.toISOString().split('T')[0];
+        $scope.$apply();
     }
 
 });

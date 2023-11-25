@@ -37,4 +37,6 @@ public interface ProductService {
 	
 	
 	Optional<Product> findByID2(Integer id);
+
+	List<Product> findByIdsProduct(int[] idProduct);
 }

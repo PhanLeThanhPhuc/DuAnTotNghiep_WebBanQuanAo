@@ -30,12 +30,12 @@ public class AddressServiceImpl implements AddressService{
             return addressRepository.findAddressByIdUser(user.getId());
         }else{
             user = userRepository.findEmail(username);
-            if(user.getPhone() ==  null){
-                return null;
-            }else{
+//            if(user.getPhone() ==  null){
+//                return null;
+//            }else{
                 System.out.println();
                 return addressRepository.findAddressByIdUser(user.getId());
-            }
+//            }
         }
 //        return null;
     }
