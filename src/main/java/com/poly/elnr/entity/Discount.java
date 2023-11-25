@@ -45,9 +45,5 @@ public class Discount implements Serializable {
 
     @Column(name = "allproduct")
     private boolean allproduct;
-    
-    
-    
-    
-    
+
 }

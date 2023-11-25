@@ -141,14 +141,9 @@ public class ProductServiceImpl implements ProductService {
 		return productRepository.findById(id);
 	}
 
-
-
-
-
-
-
-	
-
-	
+	@Override
+	public List<Product> findByIdsProduct(int[] idProduct) {
+		return productRepository.findByIdsProduct(idProduct);
+	}
 
 }

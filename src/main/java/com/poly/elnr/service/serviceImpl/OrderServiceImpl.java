@@ -22,6 +22,8 @@ import org.springframework.stereotype.Service;
 import com.poly.elnr.service.OrderService;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -224,6 +226,26 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<TotalWithUserOrderDTO> findTotalByPhoneAndDateRange() {
         return orderRepository.findTotalByPhoneAndDateRange();
+    }
+
+    @Override
+    public List<PhoneTotalDTO> findTop10PhoneTotalsByDateRange(String startDate, String endDate) throws ParseException {
+        Date startDateConvert = new SimpleDateFormat("yyyy-MM-dd").parse(startDate);
+        Date endDateConvert = new SimpleDateFormat("yyyy-MM-dd").parse(endDate);
+        return orderRepository.findTop10PhoneTotalsByDateRange(startDateConvert,endDateConvert);
+    }
+
+    @Override
+    public List<PhoneTotalDTO> findPhoneTotalsForToday() {
+        return orderRepository.findTop10PhoneTotalsForToday();
+    }
+
+    @Override
+    public Order updateStatusOrder(int id, int status) {
+        Order order = orderRepository.findById(id).get();
+        order.setStatus(status);
+        orderRepository.save(order);
+        return order;
     }
 
 }

@@ -1,0 +1,341 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{/user/layout/index :: dynamic(~{::main})}">
+<main>
+<style>
+    html * {
+        -webkit-font-smoothing: antialiased;
+    }
+
+    h3 {
+        font-size: 25px !important;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        line-height: 1.4em !important;
+    }
+
+    p {
+        font-size: 14px;
+        margin: 0 0 10px !important;
+        font-weight: 300;
+    }
+
+    small {
+        font-size: 75%;
+        color: #777;
+        font-weight: 400;
+    }
+
+    .container .title {
+        color: #3c4858;
+        text-decoration: none;
+        margin-top: 30px;
+        margin-bottom: 25px;
+        min-height: 32px;
+    }
+
+    .container .title h3 {
+        font-size: 25px;
+        font-weight: 300;
+    }
+
+    div.card {
+        border: 0;
+        margin-bottom: 30px;
+        margin-top: 15px;
+        border-radius: 6px;
+        color: rgba(0, 0, 0, .87);
+        background: #fff;
+        width: 100%;
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);
+    }
+
+    div.card.card-plain {
+        background: transparent;
+        box-shadow: none;
+    }
+
+    div.card .card-header {
+        border-radius: 3px;
+        padding: 1rem 15px;
+        margin-left: 15px;
+        margin-right: 15px;
+        margin-top: -30px;
+        border: 0;
+        background: linear-gradient(60deg, #eee, #bdbdbd);
+    }
+
+    .card-plain .card-header:not(.card-avatar) {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .div.card .card-body {
+        padding: 15px 30px;
+    }
+
+    div.card .card-header-primary {
+        background: rgb(212, 58, 86);
+        background: linear-gradient(90deg, rgba(212, 58, 86, 1) 31%, rgba(228, 98, 122, 1) 100%);
+        /* background: linear-gradient(60deg, #ab47bc, #7b1fa2);
+        box-shadow: 0 5px 20px 0 rgba(0, 0, 0, .2), 0 13px 24px -11px rgba(156, 39, 176, .6); */
+    }
+
+    div.card .card-header-danger {
+        background: linear-gradient(60deg, #ef5350, #d32f2f);
+        box-shadow: 0 5px 20px 0 rgba(0, 0, 0, .2), 0 13px 24px -11px rgba(244, 67, 54, .6);
+    }
+
+
+    .card-nav-tabs .card-header {
+        margin-top: -30px !important;
+    }
+
+    .card .card-header .nav-tabs {
+        padding: 0;
+    }
+
+    .nav-tabs {
+        border: 0;
+        border-radius: 3px;
+        padding: 0 15px;
+    }
+
+    .nav {
+        display: flex;
+        flex-wrap: wrap;
+        padding-left: 0;
+        margin-bottom: 0;
+        list-style: none;
+    }
+
+    .nav-tabs .nav-item {
+        margin-bottom: -1px;
+    }
+
+    .nav-tabs .nav-item .nav-link.active {
+        background-color: hsla(0, 0%, 100%, .2);
+        transition: background-color .3s .2s;
+    }
+
+    .nav-tabs .nav-item .nav-link {
+        border: 0 !important;
+        color: #fff !important;
+        font-weight: 500;
+    }
+
+    .nav-tabs .nav-item .nav-link {
+        color: #fff;
+        border: 0;
+        margin: 0;
+        border-radius: 3px;
+        line-height: 24px;
+        text-transform: uppercase;
+        font-size: 12px;
+        padding: 10px 15px;
+        background-color: transparent;
+        transition: background-color .3s 0s;
+    }
+
+    .nav-link {
+        display: block;
+    }
+
+    .nav-tabs .nav-item .material-icons {
+        margin: -1px 5px 0 0;
+        vertical-align: middle;
+    }
+
+    .nav .nav-item {
+        position: relative;
+    }
+
+    footer {
+        margin-top: 100px;
+        color: #555;
+        background: #fff;
+        padding: 25px;
+        font-weight: 300;
+
+    }
+
+    .footer p {
+        margin-bottom: 0;
+        font-size: 14px;
+        margin: 0 0 10px;
+        font-weight: 300;
+    }
+
+    footer p a {
+        color: #555;
+        font-weight: 400;
+    }
+
+    footer p a:hover {
+        color: #9f26aa;
+        text-decoration: none;
+    }
+</style>
+	<section ng-controller="voucher-ctrl" class="cat_product_area section_padding">
+        <div  class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card card-nav-tabs">
+                        <div class="card-header card-header-primary">
+                            <!-- colors: "header-primary", "header-info", "header-success", "header-warning", "header-danger" -->
+                            <div class="nav-tabs-navigation">
+                                <div class="nav-tabs-wrapper">
+                                    <ul class="nav nav-tabs" data-tabs="tabs">
+                                        <li style="width: 537px;" class="nav-item">
+                                            <a style="text-align: center" class="nav-link active" href="#profile" data-toggle="tab">
+                                                <i class="material-icons text-center" ></i>
+                                                Voucher áp dụng cho tất cả sản phẩm
+                                            </a>
+                                        </li>
+                                        <li style="width: 537px;" class="nav-item">
+                                            <a style="text-align: center" class="nav-link" href="#messages" data-toggle="tab">
+                                                <i class="material-icons" ></i>
+                                                Voucher dành cho các sản phẩm nhất định
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body ">
+                            <div class="tab-content ">
+                                <div class="tab-pane active" id="profile">
+                                    <div class="row">
+                                        <div ng-repeat ="item in listVoucherAllProduct" class="col-lg-4 col-sm-6">
+                                            <div class="card"
+                                                style="max-width: 400px; border-radius: 10px; overflow: hidden; border: 3px dotted #bbb;">
+                                                <div class="row no-gutters">
+                                                    <div ng-click="voucherDetail(item)" data-toggle="modal" data-target="#exampleModalCenter"
+                                                        class="col-md-4">
+                                                        <img src="https://i.pinimg.com/originals/c7/84/67/c78467db9ff497393cb548a48f02d451.png"
+                                                            class="card-img" alt="Voucher Image"
+                                                            style="border-top-left-radius: 10px; border-bottom-left-radius: 10px;">
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <div class="card-body"
+                                                            style="background-color: #f8f9fa; padding: 20px;">
+                                                            <h5 class="card-title mb-0"
+                                                                style="font-size: 16px; margin-bottom: 5px;">Mã
+                                                                giảm</h5>
+                                                            <h2 class="card-text mb-1"
+                                                                style="font-size: 24px; margin-bottom: 5px; color: red; font-weight: 700;">
+                                                                {{item.discountPrice | currency:'' :0 }}đ
+                                                                <span class="discount" style="font-size: 12px;"></span>
+                                                            </h2>
+                                                            <p class="card-text mb-1"
+                                                                style="font-size: 13px; margin-bottom: 5px;font-style: italic; font-weight: 600;">
+                                                                HSĐ: {{item.endDate | date:'dd-MM-yyyy HH:mm:ss'}}
+                                                            </p>
+                                                            <p class="card-text apply-text mb-0"
+                                                                style="font-size: 12px; margin-bottom: 0;"><small
+                                                                    style="font-size: 11px;">Đơn hàng từ {{item.min | currency:'' :0  }}đ trở
+                                                                    lên</small></p>
+                                                            <div class="copy-button input-group mt-3">
+                                                                <input class="copyvalue form-control col-sm-12" type="text" readonly ng-value="item.voucher"
+                                                                       style="font-size: 14px;">
+                                                                <div class="input-group-append">
+                                                                    <button onclick="copyIt(this)" class="btn btn-primary"
+                                                                            style="font-size: 14px; background-color: #dc143c; border: none;">COPY</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="messages">
+                                    <div class="row">
+                                        <div ng-repeat ="item in listVoucherNoProduct" class="col-lg-4 col-sm-6">
+                                            <div class="card"
+                                                 style="max-width: 400px; border-radius: 10px; overflow: hidden; border: 3px dotted #bbb;">
+                                                <div class="row no-gutters">
+                                                    <div ng-click="voucherDetail(item)" data-toggle="modal" data-target="#exampleModalCenter"
+                                                         class="col-md-4">
+                                                        <img src="https://i.pinimg.com/originals/c7/84/67/c78467db9ff497393cb548a48f02d451.png"
+                                                             class="card-img" alt="Voucher Image"
+                                                             style="border-top-left-radius: 10px; border-bottom-left-radius: 10px;">
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <div class="card-body"
+                                                             style="background-color: #f8f9fa; padding: 20px;">
+                                                            <h5 class="card-title mb-0"
+                                                                style="font-size: 16px; margin-bottom: 5px;">Mã
+                                                                giảm</h5>
+                                                            <h2 class="card-text mb-1"
+                                                                style="font-size: 24px; margin-bottom: 5px; color: red; font-weight: 700;">
+                                                                {{item.discountPrice | currency:'' :0 }}đ
+                                                                <span class="discount" style="font-size: 12px;"></span>
+                                                            </h2>
+                                                            <p class="card-text mb-1"
+                                                               style="font-size: 13px; margin-bottom: 5px;font-style: italic; font-weight: 600;">
+                                                                HSĐ: {{item.endDate | date:'dd-MM-yyyy HH:mm:ss'}}
+                                                            </p>
+                                                            <p class="card-text apply-text mb-0"
+                                                               style="font-size: 12px; margin-bottom: 0;"><small
+                                                                    style="font-size: 11px;">Đơn hàng từ {{item.min | currency:'' :0  }}đ trở
+                                                                lên</small></p>
+                                                            <div class="copy-button input-group mt-3">
+                                                                <input class="copyvalue form-control col-sm-12" type="text" readonly ng-value="item.voucher"
+                                                                       style="font-size: 14px;">
+                                                                <div class="input-group-append">
+                                                                    <button onclick="copyIt(this)" class="btn btn-primary"
+                                                                            style="font-size: 14px; background-color: #dc143c; border: none;">COPY</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--        MODEL-->
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+             aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-center" id="exampleModalLongTitle">Chi tiết voucher</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-2">
+                            <span style="font-weight: 600; " class="card-text">Hạn sử dụng</span><br>
+                            <span><span>Từ ngày </span>{{objectvoucherDetail.startDate | date:'dd-MM-yyyy HH:mm:ss'}} <span>đến ngày</span> {{objectvoucherDetail.endDate | date:'dd-MM-yyyy HH:mm:ss'}}</span>
+                        </div>
+                        <div class="mb-2">
+                            <span style="font-weight: 600;" class="card-text">Điều kiện áp dụng</span><br>
+                            <span>Áp dụng cho đơn hàng từ <span style="font-weight: 600; color: red">{{objectvoucherDetail.min | currency:'' :0}}đ</span> trở lên, đơn hàng có từ {{objectvoucherDetail.minOrderProduct | currency:'' :0}} sản phẩm trở lên</span>
+                        </div>
+                        <div class="mb-2">
+                            <span style="font-weight: 600;" class="card-text">Ưu đãi</span><br>
+                            <span>Giảm <span style="font-weight: 600; color: red">{{objectvoucherDetail.discountPrice | currency:'' :0}}đ</span> cho giá trị đơn hàng</span>
+                        </div>
+                        <div class="mb-2">
+                            <span style="font-weight: 600;" class="card-text">Số lượng còn lại</span><br>
+                            <span>{{objectvoucherDetail.quantity}}</span>
+                        </div>
+                        <div ng-if="objectvoucherDetail.productID != '' " class="mb-2">
+                            <span style="font-weight: 600;" class="card-text">Sản phẩm áp dụng</span><br>
+                            <span ng-repeat="product in listProduct" ><a href="/user/product-detail?product-id={{product.id}}">{{product.name}}, </a></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>

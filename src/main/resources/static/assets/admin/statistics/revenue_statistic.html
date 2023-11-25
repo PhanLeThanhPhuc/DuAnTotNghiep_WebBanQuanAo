@@ -7,7 +7,7 @@
                     <h4 class="card-title">Thống kê doanh thu</h4>
                     <div class="row">
                         <div class="form-group col-sm-4">
-                            Tổng doanh thu: <span style="color: red; font-weight: bold">{{totalPrice | currency:'' :0}}đ</span>
+                            {{messageTotalPrice}}<span style="color: red; font-weight: 600"> {{totalPrice | currency:'' :0 }}</span>
                         </div>
                         <div class="col-sm-8">
                             <div class="row" style="display: flex; justify-content: flex-end;">
@@ -28,17 +28,9 @@
                                     <select onchange="defaulStatistic()" class="form-control select2" id="cbb-statistic">
                                         <option  value="default">Chọn...</option>
                                         <option value="today">Hôm nay</option>
-                                        <option value="week">Tuần này</option>
+<!--                                        <option value="week">Tuần này</option>-->
                                         <option value="month">Tháng này</option>
                                         <option value="custom">Tùy chỉnh</option>
-                                    </select>
-                                </div>
-                                <div class="form-group mr-3">
-                                    <label for="simple-select2">Sắp xếp</label>
-                                    <select class="form-control select2" id="simple-select2">
-                                        <option value="CA">Chọn...</option>
-                                        <option value="AK">Tăng dần</option>
-                                        <option value="HI">Giảm dần</option>
                                     </select>
                                 </div>
                             </div>

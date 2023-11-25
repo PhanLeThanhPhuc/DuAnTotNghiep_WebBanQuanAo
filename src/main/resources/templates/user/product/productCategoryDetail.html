@@ -112,6 +112,7 @@
 												</h4>
 												<span class="badge badge-warning" style="color: red; font-weight: 600">[[${#numbers.formatDecimal((100-(item.discountPrice / item.price) * 100), 0, 'COMMA', 0, 'POINT')}]]%</span>
 											</div>
+
 											<div th:unless="${item.isSale ==true}">
 												<h3 class="price">[[${#numbers.formatDecimal(item.price,
 													0, 'COMMA', 0,'POINT')}]]₫</h3>

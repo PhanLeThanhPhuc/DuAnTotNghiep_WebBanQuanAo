@@ -61,6 +61,7 @@ public class Voucher implements Serializable{
     
     @Column(name = "active")
     private boolean active;
+
     @JsonIgnore
     @OneToMany(mappedBy = "voucher")
     private List<Order> order;

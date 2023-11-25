@@ -85,6 +85,18 @@
             <version>7.7.1</version>
             <scope>compile</scope>
         </dependency>
+<!--twilio-->
+		<dependency>
+			<groupId>com.twilio.sdk</groupId>
+			<artifactId>twilio</artifactId>
+			<version>7.34.0</version>
+		</dependency>
+		<dependency>
+			<groupId>io.projectreactor</groupId>
+			<artifactId>reactor-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
     </dependencies>
 
 	<build>

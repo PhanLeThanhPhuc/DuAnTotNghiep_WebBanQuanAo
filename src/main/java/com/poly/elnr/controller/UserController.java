@@ -164,4 +164,10 @@ public class UserController {
 		return userService.saveImageUser(multipartFile, userDetails.getUsername());
 	}
 
+//	@ResponseBody
+//	@GetMapping("user/register")
+//	public String registerUser (){
+//
+//	}
+
 }

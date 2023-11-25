@@ -5,13 +5,11 @@ import java.util.List;
 
 import com.poly.elnr.dto.ChangePassword;
 import com.poly.elnr.entity.Order;
-import com.poly.elnr.utils.UploadCloudinaryUtils;
+import com.poly.elnr.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Date;
 
 import com.poly.elnr.security.CustomUserDetails;
-import com.poly.elnr.utils.CustomOAuth2User;
-import com.poly.elnr.utils.RegexUtils;
 
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -27,7 +25,6 @@ import com.poly.elnr.entity.Users;
 import com.poly.elnr.repository.AuthorityRepository;
 import com.poly.elnr.repository.UserRepository;
 import com.poly.elnr.service.UserService;
-import com.poly.elnr.utils.RamDomNameUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
@@ -47,6 +44,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	UploadCloudinaryUtils uploadCloudinaryUtils;
+
+	@Autowired
+	TwilioUtils twilioUtils;
 
 	@Override
 	public UserDetails oauth2(CustomOAuth2User oAuth2User) {
@@ -198,4 +198,28 @@ public class UserServiceImpl implements UserService {
 		}
         return 0;
     }
+
+	@Override
+	public Users registerPhoneNumber(String phone, String email) {
+		Users user = userRepository.findEmail(email);
+		user.setTimeOtp(new Date());
+		user.setPasswordReset(true);
+		String otp = RamDomNameUtils.generateRandomSixNumber();
+		twilioUtils.sendSms(otp,phone);
+		user.setOtp(Integer.parseInt(otp));
+		userRepository.save(user);
+		return user;
+	}
+
+	@Override
+	public boolean checkOtp(String otp, String email, String phone) {
+		Users user = userRepository.findEmail(email);
+		if(user.getOtp() == Integer.parseInt(otp)){
+			user.setPhone(0+phone);
+			userRepository.save(user);
+			return true;
+		}else{
+			return false;
+		}
+	}
 }

@@ -22,4 +22,16 @@ public class RamDomNameUtils {
 
 		return name.toString();
 	}
+
+	public static String generateRandomSixNumber() {
+		Random random = new Random();
+		StringBuilder result = new StringBuilder();
+
+		for (int i = 0; i < 6; i++) {
+			int digit = random.nextInt(10);
+			result.append(digit);
+		}
+
+		return result.toString();
+	}
 }

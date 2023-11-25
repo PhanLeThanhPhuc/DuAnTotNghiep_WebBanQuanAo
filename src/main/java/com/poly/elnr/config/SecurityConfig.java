@@ -42,7 +42,7 @@ public class SecurityConfig {
 					.authorizeHttpRequests()
 					.requestMatchers("/assets/user/**","/user/new").permitAll()
 					.requestMatchers("/client/**").hasAuthority("ROLE_USER")
-//					.requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
+					.requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
 					.anyRequest().permitAll()
 					.and()
 					.formLogin()

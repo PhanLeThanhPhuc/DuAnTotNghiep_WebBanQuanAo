@@ -7,16 +7,16 @@ app.controller("user-statistic-ctrl", function($scope, $filter, $http) {
     $scope.initialize = async function() {
         await $http.get("/rest/orderPhoneAndDate").then(resp => {
             if(resp.status === 200){
-                // console.log("listData", resp.data);
+                console.log("listData", resp.data);
                 $scope.listData = resp.data.sort((a, b) => b.total - a.total);
                 for (let i = 0; i < $scope.pager.listData.length; i++) {
                     $scope.listUser.push($scope.pager.listData[i].phone);
                     $scope.listTotal.push($scope.pager.listData[i].total);
                 }
             }
-            // console.log("listData", $scope.pager.listData);
         });
         $scope.chart();
+        defaulStatistic();
     }
 
     $scope.initialize();
@@ -30,17 +30,31 @@ app.controller("user-statistic-ctrl", function($scope, $filter, $http) {
             data: {
                 labels: $scope.listUser,
                 datasets: [{
-                    label: 'My First Dataset',
+                    label: 'VNĐ',
                     data: $scope.listTotal,
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
                         'rgba(255, 159, 64, 0.2)',
-                        'rgba(255, 205, 86, 0.2)'
+                        'rgba(255, 205, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 0, 0, 0.2)',
+                        'rgba(0, 255, 0, 0.2)',
+                        'rgba(0, 0, 255, 0.2)',
+                        'rgba(128, 128, 128, 0.2)'
                     ],
                     borderColor: [
                         'rgb(255, 99, 132)',
                         'rgb(255, 159, 64)',
-                        'rgb(255, 205, 86)'
+                        'rgb(255, 205, 86)',
+                        'rgb(75, 192, 192)',
+                        'rgb(54, 162, 235)',
+                        'rgb(153, 102, 255)',
+                        'rgb(255, 0, 0)',
+                        'rgb(0, 255, 0)',
+                        'rgb(0, 0, 255)',
+                        'rgb(128, 128, 128)'
                     ],
                     borderWidth: 1
                 }]
@@ -49,59 +63,104 @@ app.controller("user-statistic-ctrl", function($scope, $filter, $http) {
 
     }
 
+    defaulStatistic = () =>{
+        var valuecbb = document.getElementById('cbb-statistic').value;
+        console.log("ssss",valuecbb)
+        if(valuecbb === 'default' ){
+            document.getElementById("div-button").style.display = "none";
+            document.getElementById("end-date").disabled = true;
+            document.getElementById("start-date").disabled = true;
+        }else if(valuecbb === 'month'){
+            console.log("cbb", valuecbb);
+            $scope.filterMonth();
+            document.getElementById("div-button").style.display = "none";
+            document.getElementById("end-date").disabled = true;
+            document.getElementById("start-date").disabled = true;
+        } else if (valuecbb === 'today'){
+            $scope.filterToday();
+            document.getElementById("div-button").style.display = "none";
+            document.getElementById("end-date").disabled = true;
+            document.getElementById("start-date").disabled = true;
+        }else {
+            document.getElementById("div-button").style.display = "";
+            document.getElementById("end-date").disabled = false;
+            document.getElementById("start-date").disabled = false;
+        }
+    }
+
     $scope.buttonFilterWithDate = async () => {
-        $scope.listUser = [];
-        $scope.listTotal = [];
-        await $http.get("/rest/order-total-user").then(resp => {
-            if (resp.status === 200) {
-                $scope.listDataTotalWithUserOrder = resp.data.sort((a, b) => b.total - a.total);
-            }
-        });
-
-
-        var startDateFormat = $scope.startDate;
-        var endDateFormat = $scope.endDate;
+        var startDateFormat = $filter('date')($scope.startDate, 'yyyy-MM-dd');
+        var endDateFormat = $filter('date')($scope.endDate, 'yyyy-MM-dd');
 
         console.log("startDateFormat", startDateFormat);
         console.log("endDateFormat", endDateFormat);
-        // console.log();
 
-        $scope.filteredOrders = $scope.listDataTotalWithUserOrder.filter(o => {
-            const formattedOrderDate = $scope.formatDate(o.date);
-            return formattedOrderDate >= $scope.formatDate(startDateFormat) && formattedOrderDate <= $scope.formatDate(endDateFormat);
-        });
-
-        console.log("dd",$scope.filteredOrders);
-
-        var map = processData($scope.filteredOrders);
-
-        console.log("map", map)
-
-        let count = 0;
-        const limit = 10;
-
-        for (let [key, value] of map) {
-            $scope.listUser.push(key);
-            $scope.listTotal.push(value);
-            count++;
-            if (count >= limit) {
-                break;
+        await $http.get(`/rest/top-totals-by-date-range?start-date=${startDateFormat}&end-date=${endDateFormat}`).then(resp => {
+            if (resp.status === 200) {
+                $scope.listUser = [];
+                $scope.listTotal = [];
+                $scope.listData = [];
+                $scope.listData = resp.data.sort((a, b) => b.total - a.total);
+                for (let i = 0; i < $scope.pager.listData.length; i++) {
+                    $scope.listUser.push($scope.pager.listData[i].phone);
+                    $scope.listTotal.push($scope.pager.listData[i].total);
+                }
+                clearChart();
+                $scope.chart();
             }
-        }
-
-        $scope.chart();
+        });
     }
 
-    // filterDateInMonth = (arr) =>{
-    //     var today = new Date();
-    //     var currentMonth = today.getMonth() + 1;
-    //     var currentYear = today.getFullYear();
-    //     var filteredData = arr.filter(function(item) {
-    //         var itemDate = new Date(item.date);
-    //         return itemDate.getMonth() + 1 === currentMonth && itemDate.getFullYear() === currentYear;
-    //     });
-    //     return filteredData.sort((a, b) => b.total - a.total);
-    // }
+    $scope.filterToday = async () => {
+        var today =  new Date();
+        document.getElementById('start-date').value = today.getFullYear().toString().padStart(4, '0') + '-' + (today.getMonth()+1).toString().padStart(2, '0') + '-' + today.getDate().toString().padStart(2, '0');
+        document.getElementById('end-date').value = today.getFullYear().toString().padStart(4, '0') + '-' + (today.getMonth()+1).toString().padStart(2, '0') + '-' + today.getDate().toString().padStart(2, '0');
+        await $http.get(`/rest/phone-total-for-today`).then(resp => {
+            if (resp.status === 200) {
+                $scope.listUser = [];
+                $scope.listTotal = [];
+                $scope.listData = [];
+                $scope.listData = resp.data.sort((a, b) => b.total - a.total);
+                for (let i = 0; i < $scope.pager.listData.length; i++) {
+                    $scope.listUser.push($scope.pager.listData[i].phone);
+                    $scope.listTotal.push($scope.pager.listData[i].total);
+                }
+                clearChart();
+                $scope.chart();
+            }
+        });
+    }
+
+    $scope.filterMonth = async () => {
+
+        var today = new Date();
+        var firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
+        var lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+
+        var options = { timeZone: 'Asia/Ho_Chi_Minh' };
+
+        console.log("Ngày đầu tháng:", firstDay.toLocaleDateString('en-US', options).split('/').reverse().join('-'));
+        console.log("Ngày cuối tháng:", lastDay.toLocaleDateString('en-US', options).split('/').reverse().join('-'));
+
+        var startDateFormat = firstDay.toLocaleDateString('en-US', options).split('/').reverse().join('-');
+        var endDateFormat = lastDay.toLocaleDateString('en-US', options).split('/').reverse().join('-');
+        document.getElementById('start-date').value = firstDay.getFullYear().toString().padStart(4, '0') + '-' + (firstDay.getMonth()+1).toString().padStart(2, '0') + '-' + firstDay.getDate().toString().padStart(2, '0');
+        document.getElementById('end-date').value = lastDay.getFullYear().toString().padStart(4, '0') + '-' + (lastDay.getMonth()+1).toString().padStart(2, '0') + '-' + lastDay.getDate().toString().padStart(2, '0');
+        await $http.get(`/rest/top-totals-by-date-range?start-date=${startDateFormat}&end-date=${endDateFormat}`).then(resp => {
+            if (resp.status === 200) {
+                $scope.listUser = [];
+                $scope.listTotal = [];
+                $scope.listData = [];
+                $scope.listData = resp.data.sort((a, b) => b.total - a.total);
+                for (let i = 0; i < $scope.pager.listData.length; i++) {
+                    $scope.listUser.push($scope.pager.listData[i].phone);
+                    $scope.listTotal.push($scope.pager.listData[i].total);
+                }
+                clearChart();
+                $scope.chart();
+            }
+        });
+    }
 
     $scope.formatDate = function(date) {
         return $filter('date')(date, 'dd/MM/yyyy');
@@ -121,14 +180,13 @@ app.controller("user-statistic-ctrl", function($scope, $filter, $http) {
                 map.set(phone, arr[i].total);
             }
         }
-
         return map;
     }
 
 
     $scope.pager = {
         page: 0,
-        size: 5,
+        size: 10,
         get listData(){
             if(this.page < 0){
                 this.last();
@@ -144,35 +202,24 @@ app.controller("user-statistic-ctrl", function($scope, $filter, $http) {
         },
         first(){
             this.page = 0;
-            // changeChartData();
-            // clearChart();
-            // $scope.listUser = [];
-            // $scope.listTotal = [];
-            // var map = processData($scope.pager.listData);
-            // for (let [key, value] of map) {
-            //     $scope.listUser.push(key);
-            //     $scope.listTotal.push(value);
-            // }
-            // $scope.chart();
         },
         last(){
             this.page = this.count - 1;
             // changeChartData();
-            clearChart();
+            fillDataChart();
         },
         next(){
             this.page++;
-            clearChart();
+            fillDataChart();
 
         },
         prev(){
             this.page--;
-            clearChart();
-            // changeChartData();
+            fillDataChart();
         }
     }
 
-    clearChart = () =>{
+    fillDataChart = () =>{
         $scope.listUser = [];
         $scope.listTotal = [];
         var map = processData($scope.pager.listData);
@@ -181,15 +228,18 @@ app.controller("user-statistic-ctrl", function($scope, $filter, $http) {
             $scope.listTotal.push(value);
         }
         // console.log($scope.chartUser);
-        if($scope.chartUser){
-            $scope.chartUser.destroy();
-        }
+        clearChart();
         $scope.chart();
     }
 
-    $scope.firstChart = () =>{
-        clearChart();
+    clearChart = () =>{
+        if($scope.chartUser){
+            $scope.chartUser.destroy();
+        }
     }
 
+    $scope.firstChart = () =>{
+        fillDataChart();
+    }
 
 });

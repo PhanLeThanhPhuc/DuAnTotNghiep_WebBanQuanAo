@@ -38,6 +38,9 @@ public interface ProductService {
 	
 	Optional<Product> findByID2(Integer id);
 
+	List<Product> findByIdsProduct(int[] idProduct);
+
 	public List<Product> findSale(List<Integer> colorId, List<Integer> sizeId, Optional<String> sort,
 			Optional<Integer> p);
+
 }

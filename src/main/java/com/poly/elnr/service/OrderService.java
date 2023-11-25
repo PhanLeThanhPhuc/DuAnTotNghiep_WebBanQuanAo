@@ -7,7 +7,10 @@ import com.poly.elnr.dto.OrderData;
 import com.poly.elnr.dto.PhoneTotalDTO;
 import com.poly.elnr.dto.TotalWithUserOrderDTO;
 import com.poly.elnr.entity.Order;
+import org.springframework.data.repository.query.Param;
 
+import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -38,5 +41,11 @@ public interface OrderService {
     List<PhoneTotalDTO> findTop10ByPhonePriceWithDate();
 
     List<TotalWithUserOrderDTO> findTotalByPhoneAndDateRange();
+
+    List<PhoneTotalDTO> findTop10PhoneTotalsByDateRange(String startDate, String endDate) throws ParseException;
+
+    List<PhoneTotalDTO> findPhoneTotalsForToday();
+
+    Order updateStatusOrder(int id, int status);
 
 }
