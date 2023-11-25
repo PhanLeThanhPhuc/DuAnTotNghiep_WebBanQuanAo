@@ -500,10 +500,6 @@ function updateCountdown() {
 setInterval(updateCountdown, 1000);
 updateCountdown();
 
-
-})
-
-
 	$scope.registerPhoneNumber = async () => {
 
 		const phoneNumber = "0"+$scope.registerPhone;
@@ -555,7 +551,7 @@ updateCountdown();
 		})
 	}
 
-	countdownotp = (second) =>{
+	countdownotp = (second) => {
 		// Thời gian bắt đầu đếm ngược (theo giây)
 		var initialSeconds = second; // Ví dụ: 5 phút = 300 giây
 
@@ -584,6 +580,8 @@ updateCountdown();
 			}
 		}, 1000); // 1000 milliseconds = 1 giây
 	}
-
 })
+
+
+
 
