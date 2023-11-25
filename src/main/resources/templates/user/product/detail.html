@@ -1,26 +1,12 @@
-
 <html xmlns:th="http://www.thymeleaf.org"
-
 	  th:replace="~{/user/layout/index :: dynamic (~{::main})}">
 
+
 <main th:object="${item}">
+	<!-- breadcrumb start-->
 
-
-	<div class="product_image_area section_padding">
-		<div class="container">
-			<div class="row s_product_inner justify-content-between">
-				<div class="col-lg-7 col-xl-7">
-					<div class="product_slider_img">
-						<!--							/// bỏ này vào mất 50% ảnh-->
-						<!--							<div id="vertical">-->
-						<div id="">
-							<div style="height: auto !important;"
-
-								 th:attr="data-thumb=@{|/assets/user/user/image/*{thumbnail}|}">
-
-								<img th:src="@{|/assets/user/user/image/*{thumbnail}|}" />
-							</div>
-
+	<!-- breadcrumb start-->
+	<!--================End Home Banner Area =================-->
 
 	<!--================Single Product Area =================-->
 	<div class="product_image_area section_padding">
@@ -32,19 +18,22 @@
 						<div id="vertical">
 							<!--							<div id="">-->
 							<div style="height: auto !important;"
-								th:attr="data-thumb=@{*{thumbnail}}">
+								 th:attr="data-thumb=@{*{thumbnail}}">
 								<img th:src="@{*{thumbnail}}" />
 							</div>
 
 							<div th:each="img : ${images}"
-
-								th:attr="data-thumb=@{${img.image}}">
+								 th:attr="data-thumb=@{${img.image}}">
 								<img th:src="@{${img.image}}" />
 							</div>
+
 						</div>
+
+
+
 					</div>
 					<div th:if="${isDiscount}" class="container-fluid mt-5"
-						style="background-image: url('/assets/user/teample/img/sale.jpg'); height: 50px; border-radius: 5px; background-size: cover;">
+						 style="background-image: url('/assets/user/teample/img/sale.jpg'); height: 50px; border-radius: 5px; background-size: cover;">
 						<div class="d-flex align-items-center pt-2">
 							<h3 style="font-weight: bolder; display: inline-block;">Flash
 								Sale</h3>
@@ -74,7 +63,7 @@
 									'POINT')}]]₫</h2>
 
 								<span class="badge badge-warning"
-									style="color: red; font-weight: 600">[[${#numbers.formatDecimal((100-(item.discountPrice
+									  style="color: red; font-weight: 600">[[${#numbers.formatDecimal((100-(item.discountPrice
 									/ item.price) * 100), 0, 'COMMA', 0, 'POINT')}]]%</span>
 							</div>
 							<div th:unless="*{isSale ==true}">
@@ -281,19 +270,18 @@
 						<div th:each="p:*{categoryDdetail.product}"
 							 class="single_product_item">
 
-
 							<a th:href="@{|/user/product-detail?product-id=${p.id}|}">
 								<div style="background-color: white;" class="rounded-top">
 									<img class=" px-4 pt-2 pb-0"
-										th:src="@{|/assets/user/user/image/${p.thumbnail}|}"
-										style="height: 280px;">
+										 th:src="@{|/assets/user/user/image/${p.thumbnail}|}"
+										 style="height: 280px;">
 								</div>
 								<div class="single_product_text px-4 rounded-bottom">
 									<h4>[[${p.name}]]</h4>
 									<h6>Màu: [[${p.color.name}]]</h6>
 									<h6>
 										Size: <span th:each="itemsize : ${p.productDetails}"
-											class="size">[[${itemsize.size.name}]]</span>
+													class="size">[[${itemsize.size.name}]]</span>
 									</h6>
 
 									<div th:if="${p.isSale == true}">
@@ -305,7 +293,7 @@
 											'POINT')}]]₫</h3>
 
 										<span class="badge badge-warning"
-											style="color: red; font-weight: 600">[[${#numbers.formatDecimal((100-(p.discountPrice
+											  style="color: red; font-weight: 600">[[${#numbers.formatDecimal((100-(p.discountPrice
 											/ p.price) * 100), 0, 'COMMA', 0, 'POINT')}]]%</span>
 									</div>
 
