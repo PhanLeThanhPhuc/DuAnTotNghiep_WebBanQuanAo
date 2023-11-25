@@ -37,4 +37,7 @@ public interface ProductService {
 	
 	
 	Optional<Product> findByID2(Integer id);
+
+	public List<Product> findSale(List<Integer> colorId, List<Integer> sizeId, Optional<String> sort,
+			Optional<Integer> p);
 }

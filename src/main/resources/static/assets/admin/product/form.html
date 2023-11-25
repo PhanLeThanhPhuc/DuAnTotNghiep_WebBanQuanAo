@@ -49,7 +49,7 @@
 									<div>Giảm giá ?</div>
 									<div class="form-control">
 										<label> <input ng-model="form.sale" ng-value="true"
-											name="sale" type="radio">Có 
+											name="sale" type="radio">Có
 										</label> <label class="radio-inline"> <input
 											ng-model="form.sale" ng-value="false" name="sale"
 											type="radio">Không
@@ -113,8 +113,8 @@
 								<div>
 									<a ref="" class="btn btn-light "
 										style="margin: 5px; margin-top: 15px;"
-										data-target="#description" data-toggle="collapse">
-										Mô tả chi tiết</a>
+										data-target="#description" data-toggle="collapse"> Mô tả
+										chi tiết</a>
 								</div>
 							</div>
 						</div>
@@ -122,7 +122,7 @@
 							<div class=" border border-dark"
 								style="margin: 3; padding: 15px;">
 								<div class="row">
-									<div class="col-sm-3" ng-repeat="productSize in productSize">
+									<div class="col-sm-3" ng-repeat="productSize in productSize" ng-if="productSize.size.status" >
 										{{productSize.size.name}}<input
 											ng-model="productSize.quantity" class="form-control"
 											type="number">
@@ -136,15 +136,16 @@
 								<div id="addsize" class="collapse">
 									<div class="row">
 										<div class="col-sm-3" style="padding: 10px;"
-											ng-repeat="size in sizes">
-											<div ng-if="size_of(form, size)">
-												<input type="checkbox" ng-disabled="size_of(form, size)"
-													ng-checked="true">{{size.name}}
-											</div>
-											<div ng-if="!size_of(form, size)">
-												<input type="checkbox" ng-checked="exist(size)"
-													ng-click="toggleSelection(size)">{{size.name}}
-											</div>
+											ng-repeat="size in sizes"  ng-if="size.status">
+												<div ng-if="size_of(form, size)">
+													<input type="checkbox" ng-disabled="size_of(form, size)"
+														ng-checked="true">{{size.name}}
+												</div>
+												<div ng-if="!size_of(form, size)">
+													<input type="checkbox" ng-checked="exist(size)"
+														ng-click="toggleSelection(size)">{{size.name}}
+												</div>
+
 										</div>
 									</div>
 									<div class="text-center">
@@ -191,7 +192,8 @@
 										<button ng-click="createDescription()"
 											ng-disabled="form.description.id" class="btn btn-primary">Tạo</button>
 										<button ng-click="updateDescription()"
-											ng-disabled="!form.description.id" class="btn btn-success ">Cập nhật</button>
+											ng-disabled="!form.description.id" class="btn btn-success ">Cập
+											nhật</button>
 										<button ng-click="resetDescription()" class="btn btn-info">Clear</button>
 									</div>
 								</div>

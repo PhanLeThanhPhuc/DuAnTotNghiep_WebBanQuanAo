@@ -13,6 +13,7 @@ import java.io.IOException;
 
 
 import com.poly.elnr.service.VnPayService;
+import com.poly.elnr.utils.DiscountCheck;
 import com.poly.elnr.utils.UploadCloudinaryUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +52,10 @@ public class UserController {
 
 	@Autowired
 	DiscountCheckService discountCheckService;
-
+	@Autowired
+	DiscountCheck discountCheck;
+	
+	
 	@PostMapping("/submitPayment/{paymentMethod}/{idOrder}")
 	public String submitPayment(@PathVariable int paymentMethod, @PathVariable int idOrder) {
 
@@ -87,7 +91,6 @@ public class UserController {
 	public String userOrder(Model model, Authentication authentication){
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		model.addAttribute("order", orderService.findOrderByIdUser(userDetails.getUsername()));
-		System.out.println();
 		return "user/layout/user-order.html";
 	}
 

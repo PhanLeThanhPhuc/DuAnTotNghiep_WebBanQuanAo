@@ -1,132 +1,148 @@
 <!--::header part start::-->
 <style>
-	.category-detail {
-		color: black !important;
-		font-weight: 400 !important;
-		margin-left: 10px !important;
-	}
+.category-detail {
+	color: black !important;
+	font-weight: 400 !important;
+	margin-left: 10px !important;
+}
+
+.navbar-brand img {
+	margin: 10px auto !important;
+}
 </style>
 <header class="main_menu home_menu bg-light ">
 	<div class="container">
 		<div class="row align-items-center">
 			<div class="col-lg-12">
-				<nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top col-sm-12 shadow">
-					<nav class="navbar navbar-expand-lg navbar-light bg-white col-sm-10 m-auto">
+				<nav
+					class="navbar navbar-expand-lg navbar-light bg-white fixed-top col-sm-12 shadow">
+					<div class="container">
+
 						<!-- <div class=""> -->
-						<a class="navbar-brand" th:href="@{/user/index}"> <img src="/assets/user/teample/img/logo.png"
-																			   alt="logo">
+
+						<a class="navbar-brand " th:href="@{/user/index}"> <img
+							sytle="margin:100px !important;"
+							src="/assets/user/teample/img/logo.png" alt="logo">
 						</a>
-						<button class="navbar-toggler" type="button" data-toggle="collapse"
-								data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-								aria-expanded="false" aria-label="Toggle navigation">
+
+
+						<button class="navbar-toggler" type="button"
+							data-toggle="collapse" data-target="#navbarSupportedContent"
+							aria-controls="navbarSupportedContent" aria-expanded="false"
+							aria-label="Toggle navigation">
 							<span class="menu_icon"><i class="fas fa-bars"></i></span>
 						</button>
 
-						<div class="collapse navbar-collapse main-menu-item" id="navbarSupportedContent">
+						<div class="collapse navbar-collapse main-menu-item"
+							id="navbarSupportedContent">
 							<ul class="navbar-nav">
-								<li class="nav-item"><a class="nav-link" th:href="@{/user/index}">HOME</a></li>
-								<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="blog.html"
-																 id="navbarDropdown_1" role="button" data-toggle="dropdown" aria-haspopup="true"
-																 aria-expanded="false"> SHOP </a>
+								<li class="nav-item"><a class="nav-link"
+									th:href="@{/user/index}">HOME</a></li>
+								<li class="nav-item dropdown"><a
+									class="nav-link dropdown-toggle" href="blog.html"
+									id="navbarDropdown_1" role="button" data-toggle="dropdown"
+									aria-haspopup="true" aria-expanded="false"> SHOP </a>
 									<div style="width: 500px;" class="dropdown-menu mx-auto "
-										 aria-labelledby="navbarDropdown_1">
+										aria-labelledby="navbarDropdown_1">
 										<div class="col-sm-12 row">
 
 
-											<div class="col-sm-6" th:each="itemCategory : ${category}">
-												<a class="dropdown-item font-category"
-												   th:href="@{|productcategory?idCategory=${itemCategory.id}|}">
-													[[${itemCategory.name.toUpperCase()}]]
-												</a>
+											<div th:each="itemCategory : ${category}"  th:if="${itemCategory.status ==true}" class="col-sm-6">
+													<a class="dropdown-item font-category"
+														th:href="@{|productcategory?idCategory=${itemCategory.id}|}">
+														[[${itemCategory.name.toUpperCase()}]] </a> <a
+														th:each="categoryDetail : ${itemCategory.category_detail}"
+														class="dropdown-item category-detail" th:if="${categoryDetail.status==true}"
+														th:href="@{|productcategorydetail?idCategoryDetail=${categoryDetail.id}|}">
+														- [[${categoryDetail.name}]] </a>												
 
-												<a  th:each="categoryDetail : ${itemCategory.category_detail}"
-												   class="dropdown-item category-detail"
-												th:href="@{|productcategorydetail?idCategoryDetail=${categoryDetail.id}|}">
-												- [[${categoryDetail.name}]]
-												</a>
 											</div>
 
 
 										</div>
-									</div>
-								</li>
-								<li class="nav-item dropdown">
-									<a class="nav-link dropdown-toggle" href="blog.html" id="navbarDropdown_3"
-									   role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-										PAGE
-									</a>
+									</div></li>
+								<li class="nav-item dropdown"><a
+									class="nav-link dropdown-toggle" href="blog.html"
+									id="navbarDropdown_3" role="button" data-toggle="dropdown"
+									aria-haspopup="true" aria-expanded="false"> PAGE </a>
 									<div class="dropdown-menu" aria-labelledby="navbarDropdown_2">
-										<a class="dropdown-item" th:href="@{/security/user}"> login</a>
-										<a class="dropdown-item" href="tracking.html">tracking</a>
-										<a class="dropdown-item" href="checkout.html">product checkout</a>
-										<a class="dropdown-item" href="cart.html">shopping cart</a>
-										<a class="dropdown-item" href="confirmation.html">confirmation</a>
+										<a class="dropdown-item" th:href="@{/security/user}">
+											login</a> <a class="dropdown-item" href="tracking.html">tracking</a>
+										<a class="dropdown-item" href="checkout.html">product
+											checkout</a> <a class="dropdown-item" href="cart.html">shopping
+											cart</a> <a class="dropdown-item" href="confirmation.html">confirmation</a>
 										<a class="dropdown-item" href="elements.html">elements</a>
-									</div>
-								</li>
-								<li class="nav-item dropdown">
-									<a class="nav-link dropdown-toggle" href="blog.html" id="navbarDropdown_2"
-									   role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-										BLOG
-									</a>
+									</div></li>
+								<li class="nav-item dropdown"><a
+									class="nav-link dropdown-toggle" href="blog.html"
+									id="navbarDropdown_2" role="button" data-toggle="dropdown"
+									aria-haspopup="true" aria-expanded="false"> BLOG </a>
 									<div class="dropdown-menu" aria-labelledby="navbarDropdown_2">
-										<a class="dropdown-item" href="blog.html"> blog</a>
-										<a class="dropdown-item" href="single-blog.html">Single blog</a>
-									</div>
-								</li>
+										<a class="dropdown-item" href="blog.html"> blog</a> <a
+											class="dropdown-item" href="single-blog.html">Single blog</a>
+									</div></li>
 
 
 
 
-								<li class="nav-item"><a class="nav-link" href="contact.html">CONTACT</a></li>
+								<li class="nav-item"><a class="nav-link"
+									href="contact.html">CONTACT</a></li>
 							</ul>
 							<!--  -->
 
 
 						</div>
-						<div class="hearer_icon d-flex">
-							<a th:href="@{/user/cart}" class="btn border"> <i
-									class="fas fa-shopping-cart text-primary"></i> <span class="badge"
-																						 th:href="@{/user/cart}">{{cart.count}}</span>
-							</a>
-						</div>
+
 
 						<!-- </div> -->
-						<div th:if="${session.user != null}">
-							<!-- Nội dung hiển thị khi đã đăng nhập -->
-							<div class="dropdown">
-								<button class="btn  dropdown-toggle btn-icon" type="button" id="accountDropdown"
-										data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									<i class="fas fa-user"></i> <!-- Icon user -->
-										<span th:text="${session.user.fullName}"></span>!
-								</button>
-								<div class="dropdown-menu" aria-labelledby="accountDropdown">
-									<a class="dropdown-item" th:href="@{info}">Thông tin tài khoản</a>
-									<a class="dropdown-item" href="#">Thay đổi mật khẩu</a>
-									<div class="dropdown-divider"></div>
-									<a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a>
+
+
+
+
+						<div class="hearer_icon d-flex">
+							<div th:if="${session.user != null}">
+								<!-- Nội dung hiển thị khi đã đăng nhập -->
+								<div class="dropdown">
+									<button class="btn  btn-icon" type="button"
+										id="accountDropdown" data-toggle="dropdown"
+										aria-haspopup="true" aria-expanded="false">
+										<i><img class="rounded-circle" style="width: 40px;"
+											th:src="@{|${session.user.image}|}" alt="" /></i>
+
+
+									</button>
+									<div class="dropdown-menu" aria-labelledby="accountDropdown">
+										<a class="dropdown-item" th:href="@{info}">Thông tin tài
+											khoản</a>
+										<div class="dropdown-divider"></div>
+										<a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a>
+									</div>
 								</div>
 							</div>
-						</div>
+							<div th:unless="${session.user != null}">
 
-						<div th:unless="${session.user != null}">
-
-							<!-- Nội dung hiển thị khi chưa đăng nhập -->
-							<div class="dropdown">
-								<button class="btn  dropdown-toggle btn-icon" type="button" id="accountDropdown"
-										data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									<i class="fas fa-user"></i> <!-- Icon user -->
-								</button>
-								<div class="dropdown-menu" aria-labelledby="accountDropdown">
-									<a class="dropdown-item" th:href="@{/security/user}">Đăng nhập</a>
-									<a class="dropdown-item" href="#">Đăng kí</a>
-									<div class="dropdown-divider"></div>
-									<a class="dropdown-item" th:href="@{/logout}">Quên mật khẩu</a>
+								<!-- Nội dung hiển thị khi chưa đăng nhập -->
+								<div class="dropdown">
+									<button class="btn dropdown-toggle btn-icon" type="button"
+										id="accountDropdown" data-toggle="dropdown"
+										aria-haspopup="true" aria-expanded="false">
+										<i class="fas fa-user"></i>
+										<!-- Icon user -->
+									</button>
+									<div class="dropdown-menu" aria-labelledby="accountDropdown">
+										<a class="dropdown-item" th:href="@{/security/user}">Đăng
+											nhập</a> <a class="dropdown-item" href="#">Đăng kí</a>
+									</div>
 								</div>
 							</div>
+							<div class="d-flex align-items-center">
+								<a th:href="@{/user/cart}" class="btn "> <i
+									class="fas fa-shopping-cart "></i> <span class="badge"
+									th:href="@{/user/cart}">{{cart.count}}</span>
+								</a>
+							</div>
 						</div>
-
-					</nav>
+					</div>
 				</nav>
 			</div>
 		</div>
@@ -134,11 +150,14 @@
 	<div class="search_input" id="search_input_box">
 		<div class="container ">
 			<form class="d-flex justify-content-between search-inner">
-				<input type="text" class="form-control" id="search_input" placeholder="Search Here">
+				<input type="text" class="form-control" id="search_input"
+					placeholder="Search Here">
 				<button type="submit" class="btn"></button>
 				<span class="ti-close" id="close_search" title="Close Search"></span>
 			</form>
 		</div>
 	</div>
 </header>
+
+
 <!-- Header part end-->

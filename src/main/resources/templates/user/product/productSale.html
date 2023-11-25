@@ -1,11 +1,22 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	th:replace="~{/user/layout/index :: dynamic(~{::main})}">
 <main>
-	<section class="cat_product_area section_padding">
-		<div class="container">
-			<form id="form" th:action="@{|productcategorydetail|}" method="get">
+	<div class="container-fluid"
+		style="background-image: url('/assets/user/teample/img/sale.jpg'); background-size: cover; height: 200px;">
+		<div style="padding-top: 100px; " class="text-center ">
+			<h1 style="font-weight: bolder; display: inline-block;">Flash
+				Sale</h1>
+			&emsp;&emsp;
+			<h3 style="color:white;"  id="countdown"></h3>
+
+		</div>
+	</div>
+	<section class="cat_product_area pt-3">
+
+		<div class="container" style=" max-width: 1500px">
+			<form id="form" th:action="@{|productsale|}" method="get">
 				<div class="row">
-					<div class="col-lg-3">
+					<div class="col-sm-3 ">
 						<div class="left_sidebar_area">
 							<aside class="left_widgets p_filter_widgets">
 								<div class="l_w_title">
@@ -14,9 +25,7 @@
 								<div class="widgets_inner">
 									<ul class="list">
 
-										<input type="hidden" name="idCategoryDetail"
-											th:value="${idCategoryDetail}">
-										<!--                                        <input type="hidden" name="sort" th:value="${sortValue}">-->
+
 										<li th:each="item : ${sizeMenu}"><a class="size">[[${item.name}]]</a>
 											<span> <input onclick="clickCheckbox()"
 												th:checked="${#lists.contains(sizeId, item.id)}" name="size"
@@ -61,9 +70,9 @@
 							</aside>
 						</div>
 					</div>
-					<div class="col-lg-9">
+					<div class="col-sm-9">
 						<div class="row">
-							<div class="col-lg-12">
+							<div class="col-sm-12">
 								<div
 									class="product_top_bar d-flex justify-content-between align-items-center">
 									<div class="single_product_menu">
@@ -93,7 +102,7 @@
 
 						<div class="row align-items-center latest_product_inner">
 							<div th:each="item : ${product.content}"
-								class="col-lg-4 col-sm-6">
+								class="col-lg-3 col-sm-6">
 
 								<div class="single_product_item">
 									<a th:href="@{|/user/product-detail?product-id=${item.id}|}">
@@ -105,13 +114,20 @@
 												Size: <span th:each="itemsize : ${item.productDetails}"
 													class="size">[[${itemsize.size.name}]]</span>
 											</h6>
+
 											<div th:if="${item.isSale == true}">
-												<h3>[[${#numbers.formatDecimal(item.discountPrice, 0, 'COMMA', 0, 'POINT')}]]₫</h3>
-												<h4 style="text-decoration-line: line-through; display: inline-block; margin-right: 5px;">
-													<span >[[${#numbers.formatDecimal(item.price, 0, 'COMMA', 0, 'POINT')}]]₫</span>
+												<h3>[[${#numbers.formatDecimal(item.discountPrice, 0,
+													'COMMA', 0, 'POINT')}]]₫</h3>
+												<h4
+													style="text-decoration-line: line-through; display: inline-block; margin-right: 5px;">
+													<span>[[${#numbers.formatDecimal(item.price, 0,
+														'COMMA', 0, 'POINT')}]]₫</span>
 												</h4>
-												<span class="badge badge-warning" style="color: red; font-weight: 600">[[${#numbers.formatDecimal((100-(item.discountPrice / item.price) * 100), 0, 'COMMA', 0, 'POINT')}]]%</span>
+												<span class="badge badge-warning"
+													style="color: red; font-weight: 600">[[${#numbers.formatDecimal((100-(item.discountPrice
+													/ item.price) * 100), 0, 'COMMA', 0, 'POINT')}]]%</span>
 											</div>
+
 											<div th:unless="${item.isSale ==true}">
 												<h3 class="price">[[${#numbers.formatDecimal(item.price,
 													0, 'COMMA', 0,'POINT')}]]₫</h3>
@@ -119,6 +135,8 @@
 										</div>
 									</a>
 								</div>
+
+
 							</div>
 							<div class="col-lg-12">
 								<div class="pageination">

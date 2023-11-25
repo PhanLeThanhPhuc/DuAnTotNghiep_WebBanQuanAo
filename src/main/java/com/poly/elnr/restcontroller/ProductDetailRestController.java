@@ -1,5 +1,6 @@
 package com.poly.elnr.restcontroller;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -19,6 +20,7 @@ import com.poly.elnr.entity.ProductDetails;
 import com.poly.elnr.service.DiscountCheckService;
 import com.poly.elnr.service.DiscountService;
 import com.poly.elnr.service.ProductDetailService;
+import com.poly.elnr.utils.DiscountCheck;
 
 @CrossOrigin("*")
 @RestController
@@ -30,11 +32,18 @@ public class ProductDetailRestController {
 	
 	@Autowired
 	DiscountCheckService discountCheckService;
-	
+	@Autowired 
+	DiscountCheck discountCheck;
 	@GetMapping("{id}")
 	public List<ProductDetails> getProductDetail(@PathVariable("id") Integer id) {
 		return detailService.findByProductID(id);
 	}
+	
+	@GetMapping("date")
+	public Date getDate() {
+		return discountCheck.getDateEnd(new Date());
+	}
+	
 	
 	@PostMapping
 	public ProductDetails post(@RequestBody ProductDetails productdetail) {
