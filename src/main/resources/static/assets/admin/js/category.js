@@ -73,6 +73,28 @@ app.controller("category-ctrl", function($scope, $filter, $http) {
 			});
 	}
 
+	$scope.updateCategoryStatus = function(item) {
+		var item = angular.copy(item);
+		item.dateUpdate = new Date();
+		if (item.status == false) {
+			item.status = true;
+		} else {
+			item.status = false;
+		}
+		$http.put(`/rest/categories/${item.id}`, item).then(resp => {
+			if (resp.status == 200) {
+				var index = $scope.items.findIndex(p => p.id == item.id);
+				$scope.items[index] = item;
+				$scope.message("Cập nhật danh mục thành công!");
+			}
+			$scope.reset();
+		}).catch(error => {
+			alert("Lỗi cập nhật danh mục!");
+			console.log("Error", error);
+		});
+	}
+
+
 
 	$scope.searchText = {};
 	$scope.items = [];
@@ -154,10 +176,10 @@ app.controller("category-ctrl", function($scope, $filter, $http) {
 		item.dateUpdate = new Date();
 		$http.post(`/rest/categorydetail`, item).then(resp => {
 			if (resp.status == 200) {
-				var indexcategory = $scope.items.findIndex(c => c.id == $scope.Category.id )
+				var indexcategory = $scope.items.findIndex(c => c.id == $scope.Category.id)
 				$scope.items[indexcategory].category_detail.push(resp.data);
 				$scope.message("Thêm mới chi tiết danh mục thành công!");
-				}
+			}
 			$scope.reset();
 		}).catch(error => {
 			alert("Lỗi thêm mới sản phẩm!");
@@ -172,12 +194,13 @@ app.controller("category-ctrl", function($scope, $filter, $http) {
 		$scope.formCategoryDetail = categorydetail
 	}
 
-	$scope.updateCategoryDetail = function()  {
-		
+	$scope.updateCategoryDetail = function() {
+
 		var item = angular.copy($scope.formCategoryDetail);
+		item.category = $scope.Category;
 		item.dateUpdate = new Date();
 		$http.put(`/rest/categorydetail/${item.id}`, item).then(resp => {
-			if (resp.status == 200) {					
+			if (resp.status == 200) {
 				$scope.message("Cập nhật danh mục thành công!");
 			}
 			$scope.reset();
@@ -188,6 +211,27 @@ app.controller("category-ctrl", function($scope, $filter, $http) {
 			});
 
 	}
+	$scope.updateCategoryDetailStatus = function(detail, category) {
+		var item = angular.copy(detail);
+		item.category = category;
+		item.dateUpdate = new Date();
+		if (item.status == false) {
+			item.status = true;
+		} else {
+			item.status = false;
+		}
+		$http.put(`/rest/categorydetail/${item.id}`, item).then(resp => {
+			if (resp.status == 200) {
+				$scope.message("Cập nhật danh mục thành công!");
+			}
+			$scope.reset();
+		})
+			.catch(error => {
+				alert("Lỗi cập nhật danh mục!");
+				console.log("Error", error);
+			});
+	}
+
 
 
 
@@ -211,6 +255,8 @@ app.controller("category-ctrl", function($scope, $filter, $http) {
 			afterHidden: function() { }  // will be triggered after the toast has been hidden
 		});
 	}
+
+
 
 	$scope.initialize();
 

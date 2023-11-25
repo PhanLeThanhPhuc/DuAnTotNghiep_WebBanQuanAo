@@ -8,8 +8,10 @@ import com.poly.elnr.entity.ProductDetails;
 
 public interface DiscountCheckService {
 	 public List<Product> getAllDiscountProducts(List<Product> productList);
-	 public Product saveDiscountProduct(Product product);
+	 public Product DiscountProduct(Product product);
 	public List<Product> getDiscountedProducts();
-	 public ProductDetails getProductDetails(ProductDetails productDetails); 
+	 public ProductDetails getProductDetails(ProductDetails productDetails);
+	List<Product> getDiscountProducts2(List<Product> productList);
+	boolean isDiscountProduct(Product product); 
 	 
 }

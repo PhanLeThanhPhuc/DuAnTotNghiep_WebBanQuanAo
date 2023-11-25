@@ -93,6 +93,17 @@ public class ProductServiceImpl implements ProductService {
 		Pageable pageable = PageRequest.of(p.orElse(0), 12, s);
 		return productRepository.findProductByCategoryFilter(idCategory, listColorId, listSizeId, pageable);
 	}
+	
+
+	@Override
+	public List<Product> findSale(List<Integer> colorId, List<Integer> sizeId, Optional<String> sort,
+			Optional<Integer> p) {
+		
+
+		List<Integer> listColorId = colorId == null || colorId.isEmpty() ? colorRepository.findAllColorId() : colorId;
+		List<Integer> listSizeId = sizeId == null || sizeId.isEmpty() ? sizeRepository.findAllSizeId() : sizeId;
+		return productRepository.findProductSale( listColorId, listSizeId);
+	}
 
 
 	@Override
@@ -129,6 +140,8 @@ public class ProductServiceImpl implements ProductService {
 		// TODO Auto-generated method stub
 		return productRepository.findById(id);
 	}
+
+
 
 
 

@@ -32,12 +32,15 @@
 					</thead>
 					<tbody>
 						<tr ng-repeat-start="item in pager.items"
-							ng-click="toggleCollapse(item)">
-							<td>{{item.id}}</td>
-							<td>{{item.name}}</td>
-							<td>{{item.dateInsert | date : 'dd-MM-yyyy hh:mm'}}</td>
-							<td>{{item.dateUpdate | date : 'dd-MM-yyyy hh:mm'}}</td>
-							<td>{{item.status ? 'Hoạt động' : 'Không hoạt động'}}</td>
+							>
+							<td ng-click="toggleCollapse(item)">{{item.id}}</td>
+							<td ng-click="toggleCollapse(item)">{{item.name}}</td>
+							<td ng-click="toggleCollapse(item)">{{item.dateInsert | date : 'dd-MM-yyyy hh:mm'}}</td>
+							<td ng-click="toggleCollapse(item)">{{item.dateUpdate | date : 'dd-MM-yyyy hh:mm'}}</td>
+							<td ng-click="toggleCollapse(item)"><label class="switch"> <input
+											ng-model="item.status" ng-value="true" name="available"
+											type="checkbox"> <span ng-click="updateCategoryStatus(item)" class="slider round"></span>
+									</label></td>
 							<td><span> <a ng-click="editCategory(item)"
 									data-toggle="modal" data-target="#exampleModalCenter"
 									data-toggle="tooltip" title="Edit" data-placement="top"> <span
@@ -56,8 +59,10 @@
 											'dd-MM-yyyy hh:mm'}}</td>
 										<td style="width: 20%;">{{detail.dateUpdate | date :
 											'dd-MM-yyyy hh:mm'}}</td>
-										<td style="width: 20%;">{{detail.status ? 'Hoạt động' :
-											'Không hoạt động'}}</td>
+										<td style="width: 20%;"><label class="switch"> <input
+											ng-model="detail.status" ng-value="true" name="available"
+											type="checkbox"> <span ng-click="updateCategoryDetailStatus(detail,item)" class="slider round"></span>
+									</label></td>
 										<td style="width: 20%;"><a data-toggle="modal"
 											data-target="#exampleModalCenter1"
 											ng-click="editCategoryDetail(item,detail)" title="Edit"><i
