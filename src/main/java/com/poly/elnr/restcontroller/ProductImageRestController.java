@@ -20,6 +20,7 @@ import com.poly.elnr.service.ImageService;
 @RestController
 @RequestMapping("/rest/image")
 public class ProductImageRestController {
+
 	@Autowired
 	ImageService imageService;
 	
@@ -45,5 +46,14 @@ public class ProductImageRestController {
 	@DeleteMapping("{id}")
 	public void delete(@PathVariable("id") Integer id) {
 		imageService.delete(id);
+	}
+
+	@DeleteMapping("delete-by-product{id}")
+	public void deleteByIdProduct(@PathVariable("id") Integer id) {
+		System.out.println();
+		List<ImageProduct> imageProducts = imageService.findByProductID(id);
+		if(imageProducts != null){
+			imageService.deleteByProduct(id);
+		}
 	}
 }

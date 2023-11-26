@@ -106,7 +106,7 @@
 
 								<div class="single_product_item">
 									<a th:href="@{|/user/product-detail?product-id=${item.id}|}">
-										<img th:src="@{|/assets/user/user/image/${item.thumbnail}|}">
+										<img th:src="@{${item.thumbnail}}">
 										<div class="single_product_text">
 											<h4>[[${item.name}]]</h4>
 											<h6>Màu: [[${item.color.name}]]</h6>

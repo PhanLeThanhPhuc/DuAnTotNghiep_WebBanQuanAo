@@ -22,5 +22,7 @@ public interface ImageService {
 
 	List<ImageProduct> findByProductId(Integer id);
 
+	void deleteByProduct(int idProduct);
+
 
 }

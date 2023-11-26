@@ -275,7 +275,7 @@
 							<a th:href="@{|/user/product-detail?product-id=${item.id}|}">
 								<div style="background-color: white;" class="rounded-top">
 									<img class=" px-4 pt-2 pb-0"
-										th:src="@{|/assets/user/user/image/${item.thumbnail}|}"
+										th:src="@{${item.thumbnail}}"
 										style="height: 250px;">
 								</div>
 								<div class="single_product_text px-4 rounded-bottom">
