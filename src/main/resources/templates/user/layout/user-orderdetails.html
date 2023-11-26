@@ -85,9 +85,11 @@
                                             </li>
                                             <li>
                                                 <p>Trạng thái giao hàng:</p>
-                                                <span th:if="${order.status eq 0}" class="badge badge-secondary">Chờ xác nhận</span>
-                                                <span th:if="${order.status eq 1}" class="badge badge-warning">Chờ lấy hàng</span>
-                                                <span th:if="${order.status eq 2}" class="badge badge-danger">Đã hủy</span>
+                                                <span class="badge badge-pill badge-secondary" th:if="${order.status == 0}">Chờ xác nhận</span>
+                                                <span class="badge badge-pill badge-warning" th:if="${order.status == 1}">Chờ lấy hàng</span>
+                                                <span class="badge badge-pill badge-danger" th:if="${order.status == 2}">Hủy</span>
+                                                <span class="badge badge-pill badge-info" th:if="${order.status == 4}">Đang giao</span>
+                                                <span class="badge badge-pill badge-success" th:if="${order.status == 5}">Đã giao</span>
                                             </li>
                                             <li>
                                                 <p>Thanh toán:</p>

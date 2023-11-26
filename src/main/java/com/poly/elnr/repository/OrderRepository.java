@@ -17,7 +17,7 @@ import java.util.List;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Integer>{
 
-    @Query("SELECT o FROM Order o WHERE o.user.id =:userId")
+    @Query("SELECT o FROM Order o WHERE o.user.id = :userId ORDER BY o.id DESC")
     List<Order> findOrderByIdUser(@Param("userId") int userId);
 
 //    @Query("SELECT new com.poly.elnr.dto.OrderDTO(o.total, o.orderDate) from Order o group by o.orderDate")

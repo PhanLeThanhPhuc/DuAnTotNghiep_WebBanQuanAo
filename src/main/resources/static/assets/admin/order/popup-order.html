@@ -261,10 +261,10 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button ng-if="objectOrder.status == 0" ng-click="confirmOrder(objectOrder.id)" type="button" data-dismiss="modal" class="btn btn-primary">Xác nhận đơn hàng</button>
+                <button ng-if="objectOrder.status == 0" ng-click="confirmOrder(objectOrder.id)" type="button" data-dismiss="modal" class="btn btn btn-warning">Xác nhận đơn hàng</button>
                 <button ng-click="delivering(objectOrder.id)" type="button" data-dismiss="modal" class="btn btn-primary">Giao hàng</button>
                 <button ng-click="successOrder(objectOrder.id)" type="button" data-dismiss="modal" class="btn btn-primary">Giao thành công</button>
-                <button ng-if="objectOrder.status != 2" type="button" ng-click="cancelOrder(objectOrder.id)" type="button" data-dismiss="modal" class="btn btn-primary">Hủy</button>
+                <button ng-if="objectOrder.status != 2" type="button" ng-click="cancelOrder(objectOrder.id)" type="button" data-dismiss="modal" class="btn btn btn-danger">Hủy</button>
             </div>
         </div>
     </div>

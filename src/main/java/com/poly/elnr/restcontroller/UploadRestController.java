@@ -48,7 +48,7 @@ public class UploadRestController {
 //		return node;
 //	}
 //	
-	@ResponseBody
+//	@ResponseBody
 	@PostMapping("/rest/upload")
 	public JsonNode uploadFile(@RequestParam("uploadfile") MultipartFile multipartFile,
 							 Model model) throws IOException {

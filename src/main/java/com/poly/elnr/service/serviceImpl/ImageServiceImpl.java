@@ -1,6 +1,7 @@
 package com.poly.elnr.service.serviceImpl;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +13,11 @@ import com.poly.elnr.service.ImageService;
 
 @Service
 public class ImageServiceImpl implements ImageService {
+
 	@Autowired
 	ImageRepository imageRepository;
+
+
 	@Override
 	public List<ImageProduct> findByProductID(Integer id) {
 		// TODO Auto-generated method stub
@@ -28,10 +32,16 @@ public class ImageServiceImpl implements ImageService {
 		// TODO Auto-generated method stub
 		return imageRepository.findById(id).get();
 	}
-	public void create(ImageProduct image) {
-		// TODO Auto-generated method stub
-		imageRepository.save(image);
+	public List<ImageProduct> create(List<ImageProduct> images) {
+		List<ImageProduct> imagesListReturn = new ArrayList<>();
+		imageRepository.deleteByProductId(images.get(0).getProduct().getId());
+		for(ImageProduct imageProduct : images){
+			imageRepository.save(imageProduct);
+			imagesListReturn.add(imageProduct);
+		}
+		return imagesListReturn;
 	}
+
 	public ImageProduct update(ImageProduct image) {
 		// TODO Auto-generated method stub
 		return imageRepository.save(image);

@@ -54,7 +54,7 @@ app.controller("order-ctrl", function($scope, $filter, $http) {
 		$http.get(`/rest/orders/update-status?idOrder=${orderId}&statusOrder=4`).then(resp => {
 			if (resp.status === 200) {
 				var index = $scope.listOrders.findIndex(p => p.id == orderId);
-				$scope.listOrders[index] = resp.data.order;
+				$scope.listOrders[index] = resp.data;
 				console.log("ssss", resp.data);
 				$scope.message(`Đang giao đơn hàng ${orderId}`)
 			}
@@ -65,7 +65,7 @@ app.controller("order-ctrl", function($scope, $filter, $http) {
 		$http.get(`/rest/orders/update-status?idOrder=${orderId}&statusOrder=5`).then(resp => {
 			if (resp.status === 200) {
 				var index = $scope.listOrders.findIndex(p => p.id == orderId);
-				$scope.listOrders[index] = resp.data.order;
+				$scope.listOrders[index] = resp.data;
 				console.log("ssss", resp.data);
 				$scope.message(`Giao thành công đơn hàng ${orderId}`)
 			}

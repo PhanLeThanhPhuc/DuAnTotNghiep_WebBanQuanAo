@@ -34,9 +34,9 @@ public class ProductImageRestController {
 	}
 	
 	@PostMapping
-	public ImageProduct post(@RequestBody ImageProduct image) {
-		imageService.create(image);
-		return image;
+	public List<ImageProduct> post(@RequestBody List<ImageProduct> images) {
+		return imageService.create(images);
+
 	}
 	@PutMapping("{id}")
 	public ImageProduct put(@PathVariable("id") Integer id, @RequestBody ImageProduct image) {

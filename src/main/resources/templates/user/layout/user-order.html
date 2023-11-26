@@ -50,15 +50,14 @@
                                     <td>
                                         <span style="color: red; font-weight: 600">[[${#numbers.formatDecimal(order.total, 0, 'COMMA', 0, 'POINT')}]]₫</span>
                                     </td>
-                                    <td th:if="${order.status eq 0}">
-                                        <span class="badge badge-secondary">Chờ xác nhận</span>
+                                    <td>
+                                        <span class="badge badge-pill badge-secondary" th:if="${order.status == 0}">Chờ xác nhận</span>
+                                        <span class="badge badge-pill badge-warning" th:if="${order.status == 1}">Chờ lấy hàng</span>
+                                        <span class="badge badge-pill badge-danger" th:if="${order.status == 2}">Hủy</span>
+                                        <span class="badge badge-pill badge-info" th:if="${order.status == 4}">Đang giao</span>
+                                        <span class="badge badge-pill badge-success" th:if="${order.status == 5}">Đã giao</span>
                                     </td>
-                                    <td th:if="${order.status eq 1}">
-                                        <span class="badge badge-warning">Chờ lấy hàng</span>
 
-                                    <td th:if="${order.status eq 2}">
-                                        <span class="badge badge-danger">Đã hủy</span>
-                                    </td>
                                     <td>
                                         <a th:href="@{|order-detail?idOrder=${order.id}|}" class="btn btn-primary">Chi tiết</a>
                                     </td>

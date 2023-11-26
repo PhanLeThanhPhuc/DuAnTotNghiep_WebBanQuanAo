@@ -12,7 +12,9 @@ public interface ImageService {
 
 	ImageProduct findById(Integer id);
 
-	void create(ImageProduct image);
+	List<ImageProduct> create(List<ImageProduct> images);
+
+//	void create (ImageService imageService);
 
 	ImageProduct update(ImageProduct image);
 
