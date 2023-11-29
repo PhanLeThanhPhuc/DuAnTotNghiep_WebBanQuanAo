@@ -57,6 +57,12 @@ public class ReviewServiceImpl implements ReviewService{
 		reviewRepository.deleteById(id);
 	}
 
+	@Override
+	public Review findByProductAndUserID(Integer userid, Integer productid) {
+		// TODO Auto-generated method stub
+		return reviewRepository.findByProductAndUserID(userid,productid);
+	}
+
 	
 	
 

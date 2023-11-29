@@ -7,6 +7,7 @@ import com.poly.elnr.entity.Users;
 import com.poly.elnr.service.CategoryDetailService;
 import com.poly.elnr.service.DiscountCheckService;
 import com.poly.elnr.service.OrderService;
+import com.poly.elnr.service.ProductService;
 import com.poly.elnr.service.UserService;
 
 import java.io.IOException;
@@ -53,7 +54,7 @@ public class UserController {
 	@Autowired
 	DiscountCheckService discountCheckService;
 	@Autowired
-	DiscountCheck discountCheck;
+	ProductService productService;
 	
 	
 	@PostMapping("/submitPayment/{paymentMethod}/{idOrder}")
@@ -82,8 +83,8 @@ public class UserController {
 
 	@GetMapping("user/index")
 	public String index(Model model) {
-		
 		model.addAttribute("sale",discountCheckService.getDiscountedProducts());
+		model.addAttribute("products",productService.findAll());
 		return "user/layout/home";
 	}
 
@@ -121,6 +122,7 @@ public class UserController {
 		model.addAttribute("order", orderService.fillOrderById(idOrder));
 		return "user/layout/user-orderdetails.html";
 	}
+	
 
 	@GetMapping("user/info")
 	public String userInfo(Model model, @ModelAttribute("account") Users users, Authentication authentication){

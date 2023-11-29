@@ -91,6 +91,7 @@ public class UserServiceImpl implements UserService {
 			Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 			SecurityContextHolder.getContext().setAuthentication(auth);
 			session.set("user", user);
+			
 		}
 		return userDetails;
 	}

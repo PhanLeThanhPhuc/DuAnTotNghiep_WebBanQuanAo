@@ -139,17 +139,7 @@ public class ProductController {
 			model.addAttribute("rating3", rating.stream().filter(n -> n.getRating() == 3).count());
 			model.addAttribute("rating2", rating.stream().filter(n -> n.getRating() == 2).count());
 			model.addAttribute("rating1", rating.stream().filter(n -> n.getRating() == 1).count());
-		} else {
-			model.addAttribute("rating", "0");
-			model.addAttribute("ratingTotal", 0);
-			model.addAttribute("rating5", 0);
-			model.addAttribute("rating4", 0);
-			model.addAttribute("rating3", 0);
-			model.addAttribute("rating2", 0);
-			model.addAttribute("rating1", 0);
-		}
-		
-
+		} 
 		model.addAttribute("images", imageService.findByProductID(id));
 		model.addAttribute("reviews", reviewService.findByProductID(id, p));
 		model.addAttribute("sizes", detailService.findByProductID(id));

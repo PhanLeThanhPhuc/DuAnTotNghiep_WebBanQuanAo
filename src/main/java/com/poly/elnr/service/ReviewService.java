@@ -23,6 +23,8 @@ public interface ReviewService {
 
 	void delete(Integer id);
 
+	Review findByProductAndUserID(Integer userid, Integer productid);
+
 	
 
 
