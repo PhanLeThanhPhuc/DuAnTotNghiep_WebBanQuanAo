@@ -108,7 +108,6 @@ public class ProductController {
 			s = Sort.by(Sort.Direction.DESC, "name");
 		}
 		Pageable pageable = PageRequest.of(p.orElse(0), 12, s);
-		
 		List<Product> products = productService.findSale( colorId, sizeId,
 				sort, p);
 		
