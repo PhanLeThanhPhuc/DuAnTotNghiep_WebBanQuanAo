@@ -67,6 +67,8 @@ public class UserController {
 	@Autowired
 	AddressService addressService;
 
+	@Autowired
+	ProductService productService;
 	
 	
 	@PostMapping("/submitPayment/{paymentMethod}/{idOrder}")
