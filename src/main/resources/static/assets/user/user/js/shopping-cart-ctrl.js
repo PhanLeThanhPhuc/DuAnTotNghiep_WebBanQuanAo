@@ -364,7 +364,9 @@ app.controller("cart-ctrl", function($scope, $http) {
 	}
 
 	purchase = () => {
-
+		if(!validate()){
+			return ;
+		}
 		$scope.data = {
 			province: $scope.provinceName,
 			district: $scope.districtName,
@@ -481,24 +483,24 @@ app.controller("cart-ctrl", function($scope, $http) {
 	
 	
 
-function updateCountdown() {
-  const currentDate = new Date();
-  const timeDifference = $scope.dateEnd - currentDate;
-  if (timeDifference > 0) {
-    const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+	function updateCountdown() {
+	  const currentDate = new Date();
+	  const timeDifference = $scope.dateEnd - currentDate;
+	  if (timeDifference > 0) {
+		const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+		const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+		const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+		const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
 
-    document.getElementById('countdown').innerHTML = `
-      ${days} ngày, ${hours} giờ, ${minutes} phút, ${seconds} giây
-    `;
-   
-  }
-}
+		document.getElementById('countdown').innerHTML = `
+		  ${days} ngày, ${hours} giờ, ${minutes} phút, ${seconds} giây
+		`;
 
-setInterval(updateCountdown, 1000);
-updateCountdown();
+	  }
+	}
+
+	setInterval(updateCountdown, 1000);
+	updateCountdown();
 
 	$scope.registerPhoneNumber = async () => {
 
@@ -579,6 +581,106 @@ updateCountdown();
 				totalSeconds--;
 			}
 		}, 1000); // 1000 milliseconds = 1 giây
+	}
+
+	validate = () =>{
+		var name = document.getElementById('name').value;
+		var phone = document.getElementById('phone').value;
+		var email = document.getElementById('email').value;
+		var isValid = true;
+
+		if (name === '') {
+			document.getElementById('name_error').innerText = 'Vui lòng nhập tên người nhận hàng';
+			isValid = false;
+		} else {
+			document.getElementById('name_error').innerText = '';
+		}
+
+		if (phone === '') {
+			document.getElementById('phone_error').innerText = 'Vui lòng nhập số điện thoại';
+			isValid = false;
+		} else if (phone.length > 10) {
+			document.getElementById('phone_error').innerText = 'Số điện thoại không vượt quá 10 số';
+			isValid = false;
+		} else if (phone.length < 10) {
+			document.getElementById('phone_error').innerText = 'Số điện thoại ít nhất là 10 số';
+			isValid = false;
+		} else {
+			document.getElementById('phone_error').innerText = '';
+		}
+
+
+		if (email === '') {
+			document.getElementById('email_error').innerText = 'Vui lòng nhập email';
+			isValid = false;
+		} else {
+			document.getElementById('email_error').innerText = '';
+		}
+
+
+		if (!$scope.dataLogin.statusLogin) {
+			var province = document.getElementById("id-province");
+			var district = document.getElementById("id-district");
+			var ward = document.getElementById("wardSelect");
+			var addressDetail = document.getElementById("address-detail").value;
+			if (province.selectedIndex === 0) {
+				document.getElementById('province_error').innerText = 'Vui lòng chọn tỉnh';
+				isValid = false;
+			} else {
+				document.getElementById('province_error').innerText = '';
+			}
+
+			if (district.selectedIndex === 0) {
+				document.getElementById('district_error').innerText = 'Vui lòng chọn huyện';
+				isValid = false;
+			} else {
+				document.getElementById('district_error').innerText = '';
+			}
+
+			if (ward.selectedIndex === 0) {
+				document.getElementById('ward_error').innerText = 'Vui lòng chọn xã';
+				isValid = false;
+			} else {
+				document.getElementById('ward_error').innerText = '';
+			}
+
+			if (addressDetail === '') {
+				document.getElementById('address_detail_error').innerText = 'Vui lòng điền địa chỉ cụ thể';
+				isValid = false;
+			} else {
+				document.getElementById('address_detail_error').innerText = '';
+			}
+		} else {
+			if($scope.listAddress.length === 0 ){
+				document.getElementById('address_user').innerText = 'Chưa có địa chỉ. Vui lòng thêm ít nhất 1 địa chỉ nhận hàng';
+			}else{
+
+				var isAnyRadioChecked = false;
+				var cboAddress = document.querySelectorAll(".radio-address");
+				console.log("cboAddress: ",cboAddress);
+				for (let i = 0; i < cboAddress.length; i++) {
+					console.log("cboAddressn: ",cboAddress[i]);
+					console.log("cboAddressc: ",cboAddress[i].checked);
+					if (cboAddress[i].checked) {
+						console.log('da check');
+						isAnyRadioChecked = true;
+						break;
+					}
+				}
+
+				if (isAnyRadioChecked) {
+					console.log('daaaa check');
+					document.getElementById('list_address_user').innerText = '';
+				} else {
+					console.log('chua check');
+					document.getElementById('list_address_user').innerText = 'Vui lòng chọn địa chỉ';
+					isValid = false;
+				}
+
+			}
+
+		}
+		return isValid;
 	}
 })
 

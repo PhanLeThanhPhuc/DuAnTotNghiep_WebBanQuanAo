@@ -21,9 +21,9 @@ public class StatisticsRestController {
         return ResponseEntity.ok(orderService.findAllTotal());
     }
 
-    @GetMapping("/rest/orderPhoneAndDate")
-    ResponseEntity<?> findTop10ByPhonePriceWithDate(){
-        return ResponseEntity.ok(orderService.findTop10ByPhonePriceWithDate());
+    @GetMapping("/rest/phone-total")
+    ResponseEntity<?> findAllByPhonePriceWithDate(){
+        return ResponseEntity.ok(orderService.findPhoneTotalDTO());
     }
 
     @GetMapping("/rest/order-total-user")

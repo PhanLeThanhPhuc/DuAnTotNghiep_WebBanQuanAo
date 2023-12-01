@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.poly.elnr.dto.OrderDTO;
-import com.poly.elnr.dto.OrderData;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.poly.elnr.dto.PhoneTotalDTO;
 import com.poly.elnr.dto.TotalWithUserOrderDTO;
@@ -14,8 +13,6 @@ import com.poly.elnr.repository.*;
 import com.poly.elnr.service.ApiGHNService;
 import com.poly.elnr.service.UserService;
 import com.poly.elnr.utils.RegexUtils;
-import lombok.Data;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -184,7 +181,7 @@ public class OrderServiceImpl implements OrderService {
             user = userRepository.findByPhone(username);
             return orderRepository.findOrderByIdUser(user.getId());
         }else{
-            user = userRepository.findEmail(username);
+            user = userRepository.findByEmail(username);
            if(user.getPhone() ==  null){
                return null;
            }else{
@@ -219,8 +216,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<PhoneTotalDTO> findTop10ByPhonePriceWithDate() {
-        return orderRepository.findTop10ByPhonePriceWithDate();
+    public List<PhoneTotalDTO> findPhoneTotalDTO() {
+        return orderRepository.findPhoneTotalDTO();
     }
 
     @Override

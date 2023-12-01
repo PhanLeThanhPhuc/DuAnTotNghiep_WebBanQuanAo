@@ -42,29 +42,36 @@
             padding: 0 !important;
             vertical-align: middle !important;
         }
-
+         .error-message {
+             color: red;
+             font-size: 12px;
+         }
     </style>
     <section class="checkout_area padding_top">
         <div class="container">
             <div class="billing_details">
                 <div class="row">
-                    <div class="col-lg-5">
-                        <h5 style="font-weight: 600; margin-bottom: 15px">THÔNG TIN KHÁCH HÀNG</h5>
+                    <div class="col-lg-5" style="padding: 30px">
+                        <h5 style="font-weight: 600; margin-bottom: 15px; font-size: 18px">THÔNG TIN KHÁCH HÀNG</h5>
+                        <h5 style="font-weight: 600; margin-bottom: 15px">Thông tin cá nhân</h5>
                         <form class="row contact_form" action="#" method="post" novalidate="novalidate">
                             <div class="col-md-6 form-group p_star">
                                 <label >Họ và tên</label>
-                                <input style="border-radius: 20px" ng-model="formInformationOrder.name" type="text" placeholder="Thông tin người nhận hàng"class="form-control" id="first" name="name" />
+                                <input style="border-radius: 20px" ng-model="formInformationOrder.name" type="text" placeholder="Tên người nhận hàng"class="form-control" id="name" name="name" />
 <!--                                <span class="placeholder" data-placeholder="Họ và tên"></span>-->
+                                <span id="name_error" class="error-message"></span>
                             </div>
                             <div class="col-md-6 form-group p_star">
                                 <label >Số điện thoại</label>
                                 <input style="border-radius: 20px" ng-model="formInformationOrder.phone" placeholder="Số điện thoại nhận hàng" type="text" class="form-control" id="phone" name="name" />
 <!--                                <span class="placeholder" data-placeholder="Số điện thoại"></span>-->
+                                <span id="phone_error" class="error-message"></span>
                                 <a ng-if="dataLogin.user.phone == null && dataLogin.statusLogin" data-toggle="modal" data-target="#exampleModalCenter3" style="font-size: 9px; font-weight: bold" class="btn btn-primary px-1 mt-1">Thêm số điện thoại</a>
                             </div>
                             <div class="col-md-12 form-group">
                                 <label >Email</label>
-                                <input style="border-radius: 20px" ng-model="formInformationOrder.email" type="text" class="form-control" id="company" name="company" placeholder="Email(Nhận thông tin về hóa đơn)" />
+                                <input style="border-radius: 20px" ng-model="formInformationOrder.email" type="text" class="form-control" id="email" name="company" placeholder="Email(Nhận thông tin về hóa đơn)" />
+                                <span id="email_error" class="error-message"></span>
                             </div>
 <!--                            <div class="col-md-6 form-group p_star">-->
 <!--                                <input type="text" class="form-control" id="number" name="number" />-->
@@ -74,52 +81,60 @@
 <!--                                <input type="text" class="form-control" id="email" name="compemailany" />-->
 <!--                                <span class="placeholder" data-placeholder="Email Address"></span>-->
 <!--                            </div>-->
-                            <div class="col-md-12 form-group p_star">
-                                <h5 style="font-weight: 600; margin-bottom: 15px">ĐỊA CHỈ NHẬN HÀNG</h5>
+                            <div class="col-md-12 form-group p_star" style="margin-bottom: 0">
+                                <h5 style="font-weight: 600; margin-bottom: 15px">Địa chỉ nhận hàng</h5>
                                 <div class="row" ng-if="dataLogin.statusLogin == false">
-                                    <div      class="col-md-6 form-group p_star">
-                                        <select style="border-radius: 20px" onchange="methodDistrict(value)" class="country_select form-control">
+                                    <div class="col-md-6 form-group p_star">
+                                        <select id="id-province" style="border-radius: 20px" onchange="methodDistrict(value)" class="country_select form-control">
                                             <option value="default">Tỉnh</option>
                                             <option ng-repeat="item in listProvince" ng-value="{{item.ProvinceID}}">{{item.ProvinceName}}</option>
                                         </select>
+                                        <span id="province_error" class="error-message"></span>
                                     </div>
                                     <div class="col-md-6 form-group p_star">
-                                        <select style="border-radius: 20px" onchange="methodWard(value)" class="country_select form-control">
+                                        <select id="id-district" style="border-radius: 20px" onchange="methodWard(value)" class="country_select form-control">
                                             <option value="default">Huyện</option>
                                             <option ng-repeat="item in listDistrict" ng-value="{{item.DistrictID}}">{{item.DistrictName}}</option>
                                         </select>
+                                        <span id="district_error" class="error-message"></span>
                                     </div>
                                     <div class="col-md-6 form-group p_star">
                                         <select style="border-radius: 20px" onchange="getValueComboBoxAddress()" id="wardSelect" class="country_select form-control">
                                             <option value="">Xã</option>
                                             <option ng-repeat="item in listWard" ng-value="{{item.WardCode}}">{{item.WardName}}</option>
                                         </select>
+                                        <span id="ward_error" class="error-message"></span>
                                     </div>
                                     <div class="col-md-6 form-group p_star">
-                                        <input style="border-radius: 20px" placeholder="Địa chỉ cụ thể" ng-model="formInformationOrder.addressDetail" type="text" class="form-control" id="1" name="name" />
-
+                                        <input style="border-radius: 20px" placeholder="Địa chỉ cụ thể" ng-model="formInformationOrder.addressDetail" type="text" class="form-control" id="address-detail" name="name" />
+                                        <span id="address_detail_error" class="error-message"></span>
                                     </div>
                                 </div>
 <!--                                login = true-->
                                 <div class="row" ng-if="dataLogin.statusLogin == true">
                                     <div ng-repeat="item in listAddress" class="col-md-6 form-group p_star">
                                         <div class="form-check">
-                                            <input ng-change="getShippingFee()" ng-model="formInformationOrder.address" class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" ng-value="{{item.id}}" checked>
-                                            <label class="form-check-label" for="exampleRadios1">
+                                            <input ng-change="getShippingFee()" ng-model="formInformationOrder.address" class="form-check-input radio-address"
+                                                   type="radio"
+                                                   name="exampleRadios" id="exampleRadios{{item.id}}" ng-value="{{item.id}}" >
+                                            <label class="form-check-label" ng-attr-for="exampleRadios{{item.id}}">
                                                 {{item.addressDetail}}, {{item.wardName}}, {{item.districtName}}, {{item.provinceName}}
                                             </label>
+                                            <span id="list_address_user" class="error-message"></span>
                                         </div>
                                     </div>
-
                                     <div class="col-md-12 form-group p_star text-center">
-                                        <button style="font-size: 10px; font-weight: bold" data-toggle="modal" data-target="#exampleModalCenter" type="button" class="btn btn-outline-warning">Thêm địa chỉ mới</button>
+                                        <button style="font-size: 10px; font-weight: bold"
+                                                data-toggle="modal" data-target="#exampleModalCenter"
+                                                type="button" class="btn btn-outline-warning">Thêm địa chỉ mới</button><br>
+                                        <span id="address_user" class="error-message"></span>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="col-md-12 form-group">
                                 <div class="creat_account">
-                                    <h5 style="font-weight: 600; margin-bottom: 15px">GHI CHÚ</h5>
+                                    <h5 style="font-weight: 600; margin-bottom: 15px">Ghi chú</h5>
                                 </div>
                                 <textarea style="border-radius: 20px" ng-model="formInformationOrder.note" class="form-control" name="message" id="message" rows="1"
                                           placeholder="Order Notes"></textarea>
@@ -127,7 +142,7 @@
                         </form>
                     </div>
                     <div class="col-lg-7">
-                        <div class="order_box" style="background-color: #f3ffff">
+                        <div class="order_box" style="background-color: #f3ffff;box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;border-radius: 15px">
                             <h2 style="font-weight: 600">THÔNG TIN ĐƠN HÀNG</h2>
                             <ul class="list">
                                 <li>

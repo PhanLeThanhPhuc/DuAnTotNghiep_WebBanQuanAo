@@ -13,15 +13,16 @@
                             <i class="fa fa-user-circle-o mr-2"></i>
                             <span class="font-weight-bold small text-uppercase text-a">Thông tin cá nhân</span></a>
 
-                        <a class="nav-link mb-3 p-3 shadow active" id="v-pills-profile-tab" data-toggle="pill"
+                        <a class="nav-link mb-3 p-3 shadow active"  data-toggle="pill"
                            href="v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="true">
                             <i class="fa fa-calendar-minus-o mr-2"></i>
                             <span class="font-weight-bold small text-uppercase text-a">Thông tin đơn hàng</span></a>
 
-                        <a class="nav-link mb-3 p-3 shadow" id="v-pills-messages-tab" data-toggle="pill"
-                           href="v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">
+                        <a class="nav-link mb-3 p-3 shadow"
+                           th:href="@{/user/address}" role="tab" aria-controls="v-pills-messages" aria-selected="false">
                             <i class="fa fa-star mr-2"></i>
-                            <span class="font-weight-bold small text-uppercase text-a">Địa chỉ</span></a>
+                            <span class="font-weight-bold small text-uppercase text-a">Địa chỉ</span>
+                        </a>
                     </div>
                 </div>
 
@@ -30,7 +31,7 @@
                     <!-- Tabs content -->
                     <div class="tab-content" id="v-pills-tabContent">
                         <div class="tab-pane fade shadow rounded bg-white show active p-4" id="v-pills-home"
-                             role="tabpanel" aria-labelledby="v-pills-home-tab">
+                             role="tabpanel" aria-labelledby="v-pills-messages">
                             <table class="table">
                                 <thead>
                                 <tr>

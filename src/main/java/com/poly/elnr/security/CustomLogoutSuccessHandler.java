@@ -23,6 +23,6 @@ public class CustomLogoutSuccessHandler implements LogoutSuccessHandler{
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response,
                                 Authentication authentication) throws IOException, ServletException {
 		session.remove("user");
-        response.sendRedirect("/security/user");
+        response.sendRedirect("/user/login");
     }
 }
