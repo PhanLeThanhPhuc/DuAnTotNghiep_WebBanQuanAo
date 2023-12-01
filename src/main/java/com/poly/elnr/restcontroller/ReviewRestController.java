@@ -35,6 +35,11 @@ public class ReviewRestController {
 		return reviewService.findByProductID2(id);
 	}
 	
+	@GetMapping("product/{userid}/{productid}")
+	public Review findByProductAndUserID(@PathVariable("userid") Integer userid,@PathVariable("productid") Integer productid) {
+		return reviewService.findByProductAndUserID(userid,productid);
+	}
+	
 	@PostMapping
 	public Review post(@RequestBody  Review create) {
 		return reviewService.create(create);

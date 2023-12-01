@@ -5,7 +5,15 @@ import com.poly.elnr.dto.ChangePassword;
 import com.poly.elnr.dto.UserRegisterDTO;
 import com.poly.elnr.entity.Order;
 import com.poly.elnr.entity.Users;
+
+import com.poly.elnr.service.CategoryDetailService;
+import com.poly.elnr.service.DiscountCheckService;
+import com.poly.elnr.service.OrderService;
+import com.poly.elnr.service.ProductService;
+import com.poly.elnr.service.UserService;
+
 import com.poly.elnr.service.*;
+
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -58,6 +66,7 @@ public class UserController {
 
 	@Autowired
 	AddressService addressService;
+
 	
 	
 	@PostMapping("/submitPayment/{paymentMethod}/{idOrder}")
@@ -86,8 +95,8 @@ public class UserController {
 
 	@GetMapping("user/index")
 	public String index(Model model) {
-		
 		model.addAttribute("sale",discountCheckService.getDiscountedProducts());
+		model.addAttribute("products",productService.findAll());
 		return "user/layout/home";
 	}
 
@@ -125,6 +134,7 @@ public class UserController {
 		model.addAttribute("order", orderService.fillOrderById(idOrder));
 		return "user/layout/user-orderdetails.html";
 	}
+	
 
 	@GetMapping("user/info")
 	public String userInfo(Model model, @ModelAttribute("account") Users users, Authentication authentication){

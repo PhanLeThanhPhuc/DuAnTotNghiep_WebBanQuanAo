@@ -63,18 +63,7 @@
 
 										</div>
 									</div></li>
-								<li class="nav-item dropdown"><a
-									class="nav-link dropdown-toggle" href="blog.html"
-									id="navbarDropdown_3" role="button" data-toggle="dropdown"
-									aria-haspopup="true" aria-expanded="false"> PAGE </a>
-									<div class="dropdown-menu" aria-labelledby="navbarDropdown_2">
-										<a class="dropdown-item" th:href="@{/security/user}">
-											login</a> <a class="dropdown-item" href="tracking.html">tracking</a>
-										<a class="dropdown-item" href="checkout.html">product
-											checkout</a> <a class="dropdown-item" href="cart.html">shopping
-											cart</a> <a class="dropdown-item" href="confirmation.html">confirmation</a>
-										<a class="dropdown-item" href="elements.html">elements</a>
-									</div></li>
+							
 								<li class="nav-item dropdown"><a
 									class="nav-link dropdown-toggle" href="blog.html"
 									id="navbarDropdown_2" role="button" data-toggle="dropdown"
@@ -102,7 +91,6 @@
 
 
 
-
 						<div class="hearer_icon d-flex">
 							<div th:if="${session.user != null}">
 								<!-- Nội dung hiển thị khi đã đăng nhập -->
@@ -111,15 +99,17 @@
 										id="accountDropdown" data-toggle="dropdown"
 										aria-haspopup="true" aria-expanded="false">
 										<i><img class="rounded-circle" style="width: 40px;"
-											th:src="@{|${session.user.image}|}" alt="" /></i>
+											th:src="@{|${session.user.image}|}" th:href="@{info}" alt="" /></i>
 
 
 									</button>
 									<div class="dropdown-menu" aria-labelledby="accountDropdown">
 										<a class="dropdown-item" th:href="@{info}">Thông tin tài
 											khoản</a>
-										<div class="dropdown-divider"></div>
-										<a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a>
+										<a class="dropdown-item" href="/admin/index">Admin</a>
+										<div class="dropdown-divider"> </div>
+										
+										<a class="dropdown-item" th:href="@{/logout}">Đăng xuất </a>
 									</div>
 								</div>
 							</div>

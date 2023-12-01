@@ -141,7 +141,9 @@
                                                              class=" ls-is-cached lazyloaded">
                                                     </a>
                                                     <div class="text-order">
-                                                        <a th:src="@{${item.productDetails.product.thumbnail}}"
+
+                                                        <a th:src="@{|${item.productDetails.product.thumbnail}|}"
+
                                                            target="_blank" class="text-order__product-name"
                                                            style="font-size: 13px">[[${item.productDetails.product.name}]]</a>
                                                         <div class="amount-color">

@@ -108,7 +108,6 @@ public class ProductController {
 			s = Sort.by(Sort.Direction.DESC, "name");
 		}
 		Pageable pageable = PageRequest.of(p.orElse(0), 12, s);
-		
 		List<Product> products = productService.findSale( colorId, sizeId,
 				sort, p);
 		
@@ -139,17 +138,7 @@ public class ProductController {
 			model.addAttribute("rating3", rating.stream().filter(n -> n.getRating() == 3).count());
 			model.addAttribute("rating2", rating.stream().filter(n -> n.getRating() == 2).count());
 			model.addAttribute("rating1", rating.stream().filter(n -> n.getRating() == 1).count());
-		} else {
-			model.addAttribute("rating", "0");
-			model.addAttribute("ratingTotal", 0);
-			model.addAttribute("rating5", 0);
-			model.addAttribute("rating4", 0);
-			model.addAttribute("rating3", 0);
-			model.addAttribute("rating2", 0);
-			model.addAttribute("rating1", 0);
-		}
-		
-
+		} 
 		model.addAttribute("images", imageService.findByProductID(id));
 		model.addAttribute("reviews", reviewService.findByProductID(id, p));
 		model.addAttribute("sizes", detailService.findByProductID(id));

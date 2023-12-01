@@ -1,276 +1,496 @@
 <html xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{/user/layout/index :: dynamic(~{::main})}">
+	th:replace="~{/user/layout/index :: dynamic(~{::main})}">
+
 <main>
-    <section class="section_padding">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-3">
-                    <!-- Tabs nav -->
-                    <div class="nav flex-column nav-pills nav-pills-custom" id="v-pills-tab" role="tablist"
-                         aria-orientation="vertical">
-                        <a class="nav-link mb-3 p-3 shadow "
-                           th:href="@{/user/info}" role="tab" aria-controls="v-pills-home" aria-selected="false">
-                            <i class="fa fa-user-circle-o mr-2"></i>
-                            <span  class="font-weight-bold small text-uppercase text-a">Thông tin cá nhân</span></a>
-
-                        <a class="nav-link mb-3 p-3 shadow active" id="v-pills-profile-tab" data-toggle="pill"
-                           th:href="@{/user/order}" role="tab" aria-controls="v-pills-profile" aria-selected="true">
-                            <i class="fa fa-calendar-minus-o mr-2"></i>
-                            <span class="font-weight-bold small text-uppercase text-a">Thông tin đơn hàng</span></a>
-
-                        <a class="nav-link mb-3 p-3 shadow" id="v-pills-messages-tab" data-toggle="pill"
-                           th:href="@{/user/address}" role="tab" aria-controls="v-pills-messages" aria-selected="false">
-                            <i class="fa fa-star mr-2"></i>
-                            <span class="font-weight-bold small text-uppercase text-a">Địa chỉ</span></a>
-                    </div>
-                </div>
-                <div class="col-md-9">
-                    <!-- Tabs content -->
-                    <div class="tab-content" id="v-pills-tabContent">
-                        <div class="tab-pane fade shadow rounded bg-white show active p-4" id="v-pills-home"
-                             role="tabpanel" aria-labelledby="v-pills-home-tab">
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <h6>CHI TIẾT ĐƠN HÀNG #[[${order.id}]]</h6>
-                                </div>
-                                <div th:if="${order.status eq 0}" style="text-align: right" class="col-sm-6">
-                                    <a th:href="@{|/user/cancel-order?idorder=${order.id}|}">Hủy đơn hàng</a>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-6 col-lx-4">
-                                    <div class="single_confirmation_details p-3">
-                                        <h6>THÔNG TIN KHÁCH HÀNG</h6>
-                                        <ul>
-                                            <li>
-                                                <p>Tên:</p><span> [[${order.nameUser}]]</span>
-                                            </li>
-                                            <li>
-                                                <p>Địa chỉ:</p><span>[[${order.detailAddress}]], [[${order.ward}]], [[${order.province}]], [[${order.district}]]</span>
-                                            </li>
-                                            <li>
-                                                <p>Số điện thoại:</p><span> [[${order.phone}]]</span>
-                                            </li>
-                                            <li>
-                                                <p>Email:</p><span> [[${order.email}]]</span>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-6 col-lx-4">
-                                    <div class="single_confirmation_details p-3">
-                                        <h6>THÔNG TIN ĐƠN HÀNG</h6>
-                                        <ul>
-                                            <li>
-                                                <p>Ngày đặt:</p><span th:text="${#dates.format(order.orderDate, 'yyyy-MM-dd HH:mm:ss')}" ></span>
-                                            </li>
-                                            <li>
-
-<!--                                                <th:block th:if="${order.voucher != null}" >-->
-<!--                                                    <p>Tổng tiền:</p>-->
-<!--                                                    <span>[[${#numbers.formatDecimal(order.totalDiscount, 0, 'COMMA', 0, 'POINT')}]]</span><br>-->
-<!--                                                    <p>Tổng tiền:</p>-->
-<!--                                                    <span style="text-decoration: line-through;" >[[${#numbers.formatDecimal(order.total, 0, 'COMMA', 0, 'POINT')}]]</span>-->
-<!--                                                </th:block>-->
-
-<!--                                                <th:block th:if="${order.voucher == null}" >-->
-                                                    <p>Tổng tiền:</p>
-                                                    <span th:if="${order.voucher != null}">[[${#numbers.formatDecimal(order.total + order.shipFee - order.voucher.discountPrice, 0, 'COMMA',
-                                                    0,'POINT')}]]đ</span>
-                                                    <span th:if="${order.voucher == null}">[[${#numbers.formatDecimal(order.total + order.shipFee, 0, 'COMMA',
-                                                    0,'POINT')}]]đ</span>
-<!--                                                </th:block>-->
-
-                                            </li>
-                                            <li>
-                                                <p>Trạng thái giao hàng:</p>
-                                                <span class="badge badge-pill badge-secondary" th:if="${order.status == 0}">Chờ xác nhận</span>
-                                                <span class="badge badge-pill badge-warning" th:if="${order.status == 1}">Chờ lấy hàng</span>
-                                                <span class="badge badge-pill badge-danger" th:if="${order.status == 2}">Hủy</span>
-                                                <span class="badge badge-pill badge-info" th:if="${order.status == 4}">Đang giao</span>
-                                                <span class="badge badge-pill badge-success" th:if="${order.status == 5}">Đã giao</span>
-                                            </li>
-                                            <li>
-                                                <p>Thanh toán:</p>
-                                                <th:block th:if="${order.payment eq 0}">
-                                                    <span > Tiền mặt</span><br>
-                                                    <a th:if="${order.status==0}"; data-toggle="modal" style="color: blue; text-transform: none;" data-target="#exampleModalCenter">Hoặc chọn hình thức thanh toán khác</a>
-                                                </th:block>
-                                                <th:block th:if="${order.payment eq 1}">
-                                                    <span > VN-PAY</span>
-                                                    <span style="  font-style: italic; color: red;" th:if="${order.statusPayment eq 0}"> (Thanh toán không thành công)</span><br>
-                                                    <a th:if="${order.statusPayment != 1 || order.status == 2   }" data-toggle="modal" data-target="#exampleModalCenter">Chọn hình thức thanh toán khác</a>
-                                                    <span style="  font-style: italic; color: seagreen" class="text-success" th:if="${order.statusPayment eq 1}"> (Thanh toán thành công)</span>
-                                                </th:block>
-                                            </li>
-                                            <li>
-
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <div class="order_details_iner" style="border-radius: 15px; color: #ffffff;">
-                                        <h4 style="font-weight: bold;">THÔNG TIN SẢN PHẨM</h4>
-                                        <table class="table table-borderless">
-                                            <thead>
-                                            <tr>
-                                                <th style="font-weight: bold; font-size: 15px" scope="col" colspan="2">SẢN PHẨM</th>
-                                                <th style="font-weight: bold; font-size: 15px" scope="col">SỐ LƯỢNG</th>
-                                                <th style="font-weight: bold; font-size: 15px" scope="col">GIÁ</th>
-                                                <th style="font-weight: bold; font-size: 15px" scope="col">TỔNG TIỀN</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <tr th:each="orderdetail : ${order.orderDetails}">
-                                                <td colspan="2">
-                                                    <div style="display: grid; grid-template-columns: 80px auto 15%; grid-gap: 20px;">
-                                                        <img th:src="@{${orderdetail.productDetails.product.thumbnail}}" width="85px" height="85px" style="border-radius: 20px;" alt="">
-                                                        <div style="display: flex; flex-flow: column; gap: 10px;">
-                                                            <span style="font-size: 17px;">[[${orderdetail.productDetails.product.name}]]</span>
-                                                            <span>Color: [[${orderdetail.productDetails.product.color.name}]]</span>
-                                                            <span>Size: [[${orderdetail.productDetails.size.name}]]</span>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>[[${orderdetail.quantity}]]</td>
-                                                <td>
-                                                    <th:block th:if="${orderdetail.discountPrice != 0}">
-                                                        <div style="display: grid; grid-gap: 8px;">
-                                                            <span style="color: red; font-weight: bold">[[${#numbers.formatDecimal(orderdetail.price, 0, 'COMMA', 0, 'POINT')}]]₫</span>
-                                                            <span  style="text-decoration:line-through; font-size: 13px" >[[${#numbers.formatDecimal(orderdetail.discountPrice + orderdetail.price, 0, 'COMMA', 0, 'POINT')}]]₫</span>
-                                                        </div>
-                                                    </th:block>
-                                                    <th:block th:if="${orderdetail.discountPrice == 0}">
-                                                        <div style="display: grid; grid-gap: 8px;">
-                                                            <span style="color: red; font-weight: bold">[[${#numbers.formatDecimal(orderdetail.price, 0, 'COMMA', 0, 'POINT')}]]₫</span>
-                                                        </div>
-                                                    </th:block>
-                                                </td>
-                                                <td>
-                                                    <div style="display: grid; grid-gap: 8px;">
-                                                        <span style="color: red; font-weight: bold">[[${#numbers.formatDecimal(orderdetail.price * orderdetail.quantity, 0, 'COMMA', 0, 'POINT')}]]₫</span>
-                                                    </div>
-<!--                                                    <th:block th:if="${orderdetail.discountPrice != 0}">-->
-<!--                                                        <div style="display: grid; grid-gap: 8px;">-->
-<!--                                                            <span style="color: red; font-weight: bold">[[${#numbers.formatDecimal(orderdetail.quantity * orderdetail.discountPrice, 0, 'COMMA', 0, 'POINT')}]]₫</span>-->
-
-<!--                                                        </div>-->
-<!--                                                    </th:block>-->
-<!--                                                    <th:block th:if="${orderdetail.discountPrice == 0}">-->
-<!--                                                        <div style="display: grid; grid-gap: 8px;">-->
-<!--                                                            <span style="color: red; font-weight: bold">[[${#numbers.formatDecimal(orderdetail.quantity * orderdetail.price, 0, 'COMMA', 0, 'POINT')}]]₫</span>-->
-<!--                                                        </div>-->
-<!--                                                    </th:block>-->
-                                                </td>
-                                            </tr>
-                                            </tbody>
-                                            <tfoot>
-                                            <tr>
-                                                <th scope="col" colspan="3"></th>
-                                                <th scope="col" style="font-size: 14px">TẠM TÍNH: </th>
-                                                <th scope="col">
-                                                    [[${#numbers.formatDecimal(subTotal, 0, 'COMMA', 0, 'POINT')}]]đ
-                                                </th>
-                                            </tr>
-                                            <tr th:if="${order.voucher != null}">
-                                                <th scope="col" colspan="3"></th>
-                                                <th scope="col" style="font-size: 14px">ÁP DỤNG VOUCHER: </th>
-                                                <th scope="col" colspan="3">
-                                                    - [[${#numbers.formatDecimal(order.voucher.discountPrice, 0, 'COMMA', 0, 'POINT')}]]đ</th>
-                                            </tr>
-                                            <tr>
-                                                <th scope="col" colspan="3"></th>
-                                                <th scope="col" style="font-size: 14px">PHÍ SHIP: </th>
-                                                <th scope="col" colspan="3">
-                                                    [[${#numbers.formatDecimal(order.shipFee, 0, 'COMMA', 0, 'POINT')}]]đ</th>
-                                            </tr>
-                                            <tr>
-                                                <th scope="col" colspan="3"></th>
-                                                <th scope="col" style="font-size: 14px">TỔNG TIỀN THANH TOÁN: </th>
-                                                <th th:if="${order.voucher != null}" scope="col" colspan="3">[[${#numbers.formatDecimal(order.total + order.shipFee - order.voucher.discountPrice, 0, 'COMMA',
-                                                    0,'POINT')}]]đ</th>
-                                                <th th:if="${order.voucher == null}" scope="col" colspan="3">[[${#numbers.formatDecimal(order.total + order.shipFee, 0, 'COMMA',
-                                                    0,'POINT')}]]đ</th>
-                                            </tr>
-                                            </tfoot>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="tab-pane fade shadow rounded bg-white p-4" id="v-pills-profile" role="tabpanel"
-                             aria-labelledby="v-pills-profile-tab">
-
-                        </div>
-
-                        <div class="tab-pane fade shadow rounded bg-white p-5" id="v-pills-messages" role="tabpanel"
-                             aria-labelledby="v-pills-messages-tab">
-                            <h4 class="font-italic mb-4">Reviews</h4>
-                            <p class="font-italic text-muted mb-2">Lorem ipsum dolor sit amet, consectetur adipisicing
-                                elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-                                minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
-                                eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa
-                                qui officia deserunt mollit anim id est laborum.</p>
-                        </div>
-
-                        <div class="tab-pane fade shadow rounded bg-white p-5" id="v-pills-settings" role="tabpanel"
-                             aria-labelledby="v-pills-settings-tab">
-                            <h4 class="font-italic mb-4">Confirm booking</h4>
-                            <p class="font-italic text-muted mb-2">Lorem ipsum dolor sit amet, consectetur adipisicing
-                                elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-                                minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
-                                eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa
-                                qui officia deserunt mollit anim id est laborum.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
 
-<!--    input-->
-    <input type="hidden" id="inputIdOrder" th:value="${order.id}"/>
+	<style>
+/* Star Rating Styles */
+.starRating {
+	display: table;
+	margin-bottom: 15px;
+}
 
-    <!-- Modal Payment -->
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <form id="paymentForm" action="/submitPayment" method="post">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">CHỌN HÌNH THỨC THANH TOÁN</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="paymentMethod" id="cashPayment" value="0" checked>
-                            <label class="form-check-label" for="cashPayment">
-                                Thanh toán bằng tiền mặt
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="paymentMethod" id="vnPayPayment" value="1">
-                            <label class="form-check-label" for="vnPayPayment">
-                                Thanh toán qua Vn-Pay
-                            </label>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-<!--                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
-                        <button type="button" class="btn btn-primary" onclick="submitForm()">Áp dụng</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+.starRating span {
+	color: #888888;
+	cursor: pointer;
+	display: table-cell;
+	position: relative;
+	padding-right: 6px;
+}
 
+.starRating span:last-child {
+	padding-right: 0;
+}
+
+.starRating i {
+	transition: opacity 0.4s;
+}
+
+.starRating .fa-star {
+	color: #ffc000;
+	position: absolute;
+	left: 0;
+	opacity: 0;
+}
+
+.starRating span:hover ~span, .starRated span.active ~span {
+	color: #888888;
+}
+
+.starRating:hover .fa-star, .starRating span:hover ~span .fa-star-o {
+	opacity: 1 !important;
+}
+
+.starRating:hover .fa-star-o, .starRating span:hover ~span .fa-star {
+	opacity: 0 !important;
+}
+
+.starRated .fa-star, .starRated span.active ~span .fa-star-o {
+	opacity: 1;
+}
+
+.starRated .fa-star-o, .starRated span.active ~span .fa-star {
+	opacity: 0;
+}
+
+/* For Demo */
+.starRating {
+	margin-left: auto;
+	margin-right: auto;
+}
+</style>
+	<section ng-controller="review-ctrl" class="section_padding">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3">
+					<!-- Tabs nav -->
+					<div class="nav flex-column nav-pills nav-pills-custom"
+						id="v-pills-tab" role="tablist" aria-orientation="vertical">
+						<a class="nav-link mb-3 p-3 shadow " th:href="@{/user/info}"
+							role="tab" aria-controls="v-pills-home" aria-selected="false">
+							<i class="fa fa-user-circle-o mr-2"></i> <span
+							class="font-weight-bold small text-uppercase text-a">Thông
+								tin cá nhân</span>
+						</a> <a class="nav-link mb-3 p-3 shadow active"
+							id="v-pills-profile-tab" data-toggle="pill"
+							href="v-pills-profile" role="tab" aria-controls="v-pills-profile"
+							aria-selected="true"> <i class="fa fa-calendar-minus-o mr-2"></i>
+							<span class="font-weight-bold small text-uppercase text-a">Thông
+								tin đơn hàng</span></a> <a class="nav-link mb-3 p-3 shadow"
+							id="v-pills-messages-tab" data-toggle="pill"
+							href="v-pills-messages" role="tab"
+							aria-controls="v-pills-messages" aria-selected="false"> <i
+							class="fa fa-star mr-2"></i> <span
+							class="font-weight-bold small text-uppercase text-a">Địa
+								chỉ</span></a>
+					</div>
+				</div>
+				<div class="col-md-9">
+					<!-- Tabs content -->
+					<div class="tab-content" id="v-pills-tabContent">
+						<div class="tab-pane fade shadow rounded bg-white show active p-4"
+							id="v-pills-home" role="tabpanel"
+							aria-labelledby="v-pills-home-tab">
+							<div class="row">
+								<div class="col-sm-6">
+									<h6>CHI TIẾT ĐƠN HÀNG #[[${order.id}]]</h6>
+								</div>
+								<div th:if="${order.status eq 0}" style="text-align: right"
+									class="col-sm-6">
+									<a th:href="@{|/user/cancel-order?idorder=${order.id}|}">Hủy
+										đơn hàng</a>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-6 col-lx-4">
+									<div class="single_confirmation_details p-3">
+										<h6>THÔNG TIN KHÁCH HÀNG</h6>
+										<ul>
+											<li>
+												<p>Tên:</p> <span> [[${order.nameUser}]]</span>
+											</li>
+											<li>
+												<p>Địa chỉ:</p> <span>[[${order.detailAddress}]],
+													[[${order.ward}]], [[${order.province}]],
+													[[${order.district}]]</span>
+											</li>
+											<li>
+												<p>Số điện thoại:</p> <span> [[${order.phone}]]</span>
+											</li>
+											<li>
+												<p>Email:</p> <span> [[${order.email}]]</span>
+											</li>
+										</ul>
+									</div>
+								</div>
+
+								<div class="col-lg-6 col-lx-4">
+									<div class="single_confirmation_details p-3">
+										<h6>THÔNG TIN ĐƠN HÀNG</h6>
+										<ul>
+											<li>
+												<p>Ngày đặt:</p> <span
+												th:text="${#dates.format(order.orderDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
+											</li>
+											<li>
+												<!--                                                <th:block th:if="${order.voucher != null}" >-->
+												<!--                                                    <p>Tổng tiền:</p>-->
+												<!--                                                    <span>[[${#numbers.formatDecimal(order.totalDiscount, 0, 'COMMA', 0, 'POINT')}]]</span><br>-->
+												<!--                                                    <p>Tổng tiền:</p>-->
+												<!--                                                    <span style="text-decoration: line-through;" >[[${#numbers.formatDecimal(order.total, 0, 'COMMA', 0, 'POINT')}]]</span>-->
+												<!--                                                </th:block>-->
+
+												<!--                                                <th:block th:if="${order.voucher == null}" >-->
+												<p>Tổng tiền:</p> <span th:if="${order.voucher != null}">[[${#numbers.formatDecimal(order.total
+													+ order.shipFee - order.voucher.discountPrice, 0, 'COMMA',
+													0,'POINT')}]]đ</span> <span th:if="${order.voucher == null}">[[${#numbers.formatDecimal(order.total
+													+ order.shipFee, 0, 'COMMA', 0,'POINT')}]]đ</span> <!--                                                </th:block>-->
+
+											</li>
+											<li>
+												<p>Trạng thái giao hàng:</p> <span
+												class="badge badge-pill badge-secondary"
+												th:if="${order.status == 0}">Chờ xác nhận</span> <span
+												class="badge badge-pill badge-warning"
+												th:if="${order.status == 1}">Chờ lấy hàng</span> <span
+												class="badge badge-pill badge-danger"
+												th:if="${order.status == 2}">Hủy</span> <span
+												class="badge badge-pill badge-info"
+												th:if="${order.status == 4}">Đang giao</span> <span
+												class="badge badge-pill badge-success"
+												th:if="${order.status == 5}">Đã giao</span>
+											</li>
+											<li>
+												<p>Thanh toán:</p> <th:block th:if="${order.payment eq 0}">
+													<span> Tiền mặt</span>
+													<br>
+													<a th:if="${order.status==0}" ; data-toggle="modal"
+														style="color: blue; text-transform: none;"
+														data-target="#exampleModalCenter">Hoặc chọn hình thức
+														thanh toán khác</a>
+												</th:block> <th:block th:if="${order.payment eq 1}">
+													<span> VN-PAY</span>
+													<span style="font-style: italic; color: red;"
+														th:if="${order.statusPayment eq 0}"> (Thanh toán
+														không thành công)</span>
+													<br>
+													<a
+														th:if="${order.statusPayment != 1 || order.status == 2   }"
+														data-toggle="modal" data-target="#exampleModalCenter">Chọn
+														hình thức thanh toán khác</a>
+													<span style="font-style: italic; color: seagreen"
+														class="text-success" th:if="${order.statusPayment eq 1}">
+														(Thanh toán thành công)</span>
+												</th:block>
+											</li>
+											<li></li>
+										</ul>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-12">
+									<div class="order_details_iner"
+										style="border-radius: 15px; color: #ffffff;">
+										<h4 style="font-weight: bold;">THÔNG TIN SẢN PHẨM</h4>
+										<table class="table table-borderless">
+											<thead>
+												<tr style="vertical-align: center !important;">
+													<th style="font-weight: bold; font-size: 15px" scope="col"
+														colspan="2">SẢN PHẨM</th>
+													<th style="font-weight: bold; font-size: 15px" scope="col">SỐ
+														LƯỢNG</th>
+													<th style="font-weight: bold; font-size: 15px" scope="col">GIÁ</th>
+													<th style="font-weight: bold; font-size: 15px" scope="col">TỔNG
+														TIỀN</th>
+													<th th:if="${order.status == 5}" style="font-weight: bold; font-size: 15px" scope="col">Đánh
+														giá</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr th:each="orderdetail : ${order.orderDetails}">
+													<td colspan="2">
+														<div
+															style="display: grid; grid-template-columns: 80px auto 15%; grid-gap: 20px;">
+															<img
+																th:src="@{|${orderdetail.productDetails.product.thumbnail}|}"
+																width="85px" height="85px" style="border-radius: 20px;"
+																alt="">
+															<div style="display: flex; flex-flow: column; gap: 10px;">
+																<span style="font-size: 17px;">[[${orderdetail.productDetails.product.name}]]</span>
+																<span>Color:
+																	[[${orderdetail.productDetails.product.color.name}]]</span> <span>Size:
+																	[[${orderdetail.productDetails.size.name}]]</span>
+															</div>
+														</div>
+													</td>
+													<td>[[${orderdetail.quantity}]]</td>
+													<td><th:block
+															th:if="${orderdetail.discountPrice != 0}">
+															<div style="display: grid; grid-gap: 8px;">
+																<span style="color: red; font-weight: bold">[[${#numbers.formatDecimal(orderdetail.price,
+																	0, 'COMMA', 0, 'POINT')}]]₫</span> <span
+																	style="text-decoration: line-through; font-size: 13px">[[${#numbers.formatDecimal(orderdetail.discountPrice
+																	+ orderdetail.price, 0, 'COMMA', 0, 'POINT')}]]₫</span>
+															</div>
+														</th:block> <th:block th:if="${orderdetail.discountPrice == 0}">
+															<div style="display: grid; grid-gap: 8px;">
+																<span style="color: red; font-weight: bold">[[${#numbers.formatDecimal(orderdetail.price,
+																	0, 'COMMA', 0, 'POINT')}]]₫</span>
+															</div>
+														</th:block></td>
+													<td>
+														<div style="display: grid; grid-gap: 8px;">
+															<span style="color: red; font-weight: bold">[[${#numbers.formatDecimal(orderdetail.price
+																* orderdetail.quantity, 0, 'COMMA', 0, 'POINT')}]]₫</span>
+														</div>
+
+
+													</td>
+													<td th:if="${order.status == 5}"><span> <a
+															th:attr="ng-click=|reviews(${session.user.id},${orderdetail.productDetails.product.id})|"
+															data-toggle="modal" data-target=".bd-example-modal-lg"
+															title="Edit"> Đánh giá
+																</a></td>
+												</tr>
+											</tbody>
+											<tfoot>
+												<tr>
+													<th scope="col" colspan="3"></th>
+													<th scope="col" style="font-size: 14px">TẠM TÍNH:</th>
+													<th scope="col">[[${#numbers.formatDecimal(subTotal,
+														0, 'COMMA', 0, 'POINT')}]]đ</th>
+												</tr>
+												<tr th:if="${order.voucher != null}">
+													<th scope="col" colspan="3"></th>
+													<th scope="col" style="font-size: 14px">ÁP DỤNG
+														VOUCHER:</th>
+													<th scope="col" colspan="3">-
+														[[${#numbers.formatDecimal(order.voucher.discountPrice, 0,
+														'COMMA', 0, 'POINT')}]]đ</th>
+												</tr>
+												<tr>
+													<th scope="col" colspan="3"></th>
+													<th scope="col" style="font-size: 14px">PHÍ SHIP:</th>
+													<th scope="col" colspan="3">
+														[[${#numbers.formatDecimal(order.shipFee, 0, 'COMMA', 0,
+														'POINT')}]]đ</th>
+												</tr>
+												<tr>
+													<th scope="col" colspan="3"></th>
+													<th scope="col" style="font-size: 14px">TỔNG TIỀN
+														THANH TOÁN:</th>
+													<th th:if="${order.voucher != null}" scope="col"
+														colspan="3">[[${#numbers.formatDecimal(order.total +
+														order.shipFee - order.voucher.discountPrice, 0, 'COMMA',
+														0,'POINT')}]]đ</th>
+													<th th:if="${order.voucher == null}" scope="col"
+														colspan="3">[[${#numbers.formatDecimal(order.total +
+														order.shipFee, 0, 'COMMA', 0,'POINT')}]]đ</th>
+												</tr>
+											</tfoot>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+
+		<!--    input-->
+		<input type="hidden" id="inputIdOrder" th:value="${order.id}" />
+
+		<!-- Modal Payment -->
+		<div class="modal fade" id="exampleModalCenter" tabindex="-1"
+			role="dialog" aria-labelledby="exampleModalCenterTitle"
+			aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<form id="paymentForm" action="/submitPayment" method="post">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLongTitle">CHỌN HÌNH
+								THỨC THANH TOÁN</h5>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<div class="form-check">
+								<input class="form-check-input" type="radio"
+									name="paymentMethod" id="cashPayment" value="0" checked>
+								<label class="form-check-label" for="cashPayment"> Thanh
+									toán bằng tiền mặt </label>
+							</div>
+							<div class="form-check">
+								<input class="form-check-input" type="radio"
+									name="paymentMethod" id="vnPayPayment" value="1"> <label
+									class="form-check-label" for="vnPayPayment"> Thanh toán
+									qua Vn-Pay </label>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<!--                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
+							<button type="button" class="btn btn-primary"
+								onclick="submitForm()">Áp dụng</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+
+
+		<div class="modal fade bd-example-modal-lg" tabindex="-1"
+			role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLongTitle">Đánh giá</h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+
+
+						<div ng-show="reviewdetail" class="form-validation">
+							<div class="row">
+								<div class="col-sm-1"></div>
+								<div class="col-sm-6">
+									<div class="row">
+										<div class="form-group col-sm-11">
+											<div class="card">
+												<div class="card-body">
+													<h5 class="card-title " style="text-align: center;">Đánh
+														Giá</h5>
+
+													<!-- Star Rating HTML -->
+													<div style="text-align: center;">
+														<span><i ng-if="reviewdetail.rating >=1"
+															style="color: rgb(246, 206, 88);" class="fa fa-star"></i></span>
+														<span><i ng-if="reviewdetail.rating >=2"
+															style="color: rgb(246, 206, 88);" class="fa fa-star"></i></span>
+														<span><i ng-if="reviewdetail.rating >=3"
+															style="color: rgb(246, 206, 88);" class="fa fa-star"></i></span>
+														<span><i ng-if="reviewdetail.rating >=4"
+															style="color: rgb(246, 206, 88);" class="fa fa-star"></i></span>
+														<span><i ng-if="reviewdetail.rating >=5"
+															style="color: rgb(246, 206, 88);" class="fa fa-star"></i></span>
+
+													</div>
+
+
+												</div>
+											</div>
+										</div>
+										<div class="form-group col-sm-11">
+											<div>Ngày đánh giá</div>
+											<input ng-model="reviewdetail.dateReview" type="date"
+												class="form-control">
+										</div>
+									</div>
+								</div>
+								<div class="col-sm-5 text-center">
+									<label ng-if="reviewdetail.image "> <img
+										src="{{reviewdetail.image}}"
+										style="max-width: 100%; height: 200px">
+									</label>
+								</div>
+								<div class="col-sm-1"></div>
+								<div class="form-group col-sm-11">
+									<div>Nội dung</div>
+									<textarea ng-model="reviewdetail.descriptionReview" rows="4"
+										class="form-control" cols="50"></textarea>
+								</div>
+							</div>
+						</div>
+
+
+
+						<div ng-show="!reviewdetail" class="form-validation">
+							<div class="row">
+								<div class="col-sm-2"></div>
+								<div class="col-sm-8">
+									<form id="ratingForm">
+										<div class="card">
+											<div class="card-body">
+												<h5 class="card-title " style="text-align: center;">Đánh
+													Giá</h5>
+
+												<!-- Star Rating HTML -->
+												<div class="starRating">
+													<span><i class="fa fa-star-o fa-2x"></i><i
+														class="fa fa-star fa-2x"></i></span> <span><i
+														class="fa fa-star-o fa-2x"></i><i class="fa fa-star fa-2x"></i></span>
+													<span><i class="fa fa-star-o fa-2x"></i><i
+														class="fa fa-star fa-2x"></i></span> <span><i
+														class="fa fa-star-o fa-2x"></i><i class="fa fa-star fa-2x"></i></span>
+													<span><i class="fa fa-star-o fa-2x"></i><i
+														class="fa fa-star fa-2x"></i></span>
+												</div>
+
+
+											</div>
+										</div>
+										<input type="hidden" id="currentRating"></input>
+									</form>
+								</div>
+								<div class="col-sm-2"></div>
+								<div class="form-group col-sm-12">
+									<div>Nội dung</div>
+									<textarea ng-model="review.descriptionReview" rows="4"
+										class="form-control" cols="50"></textarea>
+								</div>
+								<div class="form-group col-sm-6 px-3">
+									<div>Ảnh</div>
+									<input type="file" class="form-control" id="image"
+										onchange="angular.element(this).scope().imageChanged(this.files)">
+								</div>
+								<div class="col-sm-6">
+									<label for="image"> <img class=""
+										ng-src="{{review.image}}" style="max-height: 150px">
+									</label>
+								</div>
+
+
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button ng-if="!reviewdetail" ng-click="createReview()" class="btn btn-primary" data-dismiss="modal">
+							<b class="glyphicon glyphicon-plus" ></b> Đánh giá
+						</button>
+						<button type="button" class="btn btn-secondary"
+							data-dismiss="modal">Đóng</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script>
+			$(document).ready(function() {
+				$('.starRating span').click(function() {
+					$(this).siblings().removeClass('active');
+					$(this).addClass('active');
+					$(this).parent().addClass('starRated');
+
+					// Added for Demo
+					let rating = $(this).index() + 1;
+					$('#currentRating').html(rating);
+					
+
+				});
+
+			});
+		</script>
+
+	</section>
 </main>
+
