@@ -653,6 +653,7 @@ app.controller("cart-ctrl", function($scope, $http) {
 		} else {
 			if($scope.listAddress.length === 0 ){
 				document.getElementById('address_user').innerText = 'Chưa có địa chỉ. Vui lòng thêm ít nhất 1 địa chỉ nhận hàng';
+				isValid = false;
 			}else{
 
 				var isAnyRadioChecked = false;
