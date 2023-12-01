@@ -83,5 +83,9 @@ public class Users implements Serializable{
     @BatchSize(size = 10)
     private List<Authority> authorities;
 
+    public Users(int id) {
+        this.id = id;
+    }
+
 }
 

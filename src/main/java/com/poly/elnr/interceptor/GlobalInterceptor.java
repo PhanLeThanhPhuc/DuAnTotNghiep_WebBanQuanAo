@@ -1,4 +1,5 @@
 package com.poly.elnr.interceptor;
+import com.poly.elnr.entity.Size;
 import com.poly.elnr.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,6 +15,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+
 @Component
 @RequiredArgsConstructor
 public class GlobalInterceptor implements HandlerInterceptor {
@@ -22,21 +25,25 @@ public class GlobalInterceptor implements HandlerInterceptor {
     private final CategoryService categoryService;
     private final ColorService colorService;
 
+
+//    List<Size> size = sizeService.findAllSizeStatusTrue()
+
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
                            ModelAndView modelAndView) throws Exception {
         String requestURI = request.getRequestURI();
-        
+
         if (requestURI.startsWith("/user/product")) {
         	 request.setAttribute("sizeMenu", sizeService.findAllSizeStatusTrue());
         	 request.setAttribute("colorMenu", colorService.findAllColorEight());
         	 request.setAttribute("colorPopover", colorService.findAllColor());
         }
-        
+
         if (request.getHeader("X-Requested-With") == null) {
             request.setAttribute("category", categoryService.findALlCategory());
         }
-        
+
     }
+
 }
 

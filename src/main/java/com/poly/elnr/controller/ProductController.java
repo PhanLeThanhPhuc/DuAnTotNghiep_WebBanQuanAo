@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -88,6 +89,42 @@ public class ProductController {
 		model.addAttribute("idCategoryDetail", idCategoryDetail);
 		return "user/product/productCategoryDetail";
 	}
+	
+	@RequestMapping("productsale")
+	public String viewProductSale(Model model, 
+			@RequestParam(name = "size", required = false) List<Integer> sizeId,
+			@RequestParam(name = "color", required = false) List<Integer> colorId,
+			@RequestParam(name = "sort", required = false) Optional<String> sort,
+			@RequestParam(name = "p", required = false) Optional<Integer> p) {
+		
+		Sort s;
+		if (sort.isEmpty() || sort.get().equals("price-asc")) {
+			s = Sort.by(Sort.Direction.ASC, "price");
+		} else if (sort.get().equals("price-desc")) {
+			s = Sort.by(Sort.Direction.DESC, "price");
+		} else if (sort.get().equals("name-az")) {
+			s = Sort.by(Sort.Direction.ASC, "name");
+		} else {
+			s = Sort.by(Sort.Direction.DESC, "name");
+		}
+		Pageable pageable = PageRequest.of(p.orElse(0), 12, s);
+		List<Product> products = productService.findSale( colorId, sizeId,
+				sort, p);
+		
+		List<Product> product2=discountCheckService.getDiscountProducts2(products);
+		 int start =p.orElse(0)* 12;
+	     int end = Math.min((start + 12), product2.size());
+
+	     List<Product> subList = product2.subList(start, end);
+		Page<Product> productPage = new PageImpl<>(subList, pageable, product2.size());
+		
+		model.addAttribute("product",
+				productPage);
+		model.addAttribute("sizeId", sizeId != null ? sizeId : 0);
+		model.addAttribute("colorId", colorId != null ? colorId : 0);
+		model.addAttribute("sortValue", sort.orElse("price-asc"));
+		return "user/product/productSale";
+	}
 
 	@RequestMapping("product-detail")
 	public String detail(Model model, @RequestParam("product-id") Integer id,
@@ -101,22 +138,14 @@ public class ProductController {
 			model.addAttribute("rating3", rating.stream().filter(n -> n.getRating() == 3).count());
 			model.addAttribute("rating2", rating.stream().filter(n -> n.getRating() == 2).count());
 			model.addAttribute("rating1", rating.stream().filter(n -> n.getRating() == 1).count());
-		} else {
-			model.addAttribute("rating", "0");
-			model.addAttribute("ratingTotal", 0);
-			model.addAttribute("rating5", 0);
-			model.addAttribute("rating4", 0);
-			model.addAttribute("rating3", 0);
-			model.addAttribute("rating2", 0);
-			model.addAttribute("rating1", 0);
-		}
-		
-
+		} 
 		model.addAttribute("images", imageService.findByProductID(id));
 		model.addAttribute("reviews", reviewService.findByProductID(id, p));
 		model.addAttribute("sizes", detailService.findByProductID(id));
 		model.addAttribute("soluong", detailService.findByProductID(id).stream().mapToInt(n -> n.getQuantity()).sum());
-		model.addAttribute("item",discountCheckService.saveDiscountProduct(productService.findById(id)));
+		model.addAttribute("item",discountCheckService.DiscountProduct(productService.findById(id)));
+		model.addAttribute("isDiscount",discountCheckService.isDiscountProduct(productService.findById(id)));
+		
 		return "user/product/detail";
 	}
 

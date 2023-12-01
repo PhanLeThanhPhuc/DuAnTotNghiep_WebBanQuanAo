@@ -34,9 +34,9 @@ app.controller("discount-ctrl", function($scope, $filter, $http, $timeout) {
 			resp.data.dateInsert = new Date(resp.data.dateInsert)
 			$scope.items.push(resp.data);
 			$scope.reset();
-			alert("Thêm mới sản phẩm thành công!");
+			alert("Thêm đợt giảm giá thành công!");
 		}).catch(error => {
-			alert("Lỗi thêm mới sản phẩm!");
+			alert("Lỗi thêm mới đợt giảm giá!");
 			console.log("Error", error);
 		});
 	}
@@ -47,10 +47,10 @@ app.controller("discount-ctrl", function($scope, $filter, $http, $timeout) {
 		$http.put(`/rest/discount/${item.id}`, item).then(resp => {
 			var index = $scope.items.findIndex(p => p.id == item.id);
 			$scope.items[index] = item;
-			alert("Cập nhật sản phẩm thành công!");
+			alert("Cập nhật đợt giảm giá thành công!");
 		})
 			.catch(error => {
-				alert("Lỗi cập nhật sản phẩm!");
+				alert("Lỗi cập nhật đợt giảm giá!");
 				console.log("Error", error);
 			});
 

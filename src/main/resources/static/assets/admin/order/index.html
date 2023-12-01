@@ -7,6 +7,24 @@
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-12">
+			<div class="row">
+				<div class="col-sm-6">
+
+				</div>
+				<div class="col-sm-6">
+					<div class="form-group mr-3">
+						<label for="simple-select2">Lựa chọn</label>
+						<select onchange="filterStatusOrder()" class="form-control select2" id="cbb-status">
+							<option value="all">Tất cả</option>
+							<option value="0">Chờ xác nhận</option>
+							<option value="1">Chờ lấy hàng</option>
+							<option value="4">Đang giao</option>
+							<option value="5">Đã giao</option>
+							<option value="2">Đã hủy</option>
+						</select>
+					</div>
+				</div>
+			</div>
 			<div class="card">
 				<div class="card-body">
 					<h4 class="card-title">Quản lý đơn hàng</h4>
@@ -34,11 +52,12 @@
 									<td>{{item.phone}}</td>
 									<td>{{item.detailAddress}}, {{item.ward}},
 										{{item.district}}, {{item.province}}</td>
-									<td><span class="badge badge-pill badge-secondary"
-										ng-if="item.status == 0">Chờ xác nhận</span> <span
-										class="badge badge-pill badge-warning"
-										ng-if="item.status == 1">Chờ lấy hàng</span> <span
-										class="badge badge-pill badge-danger" ng-if="item.status == 2">Hủy</span>
+									<td>
+										<span class="badge badge-pill badge-secondary" ng-if="item.status == 0">Chờ xác nhận</span>
+										<span class="badge badge-pill badge-warning" ng-if="item.status == 1">Chờ lấy hàng</span>
+										<span class="badge badge-pill badge-danger" ng-if="item.status == 2">Hủy</span>
+										<span class="badge badge-pill badge-info" ng-if="item.status == 4">Đang giao</span>
+										<span class="badge badge-pill badge-success" ng-if="item.status == 5">Đã giao</span>
 									</td>
 									<td>{{item.payment == 0 ? 'Tiền mặt' : 'Chuyển khoản'}}</td>
 									<td><span> <a ng-click="editOrder(item)"

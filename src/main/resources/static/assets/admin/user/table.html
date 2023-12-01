@@ -34,6 +34,9 @@
 									<th ng-click="toggleSort('date_update')">Ngày cập nhật
 										<span ng-show="isSortedBy('date_update')" ng-class="getSortIconClass('date_update')"></span>
 									</th>
+									<th ng-click="toggleSort('status')">Đăng ký tài khoản
+<!--										<span ng-show="isSortedBy('status')" ng-class="getSortIconClass('status')"></span>-->
+									</th>
 									<th ng-click="toggleSort('status')">Trạng thái
 										<span ng-show="isSortedBy('status')" ng-class="getSortIconClass('status')"></span>
 									</th>
@@ -54,6 +57,7 @@
 
 									<td>{{item.date_insert | date : 'dd-MM-yyyy hh:mm'}}</td>
 									<td>{{item.date_update | date : 'dd-MM-yyyy hh:mm'}}</td>
+									<td>{{item.signup == false ? 'Chưa đăng ký' : 'Đã đăng ký'}}</td>
 									<td><label class="switch"> <input
 											ng-model="item.status" ng-value="true" name="available"
 											type="checkbox"> <span ng-click="updateStatus(item)" class="slider round"></span>

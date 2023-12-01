@@ -1,0 +1,99 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{/user/layout/index :: dynamic(~{::main})}">
+<main>
+    <section class="section_padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <!-- Tabs nav -->
+                    <div class="nav flex-column nav-pills nav-pills-custom" id="v-pills-tab" role="tablist"
+                         aria-orientation="vertical">
+                        <a class="nav-link mb-3 p-3 shadow"
+                           th:href="@{/user/info}" role="tab" aria-controls="v-pills-home" aria-selected="false">
+                            <i class="fa fa-user-circle-o mr-2"></i>
+                            <span class="font-weight-bold small text-uppercase text-a">Thông tin cá nhân</span></a>
+
+                        <a class="nav-link mb-3 p-3 shadow "
+                           th:href="@{/user/order}" role="tab" aria-controls="v-pills-profile" aria-selected="true">
+                            <i class="fa fa-calendar-minus-o mr-2"></i>
+                            <span class="font-weight-bold small text-uppercase text-a">Thông tin đơn hàng</span></a>
+
+                        <a class="nav-link mb-3 p-3 shadow active" id="v-pills-messages-tab" data-toggle="pill"
+                           href="v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">
+                            <i class="fa fa-star mr-2"></i>
+                            <span class="font-weight-bold small text-uppercase text-a">Địa chỉ</span></a>
+                    </div>
+                </div>
+
+
+                <div class="col-md-9">
+                    <!-- Tabs content -->
+                    <div class="tab-content" id="v-pills-tabContent">
+                        <div class="tab-pane fade shadow rounded bg-white show active p-4" id="v-pills-home"
+                             role="tabpanel" aria-labelledby="v-pills-home-tab">
+                            <div>
+                                <span class="mb-4" style="font-size: 18px; font-weight: bold; ">Địa chỉ nhận hàng</span>
+                                <div th:each="address : ${address}" class="form-check mb-2">
+                                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+                                    <label class="form-check-label" for="exampleRadios1">
+                                        [[${address.addressDetail}]], [[${address.wardName}]], [[${address.districtName}]], [[${address.provinceName}]]
+                                    </label>
+                                </div>
+                                <button data-toggle="modal" data-target="#exampleModalCenter" type="button" class="btn btn-outline-warning">+ Thêm địa chỉ mới</button>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade shadow rounded bg-white p-4" id="v-pills-profile" role="tabpanel"
+                             aria-labelledby="v-pills-profile-tab">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row" >
+                        <div class="col-md-6 form-group p_star">
+                            <select id="comboxboxProvince"  onchange="district(value)" class="country_select form-control country_select_add">
+                                <option value="default">Tỉnh</option>
+                                <option> </option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 form-group p_star">
+                            <select id="comboboxDistrict"  onchange="ward(value)" class="country_select form-control country_select_add">
+                                <option value="default">Huyện</option>
+                                <option ></option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 form-group p_star">
+                            <select id="comboboxWard" class="country_select form-control country_select_add">
+                                <option value="">Xã</option>
+                                <option ></option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 form-group p_star">
+                            <input type="text" class="form-control" id="addressDetail" name="name" />
+                            <span class="placeholder" data-placeholder="Địa chỉ cụ thể"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="createAddress()">Thêm địa chỉ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

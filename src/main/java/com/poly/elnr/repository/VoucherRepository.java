@@ -11,9 +11,6 @@ import java.util.List;
 @Repository
 public interface VoucherRepository extends JpaRepository<Voucher, Integer>{
 
-    @Query(value = "\n" +
-            "SELECT *\n" +
-            "FROM voucher\n" +
-            "WHERE CURRENT_TIMESTAMP BETWEEN start_date AND end_date;", nativeQuery = true)
+    @Query("SELECT v FROM Voucher v WHERE CURRENT_TIMESTAMP BETWEEN v.startDate AND v.endDate AND v.status = true")
     List<Voucher> fillAllVoucherDate();
 }

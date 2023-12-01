@@ -17,13 +17,13 @@ import java.util.List;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Integer>{
 
-    @Query("SELECT o FROM Order o WHERE o.user.id =:userId")
+    @Query("SELECT o FROM Order o WHERE o.user.id = :userId ORDER BY o.id DESC")
     List<Order> findOrderByIdUser(@Param("userId") int userId);
 
 //    @Query("SELECT new com.poly.elnr.dto.OrderDTO(o.total, o.orderDate) from Order o group by o.orderDate")
 //    List<OrderDTO> findAllTotal();
 
-    @Query("SELECT new com.poly.elnr.dto.OrderDTO(SUM(o.total), o.orderDate) FROM Order o GROUP BY o.orderDate")
+    @Query("SELECT new com.poly.elnr.dto.OrderDTO(SUM(o.total), o.orderDate) FROM Order o where o.status = 5 GROUP BY o.orderDate")
     List<OrderDTO> findAllTotal();
 
     @Query("SELECT new com.poly.elnr.dto.TotalWithUserOrderDTO(o.phone, SUM(o.total) , CAST(o.orderDate AS date)) " +
@@ -33,10 +33,28 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
 
     @Query("SELECT new com.poly.elnr.dto.PhoneTotalDTO(o.phone, SUM(o.total), COUNT(o.phone)) " +
             "FROM Order o " +
-            "WHERE MONTH(o.orderDate) = MONTH(CURRENT_DATE) AND YEAR(o.orderDate) = YEAR(CURRENT_DATE) " +
+            "where o.status = 5 " +
             "GROUP BY o.phone " +
-            "ORDER BY SUM(o.total) DESC " +
-            "LIMIT 10")
-    List<PhoneTotalDTO> findTop10ByPhonePriceWithDate();
+            "ORDER BY SUM(o.total) DESC ")
+    List<PhoneTotalDTO> findPhoneTotalDTO();
+
+    @Query("SELECT new com.poly.elnr.dto.PhoneTotalDTO(o.phone, SUM(o.total), COUNT(o.phone)) " +
+            "FROM Order o " +
+            "WHERE o.orderDate BETWEEN :startDate AND :endDate " +
+            "GROUP BY o.phone " +
+            "ORDER BY SUM(o.total) DESC ")
+    List<PhoneTotalDTO> findTop10PhoneTotalsByDateRange(
+            @Param("startDate") Date startDate,
+            @Param("endDate") Date endDate
+    );
+
+    @Query("SELECT new com.poly.elnr.dto.PhoneTotalDTO(o.phone, SUM(o.total), COUNT(o.phone)) " +
+            "FROM Order o " +
+            "WHERE CAST(o.orderDate AS date) = CAST(CURRENT_TIMESTAMP AS date) " +
+            "GROUP BY o.phone " +
+            "ORDER BY SUM(o.total) DESC ")
+    List<PhoneTotalDTO> findTop10PhoneTotalsForToday();
+
+
 
 }

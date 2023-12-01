@@ -46,7 +46,7 @@ public class SecurityConfig {
 					.anyRequest().permitAll()
 					.and()
 					.formLogin()
-					.loginPage("/security/user")
+					.loginPage("/user/login")
 					.loginProcessingUrl("/j_spring_security_check")
 					.successHandler(authenticationSuccessHandler())
 					.failureHandler(simpleUrlAuthenticationFailureHandler())
@@ -60,7 +60,7 @@ public class SecurityConfig {
 
 		            .and()
 		            .oauth2Login()
-	                .loginPage("/security/user")
+	                .loginPage("/user/login")
 					.userInfoEndpoint()
 					.userService(oauth2UserService)
 					.and()

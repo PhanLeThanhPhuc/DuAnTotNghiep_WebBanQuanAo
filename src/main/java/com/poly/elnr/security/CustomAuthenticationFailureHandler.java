@@ -26,9 +26,7 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
         } else {
             errorMessage += "There were other authentication errors.";
         }
-
-        response.sendRedirect("/security/user?error=fail&message=" + errorMessage);
-
+        response.sendRedirect("/user/login?error=fail&message=" + errorMessage);
     }
 
 }

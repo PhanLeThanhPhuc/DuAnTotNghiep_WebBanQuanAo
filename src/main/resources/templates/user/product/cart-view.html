@@ -23,7 +23,7 @@
 								<td>
 									<div class="media">
 										<div class="d-flex">
-											<img src="/assets/user/user/image/{{item.product.thumbnail}}"
+											<img src="{{item.product.thumbnail}}"
 												alt="" style="width: 50px;">
 										</div>
 										<div class="media-body">
@@ -34,14 +34,15 @@
 
 								<td>
 									<div ng-if="item.product.sale ==false">
-										<h4 style=" color: red; font-weight: 600">{{item.product.price }}</h4>
+										<h4 style=" color: red; font-weight: 600">{{item.product.price }}₫</h4>
 									</div>
 
 									<div ng-if="item.product.sale == true">
 										<h5 style="text-decoration-line: line-through;">{{item.product.price
-											}}</h5>
-										<h4 style=" color: red; font-weight: 600">{{item.product.discountPrice }}</h4>
+											}}₫</h5>
+										<h4 style=" color: red; font-weight: 600">{{item.product.discountPrice }}₫</h4>
 									</div>
+						
 								</td>
 								<td>
 									<h5>{{item.size.name}}</h5>
@@ -78,7 +79,7 @@
 						</tbody>
 					</table>
 					<div class="checkout_btn_inner float-right">
-						<a class="btn_1" href="#">Tiếp tục mua sắm</a> <a
+						<a class="btn_1" href="/user/index">Tiếp tục mua sắm</a> <a
 							class="btn_1 checkout_btn_1" href="/user/checkout">Thanh toán</a>
 					</div>
 				</div>

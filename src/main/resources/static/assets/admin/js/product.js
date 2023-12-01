@@ -40,35 +40,55 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 		$scope.closeCollapsibles();
 	}
 
-
-
-
 	$scope.edit = function(item) {
+		loadImageThumbnail(item);
 		$scope.form = angular.copy(item);
-
+		console.log("FORM: ",$scope.form);
 		$(".nav-tabs a:eq(0)").tab("show");
 		$http.get(`/rest/productsDetail/${item.id}`).then(resp => {
 			$scope.productSize = resp.data;
 		})
-
 		$http.get(`/rest/image/${item.id}`).then(resp => {
-			$scope.image = resp.data;
+			$scope.selectedFiles = resp.data;
+			updateImageContainer();
 		})
 		$scope.selected = [];
 		$scope.displayedImages = [];
 	}
 
 
+	loadImageDetail = (imageUrlArray) => {
+		const imageContainer = document.getElementById('imageContainer');
+		imageContainer.innerHTML = '';
 
-	$scope.create = function() {
+		for (let i = 0; i < imageUrlArray.length; i++) {
+			const img = document.createElement('img');
+			img.src = imageUrlArray[i].image;
+			img.alt = `Image ${i + 1}`;
+			img.style.width = '100px';
+			img.style.height = '100px';
+			img.style.marginRight = '10px';
+			img.style.marginBottom = '10px';
+
+			imageContainer.appendChild(img);
+		}
+	}
+
+	$scope.create = async () => {
+		if($scope.form.thumbnail instanceof File){
+			await $scope.uploadImageThumbnail();
+			console.log("THEEM ANH THANH CONG");
+		}
 		var item = angular.copy($scope.form);
-		$http.post(`/rest/products`, item).then(resp => {
+		console.log("item form", $scope.form)
+		await $http.post(`/rest/products`, item).then(async resp => {
 			$scope.items.push(resp.data);
 			$scope.form = angular.copy(resp.data);
+			await $scope.uploadImageDetail();
 			alert("Thêm mới sản phẩm thành công!");
-
-			$scope.selected.forEach(function(productDetail) {
-				productdt = { size: productDetail, product: $scope.form }
+			// them anh san pham phu
+			$scope.selected.forEach(function (productDetail) {
+				productdt = {size: productDetail, product: $scope.form}
 				$http.post(`/rest/productsDetail`, productdt).then(resp => {
 					$scope.productSize.push(resp.data);
 				}).catch(error => {
@@ -76,62 +96,49 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 					console.log("Error", error);
 				});
 			});
-
-			$scope.displayedImages.forEach(function(image) {
-				images = { image: image, product: $scope.form }
-				$http.post(`/rest/image`, images).then(resp => {
-					$scope.image.push(resp.data);
-				}).catch(error => {
-					alert("Lỗi thêm hinh !");
-					console.log("Error", error);
-				});
-			});
 		}).catch(error => {
 			alert("Lỗi thêm mới sản phẩm!");
 			console.log("Error", error);
 		});
-
-
-
 	}
 
-
-
-
-	$scope.update = function() {
+	$scope.update  =async () => {
 		var size = angular.copy($scope.productSize);
-		size.forEach(function(size) {
-			$http.put(`/rest/productsDetail/${size.id}`, size).then(resp => {
+		//
+		await $scope.uploadImageDetail();
+		console.log("kdkdkd", $scope.form.thumbnail);
+		if($scope.form.thumbnail instanceof File){
+			await $scope.uploadImageThumbnail();
+			console.log("THEEM ANH THANH CONG");
+		}
+		for (const size1 of size) {
+			await $http.put(`/rest/productsDetail/${size1.id}`, size1).then(resp => {
 			}).catch(error => {
 				alert("Lỗi cập nhật size sản phẩm!");
 				console.log("Error", error);
 			});
-		});
-		$scope.displayedImages.forEach(function(image) {
-			images = { image: image, product: $scope.form }
-			$http.post(`/rest/image`, images).then(resp => {
-				$scope.image.push(resp.data);
-			}).catch(error => {
-				alert("Lỗi thêm hinh !");
-				console.log("Error", error);
-			});
-		});
-
+		}
+		console.log("Link hình repose", $scope.displayedImages)
 		if ($scope.form.description.id == null) {
 			$scope.form.description.id = $scope.oldDescriptionId;
 		}
 		var item = angular.copy($scope.form);
 		item.dateUpdate = new Date();
-		$http.put(`/rest/products/${item.id}`, item).then(resp => {
+		await $http.put(`/rest/products/${item.id}`, item).then(resp => {
 			var index = $scope.items.findIndex(p => p.id == item.id);
 			$scope.items[index] = item;
 			$scope.oldDescriptionId = $scope.form.description.id;
 			alert("Cập nhật sản phẩm thành công!!!!");
 		}).catch(error => {
-			alert("Lỗi cập nhật sản phẩm!");
+			alert("Lỗi cập nhật sảna phẩm!");
 			console.log("Error", error);
 		});
 	}
+
+	// $scope.updateImageDetail = () =>{
+	// 	console.log("List ảnh truy vấn lên",$scope.selectedFiles);
+	// }
+
 
 	$scope.updateStatus = function(product) {
 		var item = angular.copy(product);
@@ -151,39 +158,224 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 				console.log("Error", error);
 			});
 	}
-	$scope.image = [];
-	$scope.imageChanged = function(files) {
+
+	////anh thum
+	InputPreviewImageThumbnail = (input) => {
+		// fillImageThumbnail(input.files);
+		loadImageThumbnail(input.files);
+	}
+
+	function fillImageThumbnail(files) {
+		const imageContainer = document.getElementById('ImageThumbnail');
+		imageContainer.innerHTML = '';
+
+		for (let i = 0; i < files.length; i++) {
+			const img = document.createElement('img');
+			img.src = URL.createObjectURL(files[i]);
+			console.log("SSSSSSSSSSSSSSS", files[i]);
+			img.alt = files[i].name;
+			img.style.width = '250px';
+			img.style.height = '250px';
+			img.style.marginRight = '10px';
+			img.style.marginBottom = '10px';
+			imageContainer.appendChild(img);
+		}
+
+		for (let i = 0; i < $scope.selectedFiles.length; i++) {
+			const img = document.createElement('img');
+
+			if ($scope.selectedFiles[i].name) {
+				// File selected from user's device
+				img.src = URL.createObjectURL($scope.selectedFiles[i]);
+				img.alt = $scope.selectedFiles[i].name;
+			} else if ($scope.selectedFiles[i].image) {
+				// URL from cloud storage (e.g., Cloudinary)
+				img.src = $scope.selectedFiles[i].image;
+				img.alt = `Image ${i + 1}`;
+			}
+
+			img.style.width = '100px';
+			img.style.height = '100px';
+			img.style.marginRight = '10px';
+			img.style.marginBottom = '10px';
+
+			img.addEventListener('dblclick', function () {
+				deleteImage(i);
+			});
+
+			imageContainer.appendChild(img);
+		}
+	}
+
+	loadImageThumbnail = (imageFile) => {
+		$scope.image = imageFile;
+		const imageContainer = document.getElementById('ImageThumbnail');
+		imageContainer.innerHTML = '';
+		const img = document.createElement('img');
+		console.log("$scope.image", $scope.image);
+		if ($scope.image instanceof FileList) {
+			console.log("Đây là FileList:", image);
+			for (let i = 0; i < $scope.image.length; i++) {
+				img.src = URL.createObjectURL($scope.image[i]);
+				console.log("SSSSSSSSSSSSSSS", $scope.image[i]);
+				img.alt = $scope.image[i].name;
+				img.style.width = '250px';
+				img.style.height = '250px';
+				img.style.marginRight = '10px';
+				img.style.marginBottom = '10px';
+				imageContainer.appendChild(img);
+				$scope.form.thumbnail = $scope.image[i];
+			}
+		} else {
+			console.log("Không phải là FileList:", $scope.image);
+			img.src = $scope.image.thumbnail;
+			// img.alt = `Image ${i + 1}`;
+			img.style.width = '250px';
+			img.style.height = '250px';
+			img.style.marginRight = '10px';
+			img.style.marginBottom = '10px';
+			imageContainer.appendChild(img);
+		}
+	}
+
+
+	/// upload xuong db anh thumbnail
+	$scope.uploadImageThumbnail  = async function() {
 		var data = new FormData();
-		data.append('uploadfile', files[0]);
-		$http.post('/rest/upload', data, {
+		console.log(" $scope.form.thumbnail[0]",  $scope.form.thumbnail)
+		data.append('uploadfile', $scope.form.thumbnail);
+		console.log("data form", data)
+		await $http.post('/rest/upload', data, {
 			transformRequest: angular.identity,
 			headers: { 'Content-Type': undefined }
 		}).then(resp => {
-			$scope.form.thumbnail = resp.data.image;
+			if(resp.status ===200){
+				$scope.form.thumbnail = resp.data.image;
+				console.log("UPload thành công", $scope.form.thumbnail);
+			}
 		}).catch(error => {
 			alert("Lỗi upload hình ảnh");
 			console.log("Error", error);
 		})
 	}
 
-	$scope.displayedImages = [];
-	$scope.upload = function(files) {
+	// upload xuong database anh phu
+	$scope.uploadImageDetail = async function() {
+		$scope.listImageProductCopy = $scope.selectedFiles;
+		console.log(" $scope.selectedFiles", $scope.selectedFiles);
 		var form = new FormData();
-		for (var i = 0; i < files.length; i++) {
-			form.append("uploadfiles", files[i]);
+		for (var i = 0; i < $scope.selectedFiles.length; i++) {
+			console.log(" $scope.selectedFiles[i]", $scope.selectedFiles[i]);
+			if ($scope.selectedFiles[i] instanceof File) {
+				form.append("uploadfiles", $scope.selectedFiles[i]);
+			}
 		}
-		$http.post('/rest/uploadmulti', form, {
-			transformRequest: angular.identity,
-			headers: { 'Content-Type': undefined }
-		}).then(resp => {
-			resp.data.images.forEach(image => {
-				$scope.displayedImages.push(image);
+		if (form.entries().next().done) {
+			updateImageProduct();
+		} else {
+			await $http.post('/rest/uploadmulti', form, {
+				transformRequest: angular.identity,
+				headers: { 'Content-Type': undefined }
+			}).then(resp => {
+				if(resp.status === 200){
+				 	updateImageProduct(resp.data);
+				}
+			}).catch(error => {
+				console.log("Errors", error);
 			});
-		}).catch(error => {
-			console.log("Errors", error);
-		});
+		}
 	};
 
+	updateImageProduct = async (listUrlImage) =>{
+
+		console.log("$scope.listImageProductCopy", $scope.listImageProductCopy)
+		if($scope.listImageProductCopy.length === 0){
+			console.log("$scope.listImageProductCopy",$scope.listImageProductCopy)
+			await $http.delete(`/rest/image/delete-by-product${$scope.form.id}`).then(resp => {
+				// $scope.image.push(resp.data);
+			}).catch(error => {
+				alert("Lỗi thêm hinh !");
+				console.log("Error", error);
+			});
+			return;
+		}
+
+		var j = 0;
+		for (var i = 0; i < $scope.selectedFiles.length; i++) {
+			if ($scope.selectedFiles[i] instanceof File) {
+				var objectImageProduct = {
+					image: listUrlImage.images[j],
+					product: {
+						id: $scope.form.id
+					}
+				};
+				$scope.selectedFiles[i] = objectImageProduct;
+				j++;
+			}else{
+				var objectImageProduct = {
+					id: $scope.selectedFiles[i].id,
+					image: $scope.selectedFiles[i].image,
+					product: {
+						id: $scope.form.id
+					}
+				}
+				$scope.selectedFiles[i] = objectImageProduct;
+			}
+		}
+		console.log("images",$scope.selectedFiles);
+		await $http.post(`/rest/image`, $scope.selectedFiles).then(resp => {
+			// $scope.image.push(resp.data);
+		}).catch(error => {
+			alert("Lỗi thêm hinh !");
+			console.log("Error", error);
+		});
+	}
+
+	$scope.selectedFiles = [];
+	uploadFiles1 = (input) => {
+		const files = input.files;
+		for (let i = 0; i < files.length; i++) {
+			$scope.selectedFiles.push(files[i]);
+		}
+		updateImageContainer();
+		console.log($scope.selectedFiles);
+	}
+
+	function updateImageContainer() {
+		const imageContainer = document.getElementById('imageContainer');
+		imageContainer.innerHTML = '';
+
+		for (let i = 0; i < $scope.selectedFiles.length; i++) {
+			const img = document.createElement('img');
+
+			if ($scope.selectedFiles[i].name) {
+				// File selected from user's device
+				img.src = URL.createObjectURL($scope.selectedFiles[i]);
+				img.alt = $scope.selectedFiles[i].name;
+			} else if ($scope.selectedFiles[i].image) {
+				// URL from cloud storage (e.g., Cloudinary)
+				img.src = $scope.selectedFiles[i].image;
+				img.alt = `Image ${i + 1}`;
+			}
+
+			img.style.width = '100px';
+			img.style.height = '100px';
+			img.style.marginRight = '10px';
+			img.style.marginBottom = '10px';
+
+			img.addEventListener('dblclick', function () {
+				deleteImage(i);
+			});
+
+			imageContainer.appendChild(img);
+		}
+	}
+
+
+	function deleteImage(index) {
+		$scope.selectedFiles.splice(index, 1);
+		updateImageContainer();
+	}
 
 	$scope.selected = [];
 

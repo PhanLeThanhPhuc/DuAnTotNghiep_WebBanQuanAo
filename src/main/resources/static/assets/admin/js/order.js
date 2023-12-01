@@ -1,15 +1,16 @@
 app.controller("order-ctrl", function($scope, $filter, $http) {
 
-	$scope.initialize = () => {
-
-		$http.get("/rest/orders").then(resp => {
+	$scope.initialize = async () => {
+		$scope.listOrders = []
+		await $http.get("/rest/orders").then(resp => {
 			$scope.listOrders = resp.data;
-			// console.log("list order",$scope.listOrders);
+			console.log("list order",$scope.listOrders);
 		});
 		// $scope.reset();
 	}
 
 	$scope.initialize();
+
 
 	$scope.editOrder = (order) => {
 		$scope.objectOrder = order;
@@ -38,6 +39,40 @@ app.controller("order-ctrl", function($scope, $filter, $http) {
 		});
 	}
 
+	// $scope.statusOrder = (id, status) =>{
+	// 	$http.get(`/rest/orders/update-status?idOrder=${id}&statusOrder=${status}`).then(resp => {
+	// 		if (resp.status === 200) {
+	// 			var index = $scope.listOrders.findIndex(p => p.id == orderId);
+	// 			$scope.listOrders[index] = resp.data.order;
+	// 			console.log("ssss", resp.data);
+	// 			$scope.message(`Hủy đơn hàng ${orderId} thành công`)
+	// 		}
+	// 	});
+	// }
+
+	$scope.delivering = (orderId) =>{
+		$http.get(`/rest/orders/update-status?idOrder=${orderId}&statusOrder=4`).then(resp => {
+			if (resp.status === 200) {
+				var index = $scope.listOrders.findIndex(p => p.id == orderId);
+				$scope.listOrders[index] = resp.data;
+				console.log("ssss", resp.data);
+				$scope.message(`Đang giao đơn hàng ${orderId}`)
+			}
+		});
+	}
+
+	$scope.successOrder = (orderId) =>{
+		$http.get(`/rest/orders/update-status?idOrder=${orderId}&statusOrder=5`).then(resp => {
+			if (resp.status === 200) {
+				var index = $scope.listOrders.findIndex(p => p.id == orderId);
+				$scope.listOrders[index] = resp.data;
+				console.log("ssss", resp.data);
+				$scope.message(`Giao thành công đơn hàng ${orderId}`)
+			}
+		});
+	}
+
+
 	$scope.message = (mes) => {
 		$.toast({
 			text: mes,
@@ -62,7 +97,7 @@ app.controller("order-ctrl", function($scope, $filter, $http) {
 
 
 	$scope.searchText = {};
-	$scope.listOrders = [];
+	// $scope.listOrders = [];
 	$scope.pager = {
 		page: 0,
 		size: 10,
@@ -70,6 +105,7 @@ app.controller("order-ctrl", function($scope, $filter, $http) {
 		sortDirection: 'desc',
 		get filteredlistOrders() {
 			var filteredlistOrders = $filter('filter')($scope.listOrders, $scope.searchText);
+			// console.log("List filter: ",filteredlistOrders);
 			if ($scope.pager.sortColumn === 'item.id') {
 				filteredlistOrders = $filter('orderBy')(filteredlistOrders, 'item.id', $scope.pager.sortDirection === 'asc');
 			}
@@ -122,5 +158,22 @@ app.controller("order-ctrl", function($scope, $filter, $http) {
 	$scope.isSortedBy = function(column) {
 		return $scope.pager.sortColumn === column;
 	};
+
+	filterStatusOrder = async () =>{
+		var status = document.getElementById("cbb-status").value;
+		if(status === 'all'){
+			await $scope.initialize();
+			$scope.$apply();
+		}else {
+			await $scope.initialize();
+			var listFilterStatus = [];
+			listFilterStatus = $scope.listOrders.filter(o => {
+				return o.status == status;
+			});
+			$scope.listOrders = []
+			$scope.listOrders = angular.copy(listFilterStatus);
+			$scope.$apply();
+		}
+	}
 
 });

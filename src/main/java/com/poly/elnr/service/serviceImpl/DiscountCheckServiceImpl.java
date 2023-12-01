@@ -40,9 +40,22 @@ public class DiscountCheckServiceImpl implements DiscountCheckService {
 
 		return productList;
 	}
+	
+	public List<Product> getDiscountProducts2(List<Product> productList) {
+		Date currentDate = new Date();
+		List<Product> discountedProducts = productList.stream()
+				.filter(product -> discountCheck.isDateInRangeAndAllProducts(currentDate) || discountCheck
+						.isDateInRangeAndProductIdInConfig(String.valueOf(product.getId()), currentDate))
+				.map(product -> {
+					applyDiscount(product);
+					return product;
+				}).collect(Collectors.toList());
+
+		return discountedProducts;
+	}
 
 	@Override
-	public Product saveDiscountProduct(Product product) {
+	public Product DiscountProduct(Product product) {
 		Date currentDate = new Date();
 
 		if (discountCheck.isDateInRangeAndAllProducts(currentDate)
@@ -50,6 +63,18 @@ public class DiscountCheckServiceImpl implements DiscountCheckService {
 			applyDiscount(product);
 		}
 		return product;
+	}
+	
+	@Override
+	public boolean isDiscountProduct(Product product) {
+		Date currentDate = new Date();
+
+		if (discountCheck.isDateInRangeAndAllProducts(currentDate)
+				|| discountCheck.isDateInRangeAndProductIdInConfig(String.valueOf(product.getId()), currentDate)) {
+			return true;
+		}
+		return false;
+		
 	}
 	@Override
 	public List<Product> getDiscountedProducts() {
@@ -81,9 +106,14 @@ public class DiscountCheckServiceImpl implements DiscountCheckService {
 	private void applyDiscount(Product product) {
 		double originalPrice = product.getPrice();
 		double percentSale = discountCheck.getPercentSale(new Date());
-		product.setSale(true);
-		double discountedPrice = originalPrice - (originalPrice * percentSale / 100);
-		product.setDiscountPrice(discountedPrice);
+		double originalDiscountPrice=100-((product.getDiscountPrice()/originalPrice)*100);
+		if(originalDiscountPrice<percentSale || product.isSale()==false) {
+			product.setSale(true);
+			double discountedPrice = originalPrice - (originalPrice * percentSale / 100);
+			product.setDiscountPrice(discountedPrice);
+		}
+		
+		
 	}
 
 }

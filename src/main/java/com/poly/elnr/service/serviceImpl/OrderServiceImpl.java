@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.poly.elnr.dto.OrderDTO;
-import com.poly.elnr.dto.OrderData;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.poly.elnr.dto.PhoneTotalDTO;
 import com.poly.elnr.dto.TotalWithUserOrderDTO;
@@ -14,14 +13,14 @@ import com.poly.elnr.repository.*;
 import com.poly.elnr.service.ApiGHNService;
 import com.poly.elnr.service.UserService;
 import com.poly.elnr.utils.RegexUtils;
-import lombok.Data;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.poly.elnr.service.OrderService;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -182,7 +181,7 @@ public class OrderServiceImpl implements OrderService {
             user = userRepository.findByPhone(username);
             return orderRepository.findOrderByIdUser(user.getId());
         }else{
-            user = userRepository.findEmail(username);
+            user = userRepository.findByEmail(username);
            if(user.getPhone() ==  null){
                return null;
            }else{
@@ -217,13 +216,33 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<PhoneTotalDTO> findTop10ByPhonePriceWithDate() {
-        return orderRepository.findTop10ByPhonePriceWithDate();
+    public List<PhoneTotalDTO> findPhoneTotalDTO() {
+        return orderRepository.findPhoneTotalDTO();
     }
 
     @Override
     public List<TotalWithUserOrderDTO> findTotalByPhoneAndDateRange() {
         return orderRepository.findTotalByPhoneAndDateRange();
+    }
+
+    @Override
+    public List<PhoneTotalDTO> findTop10PhoneTotalsByDateRange(String startDate, String endDate) throws ParseException {
+        Date startDateConvert = new SimpleDateFormat("yyyy-MM-dd").parse(startDate);
+        Date endDateConvert = new SimpleDateFormat("yyyy-MM-dd").parse(endDate);
+        return orderRepository.findTop10PhoneTotalsByDateRange(startDateConvert,endDateConvert);
+    }
+
+    @Override
+    public List<PhoneTotalDTO> findPhoneTotalsForToday() {
+        return orderRepository.findTop10PhoneTotalsForToday();
+    }
+
+    @Override
+    public Order updateStatusOrder(int id, int status) {
+        Order order = orderRepository.findById(id).get();
+        order.setStatus(status);
+        orderRepository.save(order);
+        return order;
     }
 
 }

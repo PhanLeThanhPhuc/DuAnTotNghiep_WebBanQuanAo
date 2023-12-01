@@ -1,7 +1,6 @@
 package com.poly.elnr.service.serviceImpl;
 
 import com.poly.elnr.entity.Address;
-import com.poly.elnr.entity.Order;
 import com.poly.elnr.entity.Users;
 import com.poly.elnr.repository.AddressRepository;
 import com.poly.elnr.repository.UserRepository;
@@ -29,13 +28,13 @@ public class AddressServiceImpl implements AddressService{
             user = userRepository.findByPhone(username);
             return addressRepository.findAddressByIdUser(user.getId());
         }else{
-            user = userRepository.findEmail(username);
-            if(user.getPhone() ==  null){
-                return null;
-            }else{
+            user = userRepository.findByEmail(username);
+//            if(user.getPhone() ==  null){
+//                return null;
+//            }else{
                 System.out.println();
                 return addressRepository.findAddressByIdUser(user.getId());
-            }
+//            }
         }
 //        return null;
     }

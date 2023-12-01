@@ -26,9 +26,9 @@ app.controller("color-ctrl", function($scope,$filter, $http){
 			resp.data.dateInsert = new Date(resp.data.dateInsert)
 			$scope.items.push(resp.data);
 			$scope.reset();
-			alert("Thêm mới sản phẩm thành công!");
+			alert("Thêm mới màu sản phẩm thành công!");
 		}).catch(error => {
-			alert("Lỗi thêm mới sản phẩm!");
+			alert("Lỗi thêm mới màu sản phẩm!");
 			console.log("Error", error);
 		});
 	}
@@ -38,23 +38,23 @@ app.controller("color-ctrl", function($scope,$filter, $http){
 		$http.put(`/rest/colors/${item.id}`, item).then(resp => {
 			var index = $scope.items.findIndex(p => p.id == item.id);
 			$scope.items[index] = item;
-			alert("Cập nhật sản phẩm thành công!");
+			alert("Cập nhật màu sản phẩm thành công!");
 		})
 		.catch(error => {
-			alert("Lỗi cập nhật sản phẩm!");
+			alert("Lỗi cập nhật màu sản phẩm!");
 			console.log("Error", error);
 		});
 	}
 
 	$scope.delete = function(item){
-		if(confirm("Bạn muốn xóa sản phẩm này?")){
+		if(confirm("Bạn muốn xóa màu sản phẩm này?")){
 			$http.delete(`/rest/colors/${item.id}`).then(resp => {
 				var index = $scope.items.findIndex(p => p.id == item.id);
 				$scope.items.splice(index, 1);
 				$scope.reset();
-				alert("Xóa sản phẩm thành công!");
+				alert("Xóa màu sản phẩm thành công!");
 			}).catch(error => {
-				alert("Lỗi xóa sản phẩm!");
+				alert("Lỗi màu xóa sản phẩm!");
 				console.log("Error", error);
 			})
 		}

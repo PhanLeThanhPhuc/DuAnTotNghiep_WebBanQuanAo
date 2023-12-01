@@ -6,6 +6,10 @@ app.controller("cart-ctrl", function($scope, $http) {
 		await $http.get("/user/province").then(resp => {
 			$scope.listProvince = resp.data.data;
 		})
+		 $http.get("/rest/productsDetail/date").then(resp => {
+			$scope.dateEnd = new Date(resp.data);
+	
+		})
 
 		//get user or status login
 		await $http.get("/rest/users/userid").then(resp => {
@@ -44,7 +48,12 @@ app.controller("cart-ctrl", function($scope, $http) {
 			$scope.formInformationOrder.email = $scope.dataLogin.user.email;
 			document.getElementById("phone").disabled = true;
 			$scope.$apply();
+			console.log("phone:",$scope.dataLogin.user.phone)
 		}
+		if($scope.dataLogin.user.phone === null){
+			$('#exampleModalCenter3').modal('show');
+		}
+
 	}
 
 	$scope.form = () => {
@@ -355,7 +364,9 @@ app.controller("cart-ctrl", function($scope, $http) {
 	}
 
 	purchase = () => {
-
+		if(!validate()){
+			return ;
+		}
 		$scope.data = {
 			province: $scope.provinceName,
 			district: $scope.districtName,
@@ -467,5 +478,212 @@ app.controller("cart-ctrl", function($scope, $http) {
 			smallElement.innerHTML = "Mã voucher không khả dụng!";
 		}
 	};
+	
+	
+	
+	
 
+	function updateCountdown() {
+	  const currentDate = new Date();
+	  const timeDifference = $scope.dateEnd - currentDate;
+	  if (timeDifference > 0) {
+		const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+		const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+		const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+		const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+		document.getElementById('countdown').innerHTML = `
+		  ${days} ngày, ${hours} giờ, ${minutes} phút, ${seconds} giây
+		`;
+
+	  }
+	}
+
+	setInterval(updateCountdown, 1000);
+	updateCountdown();
+
+	$scope.registerPhoneNumber = async () => {
+
+		const phoneNumber = "0"+$scope.registerPhone;
+		const email = $scope.formInformationOrder.email;
+		console.log("Phone: ",phoneNumber);
+		await $http.get(`/rest/users/register-phone?phone=${phoneNumber}&email=${email}`).then(resp => {
+
+			console.log("data",resp.data)
+			if(resp.data.data == null){
+				console.log("message",resp.data.message)
+			}else{
+
+				const currentTime = new Date();
+
+				const otpCreationTime = new Date(resp.data.data.timeOtp)
+
+				const elapsedTime = Math.floor((currentTime - otpCreationTime) / 1000);
+				const remainingTime = 60 - elapsedTime;
+
+				countdownotp(remainingTime)
+
+				// console.log("Thời gian còn lại",remainingTime);
+				$("#exampleModalCenter3").modal("hide");
+				// Đóng modal sử dụng jQuery khi nút "Close" được click
+				$("#exampleModalCenter4").modal("show");
+
+			}
+		})
+	}
+
+
+
+	$scope.comfirmOtp = async () => {
+		const otp = $scope.otp;
+		const phoneNumber = $scope.registerPhone;
+		const email = $scope.formInformationOrder.email;
+		await $http.get(`/rest/users/confirm-otp?otp=${otp}&phone=${phoneNumber}&email=${email}`).then(resp => {
+			console.log("respose: ", resp.data);
+			if(resp.status === 'timeout'){
+				var smallElement = document.getElementById("messageOtp");
+				smallElement.innerHTML = resp.data.message;
+			}else if (resp.status === 'true'){
+				var smallElement = document.getElementById("messageOtp");
+				smallElement.innerHTML = resp.data.message;
+			}else{
+				var smallElement = document.getElementById("messageOtp");
+				smallElement.innerHTML = resp.data.message;
+			}
+		})
+	}
+
+	countdownotp = (second) => {
+		// Thời gian bắt đầu đếm ngược (theo giây)
+		var initialSeconds = second; // Ví dụ: 5 phút = 300 giây
+
+		// Lấy thẻ div để hiển thị đồng hồ đếm ngược
+		var countdownElement = document.getElementById('countdown');
+
+		// Tính tổng số giây
+		var totalSeconds = initialSeconds;
+
+		// Cập nhật đồng hồ đếm ngược sau mỗi giây
+		var countdownInterval = setInterval(function () {
+			// Kiểm tra nếu hết thời gian
+			if (totalSeconds <= 0) {
+				clearInterval(countdownInterval);
+				countdownElement.innerHTML = "Hết giờ!";
+			} else {
+				// Tính phút và giây còn lại
+				var remainingMinutes = Math.floor(totalSeconds / 60);
+				var remainingSeconds = totalSeconds % 60;
+
+				// Hiển thị đồng hồ đếm ngược
+				countdownElement.innerHTML = remainingMinutes + ' phút ' + remainingSeconds + ' giây';
+
+				// Giảm tổng số giây đi 1
+				totalSeconds--;
+			}
+		}, 1000); // 1000 milliseconds = 1 giây
+	}
+
+	validate = () =>{
+		var name = document.getElementById('name').value;
+		var phone = document.getElementById('phone').value;
+		var email = document.getElementById('email').value;
+		var isValid = true;
+
+		if (name === '') {
+			document.getElementById('name_error').innerText = 'Vui lòng nhập tên người nhận hàng';
+			isValid = false;
+		} else {
+			document.getElementById('name_error').innerText = '';
+		}
+
+		if (phone === '') {
+			document.getElementById('phone_error').innerText = 'Vui lòng nhập số điện thoại';
+			isValid = false;
+		} else if (phone.length > 10) {
+			document.getElementById('phone_error').innerText = 'Số điện thoại không vượt quá 10 số';
+			isValid = false;
+		} else if (phone.length < 10) {
+			document.getElementById('phone_error').innerText = 'Số điện thoại ít nhất là 10 số';
+			isValid = false;
+		} else {
+			document.getElementById('phone_error').innerText = '';
+		}
+
+
+		if (email === '') {
+			document.getElementById('email_error').innerText = 'Vui lòng nhập email';
+			isValid = false;
+		} else {
+			document.getElementById('email_error').innerText = '';
+		}
+
+
+		if (!$scope.dataLogin.statusLogin) {
+			var province = document.getElementById("id-province");
+			var district = document.getElementById("id-district");
+			var ward = document.getElementById("wardSelect");
+			var addressDetail = document.getElementById("address-detail").value;
+			if (province.selectedIndex === 0) {
+				document.getElementById('province_error').innerText = 'Vui lòng chọn tỉnh';
+				isValid = false;
+			} else {
+				document.getElementById('province_error').innerText = '';
+			}
+
+			if (district.selectedIndex === 0) {
+				document.getElementById('district_error').innerText = 'Vui lòng chọn huyện';
+				isValid = false;
+			} else {
+				document.getElementById('district_error').innerText = '';
+			}
+
+			if (ward.selectedIndex === 0) {
+				document.getElementById('ward_error').innerText = 'Vui lòng chọn xã';
+				isValid = false;
+			} else {
+				document.getElementById('ward_error').innerText = '';
+			}
+
+			if (addressDetail === '') {
+				document.getElementById('address_detail_error').innerText = 'Vui lòng điền địa chỉ cụ thể';
+				isValid = false;
+			} else {
+				document.getElementById('address_detail_error').innerText = '';
+			}
+		} else {
+			if($scope.listAddress.length === 0 ){
+				document.getElementById('address_user').innerText = 'Chưa có địa chỉ. Vui lòng thêm ít nhất 1 địa chỉ nhận hàng';
+			}else{
+
+				var isAnyRadioChecked = false;
+				var cboAddress = document.querySelectorAll(".radio-address");
+				console.log("cboAddress: ",cboAddress);
+				for (let i = 0; i < cboAddress.length; i++) {
+					console.log("cboAddressn: ",cboAddress[i]);
+					console.log("cboAddressc: ",cboAddress[i].checked);
+					if (cboAddress[i].checked) {
+						console.log('da check');
+						isAnyRadioChecked = true;
+						break;
+					}
+				}
+
+				if (isAnyRadioChecked) {
+					console.log('daaaa check');
+					document.getElementById('list_address_user').innerText = '';
+				} else {
+					console.log('chua check');
+					document.getElementById('list_address_user').innerText = 'Vui lòng chọn địa chỉ';
+					isValid = false;
+				}
+
+			}
+
+		}
+		return isValid;
+	}
 })
+
+
+
+

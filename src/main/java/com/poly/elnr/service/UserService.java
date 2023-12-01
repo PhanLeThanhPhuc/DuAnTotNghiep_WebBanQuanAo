@@ -4,7 +4,8 @@ package com.poly.elnr.service;
 import java.io.IOException;
 import java.util.List;
 
-import com.poly.elnr.dto.ChangePassword;
+import com.poly.elnr.dto.UserRegisterDTO;
+import com.poly.elnr.entity.Address;
 import com.poly.elnr.utils.CustomOAuth2User;
 
 
@@ -14,6 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 public interface UserService {
+
+	Users findByPhone(String phone);
 
 	public List<Users> findAll();
 
@@ -39,4 +42,14 @@ public interface UserService {
 	Users findByUserNamePhoneAndEmail(String username);
 
 	int idUser(String username);
+
+	Users registerPhoneNumber(String phone, String email);
+
+	boolean checkOtp(String otp, String email, String phone);
+
+	void registerUser(UserRegisterDTO userRegisterDTO);
+
+	Users findByEmailAndPhone(String phone, String email);
+
+
 }

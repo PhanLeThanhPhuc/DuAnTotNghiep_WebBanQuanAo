@@ -42,28 +42,36 @@
             padding: 0 !important;
             vertical-align: middle !important;
         }
-
+         .error-message {
+             color: red;
+             font-size: 12px;
+         }
     </style>
     <section class="checkout_area padding_top">
         <div class="container">
             <div class="billing_details">
                 <div class="row">
-                    <div class="col-lg-5">
-                        <h5 style="font-weight: 600; margin-bottom: 15px">THÔNG TIN KHÁCH HÀNG</h5>
+                    <div class="col-lg-5" style="padding: 30px">
+                        <h5 style="font-weight: 600; margin-bottom: 15px; font-size: 18px">THÔNG TIN KHÁCH HÀNG</h5>
+                        <h5 style="font-weight: 600; margin-bottom: 15px">Thông tin cá nhân</h5>
                         <form class="row contact_form" action="#" method="post" novalidate="novalidate">
                             <div class="col-md-6 form-group p_star">
                                 <label >Họ và tên</label>
-                                <input ng-model="formInformationOrder.name" type="text" placeholder="Thông tin người nhận hàng"class="form-control" id="first" name="name" />
+                                <input style="border-radius: 20px" ng-model="formInformationOrder.name" type="text" placeholder="Tên người nhận hàng"class="form-control" id="name" name="name" />
 <!--                                <span class="placeholder" data-placeholder="Họ và tên"></span>-->
+                                <span id="name_error" class="error-message"></span>
                             </div>
                             <div class="col-md-6 form-group p_star">
                                 <label >Số điện thoại</label>
-                                <input ng-model="formInformationOrder.phone" placeholder="Số điện thoại nhận hàng" type="text" class="form-control" id="phone" name="name" />
+                                <input style="border-radius: 20px" ng-model="formInformationOrder.phone" placeholder="Số điện thoại nhận hàng" type="text" class="form-control" id="phone" name="name" />
 <!--                                <span class="placeholder" data-placeholder="Số điện thoại"></span>-->
+                                <span id="phone_error" class="error-message"></span>
+                                <a ng-if="dataLogin.user.phone == null && dataLogin.statusLogin" data-toggle="modal" data-target="#exampleModalCenter3" style="font-size: 9px; font-weight: bold" class="btn btn-primary px-1 mt-1">Thêm số điện thoại</a>
                             </div>
                             <div class="col-md-12 form-group">
                                 <label >Email</label>
-                                <input ng-model="formInformationOrder.email" type="text" class="form-control" id="company" name="company" placeholder="Email(Nhận thông tin về hóa đơn)" />
+                                <input style="border-radius: 20px" ng-model="formInformationOrder.email" type="text" class="form-control" id="email" name="company" placeholder="Email(Nhận thông tin về hóa đơn)" />
+                                <span id="email_error" class="error-message"></span>
                             </div>
 <!--                            <div class="col-md-6 form-group p_star">-->
 <!--                                <input type="text" class="form-control" id="number" name="number" />-->
@@ -73,60 +81,68 @@
 <!--                                <input type="text" class="form-control" id="email" name="compemailany" />-->
 <!--                                <span class="placeholder" data-placeholder="Email Address"></span>-->
 <!--                            </div>-->
-                            <div class="col-md-12 form-group p_star">
-                                <h5 style="font-weight: 600; margin-bottom: 15px">ĐỊA CHỈ NHẬN HÀNG</h5>
+                            <div class="col-md-12 form-group p_star" style="margin-bottom: 0">
+                                <h5 style="font-weight: 600; margin-bottom: 15px">Địa chỉ nhận hàng</h5>
                                 <div class="row" ng-if="dataLogin.statusLogin == false">
                                     <div class="col-md-6 form-group p_star">
-                                        <select  onchange="methodDistrict(value)" class="country_select form-control">
+                                        <select id="id-province" style="border-radius: 20px" onchange="methodDistrict(value)" class="country_select form-control">
                                             <option value="default">Tỉnh</option>
                                             <option ng-repeat="item in listProvince" ng-value="{{item.ProvinceID}}">{{item.ProvinceName}}</option>
                                         </select>
+                                        <span id="province_error" class="error-message"></span>
                                     </div>
                                     <div class="col-md-6 form-group p_star">
-                                        <select  onchange="methodWard(value)" class="country_select form-control">
+                                        <select id="id-district" style="border-radius: 20px" onchange="methodWard(value)" class="country_select form-control">
                                             <option value="default">Huyện</option>
                                             <option ng-repeat="item in listDistrict" ng-value="{{item.DistrictID}}">{{item.DistrictName}}</option>
                                         </select>
+                                        <span id="district_error" class="error-message"></span>
                                     </div>
                                     <div class="col-md-6 form-group p_star">
-                                        <select  onchange="getValueComboBoxAddress()" id="wardSelect" class="country_select form-control">
+                                        <select style="border-radius: 20px" onchange="getValueComboBoxAddress()" id="wardSelect" class="country_select form-control">
                                             <option value="">Xã</option>
                                             <option ng-repeat="item in listWard" ng-value="{{item.WardCode}}">{{item.WardName}}</option>
                                         </select>
+                                        <span id="ward_error" class="error-message"></span>
                                     </div>
                                     <div class="col-md-6 form-group p_star">
-                                        <input placeholder="Địa chỉ cụ thể" ng-model="formInformationOrder.addressDetail" type="text" class="form-control" id="1" name="name" />
-
+                                        <input style="border-radius: 20px" placeholder="Địa chỉ cụ thể" ng-model="formInformationOrder.addressDetail" type="text" class="form-control" id="address-detail" name="name" />
+                                        <span id="address_detail_error" class="error-message"></span>
                                     </div>
                                 </div>
 <!--                                login = true-->
                                 <div class="row" ng-if="dataLogin.statusLogin == true">
                                     <div ng-repeat="item in listAddress" class="col-md-6 form-group p_star">
                                         <div class="form-check">
-                                            <input ng-change="getShippingFee()" ng-model="formInformationOrder.address" class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" ng-value="{{item.id}}" checked>
-                                            <label class="form-check-label" for="exampleRadios1">
+                                            <input ng-change="getShippingFee()" ng-model="formInformationOrder.address" class="form-check-input radio-address"
+                                                   type="radio"
+                                                   name="exampleRadios" id="exampleRadios{{item.id}}" ng-value="{{item.id}}" >
+                                            <label class="form-check-label" ng-attr-for="exampleRadios{{item.id}}">
                                                 {{item.addressDetail}}, {{item.wardName}}, {{item.districtName}}, {{item.provinceName}}
                                             </label>
+                                            <span id="list_address_user" class="error-message"></span>
                                         </div>
                                     </div>
-
                                     <div class="col-md-12 form-group p_star text-center">
-                                        <button style="font-size: 10px; font-weight: bold" data-toggle="modal" data-target="#exampleModalCenter" type="button" class="btn btn-outline-warning">Thêm địa chỉ mới</button>
+                                        <button style="font-size: 10px; font-weight: bold"
+                                                data-toggle="modal" data-target="#exampleModalCenter"
+                                                type="button" class="btn btn-outline-warning">Thêm địa chỉ mới</button><br>
+                                        <span id="address_user" class="error-message"></span>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="col-md-12 form-group">
                                 <div class="creat_account">
-                                    <h5 style="font-weight: 600; margin-bottom: 15px">GHI CHÚ</h5>
+                                    <h5 style="font-weight: 600; margin-bottom: 15px">Ghi chú</h5>
                                 </div>
-                                <textarea ng-model="formInformationOrder.note" class="form-control" name="message" id="message" rows="1"
+                                <textarea style="border-radius: 20px" ng-model="formInformationOrder.note" class="form-control" name="message" id="message" rows="1"
                                           placeholder="Order Notes"></textarea>
                             </div>
                         </form>
                     </div>
                     <div class="col-lg-7">
-                        <div class="order_box">
+                        <div class="order_box" style="background-color: #f3ffff;box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;border-radius: 15px">
                             <h2 style="font-weight: 600">THÔNG TIN ĐƠN HÀNG</h2>
                             <ul class="list">
                                 <li>
@@ -137,10 +153,10 @@
                                                 <ul class="ulproduct">
                                                     <li>
                                                         <a  href="/camera-giam-sat/camera-ip-360-do-1080p-imou-ranger-2c-a22ep-l" target="_blank" class="img-order">
-                                                            <img data-src="/assets/user/user/image/{{item.product.thumbnail}}" src="/assets/user/user/image/{{item.product.thumbnail}}" loading="lazy" class=" ls-is-cached lazyloaded">
+                                                            <img data-src="{{item.product.thumbnail}}" src="{{item.product.thumbnail}}" loading="lazy" class=" ls-is-cached lazyloaded">
                                                         </a>
                                                         <div class="text-order">
-                                                            <a  href="/assets/user/user/image/{{item.product.thumbnail}}" target="_blank" class="text-order__product-name" style="font-size: 13px">{{item.product.name}}</a>
+                                                            <a  href="{{item.product.thumbnail}}" target="_blank" class="text-order__product-name" style="font-size: 13px">{{item.product.name}}</a>
                                                             <div  class="amount-color">
                                                                 <small > Màu: <small>{{item.product.color.name}}
                                                                 </small>
@@ -182,12 +198,12 @@
                                             <label style="font-weight: 600">Mã giảm giá:</label>
                                         </div>
                                         <div class="col-sm-8">
-                                            <input type="text" style="width: 100%" class="form-control" id="inputvoucher" name="company" placeholder="Nhập mã giảm giá" />
+                                            <input type="text" style="width: 100%; border-radius: 20px" class="form-control" id="inputvoucher" name="company" placeholder="Nhập mã giảm giá" />
                                             <span style="color: red !important;" id="errorVoucher" class="form-text text-muted"></span>
                                         </div>
 
                                         <div class="col-sm-4">
-                                            <button ng-click="addVoucher()" type="submit" class="btn btn-primary" style="width: 100%">Submit</button>
+                                            <button ng-click="addVoucher()" type="submit" class="btn btn-primary" style="width: 100%; border-radius: 20px">Submit</button>
                                         </div>
                                     </div>
                                 </li>
@@ -200,7 +216,7 @@
                                     <label for="f-option5">Thanh toán khi nhận hàng</label>
                                     <div class="check"></div>
                                 </div>
-                                <p>
+                                <p style="border-radius: 20px">
                                    Thanh toán bằng tiền mặt khi nhận hàng
                                 </p>
                             </div>
@@ -211,7 +227,7 @@
                                     <img src="img/product/single-product/card.jpg" alt="" />
                                     <div class="check"></div>
                                 </div>
-                                <p>
+                                <p style="border-radius: 20px">
                                    Chuyển khoản với Vn-Pay
                                 </p>
                             </div>
@@ -238,7 +254,7 @@
                                 </li>
                             </ul>
                              <div style="text-align: center">
-                                <button style="display: inline ;" class="btn_3 px-5" type="submit" onclick="purchase()">Đặt hàng</button>
+                                <button  style="display: inline ;" class="btn_3 px-5" type="submit" onclick="purchase()">Đặt hàng</button>
                             </div>
                         </div>
                     </div>
@@ -286,6 +302,63 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button onclick="addAddress()" type="button" data-dismiss="modal" class="btn btn-primary">Thêm địa chỉ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--    MODEL RESIGER PHONE-->
+    <!-- Button trigger modal -->
+<!--    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter3">-->
+<!--        Launch demo modal-->
+<!--    </button>-->
+
+    <!--    MODEL RESIGER PHONE-->
+    <div class="modal fade" id="exampleModalCenter3" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="">Đăng ký số điện thoại</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Tài khoản của bạn chưa liên kết số điện thoại. Vui lòng liên kết số điện thoại để tiếp tục đặt hàng.</p>
+                    <div class="form-group mt-3">
+                        <label >Số điện thoại</label>
+                        <input ng-model="registerPhone" type="number" class="form-control"  placeholder="Nhập số điện thoại của bạn...">
+<!--                        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>-->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button ng-click="registerPhoneNumber()" type="button" class="btn btn-primary">Xác nhận</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--Model confirm phone -->
+    <div class="modal fade" id="exampleModalCenter4" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="">Đăng ký số điện thoại</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Nhập mã otp được gửi đến số điện thoại</p>
+                    <div class="form-group mt-3">
+                        <label >Nhập mã otp</label>
+                        <input ng-model="otp" type="number" class="form-control"  placeholder="Nhập mã otp vừa gửi đến số điện thoại">
+                        <div id="countdown"></div>
+                        <span id="messageOtp" style="color: red" class="form-text text-muted"></span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button ng-click="comfirmOtp()" type="button" class="btn btn-primary">Xác nhận</button>
                 </div>
             </div>
         </div>
