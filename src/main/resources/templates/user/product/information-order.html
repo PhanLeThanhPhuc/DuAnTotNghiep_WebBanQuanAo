@@ -137,11 +137,13 @@
                                                 <li>
                                                     <a href="/camera-giam-sat/camera-ip-360-do-1080p-imou-ranger-2c-a22ep-l"
                                                        target="_blank" class="img-order">
-                                                        <img data-src="/quan4.jpg" th:src="@{|/assets/user/user/image/${item.productDetails.product.thumbnail}|}" loading="lazy"
+                                                        <img data-src="/quan4.jpg" th:src="@{${item.productDetails.product.thumbnail}}" loading="lazy"
                                                              class=" ls-is-cached lazyloaded">
                                                     </a>
                                                     <div class="text-order">
+
                                                         <a th:src="@{|${item.productDetails.product.thumbnail}|}"
+
                                                            target="_blank" class="text-order__product-name"
                                                            style="font-size: 13px">[[${item.productDetails.product.name}]]</a>
                                                         <div class="amount-color">

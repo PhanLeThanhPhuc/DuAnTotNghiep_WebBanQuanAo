@@ -38,7 +38,7 @@ public interface OrderService {
 
     List<OrderDTO> findAllTotal();
 
-    List<PhoneTotalDTO> findTop10ByPhonePriceWithDate();
+    List<PhoneTotalDTO> findPhoneTotalDTO();
 
     List<TotalWithUserOrderDTO> findTotalByPhoneAndDateRange();
 

@@ -216,12 +216,12 @@
                                     <li>
                                         <a href="/camera-giam-sat/camera-ip-360-do-1080p-imou-ranger-2c-a22ep-l"
                                            target="_blank" class="img-order">
-                                            <img data-src="/assets/user/user/image/{{item.productDetails.product.thumbnail}}"
-                                                 src="/assets/user/user/image/{{item.productDetails.product.thumbnail}}" loading="lazy"
+                                            <img data-src="{{item.productDetails.product.thumbnail}}"
+                                                 src="{{item.productDetails.product.thumbnail}}" loading="lazy"
                                                  class=" ls-is-cached lazyloaded">
                                         </a>
                                         <div class="text-order">
-                                            <a href="/assets/user/user/image/{{item.productDetails.product.thumbnail}}" target="_blank"
+                                            <a href="{{item.productDetails.product.thumbnail}}" target="_blank"
                                                class="text-order__product-name"
                                                style="font-size: 13px">{{item.productDetails.product.name}}</a>
                                             <div class="amount-color">
@@ -262,9 +262,9 @@
             </div>
             <div class="modal-footer">
                 <button ng-if="objectOrder.status == 0" ng-click="confirmOrder(objectOrder.id)" type="button" data-dismiss="modal" class="btn btn btn-warning">Xác nhận đơn hàng</button>
-                <button ng-click="delivering(objectOrder.id)" type="button" data-dismiss="modal" class="btn btn-primary">Giao hàng</button>
-                <button ng-click="successOrder(objectOrder.id)" type="button" data-dismiss="modal" class="btn btn-primary">Giao thành công</button>
-                <button ng-if="objectOrder.status != 2" type="button" ng-click="cancelOrder(objectOrder.id)" type="button" data-dismiss="modal" class="btn btn btn-danger">Hủy</button>
+                <button ng-if="objectOrder.status == 1" ng-click="delivering(objectOrder.id)" type="button" data-dismiss="modal" class="btn btn-primary">Giao hàng</button>
+                <button ng-if="objectOrder.status == 4" ng-click="successOrder(objectOrder.id)" type="button" data-dismiss="modal" class="btn btn-primary">Giao thành công</button>
+                <button ng-if="objectOrder.status == 0" type="button" ng-click="cancelOrder(objectOrder.id)" type="button" data-dismiss="modal" class="btn btn btn-danger">Hủy</button>
             </div>
         </div>
     </div>

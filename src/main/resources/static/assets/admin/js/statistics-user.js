@@ -5,7 +5,7 @@ app.controller("user-statistic-ctrl", function($scope, $filter, $http) {
     $scope.listData = [];
 
     $scope.initialize = async function() {
-        await $http.get("/rest/orderPhoneAndDate").then(resp => {
+        await $http.get("/rest/phone-total").then(resp => {
             if(resp.status === 200){
                 console.log("listData", resp.data);
                 $scope.listData = resp.data.sort((a, b) => b.total - a.total);

@@ -135,9 +135,9 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 		});
 	}
 
-	$scope.updateImageDetail = () =>{
-		console.log("List ảnh truy vấn lên",$scope.selectedFiles);
-	}
+	// $scope.updateImageDetail = () =>{
+	// 	console.log("List ảnh truy vấn lên",$scope.selectedFiles);
+	// }
 
 
 	$scope.updateStatus = function(product) {
@@ -287,30 +287,43 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 	};
 
 	updateImageProduct = async (listUrlImage) =>{
+
+		console.log("$scope.listImageProductCopy", $scope.listImageProductCopy)
+		if($scope.listImageProductCopy.length === 0){
+			console.log("$scope.listImageProductCopy",$scope.listImageProductCopy)
+			await $http.delete(`/rest/image/delete-by-product${$scope.form.id}`).then(resp => {
+				// $scope.image.push(resp.data);
+			}).catch(error => {
+				alert("Lỗi thêm hinh !");
+				console.log("Error", error);
+			});
+			return;
+		}
+
 		var j = 0;
-		for (var i = 0; i < $scope.listImageProductCopy.length; i++) {
-			if ($scope.listImageProductCopy[i] instanceof File) {
+		for (var i = 0; i < $scope.selectedFiles.length; i++) {
+			if ($scope.selectedFiles[i] instanceof File) {
 				var objectImageProduct = {
 					image: listUrlImage.images[j],
 					product: {
 						id: $scope.form.id
 					}
 				};
-				$scope.listImageProductCopy[i] = objectImageProduct;
+				$scope.selectedFiles[i] = objectImageProduct;
 				j++;
 			}else{
 				var objectImageProduct = {
-					id: $scope.listImageProductCopy[i].id,
-					image: $scope.listImageProductCopy[i].image,
+					id: $scope.selectedFiles[i].id,
+					image: $scope.selectedFiles[i].image,
 					product: {
 						id: $scope.form.id
 					}
 				}
-				$scope.listImageProductCopy[i] = objectImageProduct;
+				$scope.selectedFiles[i] = objectImageProduct;
 			}
 		}
-		console.log("images",$scope.listImageProductCopy);
-		await $http.post(`/rest/image`, $scope.listImageProductCopy).then(resp => {
+		console.log("images",$scope.selectedFiles);
+		await $http.post(`/rest/image`, $scope.selectedFiles).then(resp => {
 			// $scope.image.push(resp.data);
 		}).catch(error => {
 			alert("Lỗi thêm hinh !");

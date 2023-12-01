@@ -2,18 +2,25 @@
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.poly.elnr.dto.ChangePassword;
+import com.poly.elnr.dto.UserRegisterDTO;
 import com.poly.elnr.entity.Order;
 import com.poly.elnr.entity.Users;
+
 import com.poly.elnr.service.CategoryDetailService;
 import com.poly.elnr.service.DiscountCheckService;
 import com.poly.elnr.service.OrderService;
 import com.poly.elnr.service.ProductService;
 import com.poly.elnr.service.UserService;
 
+import com.poly.elnr.service.*;
+
+
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 
-import com.poly.elnr.service.VnPayService;
 import com.poly.elnr.utils.DiscountCheck;
 import com.poly.elnr.utils.UploadCloudinaryUtils;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -42,19 +50,23 @@ public class UserController {
 	OrderService orderService;
 
 	@Autowired
-	private PasswordEncoder passwordEncoder;
+	PasswordEncoder passwordEncoder;
 
 	@Autowired
 	VnPayService vnPayService;
 
 	@Autowired
 	HttpServletRequest request;
-	
 
 	@Autowired
 	DiscountCheckService discountCheckService;
+
 	@Autowired
-	ProductService productService;
+	DiscountCheck discountCheck;
+
+	@Autowired
+	AddressService addressService;
+
 	
 	
 	@PostMapping("/submitPayment/{paymentMethod}/{idOrder}")
@@ -136,7 +148,7 @@ public class UserController {
 	@PostMapping("user/change-password")
 	public ResponseEntity<String> updatePassword (@RequestBody ChangePassword changePassword,  Authentication authentication){
 
-		String oldPassword = passwordEncoder.encode(changePassword.getOldPassword());
+//		String oldPassword = passwordEncoder.encode(changePassword.getOldPassword());
 		String newPassword = passwordEncoder.encode(changePassword.getNewPassword());
 
 		if (authentication != null) {
@@ -166,10 +178,52 @@ public class UserController {
 		return userService.saveImageUser(multipartFile, userDetails.getUsername());
 	}
 
-//	@ResponseBody
-//	@GetMapping("user/register")
-//	public String registerUser (){
-//
-//	}
+	@GetMapping("user/register-form")
+	public String userRegisterForm(){
+//		model.addAttribute("")
+		return "user/security/register";
+	}
+
+	@GetMapping("/user/login")
+	public String loginForm(Model model) {
+		return "user/security/login";
+	}
+
+	@PostMapping("user/register")
+	public ResponseEntity<?> registerUser(@RequestBody UserRegisterDTO userRegisterDTO){
+		Users userEmail = userService.findByEmail(userRegisterDTO.getEmail());
+		Users userPhone = userService.findByPhone(userRegisterDTO.getPhone());
+		Map<String, Object> map = new HashMap<>();
+		if(userEmail != null){
+			if(userEmail.isSignup()){
+				map.put("status", false);
+				map.put("message","Email đã được sử dụng");
+				return ResponseEntity.ok(map) ;
+			}
+		}else if(userPhone != null){
+			if(userPhone.isSignup()){
+				map.put("status", false);
+				map.put("message","Phone đã được sử dụng");
+				return ResponseEntity.ok(map) ;
+			}
+		}else if (!userRegisterDTO.getPassword().equals(userRegisterDTO.getConfirmPassword())) {
+			map.put("status", false);
+			map.put("message","Mật khẩu không khớp");
+			return ResponseEntity.ok(map) ;
+		}else{
+			userService.registerUser(userRegisterDTO);
+			map.put("status", true);
+			map.put("message","Đăng ký thành công");
+			return ResponseEntity.ok(map) ;
+		}
+        return null;
+    }
+
+	@GetMapping("user/address")
+	public String viewAddress (Model model, Authentication authentication){
+		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+		model.addAttribute("address", addressService.findAddressByIdUser(userDetails.getUsername()));
+		return "user/layout/user-address";
+	}
 
 }

@@ -3,8 +3,8 @@ import java.io.IOException;
 import java.util.List;
 
 
-import com.poly.elnr.dto.ChangePassword;
-import com.poly.elnr.entity.Order;
+import com.poly.elnr.dto.UserRegisterDTO;
+import com.poly.elnr.entity.Address;
 import com.poly.elnr.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Date;
@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
 		String email = oAuth2User.getEmail();
 		String picture = oAuth2User.getPicture();
 		
-		Users user  = userRepository.findEmail(email);
+		Users user  = userRepository.findByEmail(email);
 		UserDetails userDetails;
 
 		if(user == null) {
@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService {
 			
 			//set quyền
 			user = new Users();
-			user = userRepository.findEmail(email);
+			user = userRepository.findByEmail(email);
 			Role roleId = new Role();
 			roleId.setId("ROLE_USER");
 			Users userid = new Users();
@@ -86,7 +86,7 @@ public class UserServiceImpl implements UserService {
 			SecurityContextHolder.getContext().setAuthentication(auth);
 			session.set("user", user);
 		}else {
-			user = userRepository.findEmail(email);
+			user = userRepository.findByEmail(email);
 			userDetails = new CustomUserDetails(user);
 			Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 			SecurityContextHolder.getContext().setAuthentication(auth);
@@ -98,7 +98,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public Users findByEmail(String email) {
-		return userRepository.findEmail(email);
+		return userRepository.findByEmail(email);
 	}
 
 	@Override
@@ -110,13 +110,18 @@ public class UserServiceImpl implements UserService {
 		if(RegexUtils.isPhoneNumber(username)) {
 			user = userRepository.findByPhone(username);
 		}else{
-			user = userRepository.findEmail(username);
+			user = userRepository.findByEmail(username);
 		}
 		userDetails = new CustomUserDetails(user);
 		Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 		SecurityContextHolder.getContext().setAuthentication(auth);
 		session.set("user", user);
 		return user;
+	}
+
+	@Override
+	public Users findByPhone(String phone) {
+		return userRepository.findByPhone(phone);
 	}
 
 	@Override
@@ -179,7 +184,7 @@ public class UserServiceImpl implements UserService {
 		if(RegexUtils.isPhoneNumber(username)) {
 			user = userRepository.findByPhone(username);
 		}else{
-			user = userRepository.findEmail(username);
+			user = userRepository.findByEmail(username);
 		}
 
 		return user;
@@ -192,7 +197,7 @@ public class UserServiceImpl implements UserService {
 			user = userRepository.findByPhone(username);
 			return user.getId();
 		}else{
-			user = userRepository.findEmail(username);
+			user = userRepository.findByEmail(username);
 			if(user.getPhone() !=  null){
 				return user.getId();
 			}
@@ -202,7 +207,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public Users registerPhoneNumber(String phone, String email) {
-		Users user = userRepository.findEmail(email);
+		Users user = userRepository.findByEmail(email);
 		user.setTimeOtp(new Date());
 		user.setPasswordReset(true);
 		String otp = RamDomNameUtils.generateRandomSixNumber();
@@ -214,7 +219,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public boolean checkOtp(String otp, String email, String phone) {
-		Users user = userRepository.findEmail(email);
+		Users user = userRepository.findByEmail(email);
 		if(user.getOtp() == Integer.parseInt(otp)){
 			user.setPhone(0+phone);
 			userRepository.save(user);
@@ -223,4 +228,37 @@ public class UserServiceImpl implements UserService {
 			return false;
 		}
 	}
+
+	@Override
+	public void registerUser(UserRegisterDTO userRegisterDTO) {
+		Users user = new Users();
+		user.setFullName(userRegisterDTO.getFullname());
+		user.setPhone(userRegisterDTO.getPhone());
+		user.setPassword(passwordEncoder.encode(userRegisterDTO.getPassword()));
+		user.setEmail(userRegisterDTO.getEmail());
+		user.setOtp(0);
+		user.setSignup(true);
+		user.setStatus(true);
+		user.setDate_insert(new Date());
+		user.setDate_update(new Date());
+		Users userSave = userRepository.save(user);
+		System.out.println();
+		//set role
+		Role roleId = new Role();
+		roleId.setId("ROLE_USER");
+		Users userid = new Users();
+		userid.setId(userSave.getId());
+		Authority authority = new Authority();
+		authority.setUser(userid);
+		authority.setRole(roleId);
+		authorityRepository.save(authority);
+//		return null;
+	}
+
+	@Override
+	public Users findByEmailAndPhone(String phone, String email) {
+		return userRepository.findByEmailAndPhone(phone, email);
+	}
+
+
 }

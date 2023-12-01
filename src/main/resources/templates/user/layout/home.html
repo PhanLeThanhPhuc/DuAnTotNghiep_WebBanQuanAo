@@ -125,8 +125,10 @@
 							class="single_product_item ">
 							<a th:href="@{|/user/product-detail?product-id=${item.id}|}">
 								<div style="background-color: white;" class="rounded-top">
+
 									<img class=" px-4 pt-2 pb-0" th:src="@{|${item.thumbnail}|}"
 										style="height: 240px;">
+
 								</div>
 								<div class="single_product_text px-4 rounded-bottom">
 									<h4>[[${item.name}]]</h4>

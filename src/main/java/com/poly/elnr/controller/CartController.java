@@ -13,6 +13,7 @@ import com.poly.elnr.utils.ApiGetAddress;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
 import org.springframework.ui.Model;
@@ -66,8 +67,8 @@ public class CartController {
 
 	@ResponseBody
 	@GetMapping("/user/province")
-	public String fillAllProvince(){
-		return apiAddressService.listProvinces();
+	public ResponseEntity<?> fillAllProvince(){
+		return ResponseEntity.ok(apiAddressService.listProvinces()) ;
 	}
 
 	@ResponseBody
