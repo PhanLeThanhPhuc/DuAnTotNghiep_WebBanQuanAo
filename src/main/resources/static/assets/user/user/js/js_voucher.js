@@ -24,6 +24,7 @@ app.controller("voucher-ctrl", function($scope, $http) {
 
 			console.log("listVoucherAllProduct: ",$scope.listVoucherAllProduct)
 			console.log("listVoucherNoProduct: ",$scope.listVoucherNoProduct)
+			console.log("allVoucher: ",$scope.allVoucher)
 		})
 
 		// $scope.popUpValue();

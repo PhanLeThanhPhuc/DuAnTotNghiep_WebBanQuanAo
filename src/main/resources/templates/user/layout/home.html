@@ -75,24 +75,24 @@
 			<div class="row align-items-center justify-content-between">
 				<div class="col-lg-7 col-sm-6 ">
 					<div class="single_feature_post_text "
-						style="box-shadow: 2px 2px 8px #a4a4a4;">
+						 style="box-shadow: 2px 2px 8px #a4a4a4;">
 						<p>Premium Quality</p>
 						<h3>Quần</h3>
 						<a href="/user/productcategory?idCategory=1" class="feature_btn">Khám
 							phá ngay<i class="fas fa-play"></i>
 						</a> <img style="width: 480px"
-							src="/assets/user/user/image/gdragon.png" alt="">
+								  src="/assets/user/user/image/img_1.png" alt="">
 					</div>
 				</div>
 				<div class="col-lg-5 col-sm-6">
 					<div class="single_feature_post_text"
-						style="box-shadow: 2px 2px 8px #a4a4a4;">
+						 style="box-shadow: 2px 2px 8px #a4a4a4;">
 						<p>Premium Quality</p>
 						<h3>Áo</h3>
 						<a href="/user/productcategory?idCategory=2" class="feature_btn">Khám
 							phá ngay <i class="fas fa-play"></i>
 						</a> <img style="position: absolute; left: 50px" width="397px"
-							class="ml-5" src="/assets/user/user/image/son_tung.png" alt="">
+								  class="ml-5" src="/assets/user/user/image/img.png" alt="">
 					</div>
 				</div>
 
@@ -177,9 +177,8 @@
 
 
 	<!-- feature_part start-->
-	<section ng-controller="voucher-ctrl"
-		class="feature_part mt-5  mb-5 p-5">
-
+	<section ng-controller="voucher-ctrl"  >
+	<div class="feature_part mt-5  mb-5 p-5" ng-if="allVoucher.length != 0">
 		<div class="modal fade" id="exampleModalCenter" tabindex="-1"
 			role="dialog" aria-labelledby="exampleModalCenterTitle"
 			aria-hidden="true">
@@ -301,9 +300,9 @@
 		<div ng-if="allVoucher.length < 3" class="container container-voucher">
 			<div class="row justify-content-center">
 				<div
-					style="width: 700px; position: absolute; top: -80px; border-radius: 20px; box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
+						style="width: 700px; position: absolute; top: -80px; border-radius: 20px; box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
 					<img style="border-radius: 20px"
-						src="/assets/user/user/image/banner-voucher.png">
+						 src="/assets/user/user/image/banner-voucher.png">
 				</div>
 				<div class="col-lg-8">
 					<div class="section_tittle text-center"></div>
@@ -369,6 +368,7 @@
 				</div>
 			</div>
 		</div>
+	</div>
 	</section>
 
 
