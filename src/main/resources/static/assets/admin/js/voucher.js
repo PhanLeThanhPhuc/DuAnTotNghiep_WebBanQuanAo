@@ -27,6 +27,11 @@ app.controller("voucher-ctrl", function($scope, $filter, $http, $timeout) {
 	}
 
 	$scope.create = function() {
+		if (!validateForm()) {
+			return;
+		}
+		
+			document.getElementById("buttonclose").click()
 		$scope.showSelectedOptions2();
 		var item = angular.copy($scope.form);
 		$http.post(`/rest/voucher`, item).then(resp => {
@@ -38,9 +43,13 @@ app.controller("voucher-ctrl", function($scope, $filter, $http, $timeout) {
 			alert("Lỗi thêm mới mã giảm giá!");
 			console.log("Error", error);
 		});
+
 	}
 
 	$scope.update = function() {
+		if (!validateForm()) {
+			return;
+		}
 		$scope.showSelectedOptions2();
 		var item = angular.copy($scope.form);
 		$http.put(`/rest/voucher/${item.id}`, item).then(resp => {
@@ -181,18 +190,21 @@ app.controller("voucher-ctrl", function($scope, $filter, $http, $timeout) {
 		});
 	});
 
-	$scope.form.productID="";
+	$scope.form.productID = "";
 	$scope.showSelectedOptions = function() {
-	
-		var selectedOptionsIds = $scope.form.productID.split(/\s*,\s*/);
-		var selectedOptions = [];
+		if (!$scope.form.productID == "") {
+			var selectedOptionsIds = $scope.form.productID.split(/\s*,\s*/);
+			var selectedOptions = [];
 
-		$('#mySelect option').each(function() {
-			var optionId = $(this).val();
-			if (selectedOptionsIds.includes(optionId)) {
-				selectedOptions.push(optionId);
-			}
-		});
+			$('#mySelect option').each(function() {
+				var optionId = $(this).val();
+				if (selectedOptionsIds.includes(optionId)) {
+					selectedOptions.push(optionId);
+				}
+			});
+		}
+
+
 
 		$('#mySelect').selectpicker('val', selectedOptions);
 	}
@@ -216,7 +228,7 @@ app.controller("voucher-ctrl", function($scope, $filter, $http, $timeout) {
 		$('#mySelect').selectpicker('refresh');
 	}
 
-	 checkboxAllProduct = () => {
+	checkboxAllProduct = () => {
 		var checkbox = document.getElementById('all-product');
 		if (checkbox.checked) {
 			console.log('Checkbox is checked');
@@ -225,6 +237,96 @@ app.controller("voucher-ctrl", function($scope, $filter, $http, $timeout) {
 		} else {
 			document.getElementById('mySelect').disabled = false;
 		}
+	}
+
+	validateForm = () => {
+		var isvalid = true;
+
+		var voucherform = document.getElementById("voucherForm").value
+		var discountpriceform = document.getElementById("discountPriceForm").value
+		var quantityform = document.getElementById("quantityForm").value
+		var minform = document.getElementById("minForm").value
+		var maxPriceform = document.getElementById("maxPriceForm").value
+		var minOrderProductform = document.getElementById("minOrderProductForm").value
+		//var myselect = document.getElementById("mySelect").text
+		//var selectedTextproductColor = myselect.options[myselect.selectedIndex].text;
+		var descriptionform = document.getElementById("descriptionForm").value
+		var selectedOptions = $('#mySelect').val();
+		var checkbox = document.getElementById('all-product');
+
+
+		console.log(voucherform)
+		console.log(discountpriceform)
+		console.log(minform)
+		console.log(quantityform)
+		console.log(maxPriceform)
+		console.log(minOrderProductform)
+		console.log(selectedOptions, ",")
+		console.log(descriptionform)
+
+		if (voucherform === "") {
+			isvalid = false;
+			document.getElementById("voucherFormError").innerText = "Không bỏ trống";
+		} else if (/[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-\d]/.test(voucherform)) {
+
+			isvalid = false;
+			document.getElementById("voucherFormError").innerText = "Tên không được chứa ký tự đặt biệt hoặc số";
+		} else {
+			document.getElementById("voucherFormError").innerText = "";
+		}
+
+		if (discountpriceform === "") {
+			isvalid = false;
+			document.getElementById("discountPriceFormError").innerText = "Không bỏ trống";
+		} else if (/[^0-9]/.test(discountpriceform)) {
+
+			isvalid = false;
+			document.getElementById("discountPriceFormError").innerText = "Không được chứa ký tự đặt biệt hoặc chữ";
+		} else {
+			document.getElementById("discountPriceFormError").innerText = "";
+		}
+
+		if (quantityform === "") {
+			isvalid = false;
+			document.getElementById("quantityFormError").innerText = "Không bỏ trống";
+		} else {
+			document.getElementById("quantityFormError").innerText = "";
+		}
+
+		if (minform === "") {
+			isvalid = false;
+			document.getElementById("minFormError").innerText = "Không bỏ trống";
+		} else {
+			document.getElementById("minFormError").innerText = "";
+		}
+
+		if (maxPriceform === "") {
+			isvalid = false;
+			document.getElementById("maxPriceFormError").innerText = "Không bỏ trống";
+		} else {
+			document.getElementById("maxPriceFormError").innerText = "";
+		}
+
+		if (minOrderProductform === "") {
+			isvalid = false;
+			document.getElementById("minOrderProductFormError").innerText = "Không bỏ trống";
+		} else {
+			document.getElementById("minOrderProductFormError").innerText = "";
+		}
+
+		if (!checkbox.checked) {
+			if (selectedOptions === null) {
+				isvalid = false;
+				document.getElementById("mySelectError").innerText = "Không bỏ trống";
+			} else {
+				document.getElementById("mySelectError").innerText = "";
+			}
+		} if (checkbox.checked) {
+			document.getElementById("mySelectError").innerText = "";
+
+		}
+		return isvalid;
+
 	}
 
 }

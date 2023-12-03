@@ -40,6 +40,10 @@ app.controller("category-ctrl", function($scope, $filter, $http) {
 
 
 	$scope.createCategory = function() {
+		if(!validateForm()){
+			return;
+		}
+		document.getElementById("buttonclose").click()
 		var item = angular.copy($scope.formCategory);
 		$http.post(`/rest/categories`, item).then(resp => {
 			if (resp.status == 200) {
@@ -93,6 +97,7 @@ app.controller("category-ctrl", function($scope, $filter, $http) {
 			console.log("Error", error);
 		});
 	}
+
 
 
 
@@ -171,6 +176,10 @@ app.controller("category-ctrl", function($scope, $filter, $http) {
 	}
 
 	$scope.createCategoryDetail = function() {
+		if(!validateFormDetail()){
+			return;
+		}
+		document.getElementById("closeButton").click()
 		$scope.formCategoryDetail.category = $scope.Category
 		var item = angular.copy($scope.formCategoryDetail);
 		item.dateUpdate = new Date();
@@ -265,5 +274,54 @@ app.controller("category-ctrl", function($scope, $filter, $http) {
 	$scope.toggleCollapse = function(item) {
 		item.showDetails = !item.showDetails;
 	};
+	
+	
+	validateForm = () => {
+
+		var isvalid = true;
+
+		var name = document.getElementById("categoryName").value
+		console.log(name)
+		if (name === "") {
+			isvalid = false;
+			document.getElementById("categotyNameError").innerText = "Không bỏ trống";
+		} else if (/[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-\d]/.test(name)) {
+			
+			isvalid = false;
+			document.getElementById("categotyNameError").innerText = "Tên không được chứa ký tự đặt biệt hoặc số";
+		} else {
+			document.getElementById("categotyNameError").innerText = "";
+		}
+
+
+
+		return isvalid;
+
+	}
+	
+	
+	
+	validateFormDetail = () => {
+
+		var isvalid = true;
+
+		var namedetail = document.getElementById("categoryDetailName").value
+		console.log(namedetail)
+		if (namedetail === "") {
+			isvalid = false;
+			document.getElementById("categoryDetailNameError").innerText = "Không bỏ trống";
+		} else if (/[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-\d]/.test(namedetail)) {
+			
+			isvalid = false;
+			document.getElementById("categoryDetailNameError").innerText = "Tên không được chứa ký tự đặt biệt hoặc số";
+		} else {
+			document.getElementById("categoryDetailNameError").innerText = "";
+		}
+
+
+
+		return isvalid;
+
+	}
 }
 );
