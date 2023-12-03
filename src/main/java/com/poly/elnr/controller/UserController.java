@@ -196,30 +196,25 @@ public class UserController {
 		Users userEmail = userService.findByEmail(userRegisterDTO.getEmail());
 		Users userPhone = userService.findByPhone(userRegisterDTO.getPhone());
 		Map<String, Object> map = new HashMap<>();
-		if(userEmail != null){
-			if(userEmail.isSignup()){
+		if (userEmail != null) {
 				map.put("status", false);
-				map.put("message","Email đã được sử dụng");
-				return ResponseEntity.ok(map) ;
-			}
-		}else if(userPhone != null){
-			if(userPhone.isSignup()){
+				map.put("message", "Email đã được sử dụng");
+				return ResponseEntity.ok(map);
+		} else if (userPhone != null && userPhone.isSignup() == true) {
 				map.put("status", false);
-				map.put("message","Phone đã được sử dụng");
-				return ResponseEntity.ok(map) ;
-			}
-		}else if (!userRegisterDTO.getPassword().equals(userRegisterDTO.getConfirmPassword())) {
+				map.put("message", "Phone đã được sử dụng");
+				return ResponseEntity.ok(map);
+		} else if (!userRegisterDTO.getPassword().equals(userRegisterDTO.getConfirmPassword())) {
 			map.put("status", false);
-			map.put("message","Mật khẩu không khớp");
-			return ResponseEntity.ok(map) ;
-		}else{
+			map.put("message", "Mật khẩu không khớp");
+			return ResponseEntity.ok(map);
+		} else {
 			userService.registerUser(userRegisterDTO);
 			map.put("status", true);
-			map.put("message","Đăng ký thành công");
-			return ResponseEntity.ok(map) ;
+			map.put("message", "Đăng ký thành công");
+			return ResponseEntity.ok(map);
 		}
-        return null;
-    }
+	}
 
 	@GetMapping("user/address")
 	public String viewAddress (Model model, Authentication authentication){

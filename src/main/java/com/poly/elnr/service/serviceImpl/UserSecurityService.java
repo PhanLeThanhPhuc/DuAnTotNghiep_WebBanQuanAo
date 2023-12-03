@@ -21,16 +21,18 @@ public class UserSecurityService implements UserDetailsService{
     @Override
     public UserDetails loadUserByUsername(String username){
 
-        Users user;
+        Users user = null;
 
         if(RegexUtils.isPhoneNumber(username)) {
+            user = new Users();
             user = userRepository.findByPhone(username);
-            return new CustomUserDetails(user);
         }else if(RegexUtils.isEmail(username)){
+            user = new Users();
             user = userRepository.findByEmail(username);
-            return new CustomUserDetails(user);
-        } else {
+        }
+        if(user == null || !user.isSignup()) {
             throw new UsernameNotFoundException("User not found: " );
         }
+        return new CustomUserDetails(user);
     }
 }
