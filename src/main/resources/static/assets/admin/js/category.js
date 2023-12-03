@@ -61,6 +61,9 @@ app.controller("category-ctrl", function($scope, $filter, $http) {
 
 
 	$scope.updateCategory = function() {
+		if(!validateForm()){
+			return;
+		}
 		var item = angular.copy($scope.formCategory);
 		item.dateUpdate = new Date();
 		$http.put(`/rest/categories/${item.id}`, item).then(resp => {
