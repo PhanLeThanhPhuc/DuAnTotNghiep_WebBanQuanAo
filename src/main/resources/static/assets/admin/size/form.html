@@ -1,54 +1,48 @@
 <div class="container-fluid">
-	<div class="row justify-content-center">
-		<div class="col-lg-12">
-			<div class="card">
-				<div class="card-body">
-					<div class="form-validation">
-						<div class="form-group row">
-							<label class="col-lg-4 col-form-label">Mã màu sắc<span
-								class="text-danger">*</span>
-							</label>
-							<div class="col-lg-6">
-								<input ng-model="form.id" type="text" class="form-control "
-									placeholder="Tự động nhập" readonly>
-							</div>
-						</div>
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-validation">
+                        <form class="form-valide" action="#" method="post" name="sizeForm" novalidate>
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">Mã kích thước<span class="text-danger">*</span></label>
+                                <div class="col-lg-6">
+                                    <input ng-model="form.id" type="text" class="form-control" placeholder="Tự động nhập" readonly>
+                                </div>
+                            </div>
 
-						<div class="form-group row">
-							<label class="col-lg-4 col-form-label">Tên màu sắc<span
-								class="text-danger">*</span>
-							</label>
-							<div class="col-lg-6">
-								<input ng-model="form.name" type="text" class="form-control "
-									placeholder="Enter a username..">
-							</div>
-						</div>
-						<div class="form-group row">
-							<label class="col-lg-4 col-form-label">Available?<span
-								class="text-danger">*</span>
-							</label>
-							<div class="col-lg-6">
-								<label class="switch"> <input ng-model="form.status"
-									ng-value="true" name="available" type="checkbox"> <span
-									ng-click="updateStatus(form)" class="slider round"></span>
-								</label>
-							</div>
-						</div>
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">Tên kích thước<span class="text-danger">*</span></label>
+                                <div class="col-lg-6">
+                                    <input ng-model="form.name" type="text" class="form-control" placeholder="Enter a username.."
+       id="sizeName" ng-required="true">
 
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+                                   <div id="sizeNameError" class="text-danger"></div>
+                                </div>
+                            </div>
 
-	<div class="panel-footer text-center">
-		<button ng-click="create()" ng-disabled="form.id"
-			class="btn btn-primary">Create</button>
-		<button ng-click="update()" ng-disabled="!form.id"
-			class="btn btn-success">Update</button>
-		<button ng-click="delete(form)" ng-disabled="!form.id"
-			class="btn btn-danger">Delete</button>
-		<button ng-click="reset()" class="btn btn-info">Reset</button>
-	</div>
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">Available?<span class="text-danger">*</span></label>
+                                <div class="col-lg-6">
+                                    <label class="switch">
+                                        <input ng-model="form.status" ng-true-value="true" ng-false-value="false" name="available" type="checkbox" ng-required="false">
+                                        <span ng-click="updateStatus(form)" class="slider round"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel-footer text-center">
+        <button ng-click="create()" class="btn btn-primary">Create</button>
+        <button ng-click="update()" class="btn btn-success">Update</button>
+        <button ng-click="delete(form)" ng-disabled="!form.id" class="btn btn-danger">Delete</button>
+        <button ng-click="reset(sizeForm)" class="btn btn-info">Reset</button>
+    </div>
 </div>
 <!-- #/ container -->
