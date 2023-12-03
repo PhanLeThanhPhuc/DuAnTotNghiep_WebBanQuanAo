@@ -27,7 +27,7 @@ public class UserSecurityService implements UserDetailsService{
             user = userRepository.findByPhone(username);
             return new CustomUserDetails(user);
         }else if(RegexUtils.isEmail(username)){
-            user = userRepository.findEmail(username);
+            user = userRepository.findByEmail(username);
             return new CustomUserDetails(user);
         } else {
             throw new UsernameNotFoundException("User not found: " );

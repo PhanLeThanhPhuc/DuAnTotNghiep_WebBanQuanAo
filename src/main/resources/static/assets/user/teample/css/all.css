@@ -3502,7 +3502,6 @@ readers do not read off random characters that represent icons */
 
 .fa-star-of-david:before {
   content: "\f69a"; }
-
 .fa-star-of-life:before {
   content: "\f621"; }
 

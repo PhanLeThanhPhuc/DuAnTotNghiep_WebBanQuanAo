@@ -26,7 +26,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
 	@Autowired
 	UserService userService;
-
+	
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 
@@ -37,12 +37,11 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 		// Tiến hành phân quyền
 		for (GrantedAuthority authority : userDetails.getAuthorities()) {
 			if (authority.getAuthority().equals("ROLE_ADMIN")) {
-
 				response.sendRedirect("/user/index");
 				return;
 
 			} else if (authority.getAuthority().equals("ROLE_USER")) {
-
+			
 				response.sendRedirect("/user/index");
 				return;
 
@@ -54,6 +53,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 //
 //			}
 		}
+		
 		response.sendRedirect("/user/index");
 	}
 }

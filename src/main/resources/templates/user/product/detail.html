@@ -1,5 +1,5 @@
 <html xmlns:th="http://www.thymeleaf.org"
-	  th:replace="~{/user/layout/index :: dynamic (~{::main})}">
+	th:replace="~{/user/layout/index :: dynamic (~{::main})}">
 
 
 <main th:object="${item}">
@@ -18,12 +18,12 @@
 						<div id="vertical">
 							<!--							<div id="">-->
 							<div style="height: auto !important;"
-								 th:attr="data-thumb=@{*{thumbnail}}">
+								th:attr="data-thumb=@{*{thumbnail}}">
 								<img th:src="@{*{thumbnail}}" />
 							</div>
 
 							<div th:each="img : ${images}"
-								 th:attr="data-thumb=@{${img.image}}">
+								th:attr="data-thumb=@{${img.image}}">
 								<img th:src="@{${img.image}}" />
 							</div>
 
@@ -33,7 +33,7 @@
 
 					</div>
 					<div th:if="${isDiscount}" class="container-fluid mt-5"
-						 style="background-image: url('/assets/user/teample/img/sale.jpg'); height: 50px; border-radius: 5px; background-size: cover;">
+						style="background-image: url('/assets/user/teample/img/sale.jpg'); height: 50px; border-radius: 5px; background-size: cover;">
 						<div class="d-flex align-items-center pt-2">
 							<h3 style="font-weight: bolder; display: inline-block;">Flash
 								Sale</h3>
@@ -63,7 +63,7 @@
 									'POINT')}]]₫</h2>
 
 								<span class="badge badge-warning"
-									  style="color: red; font-weight: 600">[[${#numbers.formatDecimal((100-(item.discountPrice
+									style="color: red; font-weight: 600">[[${#numbers.formatDecimal((100-(item.discountPrice
 									/ item.price) * 100), 0, 'COMMA', 0, 'POINT')}]]%</span>
 							</div>
 							<div th:unless="*{isSale ==true}">
@@ -73,8 +73,8 @@
 							<nav class="radio-button">
 								<div th:each="a: ${sizes}" th:if="${a.size.status}">
 									<input type="radio" th:id="${a.size.id}" name="x"
-										   th:attr="ng-click=@{|sizeClick(${a.quantity});sizeid(${a.size.id})|}"
-										   th:value="${a.quantity}" /> <label th:for="${a.size.id}">[[${a.size.name}]]</label>
+										th:attr="ng-click=@{|sizeClick(${a.quantity});sizeid(${a.size.id})|}"
+										th:value="${a.quantity}" /> <label th:for="${a.size.id}">[[${a.size.name}]]</label>
 								</div>
 							</nav>
 							<p>Số lượng sản phẩm: {{soluong}}</p>
@@ -86,11 +86,11 @@
 
 						<p>[[*{description.description}]]</p>
 						<div
-								class="card_area d-flex justify-content-between align-items-center">
+							class="card_area d-flex justify-content-between align-items-center">
 							<div class="product_count">
 								<span class="inumber-decrement"> <i class="ti-minus"></i></span>
 								<input class="input-number" type="number" value="1" min="0"
-									   ng-model="cart.qtyyy"> <span class="number-increment">
+									ng-model="cart.qtyyy"> <span class="number-increment">
 									<i class="ti-plus"></i>
 								</span>
 							</div>
@@ -112,39 +112,39 @@
 		<div class="container">
 			<ul class="nav nav-tabs" id="myTab" role="tablist">
 				<li class="nav-item"><a class="nav-link" id="home-tab"
-										data-toggle="tab" href="#home" role="tab" aria-controls="home"
-										aria-selected="true">Mô tả</a></li>
+					data-toggle="tab" href="#home" role="tab" aria-controls="home"
+					aria-selected="true">Mô tả</a></li>
 
 				<li class="nav-item"><a class="nav-link active" id="review-tab"
-										data-toggle="tab" href="#review" role="tab" aria-controls="review"
-										aria-selected="false">Đánh giá</a></li>
+					data-toggle="tab" href="#review" role="tab" aria-controls="review"
+					aria-selected="false">Đánh giá</a></li>
 			</ul>
 			<div class="tab-content" id="myTabContent">
 				<div class="tab-pane fade" id="home" role="tabpanel"
-					 aria-labelledby="home-tab">
+					aria-labelledby="home-tab">
 					<div>
 						<table class="table">
 							<tbody>
-							<tr>
-								<td>Name</td>
-								<td>[[*{name}]]</td>
-							</tr>
-							<tr>
-								<td>Manufacture</td>
-								<td>[[*{description.manufacture}]]</td>
-							</tr>
-							<tr>
-								<td>Technology</td>
-								<td>[[*{description.technology}]]</td>
-							</tr>
-							<tr>
-								<td>Weight</td>
-								<td>[[*{description.weight}]]</td>
-							</tr>
-							<tr>
-								<td>Material</td>
-								<td>[[*{description.material}]]</td>
-							</tr>
+								<tr>
+									<td>Name</td>
+									<td>[[*{name}]]</td>
+								</tr>
+								<tr>
+									<td>Manufacture</td>
+									<td>[[*{description.manufacture}]]</td>
+								</tr>
+								<tr>
+									<td>Technology</td>
+									<td>[[*{description.technology}]]</td>
+								</tr>
+								<tr>
+									<td>Weight</td>
+									<td>[[*{description.weight}]]</td>
+								</tr>
+								<tr>
+									<td>Material</td>
+									<td>[[*{description.material}]]</td>
+								</tr>
 
 
 
@@ -156,14 +156,16 @@
 
 
 				<div class="tab-pane fade	 show active" id="review" role="tabpanel"
-					 aria-labelledby="review-tab">
+					aria-labelledby="review-tab">
 					<div class="row">
 						<div class="col-lg-12">
 							<div class="row total_rate">
 								<div class="col-6">
 									<div class="box_total">
 										<h5>Overall</h5>
-										<h4 th:text="${rating}"></h4>
+										<h4 th:if="${rating}"
+											th:text="${#numbers.formatDecimal(rating,0,1)}"></h4>
+										<h4 th:unless="${rating}">0</h4>
 										<h6>([[${ratingTotal}]] Reviews)</h6>
 									</div>
 								</div>
@@ -171,29 +173,77 @@
 									<div class="rating_list">
 										<h3>Based on [[${ratingTotal}]] Reviews</h3>
 										<ul class="list">
-											<li><a href="#">5 Star <i class="fa fa-star"></i> <i
-													class="fa fa-star"></i> <i class="fa fa-star"></i> <i
-													class="fa fa-star"></i> <i class="fa fa-star"></i>[[${rating5}]]
-											</a></li>
-											<li><a href="#">4 Star <i class="fa fa-star"></i> <i
-													class="fa fa-star"></i> <i class="fa fa-star"></i> <i
-													class="fa fa-star"></i> <i class="fa fa-star"></i>
-												[[${rating4}]]
-											</a></li>
-											<li><a href="#">3 Star <i class="fa fa-star"></i> <i
-													class="fa fa-star"></i> <i class="fa fa-star"></i> <i
-													class="fa fa-star"></i> <i class="fa fa-star"></i>[[${rating3}]]
-											</a></li>
-											<li><a href="#">2 Star <i class="fa fa-star"></i> <i
-													class="fa fa-star"></i> <i class="fa fa-star"></i> <i
-													class="fa fa-star"></i> <i class="fa fa-star"></i>
-												[[${rating2}]]
-											</a></li>
-											<li><a href="#">1 Star <i class="fa fa-star"></i> <i
-													class="fa fa-star"></i> <i class="fa fa-star"></i> <i
-													class="fa fa-star"></i> <i class="fa fa-star"></i>
-												[[${rating1}]]
-											</a></li>
+											<li><a href="#"><h5
+														style="width: 55px; display: inline-block; color: #797979;">5
+														Star</h5> <i style="color: rgb(246, 206, 88);"
+													class="fa fa-star"></i> <i
+													style="color: rgb(246, 206, 88);" class="fa fa-star"></i> <i
+													style="color: rgb(246, 206, 88);" class="fa fa-star"></i> <i
+													style="color: rgb(246, 206, 88);" class="fa fa-star"></i> <i
+													style="color: rgb(246, 206, 88);" class="fa fa-star"></i>
+
+													<h5 th:if="${rating}"
+														style="margin-left: 10px; width: 110px; display: inline-block; color: #797979;">[[${rating5}]]
+														Reviews</h5>
+													<h5 th:unless="${rating5}"
+														style="margin-left: 10px; width: 110px; display: inline-block; color: #797979;">0
+														Reviews</h5> </a></li>
+											<li><a href="#"><h5
+														style="width: 55px; display: inline-block; color: #797979;">4
+														Star</h5> <i style="color: rgb(246, 206, 88);"
+													class="fa fa-star"></i> <i
+													style="color: rgb(246, 206, 88);" class="fa fa-star"></i> <i
+													style="color: rgb(246, 206, 88);" class="fa fa-star"></i> <i
+													style="color: rgb(246, 206, 88);" class="fa fa-star"></i> <i
+													style="color: 797979;" class="fa fa-star"></i>
+													<h5 th:if="${rating4}"
+														style="margin-left: 10px; width: 110px; display: inline-block; color: #797979;">[[${rating4}]]
+														Reviews</h5>
+													<h5 th:unless="${rating4}"
+														style="margin-left: 10px; width: 110px; display: inline-block; color: #797979;">0
+														Reviews</h5> </a></li>
+											<li><a href="#"><h5
+														style="width: 55px; display: inline-block; color: #797979;">3
+														Star</h5> <i style="color: rgb(246, 206, 88);"
+													class="fa fa-star"></i> <i
+													style="color: rgb(246, 206, 88);" class="fa fa-star"></i> <i
+													style="color: rgb(246, 206, 88);" class="fa fa-star"></i> <i
+													style="color: 797979;" class="fa fa-star"></i> <i
+													style="color: 797979;" class="fa fa-star"></i>
+													<h5 th:if="${rating3}"
+														style="margin-left: 11px; width: 110px; display: inline-block; color: #797979;">[[${rating3}]]
+														Reviews</h5>
+													<h5 th:unless="${rating3}"
+														style="margin-left: 11px; width: 110px; display: inline-block; color: #797979;">0
+														Reviews</h5> </a></li>
+											<li><a href="#"><h5
+														style="width: 55px; display: inline-block; color: #797979;">2
+														Star</h5> <i style="color: rgb(246, 206, 88);"
+													class="fa fa-star"></i> <i
+													style="color: rgb(246, 206, 88);" class="fa fa-star"></i> <i
+													style="color: 797979;" class="fa fa-star"></i> <i
+													style="color: 797979;" class="fa fa-star"></i> <i
+													style="color: 797979;" class="fa fa-star"></i>
+													<h5 th:if="${rating2}"
+														style="margin-left: 10px; width: 110px; display: inline-block; color: #797979;">[[${rating2}]]
+														Reviews</h5>
+													<h5 th:unless="${rating2}"
+														style="margin-left: 10px; width: 110px; display: inline-block; color: #797979;">0
+														Reviews</h5> </a></li>
+											<li><a href="#"><h5
+														style="width: 55px; display: inline-block; color: #797979;">1
+														Star</h5> <i style="color: rgb(246, 206, 88);"
+													class="fa fa-star"></i> <i style="color: 797979;"
+													class="fa fa-star"></i> <i style="color: 797979;"
+													class="fa fa-star"></i> <i style="color: 797979;"
+													class="fa fa-star"></i> <i style="color: 797979;"
+													class="fa fa-star"></i>
+													<h5 th:if="${rating1}"
+														style="margin-left: 10px; width: 110px; display: inline-block; color: #797979;">[[${rating1}]]
+														Reviews</h5>
+													<h5 th:unless="${rating1}"
+														style="margin-left: 10px; width: 110px; display: inline-block; color: #797979;">0
+														Reviews</h5> </a></li>
 										</ul>
 									</div>
 								</div>
@@ -203,25 +253,28 @@
 									<div class="media">
 										<div class="d-flex">
 											<img class="rounded-circle" style="width: 50px;"
-												 th:src="@{|/assets/user/user/image/${review.User.image}|}"
-												 alt="" />
+												th:src="@{|${review.User.image}|}" alt="" />
 										</div>
 										<div class="media-body">
 											<h4>[[${review.User.fullName}]]</h4>
 
-
-											<i th:if="${review.rating >=1}" class="fa fa-star"></i> <i
-												th:if="${review.rating >=2}" class="fa fa-star"></i> <i
-												th:if="${review.rating >=3}" class="fa fa-star"></i> <i
-												th:if="${review.rating >=4}" class="fa fa-star"></i> <i
-												th:if="${review.rating ==5}" class="fa fa-star"></i>
+											<i th:if="${review.rating >=1}"
+												style="color: rgb(246, 206, 88);" class="fa fa-star"></i> <i
+												th:if="${review.rating >=2}"
+												style="color: rgb(246, 206, 88);" class="fa fa-star"></i> <i
+												th:if="${review.rating >=3}"
+												style="color: rgb(246, 206, 88);" class="fa fa-star"></i> <i
+												th:if="${review.rating >=4}"
+												style="color: rgb(246, 206, 88);" class="fa fa-star"></i> <i
+												th:if="${review.rating ==5}"
+												style="color: rgb(246, 206, 88);" class="fa fa-star"></i>
 
 											<p>[[${review.dateReview}]]</p>
 										</div>
 									</div>
 									<div th:if="${review.image != ''}">
 										<img style="width: 100px; margin-left: 50px; margin-top: 20px"
-											 th:src="@{|/assets/user/user/image/${review.image}|}" alt="" />
+											th:src="@{|${review.image}|}" alt="" />
 									</div>
 									<p style="margin-left: 50px;">[[${review.descriptionReview}]]</p>
 								</div>
@@ -268,20 +321,21 @@
 				<div class="col-lg-12">
 					<div class="best_product_slider owl-carousel">
 						<div th:each="p:*{categoryDdetail.product}"
-							 class="single_product_item">
+							class="single_product_item">
 
 							<a th:href="@{|/user/product-detail?product-id=${p.id}|}">
 								<div style="background-color: white;" class="rounded-top">
-									<img class=" px-4 pt-2 pb-0"
-										 th:src="@{|/assets/user/user/image/${p.thumbnail}|}"
-										 style="height: 280px;">
+
+									<img class=" px-4 pt-2 pb-0" th:src="@{|${p.thumbnail}|}"
+										style="height: 280px;">
+
 								</div>
 								<div class="single_product_text px-4 rounded-bottom">
 									<h4>[[${p.name}]]</h4>
 									<h6>Màu: [[${p.color.name}]]</h6>
 									<h6>
 										Size: <span th:each="itemsize : ${p.productDetails}"
-													class="size">[[${itemsize.size.name}]]</span>
+											class="size">[[${itemsize.size.name}]]</span>
 									</h6>
 
 									<div th:if="${p.isSale == true}">
@@ -293,7 +347,7 @@
 											'POINT')}]]₫</h3>
 
 										<span class="badge badge-warning"
-											  style="color: red; font-weight: 600">[[${#numbers.formatDecimal((100-(p.discountPrice
+											style="color: red; font-weight: 600">[[${#numbers.formatDecimal((100-(p.discountPrice
 											/ p.price) * 100), 0, 'COMMA', 0, 'POINT')}]]%</span>
 									</div>
 

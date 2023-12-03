@@ -24,5 +24,8 @@ public interface ReviewRepository extends JpaRepository<Review, Integer>{
 	@Query("select p from Review p where p.product.id=?1")
 	List<Review> findByProductID2(Integer id);
 
+	@Query("select p from Review p where p.user.id=?1 and p.product.id=?2 ")
+	Review findByProductAndUserID(Integer userid, Integer productid);
+
 
 }

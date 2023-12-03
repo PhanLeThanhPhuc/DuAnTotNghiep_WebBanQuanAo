@@ -2,6 +2,7 @@ package com.poly.elnr.security.oauth2;
 
 import com.poly.elnr.entity.Users;
 import com.poly.elnr.service.UserService;
+import com.poly.elnr.service.serviceImpl.SessionService;
 import com.poly.elnr.utils.CustomOAuth2User;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,7 +23,8 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
 
     @Autowired
     UserService userService;
-
+    @Autowired
+    SessionService session;
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 
@@ -32,12 +34,10 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
 
         for (GrantedAuthority authority : userDetails.getAuthorities()) {
             if (authority.getAuthority().equals("ROLE_ADMIN")) {
-
                 response.sendRedirect("/user/index");
                 return;
 
             } else if (authority.getAuthority().equals("ROLE_USER")) {
-
                 response.sendRedirect("/user/index");
                 return;
 

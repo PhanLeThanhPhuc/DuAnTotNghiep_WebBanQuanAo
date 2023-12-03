@@ -12,8 +12,5 @@ import com.poly.elnr.service.serviceImpl.SessionService;
 @Controller
 public class SecurityController {
 
-	@GetMapping("/security/user")
-	public String loginForm(Model model) {
-		return "user/security/login";
-	}
+
 }

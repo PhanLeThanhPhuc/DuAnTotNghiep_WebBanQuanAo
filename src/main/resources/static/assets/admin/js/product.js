@@ -38,6 +38,21 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 		}
 		$scope.displayedImages = [];
 		$scope.closeCollapsibles();
+		// $scope.selectedFiles = [];
+		// updateImageContainer();
+		// clearthumbnail();
+	}
+
+	$scope.clearImageProduct = () =>{
+		$scope.selectedFiles = [];
+		const imageContainer = document.getElementById('imageContainer');
+		imageContainer.innerHTML = '';
+	}
+
+	$scope.clearThumbnail = () =>{
+		$scope.image = []
+		const imageContainer = document.getElementById('ImageThumbnail');
+		imageContainer.innerHTML = '';
 	}
 
 	$scope.edit = function(item) {
@@ -373,7 +388,6 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 			imageContainer.appendChild(img);
 		}
 	}
-
 
 	function deleteImage(index) {
 		$scope.selectedFiles.splice(index, 1);

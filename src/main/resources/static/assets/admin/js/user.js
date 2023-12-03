@@ -2,6 +2,7 @@ app.controller("user-ctrl", function($scope, $filter, $http) {
 	$scope.initialize = function() {
 		$http.get("/rest/users").then(resp => {
 			$scope.items = resp.data;
+			console.log($scope.items);
 			$scope.items.forEach(item => {
 				item.date_insert = new Date(item.date_insert)
 				item.date_update = new Date(item.date_update)
