@@ -1,27 +1,32 @@
-app.controller("color-ctrl", function($scope,$filter, $http){
-	$scope.initialize = function(){
+app.controller("color-ctrl", function($scope, $filter, $http) {
+	$scope.initialize = function() {
 		$http.get("/rest/colors").then(resp => {
 			$scope.items = resp.data;
 		});
 		$scope.reset();
 	}
-	
 
-	$scope.reset = function(){
+
+	$scope.reset = function() {
 		$scope.form = {
 			dateInsert: new Date(),
 			status: true,
-			
+
 		}
 	}
 
-	$scope.edit = function(item){
+	$scope.edit = function(item) {
 		$scope.form = angular.copy(item);
 		$(".nav-tabs a:eq(0)").tab("show");
 	}
 
-	$scope.create = function(){
+	$scope.create = function() {
+		if (!validateForm()) {
+			return;
+		}
+	
 		var item = angular.copy($scope.form);
+		console.log(item);
 		$http.post(`/rest/colors`, item).then(resp => {
 			resp.data.dateInsert = new Date(resp.data.dateInsert)
 			$scope.items.push(resp.data);
@@ -33,21 +38,24 @@ app.controller("color-ctrl", function($scope,$filter, $http){
 		});
 	}
 
-	$scope.update = function(){
+	$scope.update = function() {
+		if (!validateForm()) {
+			return;
+		}
 		var item = angular.copy($scope.form);
 		$http.put(`/rest/colors/${item.id}`, item).then(resp => {
 			var index = $scope.items.findIndex(p => p.id == item.id);
 			$scope.items[index] = item;
 			alert("Cập nhật màu sản phẩm thành công!");
 		})
-		.catch(error => {
-			alert("Lỗi cập nhật màu sản phẩm!");
-			console.log("Error", error);
-		});
+			.catch(error => {
+				alert("Lỗi cập nhật màu sản phẩm!");
+				console.log("Error", error);
+			});
 	}
 
-	$scope.delete = function(item){
-		if(confirm("Bạn muốn xóa màu sản phẩm này?")){
+	$scope.delete = function(item) {
+		if (confirm("Bạn muốn xóa màu sản phẩm này?")) {
 			$http.delete(`/rest/colors/${item.id}`).then(resp => {
 				var index = $scope.items.findIndex(p => p.id == item.id);
 				$scope.items.splice(index, 1);
@@ -59,8 +67,8 @@ app.controller("color-ctrl", function($scope,$filter, $http){
 			})
 		}
 	}
-	
-	
+
+
 
 	$scope.initialize();
 
@@ -121,5 +129,31 @@ app.controller("color-ctrl", function($scope,$filter, $http){
 	$scope.isSortedBy = function(column) {
 		return $scope.pager.sortColumn == column;
 	};
+
+
+	validateForm = () => {
+
+		var isvalid = true;
+
+		var name = document.getElementById("colorName").value
+		console.log(name)
+		if (name === "") {
+			isvalid = false;
+			document.getElementById("colorNameError").innerText = "Không bỏ trống";
+		} else if (/[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-\d]/.test(name)) {
+			
+			isvalid = false;
+			document.getElementById("colorNameError").innerText = "Tên không được chứa ký tự đặt biệt hoặc số";
+		} else {
+			document.getElementById("colorNameError").innerText = "";
+		}
+
+
+
+		return isvalid;
+
+	}
+
+
 }
 );

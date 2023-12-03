@@ -79,7 +79,6 @@ public class UserServiceImpl implements UserService {
 			authority.setUser(userid);
 			authority.setRole(roleId);
 			authorityRepository.save(authority);
-
 			userDetails = User.withUsername(user.getEmail()).password(passwordEncoder.encode(RamDomNameUtils.generateRandomPassword()))
 											.roles("USER").build();
 			Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());

@@ -28,6 +28,10 @@ app.controller("discount-ctrl", function($scope, $filter, $http, $timeout) {
 	}
 
 	$scope.create = function() {
+		if(!validateForm()){
+			return;
+		}
+		document.getElementById("buttonclose").click()
 		$scope.showSelectedOptions2();
 		var item = angular.copy($scope.form);
 		$http.post(`/rest/discount`, item).then(resp => {
@@ -42,6 +46,10 @@ app.controller("discount-ctrl", function($scope, $filter, $http, $timeout) {
 	}
 
 	$scope.update = function() {
+		if(!validateForm()){
+			return;
+		}
+		$('#popup').modal('hide');
 		$scope.showSelectedOptions2();
 		var item = angular.copy($scope.form);
 		$http.put(`/rest/discount/${item.id}`, item).then(resp => {
@@ -206,6 +214,51 @@ app.controller("discount-ctrl", function($scope, $filter, $http, $timeout) {
 		$('#mySelect').selectpicker('refresh');
 	}
 
+
+	validateForm = () => {
+		 
+		 var isvalid = true;
+		 
+		 var nameform = document.getElementById("nameForm").value
+		 var discountform = document.getElementById("discountForm").value
+		 var selectedOptions = $('#mySelect').val();
+		 var checkbox = document.getElementById('allproductform');
+		 
+		 if (nameform === "") {
+			isvalid = false;
+			document.getElementById("nameFormError").innerText = "Không bỏ trống";
+		} else if (/[^0-9]/.test(nameform)) {
+
+			isvalid = false;
+			document.getElementById("nameFormError").innerText = "Tên không được chứa ký tự đặt biệt hoặc số";
+		} else {
+			document.getElementById("nameFormError").innerText = "";
+		}
+		
+		if (discountform === "") {
+			isvalid = false;
+			document.getElementById("discountFormError").innerText = "Không bỏ trống";
+		} else if (/[^0-9]/.test(discountform)) {
+			isvalid = false;
+			document.getElementById("discountFormError").innerText = "Tên không được chứa ký tự đặt biệt hoặc chữ";
+		} else {
+			document.getElementById("discountFormError").innerText = "";
+		}
+		
+		if (!checkbox.checked) {
+			if (selectedOptions === null) {
+				isvalid = false;
+				document.getElementById("mySelectError").innerText = "Không bỏ trống";
+			} else {
+				document.getElementById("mySelectError").innerText = "";
+			}
+		} if (checkbox.checked) {
+			document.getElementById("mySelectError").innerText = "";
+
+		}
+		
+		return isvalid;
+	}
 
 }
 );

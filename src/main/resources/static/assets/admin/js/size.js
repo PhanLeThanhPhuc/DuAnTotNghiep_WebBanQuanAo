@@ -17,6 +17,9 @@ app.controller("size-ctrl", function($scope,$filter, $http){
 	}
 
 	$scope.create = function(){
+		if(!validateForm()){
+			return;
+		}
 		var item = angular.copy($scope.form);
 		$http.post(`/rest/sizes`, item).then(resp => {
 			resp.data.dateInsert = new Date(resp.data.dateInsert)
@@ -143,6 +146,30 @@ app.controller("size-ctrl", function($scope,$filter, $http){
 	    beforeHide: function () {}, // will be triggered before the toast gets hidden
 	    afterHidden: function () {}  // will be triggered after the toast has been hidden
 	});
+	}
+	
+	
+	validateForm = () => {
+
+		var isvalid = true;
+
+		var name = document.getElementById("sizeName").value
+		console.log(name)
+		if (name === "") {
+			isvalid = false;
+			document.getElementById("sizeNameError").innerText = "Không bỏ trống";
+		} else if (/[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-\d]/.test(name)) {
+			
+			isvalid = false;
+			document.getElementById("sizeNameError").innerText = "Tên không được chứa ký tự đặt biệt hoặc số";
+		} else {
+			document.getElementById("sizeNameError").innerText = "";
+		}
+
+
+
+		return isvalid;
+
 	}
 }
 );

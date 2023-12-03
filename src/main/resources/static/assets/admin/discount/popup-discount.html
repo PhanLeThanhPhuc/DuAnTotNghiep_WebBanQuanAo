@@ -1,6 +1,6 @@
 <!-- Modal -->
-<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
-	aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<div class="modal fade bd-example-modal-lg" tabindex="-1"
+	role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -16,10 +16,11 @@
 						<div class="form-group col-sm-12">
 							<div>Discount</div>
 							<div class="row px-3">
-								<input ng-model="form.name" class="form-control col-sm-10">
-								
-							</div>
+								<input ng-model="form.name" id="nameForm"
+									class="form-control col-sm-10">
 
+							</div>
+							<div id="nameFormError" class="text-danger"></div>
 						</div>
 						<div class="form-group col-sm-6">
 							<div>Star Date</div>
@@ -33,9 +34,11 @@
 						</div>
 						<div class="form-group col-sm-6">
 							<div>Discount(%)</div>
-							<input ng-model="form.discount" class="form-control">
+							<input ng-model="form.discount" id="discountForm"
+								class="form-control">
+							<div id="discountFormError" class="text-danger"></div>
 						</div>
-						
+
 						<div class="form-group col-sm-6">
 							<div>Available?</div>
 							<label class="switch"> <input ng-model="form.active"
@@ -45,7 +48,7 @@
 						</div>
 						<div class="form-group col-sm-12">
 							<div>
-								Product:&nbsp;&nbsp;&nbsp;<input type="checkbox"
+								Product:&nbsp;&nbsp;&nbsp;<input type="checkbox" id="allproductform"
 									ng-model="form.allproduct"> All product
 							</div>
 							<div class="row">
@@ -61,20 +64,23 @@
 										value="Clear Select" ng-click="clearSelect()">Clear
 										Select</button>
 								</div>
+								<div id="mySelectError" class="text-danger"></div>
 							</div>
-							<input type="hidden" ng-model="form.product_id" 
+							<input type="hidden" ng-model="form.product_id"
 								id="selectedOptionsInput" class="form-control">
 						</div>
-						
+
 					</div>
 				</div>
 			</div>
 			<div class="modal-footer">
 				<button ng-click="create()" ng-disabled="form.id"
-					class="btn btn-primary" data-dismiss="modal">Create</button>
+					class="btn btn-primary">Create</button>
 				<button ng-click="update()" ng-disabled="!form.id"
 					class="btn btn-success" data-dismiss="modal">Update</button>
 				<button ng-click="reset()" class="btn btn-info">Reset</button>
+				<button type="button" id="buttonclose" class="btn btn-secondary" style="display: none;" data-dismiss="modal"
+					>Close</button>
 			</div>
 		</div>
 	</div>

@@ -58,7 +58,7 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 	$scope.edit = function(item) {
 		loadImageThumbnail(item);
 		$scope.form = angular.copy(item);
-		console.log("FORM: ",$scope.form);
+		console.log("FORM: ", $scope.form);
 		$(".nav-tabs a:eq(0)").tab("show");
 		$http.get(`/rest/productsDetail/${item.id}`).then(resp => {
 			$scope.productSize = resp.data;
@@ -90,7 +90,10 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 	}
 
 	$scope.create = async () => {
-		if($scope.form.thumbnail instanceof File){
+		if (!validateForm()) {
+			return;
+		}
+		if ($scope.form.thumbnail instanceof File) {
 			await $scope.uploadImageThumbnail();
 			console.log("THEEM ANH THANH CONG");
 		}
@@ -102,8 +105,8 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 			await $scope.uploadImageDetail();
 			alert("Thêm mới sản phẩm thành công!");
 			// them anh san pham phu
-			$scope.selected.forEach(function (productDetail) {
-				productdt = {size: productDetail, product: $scope.form}
+			$scope.selected.forEach(function(productDetail) {
+				productdt = { size: productDetail, product: $scope.form }
 				$http.post(`/rest/productsDetail`, productdt).then(resp => {
 					$scope.productSize.push(resp.data);
 				}).catch(error => {
@@ -117,12 +120,12 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 		});
 	}
 
-	$scope.update  =async () => {
+	$scope.update = async () => {
 		var size = angular.copy($scope.productSize);
 		//
 		await $scope.uploadImageDetail();
 		console.log("kdkdkd", $scope.form.thumbnail);
-		if($scope.form.thumbnail instanceof File){
+		if ($scope.form.thumbnail instanceof File) {
 			await $scope.uploadImageThumbnail();
 			console.log("THEEM ANH THANH CONG");
 		}
@@ -214,7 +217,7 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 			img.style.marginRight = '10px';
 			img.style.marginBottom = '10px';
 
-			img.addEventListener('dblclick', function () {
+			img.addEventListener('dblclick', function() {
 				deleteImage(i);
 			});
 
@@ -255,16 +258,16 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 
 
 	/// upload xuong db anh thumbnail
-	$scope.uploadImageThumbnail  = async function() {
+	$scope.uploadImageThumbnail = async function() {
 		var data = new FormData();
-		console.log(" $scope.form.thumbnail[0]",  $scope.form.thumbnail)
+		console.log(" $scope.form.thumbnail[0]", $scope.form.thumbnail)
 		data.append('uploadfile', $scope.form.thumbnail);
 		console.log("data form", data)
 		await $http.post('/rest/upload', data, {
 			transformRequest: angular.identity,
 			headers: { 'Content-Type': undefined }
 		}).then(resp => {
-			if(resp.status ===200){
+			if (resp.status === 200) {
 				$scope.form.thumbnail = resp.data.image;
 				console.log("UPload thành công", $scope.form.thumbnail);
 			}
@@ -292,8 +295,8 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 				transformRequest: angular.identity,
 				headers: { 'Content-Type': undefined }
 			}).then(resp => {
-				if(resp.status === 200){
-				 	updateImageProduct(resp.data);
+				if (resp.status === 200) {
+					updateImageProduct(resp.data);
 				}
 			}).catch(error => {
 				console.log("Errors", error);
@@ -301,11 +304,11 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 		}
 	};
 
-	updateImageProduct = async (listUrlImage) =>{
+	updateImageProduct = async (listUrlImage) => {
 
 		console.log("$scope.listImageProductCopy", $scope.listImageProductCopy)
-		if($scope.listImageProductCopy.length === 0){
-			console.log("$scope.listImageProductCopy",$scope.listImageProductCopy)
+		if ($scope.listImageProductCopy.length === 0) {
+			console.log("$scope.listImageProductCopy", $scope.listImageProductCopy)
 			await $http.delete(`/rest/image/delete-by-product${$scope.form.id}`).then(resp => {
 				// $scope.image.push(resp.data);
 			}).catch(error => {
@@ -326,7 +329,7 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 				};
 				$scope.selectedFiles[i] = objectImageProduct;
 				j++;
-			}else{
+			} else {
 				var objectImageProduct = {
 					id: $scope.selectedFiles[i].id,
 					image: $scope.selectedFiles[i].image,
@@ -337,7 +340,7 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 				$scope.selectedFiles[i] = objectImageProduct;
 			}
 		}
-		console.log("images",$scope.selectedFiles);
+		console.log("images", $scope.selectedFiles);
 		await $http.post(`/rest/image`, $scope.selectedFiles).then(resp => {
 			// $scope.image.push(resp.data);
 		}).catch(error => {
@@ -378,7 +381,7 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 			img.style.marginRight = '10px';
 			img.style.marginBottom = '10px';
 
-			img.addEventListener('dblclick', function () {
+			img.addEventListener('dblclick', function() {
 				deleteImage(i);
 			});
 
@@ -412,6 +415,7 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 		}
 	}
 	$scope.addsize = function(id) {
+
 		$scope.selected.forEach(function(productDetail) {
 			productdt = { size: productDetail, product: id }
 			$http.post(`/rest/productsDetail`, productdt).then(resp => {
@@ -437,6 +441,9 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 
 
 	$scope.createDescription = function() {
+		if (!validateFormDetail()) {
+			return;
+		}
 		var item = angular.copy($scope.form.description);
 		$http.post(`/rest/description`, item).then(resp => {
 			resp.data.dateInsert = new Date(resp.data.dateInsert)
@@ -568,6 +575,175 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 		}
 
 	});
+
+
+	validateForm = () => {
+
+		var isvalid = true;
+
+		var name = document.getElementById("productName").value
+		var price = document.getElementById("productPrice").value
+		var discountPrice = document.getElementById("ProductDiscountPrice").value
+		var productcolor = document.getElementById("productColor")
+		var productcaterory = document.getElementById("productCategory")
+		var productdescription = document.getElementById("productDescription")
+		var selectedTextproductColor = productcolor.options[productcolor.selectedIndex].text;
+		var selectedTextproductCategory = productcaterory.options[productcaterory.selectedIndex].text;
+		var selectedTextproductDes = productdescription.options[productdescription.selectedIndex].text;
+
+
+
+
+		console.log(selectedTextproductColor)
+		console.log(selectedTextproductCategory)
+		console.log(selectedTextproductDes)
+		if (name === "") {
+			isvalid = false;
+			document.getElementById("productNameError").innerText = "Không bỏ trống";
+		} else if (/[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-\d]/.test(name)) {
+
+			isvalid = false;
+			document.getElementById("productNameError").innerText = "Tên không được chứa ký tự đặt biệt hoặc số";
+		} else {
+			document.getElementById("productNameError").innerText = "";
+		}
+
+		if (price === "") {
+			isvalid = false;
+			document.getElementById("productPriceError").innerText = "Không bỏ trống";
+		} else if (/[!@#$%^&*(),.?":{}|<>]/.test(price)) {
+			// Kiểm tra xem giá có phải là số hay không
+			isvalid = false;
+			document.getElementById("productPriceError").innerText = "Giá không được chứa ký tự đặt biệt";
+		} else if (isNaN(price)) {
+			// Kiểm tra xem giá có chứa ký tự đặc biệt hay không
+			isvalid = false;
+			document.getElementById("productPriceError").innerText = "Giá phải là một số";
+		} else if (parseFloat(price) <= 0) {
+			// Kiểm tra xem giá có lớn hơn 0 hay không
+			isvalid = false;
+			document.getElementById("productPriceError").innerText = "Giá phải lớn hơn 0";
+		} else {
+			document.getElementById("productPriceError").innerText = "";
+		}
+
+		if (discountPrice === "") {
+			isvalid = false;
+			document.getElementById("ProductDiscountPriceError").innerText = "Không bỏ trống";
+		} else if (/[!@#$%^&*(),.?":{}|<>]/.test(discountPrice)) {
+			// Kiểm tra xem giá có chứa ký tự đặc biệt ở bất kỳ vị trí không
+			isvalid = false;
+			document.getElementById("ProductDiscountPriceError").innerText = "Số tiền không được chứa ký tự đặc biệt";
+		} else if (isNaN(discountPrice)) {
+			// Kiểm tra xem giá có phải là số hay không
+			isvalid = false;
+			document.getElementById("ProductDiscountPriceError").innerText = "Số tiền phải là một số";
+		} else if (parseFloat(discountPrice) <= 0) {
+			// Kiểm tra xem giá có lớn hơn 0 hay không
+			isvalid = false;
+			document.getElementById("ProductDiscountPriceError").innerText = "Số tiền phải lớn hơn 0";
+		} else {
+			document.getElementById("ProductDiscountPriceError").innerText = "";
+		}
+
+
+		if (selectedTextproductColor == "") {
+			isvalid = false;
+			document.getElementById("productColorError").innerText = "Vui lòng chọn màu sản phẩm";
+		} else {
+			document.getElementById("productColorError").innerText = "";
+		}
+
+		if (selectedTextproductCategory == "") {
+			isvalid = false;
+			document.getElementById("productCategoryError").innerText = "Vui lòng chọn loại sản phẩm";
+		} else {
+			document.getElementById("productCategoryError").innerText = "";
+		}
+
+		if (selectedTextproductDes == "") {
+			isvalid = false;
+			document.getElementById("productDescriptionError").innerText = "Vui lòng chọn mô tả sản phẩm";
+		} else {
+			document.getElementById("productDescriptionError	").innerText = "";
+		}
+
+		
+
+
+
+		return isvalid;
+
+
+	}
+
+
+	validateFormDetail = () => {
+		var isvalid = true;
+
+		var descriptionname = document.getElementById("descriptionName").value
+		var descriptionweight = document.getElementById("descriptionWeight").value
+		var descriptionmaterial = document.getElementById("descriptionMaterial").value
+		var descriptiontechnology = document.getElementById("descriptionTechnology").value
+		var descriptionmanufacture = document.getElementById("descriptionManufacture").value
+		var descriptiondescription = document.getElementById("descriptionDescription").value
+
+		console.log(descriptionname);
+		console.log(descriptionweight);
+		console.log(descriptionmaterial);
+		console.log(descriptiontechnology);
+		console.log(descriptionmanufacture);
+		console.log(descriptiondescription);
+
+		if (descriptionname === "") {
+			isvalid = false;
+			document.getElementById("descriptionNameError").innerText = "Không bỏ trống";
+		} else {
+			document.getElementById("descriptionNameError").innerText = "";
+		}
+
+		if (descriptionweight === "") {
+			isvalid = false;
+			document.getElementById("descriptionWeightError").innerText = "Không bỏ trống";
+		}
+		else {
+			document.getElementById("descriptionWeightError").innerText = "";
+		}
+
+		if (descriptionmaterial === "") {
+			isvalid = false;
+			document.getElementById("descriptionMaterialError").innerText = "Không bỏ trống";
+		} else {
+			document.getElementById("descriptionMaterialError").innerText = "";
+		}
+
+		if (descriptiontechnology === "") {
+			isvalid = false;
+			document.getElementById("descriptionTechnologyError").innerText = "Không bỏ trống";
+		} else {
+			document.getElementById("descriptionTechnologyError").innerText = "";
+		}
+
+		if (descriptionmanufacture === "") {
+			isvalid = false;
+			document.getElementById("descriptionManufactureError").innerText = "Không bỏ trống";
+		} else {
+			document.getElementById("descriptionManufactureError").innerText = "";
+		}
+
+		if (descriptiondescription === "") {
+			isvalid = false;
+			document.getElementById("descriptionDescriptionError").innerText = "Không bỏ trống";
+		} else {
+			document.getElementById("descriptionDescriptionError").innerText = "";
+		}
+
+
+
+
+		return isvalid;
+	}
+
 
 
 });
