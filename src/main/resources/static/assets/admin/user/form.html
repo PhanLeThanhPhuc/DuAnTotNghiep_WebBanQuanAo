@@ -7,8 +7,7 @@
 				<div class="panel-body mt-3">
 					<div class="row">
 						<div class="col-sm-4 text-center">
-							<label for="image"> <img class=""
-								ng-src="{{form.image}}"
+							<label for="image"> <img class="" ng-src="{{form.image}}"
 								style="max-width: 80%; height: 310px">
 							</label>
 						</div>
@@ -17,41 +16,30 @@
 							<div class="row">
 								<div class="form-group col-sm-6">
 									<div>Họ và tên</div>
-									<input ng-model="form.fullName" placeholder="Nhập Họ và Tên..."
-										class="form-control">
+									<input ng-model="form.fullName" id="fullNameForm"
+										placeholder="Nhập Họ và Tên..." class="form-control">
+									<div id="fullNameFormError" class="text-danger"></div>
 								</div>
 								<div class="form-group col-sm-6">
 									<div>Giới tính</div>
-									<div class="form mt-3">
-										<label class="radio-inline ml-3"> <input
-											ng-model="form.gender" ng-value="1" name="gender"
-											type="radio">  &nbsp	 Nam
-										</label> <label class="radio-inline ml-3"> <input
-											ng-model="form.gender" ng-value="0" name="gender"
-											type="radio"> &nbsp Nữ
-										</label> <label class="radio-inline ml-3"> <input
-											ng-model="form.gender" ng-value="2" name="gender"
-											type="radio">  &nbsp Khác
+									<div class="form mt-3"
+										style="display: flex; flex-direction: row;">
+										<label class="radio-inline ml-1"> <input
+											ng-model="form.gender" id="genderCheck" ng-value="1"
+											name="gender" type="radio"> Nam
+										</label> <label class="radio-inline ml-1"> <input
+											ng-model="form.gender" id="genderCheck" ng-value="0"
+											name="gender" type="radio"> Nữ
+										</label> <label class="radio-inline ml-1"> <input
+											ng-model="form.gender" id="genderCheck" ng-value="2"
+											name="gender" type="radio"> Khác
 										</label>
 									</div>
+									<div id="genderCheckError" class="text-danger"></div>
 								</div>
+
 							</div>
 							<div class="row">
-								<div class="form-group col-sm-6">
-									<div>Mật khẩu</div>
-									<div class="row">
-										<div class="col-sm-10">
-											<input type="{{inputType}}" class="form-control"
-												ng-model="form.password" ng-hide="showPassword"> <input
-												class="form-control" type="{{inputType}}"
-												ng-model="form.password" ng-show="showPassword">
-										</div>
-										<div class="col-sm-2 "style="padding:0px 0px;padding-top:5px;">
-											<i ng-click="togglePasswordVisibility()"
-												ng-class="showPassword ? 'fe fe-24 fe-eye-off' : 'fe fe-24 fe-eye'"></i>
-										</div>
-									</div>
-								</div>
 								<div class="form-group col-sm-6">
 									<div>Ảnh</div>
 									<input type="file" class="form-control" id="image"
@@ -59,14 +47,16 @@
 								</div>
 								<div class="form-group col-sm-6">
 									<div>Email</div>
-									<input ng-model="form.email" placeholder="Nhập Email...."
+									<input ng-model="form.email" id="emailForm" type="email" placeholder="Nhập Email...."
 										class="form-control">
+									<div id="emailFormError" class="text-danger"></div>
 								</div>
 								<div class="form-group col-sm-6">
 									<div>Số điện thoại</div>
-									<input ng-model="form.phone"
+									<input ng-model="form.phone" id="phoneForm"
 										placeholder="Nhập Số điện thoại..." type="text"
 										class="form-control">
+										<div id="phoneFormError" class="text-danger"></div>
 								</div>
 							</div>
 							<div class="row">
@@ -83,7 +73,7 @@
 								</div>
 							</div>
 							<div class="row">
-								
+
 								<div class="form-group col-sm-6">
 									<div>Trạng thái</div>
 									<div class="form mt-1 ml-3">

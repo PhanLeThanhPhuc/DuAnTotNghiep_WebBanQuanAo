@@ -33,6 +33,9 @@ app.controller("size-ctrl", function($scope,$filter, $http){
 	}
 
 	$scope.update = function(){
+		if(!validateForm()){
+			return;
+		}
 		var item = angular.copy($scope.form);
 		$http.put(`/rest/sizes/${item.id}`, item).then(resp => {
 			var index = $scope.items.findIndex(p => p.id == item.id);

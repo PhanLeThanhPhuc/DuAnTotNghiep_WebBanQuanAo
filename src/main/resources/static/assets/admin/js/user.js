@@ -6,7 +6,7 @@ app.controller("user-ctrl", function($scope, $filter, $http) {
 			$scope.items.forEach(item => {
 				item.date_insert = new Date(item.date_insert)
 				item.date_update = new Date(item.date_update)
-				
+
 			})
 		});
 		$scope.reset();
@@ -26,14 +26,17 @@ app.controller("user-ctrl", function($scope, $filter, $http) {
 		$scope.showPassword = !$scope.showPassword;
 		$scope.inputType = $scope.showPassword ? 'text' : 'password';
 	};
-	
-	
+
+
 	$scope.edit = function(item) {
 		$scope.form = angular.copy(item);
 		$(".nav-tabs a:eq(0)").tab("show");
 	}
 
 	$scope.create = function() {
+		if (!validateForm()) {
+			return;
+		}
 		var item = angular.copy($scope.form);
 		$http.post(`/rest/users`, item).then(resp => {
 			resp.data.date_insert = new Date()
@@ -48,6 +51,9 @@ app.controller("user-ctrl", function($scope, $filter, $http) {
 	}
 
 	$scope.update = function() {
+		if (!validateForm()) {
+			return;
+		}
 		var item = angular.copy($scope.form);
 		item.date_update = new Date();
 		$http.put(`/rest/users/${item.id}`, item).then(resp => {
@@ -82,7 +88,7 @@ app.controller("user-ctrl", function($scope, $filter, $http) {
 			});
 
 	}
-	
+
 	$scope.imageChanged = function(files) {
 		var data = new FormData();
 		data.append('uploadfile', files[0]);
@@ -97,7 +103,7 @@ app.controller("user-ctrl", function($scope, $filter, $http) {
 		})
 	}
 
-	
+
 	$scope.initialize();
 
 	$scope.searchText = {};
@@ -161,7 +167,7 @@ app.controller("user-ctrl", function($scope, $filter, $http) {
 
 
 
-	$scope.messege = (mes) =>{
+	$scope.messege = (mes) => {
 
 		$.toast({
 			text: mes, // Text that is to be shown in the toast
@@ -182,6 +188,73 @@ app.controller("user-ctrl", function($scope, $filter, $http) {
 			afterHidden: function() { }  // will be triggered after the toast has been hidden
 		});
 	}
+
+
+
+	validateForm = () => {
+    var isvalid = true;
+
+    var fullNameform = document.getElementById("fullNameForm").value;
+    var emailform = document.getElementById("emailForm").value;
+    var phoneform = document.getElementById("phoneForm").value;
+    var genderCheck = document.getElementsByName('gender');
+
+    console.log(fullNameform);
+    console.log(emailform);
+    console.log(phoneform);
+
+    if (fullNameform === "") {
+        isvalid = false;
+        document.getElementById("fullNameFormError").innerText = "Không bỏ trống";
+    } else if (/[^a-zA-Zàáảãạăắằẳẵặâấầẩẫậèéẻẽẹêếềểễệđìíỉĩịòóỏõọôốồổỗộơớờởỡợùúủũụưứừửữựỳỹỷỵ\s]/ug.test(fullNameform)) {
+        isvalid = false;
+        document.getElementById("fullNameFormError").innerText = "Tên không được chứa ký tự đặt biệt và số";
+    } else {
+        document.getElementById("fullNameFormError").innerText = "";
+    }
+
+    if (emailform === "") {
+        isvalid = false;
+        document.getElementById("emailFormError").innerText = "Không bỏ trống";
+    } else if (!/^[A-Za-z0-9]+[A-Za-z0-9]*@[A-Za-z0-9]+\.[A-Za-z0-9]+$/.test(emailform)) {
+        isvalid = false;
+        document.getElementById("emailFormError").innerText = "Email không đúng định dạng";
+    } else {
+        document.getElementById("emailFormError").innerText = "";
+    }
+
+    if (phoneform === "") {
+        isvalid = false;
+        document.getElementById("phoneFormError").innerText = "Không bỏ trống";
+    } else if (/[^\d]/.test(phoneform)) {
+        isvalid = false;
+        document.getElementById("phoneFormError").innerText = "Số điện thoại không được chứa ký tự đặc biệt hoặc chữ";
+    } else if (/[^0-9]/.test(phoneform) || phoneform.length !== 10) {
+        isvalid = false;
+        document.getElementById("phoneFormError").innerText = "Số điện thoại không hợp lệ ";
+    } else {
+        document.getElementById("phoneFormError").innerText = "";
+    }
+
+    var isGenderSelected = false;
+    for (var i = 0; i < genderCheck.length; i++) {
+        if (genderCheck[i].checked) {
+            isGenderSelected = true;
+            break;
+        }
+    }
+
+    if (!isGenderSelected) {
+        isvalid = false;
+        document.getElementById('genderCheckError').innerText = 'Vui lòng chọn giới tính.';
+    } else {
+        document.getElementById('genderCheckError').innerText = '';
+    }
+
+    return isvalid;
+}
+
+
 }
 
 
