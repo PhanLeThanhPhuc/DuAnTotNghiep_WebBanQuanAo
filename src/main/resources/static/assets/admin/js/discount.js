@@ -227,10 +227,10 @@ app.controller("discount-ctrl", function($scope, $filter, $http, $timeout) {
 		 if (nameform === "") {
 			isvalid = false;
 			document.getElementById("nameFormError").innerText = "Không bỏ trống";
-		} else if (/[^0-9]/.test(nameform)) {
+		} else if (/[!@#$%^&*(),.?":{}|<>]/.test(nameform)) {
 
 			isvalid = false;
-			document.getElementById("nameFormError").innerText = "Tên không được chứa ký tự đặt biệt hoặc số";
+			document.getElementById("nameFormError").innerText = "Tên không được chứa ký tự đặt biệt";
 		} else {
 			document.getElementById("nameFormError").innerText = "";
 		}

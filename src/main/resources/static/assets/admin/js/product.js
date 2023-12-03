@@ -121,6 +121,9 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 	}
 
 	$scope.update = async () => {
+		if (!validateForm()) {
+			return;
+		}
 		var size = angular.copy($scope.productSize);
 		//
 		await $scope.uploadImageDetail();
