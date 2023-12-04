@@ -8,8 +8,8 @@
 					<div class="form-group col-sm-6">
 						Tìm kiếm: <input ng-model="searchText.$" class="form-control">
 					</div>
-					
-					
+
+
 					<div class="table-responsive">
 						<table
 							class="table table-striped table-bordered zero-configuration">
@@ -57,7 +57,11 @@
 
 									<td>{{item.date_insert | date : 'dd-MM-yyyy hh:mm'}}</td>
 									<td>{{item.date_update | date : 'dd-MM-yyyy hh:mm'}}</td>
-									<td>{{item.signup == false ? 'Chưa đăng ký' : 'Đã đăng ký'}}</td>
+									<td>
+										<span ng-if="item.signup == false" style="color: red; font-weight: bold">CHƯA ĐĂNG KÝ</span>
+										<span ng-if="item.signup == true" style="color: green; font-weight: bold">ĐÃ ĐĂNG KÝ</span>
+									</td>
+
 									<td><label class="switch"> <input
 											ng-model="item.status" ng-value="true" name="available"
 											type="checkbox"> <span ng-click="updateStatus(item)" class="slider round"></span>

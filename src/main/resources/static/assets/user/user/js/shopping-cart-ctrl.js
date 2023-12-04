@@ -610,12 +610,20 @@ app.controller("cart-ctrl", function($scope, $http) {
 		}
 
 
+
 		if (email === '') {
 			document.getElementById('email_error').innerText = 'Vui lòng nhập email';
 			isValid = false;
 		} else {
-			document.getElementById('email_error').innerText = '';
+			var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+			if (!emailRegex.test(email)) {
+				document.getElementById('email_error').innerText = 'Email không đúng định dạng';
+				isValid = false;
+			} else {
+				document.getElementById('email_error').innerText = '';
+			}
 		}
+
 
 
 		if (!$scope.dataLogin.statusLogin) {

@@ -59,7 +59,7 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 		loadImageThumbnail(item);
 		$scope.form = angular.copy(item);
 		console.log("FORM: ", $scope.form);
-		$(".nav-tabs a:eq(0)").tab("show");
+		$(".nav-pills a:eq(0)").tab("show");
 		$http.get(`/rest/productsDetail/${item.id}`).then(resp => {
 			$scope.productSize = resp.data;
 		})

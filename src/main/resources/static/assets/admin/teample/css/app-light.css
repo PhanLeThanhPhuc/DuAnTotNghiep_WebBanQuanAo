@@ -1543,6 +1543,9 @@ textarea.form-control {
   height: auto; }
 
 .form-group {
+  color: black;
+  font-weight: 600;
+  font-size: 15px;
   margin-bottom: 1rem; }
 
 .form-text {
@@ -3283,6 +3286,8 @@ input[type="button"].btn-block {
       color: #ffffff; }
 
 .card {
+  box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 0px 8px;
+  border-radius: 10px;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -3291,7 +3296,7 @@ input[type="button"].btn-block {
   background-color: #ffffff;
   background-clip: border-box;
   border: 1px solid #e9ecef;
-  border-radius: 0.25rem; }
+  }
   .card > hr {
     margin-right: 0;
     margin-left: 0; }
@@ -3478,18 +3483,20 @@ input[type="button"].btn-block {
     color: #6c757d; }
 
 .pagination {
+
   display: flex;
   padding-left: 0;
   list-style: none;
   border-radius: 0.25rem; }
 
 .page-link {
+  font-weight: bold;
   position: relative;
   display: block;
   padding: 0.5rem 0.75rem;
   margin-left: -1px;
   line-height: 1.25;
-  color: #adb5bd;
+  color: black;
   background-color: transparent;
   border: 1px solid transparent; }
   .page-link:hover {
@@ -3509,6 +3516,7 @@ input[type="button"].btn-block {
   border-bottom-left-radius: 0.25rem; }
 
 .page-item:last-child .page-link {
+  /*color: black;*/
   border-top-right-radius: 0.25rem;
   border-bottom-right-radius: 0.25rem; }
 
@@ -12042,3 +12050,30 @@ a.uppy-Dashboard-poweredBy {
     font-size: 35px;
     top: -10px;
     right: -35px; } }
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.table tbody tr {
+  transition: box-shadow 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+}
+.table tbody tr:hover {
+  background-color: initial;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  /*animation: fadeIn 0.3s ease;*/
+}
+.table tbody tr td{
+  color: black;
+}
+.table thead tr th{
+  color: black;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+.table tbody tr {
+  height: 80px; /* Điều chỉnh giá trị theo nhu cầu của bạn */
+}
