@@ -207,7 +207,9 @@ app.controller("category-ctrl", function($scope, $filter, $http) {
 	}
 
 	$scope.updateCategoryDetail = function() {
-
+		if(!validateFormDetail()){
+			return;
+		}
 		var item = angular.copy($scope.formCategoryDetail);
 		item.category = $scope.Category;
 		item.dateUpdate = new Date();
