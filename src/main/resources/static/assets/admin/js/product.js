@@ -668,7 +668,7 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 			isvalid = false;
 			document.getElementById("productDescriptionError").innerText = "Vui lòng chọn mô tả sản phẩm";
 		} else {
-			document.getElementById("productDescriptionError	").innerText = "";
+			document.getElementById("productDescriptionError").innerText = "";
 		}
 
 		
