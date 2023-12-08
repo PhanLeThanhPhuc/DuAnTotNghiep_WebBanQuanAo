@@ -50,16 +50,20 @@ public class ProductController {
 	@Autowired
 	DiscountCheckService discountCheckService;
 	
-	@Autowired
-	DiscountService discountService;
+	
 	
 	@RequestMapping("productcategory")
 	public String viewProductCategory(Model model, @RequestParam("idCategory") int idCategory,
 			@RequestParam(name = "size", required = false) List<Integer> sizeId,
 			@RequestParam(name = "color", required = false) List<Integer> colorId,
 			@RequestParam(name = "sort", required = false) Optional<String> sort,
-			@RequestParam(name = "p", required = false) Optional<Integer> p) {
-		Page<Product> products = productService.findProductByCategoryFilter(idCategory, colorId, sizeId, sort, p);
+			@RequestParam(name = "p", required = false) Optional<Integer> p,
+			@RequestParam(name = "min", required = false) String min,
+			@RequestParam(name = "max", required = false) String max) {
+		if(min == null) min="0";
+		if(max == null) max="1000000";
+		Page<Product> products = productService.findProductByCategoryFilter(idCategory, colorId, sizeId,
+				sort, p,min,max);
 		List<Product> productList = products.getContent();
 		List<Product> updatedProductList = discountCheckService.getAllDiscountProducts(productList);
 		model.addAttribute("product", new PageImpl<>(updatedProductList, products.getPageable(), products.getTotalElements()));
@@ -67,6 +71,10 @@ public class ProductController {
 		model.addAttribute("colorId", colorId != null ? colorId : 0);
 		model.addAttribute("sortValue", sort.orElse("price-asc"));
 		model.addAttribute("idCategory", idCategory);
+		model.addAttribute("name", "idCategory");
+		model.addAttribute("form", "productcategory");
+		model.addAttribute("min", min);
+		model.addAttribute("max", max);
 		return "user/product/productCategory";
 	}
 
@@ -75,10 +83,14 @@ public class ProductController {
 			@RequestParam(name = "size", required = false) List<Integer> sizeId,
 			@RequestParam(name = "color", required = false) List<Integer> colorId,
 			@RequestParam(name = "sort", required = false) Optional<String> sort,
-			@RequestParam(name = "p", required = false) Optional<Integer> p) {
-
+			@RequestParam(name = "p", required = false) Optional<Integer> p,
+			@RequestParam(name = "min", required = false) String min,
+			@RequestParam(name = "max", required = false) String max) {
+		
+		if(min == null) min="0";
+		if(max == null) max="1000000";
 		Page<Product> products = productService.findProductByCategoryDetailFilter(idCategoryDetail, colorId, sizeId,
-				sort, p);
+				sort, p,min,max);
 		List<Product> productList = products.getContent();
 		List<Product> updatedProductList = discountCheckService.getAllDiscountProducts(productList);
 		model.addAttribute("product",
@@ -86,44 +98,51 @@ public class ProductController {
 		model.addAttribute("sizeId", sizeId != null ? sizeId : 0);
 		model.addAttribute("colorId", colorId != null ? colorId : 0);
 		model.addAttribute("sortValue", sort.orElse("price-asc"));
-		model.addAttribute("idCategoryDetail", idCategoryDetail);
-		return "user/product/productCategoryDetail";
+		model.addAttribute("idCategory", idCategoryDetail);
+		model.addAttribute("name", "idCategoryDetail");
+		model.addAttribute("form", "productcategorydetail");
+		model.addAttribute("min", min);
+		model.addAttribute("max", max);
+		return "user/product/productCategory";
 	}
-	
 	@RequestMapping("productsale")
 	public String viewProductSale(Model model, 
 			@RequestParam(name = "size", required = false) List<Integer> sizeId,
 			@RequestParam(name = "color", required = false) List<Integer> colorId,
 			@RequestParam(name = "sort", required = false) Optional<String> sort,
 			@RequestParam(name = "p", required = false) Optional<Integer> p) {
-		
-		Sort s;
-		if (sort.isEmpty() || sort.get().equals("price-asc")) {
-			s = Sort.by(Sort.Direction.ASC, "price");
-		} else if (sort.get().equals("price-desc")) {
-			s = Sort.by(Sort.Direction.DESC, "price");
-		} else if (sort.get().equals("name-az")) {
-			s = Sort.by(Sort.Direction.ASC, "name");
-		} else {
-			s = Sort.by(Sort.Direction.DESC, "name");
-		}
-		Pageable pageable = PageRequest.of(p.orElse(0), 12, s);
-		List<Product> products = productService.findSale( colorId, sizeId,
-				sort, p);
-		
-		List<Product> product2=discountCheckService.getDiscountProducts2(products);
-		 int start =p.orElse(0)* 12;
-	     int end = Math.min((start + 12), product2.size());
-
-	     List<Product> subList = product2.subList(start, end);
-		Page<Product> productPage = new PageImpl<>(subList, pageable, product2.size());
-		
-		model.addAttribute("product",
-				productPage);
+		model.addAttribute("product",discountCheckService.getDiscountProducts2( productService.findSale( colorId, sizeId),sort,p));
 		model.addAttribute("sizeId", sizeId != null ? sizeId : 0);
 		model.addAttribute("colorId", colorId != null ? colorId : 0);
 		model.addAttribute("sortValue", sort.orElse("price-asc"));
 		return "user/product/productSale";
+	}
+	
+	
+	@RequestMapping("productSearch")
+	public String viewProductSearch(Model model, 
+			@RequestParam(name = "size", required = false) List<Integer> sizeId,
+			@RequestParam(name = "color", required = false) List<Integer> colorId,
+			@RequestParam(name = "sort", required = false) Optional<String> sort,
+			@RequestParam(name = "p", required = false) Optional<Integer> p,
+			@RequestParam(name = "search", required = false) String search,
+			@RequestParam(name = "min", required = false) String min,
+			@RequestParam(name = "max", required = false) String max){
+		
+		if(min == null) min="0";
+		if(max == null) max="1000000";
+		Page<Product> products = productService.findProductSearch( colorId, sizeId,
+				sort, p, search,min,max);
+		List<Product> productList = products.getContent();
+		List<Product> updatedProductList = discountCheckService.getAllDiscountProducts(productList);
+		model.addAttribute("product",new PageImpl<>(updatedProductList, products.getPageable(), products.getTotalElements()));
+		model.addAttribute("sizeId", sizeId != null ? sizeId : 0);
+		model.addAttribute("colorId", colorId != null ? colorId : 0);
+		model.addAttribute("sortValue", sort.orElse("price-asc"));
+		model.addAttribute("search", search);
+		model.addAttribute("min", min);
+		model.addAttribute("max", max);
+		return "user/product/productSearch";
 	}
 
 	@RequestMapping("product-detail")

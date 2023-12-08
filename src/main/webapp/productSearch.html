@@ -1,17 +1,8 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	th:replace="~{/user/layout/index :: dynamic(~{::main})}">
 <main>
-	<div class="container-fluid"
-		style="background-image: url('/assets/user/teample/img/sale.jpg'); background-size: cover; height: 200px;">
-		<div style="padding-top: 100px; " class="text-center ">
-			<h1 style="font-weight: bolder; display: inline-block;">Flash
-				Sale</h1>
-			&emsp;&emsp;
-			<h3 style="color:white;"  id="countdown"></h3>
-
-		</div>
-	</div>
-	<section class="cat_product_area pt-3">
+	
+	<section class="cat_product_area section_padding">
 
 		<div class="container" >
 			<form id="form" th:action="@{|productsale|}" method="get">

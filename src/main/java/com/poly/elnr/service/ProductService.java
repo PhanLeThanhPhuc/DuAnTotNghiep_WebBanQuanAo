@@ -23,13 +23,13 @@ public interface ProductService {
 													List<Integer> colorId,
 													List<Integer> sizeId,
 													Optional<String> sort,
-													Optional<Integer> p);
+													Optional<Integer> p, String min, String max);
 	
-	Page<Product> findProductByCategoryFilter(int idCategoryDetail,
+	Page<Product> findProductByCategoryFilter(int idCategory,
 													List<Integer> colorId,
 													List<Integer> sizeId,
 													Optional<String> sort,
-													Optional<Integer> p);
+													Optional<Integer> p, String min, String max);
 
 	public Product update(Product product);
 
@@ -40,7 +40,9 @@ public interface ProductService {
 
 	List<Product> findByIdsProduct(int[] idProduct);
 
-	public List<Product> findSale(List<Integer> colorId, List<Integer> sizeId, Optional<String> sort,
-			Optional<Integer> p);
+	public List<Product> findSale(List<Integer> colorId, List<Integer> sizeId);
+
+	public Page<Product> findProductSearch(List<Integer> colorId, List<Integer> sizeId, Optional<String> sort,
+			Optional<Integer> p, String search, String min, String max);
 
 }

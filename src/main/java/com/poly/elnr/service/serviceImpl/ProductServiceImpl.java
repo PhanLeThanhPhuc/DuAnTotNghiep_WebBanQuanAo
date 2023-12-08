@@ -57,7 +57,8 @@ public class ProductServiceImpl implements ProductService {
 														   List<Integer> colorId,
 														   List<Integer> sizeId,
 														   Optional<String> sort,
-														   Optional<Integer> p) {
+														   Optional<Integer> p,
+														   String min, String max) {
 		Sort s;
 		if (sort.isEmpty() || sort.get().equals("price-asc")) {
 			s = Sort.by(Sort.Direction.ASC, "price");
@@ -68,15 +69,20 @@ public class ProductServiceImpl implements ProductService {
 		} else {
 			s = Sort.by(Sort.Direction.DESC, "name");
 		}
-
+		
 		List<Integer> listColorId = colorId == null || colorId.isEmpty() ? colorRepository.findAllColorId() : colorId;
 		List<Integer> listSizeId = sizeId == null || sizeId.isEmpty() ? sizeRepository.findAllSizeId() : sizeId;
 		Pageable pageable = PageRequest.of(p.orElse(0), 12, s);
-		return productRepository.findProductByCategoryDetailFilter(idCategoryDetail, listColorId, listSizeId, pageable);
+		return productRepository.findProductByCategoryDetailFilter(idCategoryDetail, listColorId, listSizeId, pageable,min,max);
 	}	  
 
 	@Override
-	public Page<Product> findProductByCategoryFilter(int idCategory, List<Integer> colorId, List<Integer> sizeId, Optional<String> sort, Optional<Integer> p) {
+	public Page<Product> findProductByCategoryFilter(int idCategory, 
+			   List<Integer> colorId,
+			   List<Integer> sizeId,
+			   Optional<String> sort,
+			   Optional<Integer> p,
+			   String min, String max) {
 		Sort s;
 		if (sort.isEmpty() || sort.get().equals("price-asc")) {
 			s = Sort.by(Sort.Direction.ASC, "price");
@@ -91,13 +97,30 @@ public class ProductServiceImpl implements ProductService {
 		List<Integer> listColorId = colorId == null || colorId.isEmpty() ? colorRepository.findAllColorId() : colorId;
 		List<Integer> listSizeId = sizeId == null || sizeId.isEmpty() ? sizeRepository.findAllSizeId() : sizeId;
 		Pageable pageable = PageRequest.of(p.orElse(0), 12, s);
-		return productRepository.findProductByCategoryFilter(idCategory, listColorId, listSizeId, pageable);
+		return productRepository.findProductByCategoryFilter(idCategory,  listColorId, listSizeId, pageable,min,max);
 	}
 	
-
 	@Override
-	public List<Product> findSale(List<Integer> colorId, List<Integer> sizeId, Optional<String> sort,
-			Optional<Integer> p) {
+	public Page<Product> findProductSearch(List<Integer> colorId, List<Integer> sizeId, Optional<String> sort,
+			Optional<Integer> p, String search,String min, String max) {
+		Sort s;
+		if (sort.isEmpty() || sort.get().equals("price-asc")) {
+			s = Sort.by(Sort.Direction.ASC, "price");
+		} else if (sort.get().equals("price-desc")) {
+			s = Sort.by(Sort.Direction.DESC, "price");
+		} else if (sort.get().equals("name-az")) {
+			s = Sort.by(Sort.Direction.ASC, "name");
+		} else {
+			s = Sort.by(Sort.Direction.DESC, "name");
+		}
+
+		List<Integer> listColorId = colorId == null || colorId.isEmpty() ? colorRepository.findAllColorId() : colorId;
+		List<Integer> listSizeId = sizeId == null || sizeId.isEmpty() ? sizeRepository.findAllSizeId() : sizeId;
+		Pageable pageable = PageRequest.of(p.orElse(0), 12, s);
+		return productRepository.findProductSearch(listColorId, listSizeId, pageable, "%"+search+"%",min,max);
+	}
+	@Override
+	public List<Product> findSale(List<Integer> colorId, List<Integer> sizeId) {
 		
 
 		List<Integer> listColorId = colorId == null || colorId.isEmpty() ? colorRepository.findAllColorId() : colorId;
@@ -145,5 +168,8 @@ public class ProductServiceImpl implements ProductService {
 	public List<Product> findByIdsProduct(int[] idProduct) {
 		return productRepository.findByIdsProduct(idProduct);
 	}
+
+
+	
 
 }
