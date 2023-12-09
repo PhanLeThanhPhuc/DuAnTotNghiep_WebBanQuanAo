@@ -110,11 +110,18 @@ public class ProductController {
 			@RequestParam(name = "size", required = false) List<Integer> sizeId,
 			@RequestParam(name = "color", required = false) List<Integer> colorId,
 			@RequestParam(name = "sort", required = false) Optional<String> sort,
-			@RequestParam(name = "p", required = false) Optional<Integer> p) {
-		model.addAttribute("product",discountCheckService.getDiscountProducts2( productService.findSale( colorId, sizeId),sort,p));
+			@RequestParam(name = "p", required = false) Optional<Integer> p,
+			@RequestParam(name = "min", required = false) String min,
+			@RequestParam(name = "max", required = false) String max) {
+		
+		if(min == null) min="0";
+		if(max == null) max="1000000";
+		model.addAttribute("product",discountCheckService.getDiscountProducts2( productService.findSale( colorId, sizeId),sort,p,Double.valueOf(min),Double.valueOf(max)));
 		model.addAttribute("sizeId", sizeId != null ? sizeId : 0);
 		model.addAttribute("colorId", colorId != null ? colorId : 0);
 		model.addAttribute("sortValue", sort.orElse("price-asc"));
+		model.addAttribute("min", min);
+		model.addAttribute("max", max);
 		return "user/product/productSale";
 	}
 	

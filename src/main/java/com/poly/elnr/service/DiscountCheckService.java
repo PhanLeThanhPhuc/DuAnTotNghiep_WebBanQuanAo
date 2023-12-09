@@ -13,7 +13,7 @@ public interface DiscountCheckService {
 	 public Product DiscountProduct(Product product);
 	public List<Product> getDiscountedProducts();
 	 public ProductDetails getProductDetails(ProductDetails productDetails);
-	 Page<Product> getDiscountProducts2(List<Product> products, Optional<String> sort, Optional<Integer> p);
+	 Page<Product> getDiscountProducts2(List<Product> products, Optional<String> sort, Optional<Integer> p, double min, double max);
 	boolean isDiscountProduct(Product product); 
 	 
 }
