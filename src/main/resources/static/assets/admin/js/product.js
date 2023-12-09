@@ -94,12 +94,12 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 		}
 		if ($scope.form.thumbnail instanceof File) {
 			await $scope.uploadImageThumbnail();
-			console.log("THEEM ANH THANH CONG");
+			// console.log("THEEM ANH THANH CONG");
 		}
 		await $scope.createDescription();
 		var item = angular.copy($scope.form);
-		console.log("item form", $scope.form)
-		alert("hihi")
+		// console.log("item form", $scope.form)
+		// alert("hihi")
 		await $http.post(`/rest/products`, item).then(async resp => {
 			$scope.items.push(resp.data);
 			$scope.form = angular.copy(resp.data);
@@ -457,7 +457,7 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 			$scope.description.push(resp.data);
 			$scope.form.description = resp.data;
 			console.log($scope.form.description);
-			alert("Thêm mới mô tả sản phẩm thành công!");
+			// alert("Thêm mới mô tả sản phẩm thành công!");
 		}).catch(error => {
 			alert("Lỗi thêm mới !");
 			console.log("Error", error);
