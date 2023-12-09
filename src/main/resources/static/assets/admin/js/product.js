@@ -84,7 +84,6 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 			img.style.height = '100px';
 			img.style.marginRight = '10px';
 			img.style.marginBottom = '10px';
-
 			imageContainer.appendChild(img);
 		}
 	}
@@ -97,8 +96,10 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 			await $scope.uploadImageThumbnail();
 			console.log("THEEM ANH THANH CONG");
 		}
+		await $scope.createDescription();
 		var item = angular.copy($scope.form);
 		console.log("item form", $scope.form)
+		alert("hihi")
 		await $http.post(`/rest/products`, item).then(async resp => {
 			$scope.items.push(resp.data);
 			$scope.form = angular.copy(resp.data);
@@ -199,6 +200,7 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 			img.style.height = '250px';
 			img.style.marginRight = '10px';
 			img.style.marginBottom = '10px';
+			img.style.borderRadius = '20px';
 			imageContainer.appendChild(img);
 		}
 
@@ -219,7 +221,7 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 			img.style.height = '100px';
 			img.style.marginRight = '10px';
 			img.style.marginBottom = '10px';
-
+			img.style.borderRadius = '20px';
 			img.addEventListener('dblclick', function() {
 				deleteImage(i);
 			});
@@ -244,6 +246,7 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 				img.style.height = '250px';
 				img.style.marginRight = '10px';
 				img.style.marginBottom = '10px';
+				img.style.borderRadius = '20px';
 				imageContainer.appendChild(img);
 				$scope.form.thumbnail = $scope.image[i];
 			}
@@ -255,6 +258,7 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 			img.style.height = '250px';
 			img.style.marginRight = '10px';
 			img.style.marginBottom = '10px';
+			img.style.borderRadius = '20px';
 			imageContainer.appendChild(img);
 		}
 	}
@@ -383,7 +387,7 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 			img.style.height = '100px';
 			img.style.marginRight = '10px';
 			img.style.marginBottom = '10px';
-
+			img.style.borderRadius = '20px';
 			img.addEventListener('dblclick', function() {
 				deleteImage(i);
 			});
@@ -443,15 +447,16 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 	};
 
 
-	$scope.createDescription = function() {
+	$scope.createDescription = async function() {
 		if (!validateFormDetail()) {
 			return;
 		}
 		var item = angular.copy($scope.form.description);
-		$http.post(`/rest/description`, item).then(resp => {
+		await $http.post(`/rest/description`, item).then(resp => {
 			resp.data.dateInsert = new Date(resp.data.dateInsert)
 			$scope.description.push(resp.data);
 			$scope.form.description = resp.data;
+			console.log($scope.form.description);
 			alert("Thêm mới mô tả sản phẩm thành công!");
 		}).catch(error => {
 			alert("Lỗi thêm mới !");
@@ -603,10 +608,6 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 		if (name === "") {
 			isvalid = false;
 			document.getElementById("productNameError").innerText = "Không bỏ trống";
-		} else if (/[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-\d]/.test(name)) {
-
-			isvalid = false;
-			document.getElementById("productNameError").innerText = "Tên không được chứa ký tự đặt biệt hoặc số";
 		} else {
 			document.getElementById("productNameError").innerText = "";
 		}
@@ -663,21 +664,64 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 		} else {
 			document.getElementById("productCategoryError").innerText = "";
 		}
+		var descriptionname = document.getElementById("descriptionName").value
+		var descriptionweight = document.getElementById("descriptionWeight").value
+		var descriptionmaterial = document.getElementById("descriptionMaterial").value
+		var descriptiontechnology = document.getElementById("descriptionTechnology").value
+		var descriptionmanufacture = document.getElementById("descriptionManufacture").value
+		var descriptiondescription = document.getElementById("descriptionDescription").value
 
-		if (selectedTextproductDes == "") {
+		// console.log(descriptionname);
+		// console.log(descriptionweight);
+		// console.log(descriptionmaterial);
+		// console.log(descriptiontechnology);
+		// console.log(descriptionmanufacture);
+		// console.log(descriptiondescription);
+
+		if (descriptionname === "") {
 			isvalid = false;
-			document.getElementById("productDescriptionError").innerText = "Vui lòng chọn mô tả sản phẩm";
+			document.getElementById("descriptionNameError").innerText = "Không bỏ trống";
 		} else {
-			document.getElementById("productDescriptionError").innerText = "";
+			document.getElementById("descriptionNameError").innerText = "";
 		}
 
-		
+		if (descriptionweight === "") {
+			isvalid = false;
+			document.getElementById("descriptionWeightError").innerText = "Không bỏ trống";
+		}
+		else {
+			document.getElementById("descriptionWeightError").innerText = "";
+		}
 
+		if (descriptionmaterial === "") {
+			isvalid = false;
+			document.getElementById("descriptionMaterialError").innerText = "Không bỏ trống";
+		} else {
+			document.getElementById("descriptionMaterialError").innerText = "";
+		}
 
+		if (descriptiontechnology === "") {
+			isvalid = false;
+			document.getElementById("descriptionTechnologyError").innerText = "Không bỏ trống";
+		} else {
+			document.getElementById("descriptionTechnologyError").innerText = "";
+		}
+
+		if (descriptionmanufacture === "") {
+			isvalid = false;
+			document.getElementById("descriptionManufactureError").innerText = "Không bỏ trống";
+		} else {
+			document.getElementById("descriptionManufactureError").innerText = "";
+		}
+
+		if (descriptiondescription === "") {
+			isvalid = false;
+			document.getElementById("descriptionDescriptionError").innerText = "Không bỏ trống";
+		} else {
+			document.getElementById("descriptionDescriptionError").innerText = "";
+		}
 
 		return isvalid;
-
-
 	}
 
 
@@ -691,12 +735,12 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 		var descriptionmanufacture = document.getElementById("descriptionManufacture").value
 		var descriptiondescription = document.getElementById("descriptionDescription").value
 
-		console.log(descriptionname);
-		console.log(descriptionweight);
-		console.log(descriptionmaterial);
-		console.log(descriptiontechnology);
-		console.log(descriptionmanufacture);
-		console.log(descriptiondescription);
+		// console.log(descriptionname);
+		// console.log(descriptionweight);
+		// console.log(descriptionmaterial);
+		// console.log(descriptiontechnology);
+		// console.log(descriptionmanufacture);
+		// console.log(descriptiondescription);
 
 		if (descriptionname === "") {
 			isvalid = false;
