@@ -1,11 +1,17 @@
 package com.poly.elnr.service.serviceImpl;
 
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.poly.elnr.entity.Product;
@@ -41,18 +47,42 @@ public class DiscountCheckServiceImpl implements DiscountCheckService {
 		return productList;
 	}
 	
-	public List<Product> getDiscountProducts2(List<Product> productList) {
-		Date currentDate = new Date();
-		List<Product> discountedProducts = productList.stream()
-				.filter(product -> discountCheck.isDateInRangeAndAllProducts(currentDate) || discountCheck
-						.isDateInRangeAndProductIdInConfig(String.valueOf(product.getId()), currentDate))
-				.map(product -> {
-					applyDiscount(product);
-					return product;
-				}).collect(Collectors.toList());
+	public Page<Product> getDiscountProducts2(List<Product> productList, Optional<String> sort, Optional<Integer> p) {
+	    Date currentDate = new Date();
+	    List<Product> discountedProducts = productList.stream()
+	            .filter(product -> discountCheck.isDateInRangeAndAllProducts(currentDate) || discountCheck
+	                    .isDateInRangeAndProductIdInConfig(String.valueOf(product.getId()), currentDate))
+	            .map(product -> {
+	                applyDiscount(product);
+	                return product;
+	            })
+	            .sorted((p1, p2) -> {
+	            	 if (sort.isEmpty()) {
+	            		 return Double.compare(p1.getDiscountPrice(), p2.getDiscountPrice());
+	                 }
+	                switch (sort.get()) {
+	                    case "price-asc":
+	                        return Double.compare(p1.getDiscountPrice(), p2.getDiscountPrice());
+	                    case "price-desc":
+	                        return Double.compare(p2.getDiscountPrice(), p1.getDiscountPrice());
+	                    case "name-az":
+	                        return p1.getName().compareToIgnoreCase(p2.getName());
+	                    case "name-desc":
+	                        return p2.getName().compareToIgnoreCase(p1.getName());
+	                    default:
+	                    	return Double.compare(p1.getDiscountPrice(), p2.getDiscountPrice());
+	                }
+	            })
+	            .collect(Collectors.toList());
 
-		return discountedProducts;
+	    Pageable pageable = PageRequest.of(p.orElse(0), 12);
+	    int start = p.orElse(0) * 12;
+	    int end = Math.min((start + 12), discountedProducts.size());
+	    List<Product> subList = discountedProducts.subList(start, end);
+
+	    return new PageImpl<>(subList, pageable, discountedProducts.size());
 	}
+
 
 	@Override
 	public Product DiscountProduct(Product product) {
