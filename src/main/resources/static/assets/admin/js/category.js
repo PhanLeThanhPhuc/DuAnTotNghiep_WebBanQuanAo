@@ -323,10 +323,7 @@ app.controller("category-ctrl", function($scope, $filter, $http) {
 			document.getElementById("categoryDetailNameError").innerText = "";
 		}
 
-
-
 		return isvalid;
-
 	}
 }
 );

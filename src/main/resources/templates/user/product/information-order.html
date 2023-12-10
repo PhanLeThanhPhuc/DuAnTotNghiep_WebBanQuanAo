@@ -61,12 +61,16 @@
             <div class="container" >
                 <div class="row">
                     <div class="col-sm-8 m-auto text-center">
-                        <div class="m-3">
-                            <h4 style="font-weight: bold;">ĐẶT HÀNG THÀNH CÔNG</h4>
+                        <div th:if="${order.payment eq 0}" class="m-3">
+                            <h4 style="font-weight: bold; font-size: 26px; color: green">ĐẶT HÀNG THÀNH CÔNG</h4>
+                        </div>
+                        <div th:if="${order.payment eq 1}" class="m-3">
+                            <h4 th:if="${order.statusPayment eq 0}" style="font-weight: bold; font-size: 26px; color: red">THANH TOÁN BẰNG VNPAY KHÔNG THÀNH CÔNG</h4>
+                            <h4 th:if="${order.statusPayment eq 1}" style="font-weight: bold; font-size: 26px; color: green">THANH TOÁN ĐƠN HÀNG THÀNH CÔNG</h4>
                         </div>
                     </div>
                     <div class="col-sm-12">
-                        <div class="col-sm-8 m-auto p-2" style=" background-color: beige; ">
+                        <div class="col-sm-8 m-auto p-2" style=" background-color: beige; padding: 10px !important; border-radius: 15px ">
                             <h6>ĐƠN HÀNG: [[${order.id}]]</h6>
                             <div style="margin-left: 10px;">
                                 <p class="text-info">
@@ -79,9 +83,8 @@
                                     Số điện thoại nhận hàng: <span style="font-weight: normal; color: black;">[[${order.phone}]]</span>
                                 </p>
                                 <p class="text-info">
-                                    Tổng tiền: <span th:if="${order.voucher != null}"  style="font-weight: normal; color: red; font-weight: 600">[[${#numbers.formatDecimal(order.total + order.shipFee - order.voucher.discountPrice, 0, 'COMMA',
-												0,'POINT')}]]đ</span>
-                                    <span th:if="${order.voucher == null}"  style="font-weight: normal; color: red; font-weight: 600">[[${#numbers.formatDecimal(order.total + order.shipFee , 0, 'COMMA',
+                                    Tổng tiền:
+                                    <span   style="font-weight: normal; color: red; font-weight: 600">[[${#numbers.formatDecimal(order.total - order.totalDiscount + order.shipFee , 0, 'COMMA',
 												0,'POINT')}]]đ</span>
                                 </p>
                                 <p class="text-info">
@@ -96,8 +99,7 @@
                                     </th:block>
                                 </p>
                                 <div class="text-center mt-2">
-                                    <button style="font-weight: bold; width: 30%; height: 40px;" type="button"
-                                            class="btn btn-outline-primary">Chi tiết đơn hàng</button>
+                                    <a th:href="@{|/user/order-detail?idOrder=${order.id}|}" style="font-weight: bold; width: 30%; height: 40px;" type="button" class="btn btn-outline-primary">Chi tiết đơn hàng</a>
                                 </div>
                             </div>
                         </div>

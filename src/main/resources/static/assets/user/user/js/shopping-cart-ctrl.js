@@ -1,5 +1,5 @@
 app.controller("cart-ctrl", function($scope, $http) {
-
+	$scope.discoutVoucher = 0;
 	$scope.initialize = async () => {
 		// $scope.listAddress =[];
 		//get province
@@ -35,7 +35,6 @@ app.controller("cart-ctrl", function($scope, $http) {
 		$scope.form();
 		$scope.shipFee = 0;
 		$scope.findInfoUser();
-		$scope.discoutVoucher = 0;
 		$scope.voucherId = '';
 		console.log("san pham", $scope.cart)
 	}
@@ -384,8 +383,8 @@ app.controller("cart-ctrl", function($scope, $http) {
 			note: $scope.formInformationOrder.note,
 			shipFee: $scope.shipFee,
 			email: $scope.formInformationOrder.email,
-			total: $scope.cart.amount + $scope.discoutVoucher,
-			totalDiscount: $scope.cart.totalNoDiscount - $scope.cart.amount + $scope.discoutVoucher,
+			total: $scope.cart.totalNoDiscount,
+			totalDiscount: $scope.cart.totalNoDiscount -  $scope.cart.amount + $scope.discoutVoucher ,
 			weight: $scope.cart.totalWeights,
 			wardCode: $scope.wardId,
 			districtId: parseInt($scope.districtId),
@@ -402,6 +401,7 @@ app.controller("cart-ctrl", function($scope, $http) {
 		};
 
 		console.log("Order: ", $scope.data);
+		console.log("Order: ", $scope.discoutVoucher);
 
 		$http.post("/user/order", $scope.data,).then(resp => {
 			if (resp.status === 200) {

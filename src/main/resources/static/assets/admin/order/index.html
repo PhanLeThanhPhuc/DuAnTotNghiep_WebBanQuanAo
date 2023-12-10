@@ -8,10 +8,129 @@
 	<div class="row">
 		<div class="col-12">
 			<div class="row">
-				<div class="col-sm-6">
-
+				<div class="col-md-6 col-xl-2 mb-4">
+					<div class="card shadow">
+						<div class="card-body">
+							<div class="row align-items-center">
+								<div class="col">
+									<div class="text-center">
+										<span style="color: black; font-weight: bold">TẤT CẢ ĐƠN HÀNG</span><br>
+										<span style="font-weight: bold; font-size: 18px; text-align: center; color: black">
+                                {{ quantityAllOrder }}
+                            </span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
-				<div class="col-sm-6">
+
+				<div class="col-md-6 col-xl-2 mb-4">
+					<div class="card shadow">
+						<div class="card-body">
+							<div class="row align-items-center">
+								<div class="col">
+									<div class="text-center">
+										<span style="color: #6c757d; font-weight: bold">CHỜ XÁC NHẬN</span><br>
+										<span style="font-weight: bold; font-size: 18px; text-align: center; color: black">
+                                {{ pendingConfirmation }}
+                            </span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-md-6 col-xl-2 mb-4">
+					<div class="card shadow">
+						<div class="card-body">
+							<div class="row align-items-center">
+								<div class="col">
+									<div class="text-center">
+										<span style="color: goldenrod; font-weight: bold">CHỜ LẤY HÀNG</span><br>
+										<span style="font-weight: bold; font-size: 18px; text-align: center; color: black">
+                                		{{ pendingPickup }}
+                            		</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-md-6 col-xl-2 mb-4">
+					<div class="card shadow">
+						<div class="card-body">
+							<div class="row align-items-center">
+								<div class="col">
+									<div class="text-center">
+										<span style="color: green; font-weight: bold">ĐANG GIAO</span><br>
+										<span style="font-weight: bold; font-size: 18px; text-align: center; color: black">
+                                {{ inTransit }}
+                            </span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-md-6 col-xl-2 mb-4">
+					<div class="card shadow">
+						<div class="card-body">
+							<div class="row align-items-center">
+								<div class="col">
+									<div class="text-center">
+										<span style="color: green; font-weight: bold">ĐÃ GIAO</span><br>
+										<span style="font-weight: bold; font-size: 18px; text-align: center; color: black">
+                                {{ delivered }}
+                            </span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-md-6 col-xl-2 mb-4">
+					<div class="card shadow">
+						<div class="card-body">
+							<div class="row align-items-center">
+								<div class="col">
+									<div class="text-center">
+										<span style="color: red; font-weight: bold">ĐÃ HỦY</span><br>
+										<span style="font-weight: bold; font-size: 18px; text-align: center; color: black">
+                                {{ canceled }}
+                            </span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-sm-8 d-flex">
+					<div class="form-group mb-3 mr-4">
+						<label>Tìm kiếm</label>
+						<input onkeyup="searchIdOrder()" id="search" style="width: 300px" class="form-control"  type="text" placeholder="Tìm kiếm theo mã đơn hàng" >
+					</div>
+					<div class="form-group mb-3 mr-2">
+						<label for="example-date">Từ ngày</label>
+						<input  class="form-control" id="start-date" type="date" name="date">
+					</div>
+					<div class="form-group mb-3 mr-2">
+						<label for="example-date">Đến ngày</label>
+						<input  class="form-control" id="end-date" type="date" name="date">
+					</div>
+					<div>
+						<label></label>
+						<button onclick="buttonFilterByDate()" type="button" class="btn mb-2 btn-primary" style="margin-left: 5px; margin-top: 8px;">Lọc</button>
+					</div>
+				</div>
+				<div class="col-sm-4">
 					<div class="form-group mr-3">
 						<label for="simple-select2">Lựa chọn</label>
 						<select onchange="filterStatusOrder()" class="form-control select2" id="cbb-status">
@@ -54,10 +173,10 @@
 										{{item.district}}, {{item.province}}</td>
 									<td>
 										<span  ng-if="item.status == 0" style="font-weight: bold; color: #6c757d;">CHỜ XÁC NHẬN</span>
-										<span class="badge badge-pill badge-warning" ng-if="item.status == 1">Chờ lấy hàng</span>
+										<span  ng-if="item.status == 1" style="color: goldenrod; font-weight: bold">CHỜ LẤY HÀNG</span>
 										<span  ng-if="item.status == 2" style="font-weight: bold; color: red;">HỦY</span>
-										<span class="badge badge-pill badge-info" ng-if="item.status == 4">Đang giao</span>
-										<span class="badge badge-pill badge-success" ng-if="item.status == 5">Đã giao</span>
+										<span  ng-if="item.status == 4" style="color: #0e3685; font-weight: bold">ĐANG GIAO</span>
+										<span  ng-if="item.status == 5" style="color: green; font-weight: bold">ĐÃ GIAO</span>
 									</td>
 									<td>{{item.payment == 0 ? 'Tiền mặt' : 'Chuyển khoản'}}</td>
 									<td><span> <a ng-click="editOrder(item)"
