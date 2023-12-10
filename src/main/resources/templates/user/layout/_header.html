@@ -104,9 +104,11 @@
 
 										</button>
 										<div class="dropdown-menu" aria-labelledby="accountDropdown">
+
 											<a class="dropdown-item" th:href="@{info}">Thông tin tài
 												khoản</a>
-											<a class="dropdown-item" href="/admin/index">Admin</a>
+											<a th:if="${session.role}" class="dropdown-item" href="/admin/index">Admin</a>
+
 											<div class="dropdown-divider"></div>
 
 											<a class="dropdown-item" th:href="@{/logout}">Đăng xuất </a>
