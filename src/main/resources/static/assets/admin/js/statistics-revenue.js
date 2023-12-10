@@ -14,7 +14,8 @@ app.controller("statistic-ctrl", function($scope, $filter, $http) {
                 $scope.map = processData($scope.listTotalDate);
 
                 // $scope.TotalInToday();
-                // console.log("Map data: ", $scope.map);
+                console.log("Map data: ", $scope.map);
+                console.log("DATA: ", $scope.listTotalDate);
                 const tenDaysAgoArray = $scope.arrayTenDayAgo();
                 processTenDaysAgoArray(tenDaysAgoArray,$scope.map);
             }

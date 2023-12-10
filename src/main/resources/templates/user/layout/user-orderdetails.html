@@ -162,18 +162,21 @@
 												th:if="${order.status == 5}">Đã giao</span>
 											</li>
 											<li>
-												<p>Thanh toán:</p> <th:block th:if="${order.payment eq 0}">
+												<p>Thanh toán:</p>
+												<th:block th:if="${order.payment eq 0}">
 													<span> Tiền mặt</span>
 													<br>
-													<a th:if="${order.status==0}" ; data-toggle="modal"
+													<a th:if="${order.status==0}"  data-toggle="modal"
 														style="color: blue; text-transform: none;"
 														data-target="#exampleModalCenter">Hoặc chọn hình thức
 														thanh toán khác</a>
-												</th:block> <th:block th:if="${order.payment eq 1}">
+												</th:block>
+												<th:block th:if="${order.payment eq 1}">
 													<span> VN-PAY</span>
 													<span style="font-style: italic; color: red;"
 														th:if="${order.statusPayment eq 0}"> (Thanh toán
-														không thành công)</span>
+														không thành công)
+													</span>
 													<br>
 													<a
 														th:if="${order.statusPayment != 1 || order.status == 2   }"
@@ -259,8 +262,12 @@
 												<tr>
 													<th scope="col" colspan="3"></th>
 													<th scope="col" style="font-size: 14px">TẠM TÍNH:</th>
-													<th scope="col">[[${#numbers.formatDecimal(subTotal,
-														0, 'COMMA', 0, 'POINT')}]]đ</th>
+													<th th:if="${order.voucher != null}" scope="col">[[${#numbers.formatDecimal(order.total - order.totalDiscount + order.voucher.discountPrice,
+														0, 'COMMA', 0, 'POINT')}]]đ
+													</th>
+													<th th:if="${order.voucher == null}" scope="col">[[${#numbers.formatDecimal(order.total - order.totalDiscount ,
+														0, 'COMMA', 0, 'POINT')}]]đ
+													</th>
 												</tr>
 												<tr th:if="${order.voucher != null}">
 													<th scope="col" colspan="3"></th>
@@ -281,13 +288,8 @@
 													<th scope="col" colspan="3"></th>
 													<th scope="col" style="font-size: 14px">TỔNG TIỀN
 														THANH TOÁN:</th>
-													<th th:if="${order.voucher != null}" scope="col"
-														colspan="3">[[${#numbers.formatDecimal(order.total +
-														order.shipFee - order.voucher.discountPrice, 0, 'COMMA',
-														0,'POINT')}]]đ</th>
-													<th th:if="${order.voucher == null}" scope="col"
-														colspan="3">[[${#numbers.formatDecimal(order.total +
-														order.shipFee, 0, 'COMMA', 0,'POINT')}]]đ</th>
+													<th  scope="col"
+														colspan="3">[[${#numbers.formatDecimal(order.total - order.totalDiscount +order.shipFee , 0, 'COMMA', 0,'POINT')}]]đ</th>
 												</tr>
 											</tfoot>
 										</table>

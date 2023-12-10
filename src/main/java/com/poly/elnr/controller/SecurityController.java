@@ -1,12 +1,12 @@
 package com.poly.elnr.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+        import org.springframework.stereotype.Controller;
+        import org.springframework.ui.Model;
+        import org.springframework.web.bind.annotation.GetMapping;
 
-import com.poly.elnr.security.CustomUserDetails;
-import com.poly.elnr.service.serviceImpl.SessionService;
+        import com.poly.elnr.security.CustomUserDetails;
+        import com.poly.elnr.service.serviceImpl.SessionService;
 
 
 @Controller

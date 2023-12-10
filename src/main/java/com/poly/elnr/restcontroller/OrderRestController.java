@@ -69,13 +69,13 @@ public class OrderRestController {
 
     public String vnPay(Order order){
         int idOrder = order.getId();
-        int total = 0;
-        if(order.getVoucher() == null){
-             total = (int) ((order.getTotal() + order.getShipFee()) );
-
-        }else{
-             total = (int) ((order.getTotal() + order.getShipFee()) - order.getVoucher().getDiscountPrice());
-        }
+        int total = order.getTotal() - order.getTotalDiscount() + order.getShipFee();
+//        if(order.getVoucher() == null){
+//             total = (int) ((order.getTotal() + order.getShipFee()) );
+//
+//        }else{
+//             total = (int) ((order.getTotal() + order.getShipFee()) - order.getVoucher().getDiscountPrice());
+//        }
 
         System.out.println();
         String content = "Thanh toán đơn hàng ";
