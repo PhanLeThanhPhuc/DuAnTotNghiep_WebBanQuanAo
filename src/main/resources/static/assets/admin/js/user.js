@@ -209,17 +209,17 @@ app.controller("user-ctrl", function($scope, $filter, $http) {
 
     if (fullNameform === "") {
         isvalid = false;
-        document.getElementById("fullNameFormError").innerText = "Không bỏ trống";
+        document.getElementById("fullNameFormError").innerText = "Tên người dùng không bỏ trống";
     } else if (/[^a-zA-Zàáảãạăắằẳẵặâấầẩẫậèéẻẽẹêếềểễệđìíỉĩịòóỏõọôốồổỗộơớờởỡợùúủũụưứừửữựỳỹỷỵ\s]/ug.test(fullNameform)) {
         isvalid = false;
-        document.getElementById("fullNameFormError").innerText = "Tên không được chứa ký tự đặt biệt và số";
+        document.getElementById("fullNameFormError").innerText = "Tên người dùng được chứa ký tự đặt biệt và số";
     } else {
         document.getElementById("fullNameFormError").innerText = "";
     }
 
     if (emailform === "") {
         isvalid = false;
-        document.getElementById("emailFormError").innerText = "Không bỏ trống";
+        document.getElementById("emailFormError").innerText = "Email không bỏ trống";
     } else if (!/^[A-Za-z0-9]+[A-Za-z0-9]*@[A-Za-z0-9]+\.[A-Za-z0-9]+$/.test(emailform)) {
         isvalid = false;
         document.getElementById("emailFormError").innerText = "Email không đúng định dạng";
@@ -229,7 +229,7 @@ app.controller("user-ctrl", function($scope, $filter, $http) {
 
     if (phoneform === "") {
         isvalid = false;
-        document.getElementById("phoneFormError").innerText = "Không bỏ trống";
+        document.getElementById("phoneFormError").innerText = "Số điện thoại không bỏ trống";
     } else if (/[^\d]/.test(phoneform)) {
         isvalid = false;
         document.getElementById("phoneFormError").innerText = "Số điện thoại không được chứa ký tự đặc biệt hoặc chữ";

@@ -270,7 +270,7 @@ app.controller("voucher-ctrl", function($scope, $filter, $http, $timeout) {
 
 		if (voucherform === "") {
 			isvalid = false;
-			document.getElementById("voucherFormError").innerText = "Không bỏ trống";
+			document.getElementById("voucherFormError").innerText = "Mã giảm giá không bỏ trống";
 		} else if (/[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-\d]/.test(voucherform)) {
 
 			isvalid = false;
@@ -281,7 +281,7 @@ app.controller("voucher-ctrl", function($scope, $filter, $http, $timeout) {
 
 		if (discountpriceform === "") {
 			isvalid = false;
-			document.getElementById("discountPriceFormError").innerText = "Không bỏ trống";
+			document.getElementById("discountPriceFormError").innerText = "Số giảm giá không bỏ trống";
 		} else if (/[^0-9]/.test(discountpriceform)) {
 
 			isvalid = false;
@@ -292,28 +292,28 @@ app.controller("voucher-ctrl", function($scope, $filter, $http, $timeout) {
 
 		if (quantityform === "") {
 			isvalid = false;
-			document.getElementById("quantityFormError").innerText = "Không bỏ trống";
+			document.getElementById("quantityFormError").innerText = "Số lượng không bỏ trống";
 		} else {
 			document.getElementById("quantityFormError").innerText = "";
 		}
 
 		if (minform === "") {
 			isvalid = false;
-			document.getElementById("minFormError").innerText = "Không bỏ trống";
+			document.getElementById("minFormError").innerText = "Số tiền thấp nhất không bỏ trống";
 		} else {
 			document.getElementById("minFormError").innerText = "";
 		}
 
 		if (maxPriceform === "") {
 			isvalid = false;
-			document.getElementById("maxPriceFormError").innerText = "Không bỏ trống";
+			document.getElementById("maxPriceFormError").innerText = "Số tiền cao nhất không bỏ trống";
 		} else {
 			document.getElementById("maxPriceFormError").innerText = "";
 		}
 
 		if (minOrderProductform === "") {
 			isvalid = false;
-			document.getElementById("minOrderProductFormError").innerText = "Không bỏ trống";
+			document.getElementById("minOrderProductFormError").innerText = "Sản phẩm tối thiểu không bỏ trống";
 		} else {
 			document.getElementById("minOrderProductFormError").innerText = "";
 		}
@@ -321,7 +321,7 @@ app.controller("voucher-ctrl", function($scope, $filter, $http, $timeout) {
 		if (!checkbox.checked) {
 			if (selectedOptions === null) {
 				isvalid = false;
-				document.getElementById("mySelectError").innerText = "Không bỏ trống";
+				document.getElementById("mySelectError").innerText = "Chọn ít nhất một sản phẩm";
 			} else {
 				document.getElementById("mySelectError").innerText = "";
 			}

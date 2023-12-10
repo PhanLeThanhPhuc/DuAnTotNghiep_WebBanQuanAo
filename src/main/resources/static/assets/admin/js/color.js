@@ -143,11 +143,11 @@ app.controller("color-ctrl", function($scope, $filter, $http) {
 		console.log(name)
 		if (name === "") {
 			isvalid = false;
-			document.getElementById("colorNameError").innerText = "Không bỏ trống";
+			document.getElementById("colorNameError").innerText = "Tên màu không bỏ trống";
 		} else if (/[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-\d]/.test(name)) {
 			
 			isvalid = false;
-			document.getElementById("colorNameError").innerText = "Tên không được chứa ký tự đặt biệt hoặc số";
+			document.getElementById("colorNameError").innerText = "Tên màu không được chứa ký tự đặt biệt hoặc số";
 		} else {
 			document.getElementById("colorNameError").innerText = "";
 		}
