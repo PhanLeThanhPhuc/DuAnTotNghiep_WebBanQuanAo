@@ -289,11 +289,11 @@ app.controller("category-ctrl", function($scope, $filter, $http) {
 		console.log(name)
 		if (name === "") {
 			isvalid = false;
-			document.getElementById("categotyNameError").innerText = "Không bỏ trống";
+			document.getElementById("categotyNameError").innerText = "Tên loại không bỏ trống";
 		} else if (/[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-\d]/.test(name)) {
 			
 			isvalid = false;
-			document.getElementById("categotyNameError").innerText = "Tên không được chứa ký tự đặt biệt hoặc số";
+			document.getElementById("categotyNameError").innerText = "Tên loại không được chứa ký tự đặt biệt hoặc số";
 		} else {
 			document.getElementById("categotyNameError").innerText = "";
 		}
@@ -314,11 +314,11 @@ app.controller("category-ctrl", function($scope, $filter, $http) {
 		console.log(namedetail)
 		if (namedetail === "") {
 			isvalid = false;
-			document.getElementById("categoryDetailNameError").innerText = "Không bỏ trống";
+			document.getElementById("categoryDetailNameError").innerText = "Tên chi tiết loại Không bỏ trống";
 		} else if (/[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-\d]/.test(namedetail)) {
 			
 			isvalid = false;
-			document.getElementById("categoryDetailNameError").innerText = "Tên không được chứa ký tự đặt biệt hoặc số";
+			document.getElementById("categoryDetailNameError").innerText = "Tên chi tiết loại không được chứa ký tự đặt biệt hoặc số";
 		} else {
 			document.getElementById("categoryDetailNameError").innerText = "";
 		}

@@ -28,7 +28,7 @@ app.controller("discount-ctrl", function($scope, $filter, $http, $timeout) {
 	}
 
 	$scope.create = function() {
-		if(!validateForm()){
+		if (!validateForm()) {
 			return;
 		}
 		document.getElementById("buttonclose").click()
@@ -46,10 +46,9 @@ app.controller("discount-ctrl", function($scope, $filter, $http, $timeout) {
 	}
 
 	$scope.update = function() {
-		if(!validateForm()){
+		if (!validateForm()) {
 			return;
 		}
-		$('#popup').modal('hide');
 		$scope.showSelectedOptions2();
 		var item = angular.copy($scope.form);
 		$http.put(`/rest/discount/${item.id}`, item).then(resp => {
@@ -182,7 +181,7 @@ app.controller("discount-ctrl", function($scope, $filter, $http, $timeout) {
 
 	$scope.form.product_id = "";
 	$scope.showSelectedOptions = function() {
-		
+
 		var selectedOptionsIds = $scope.form.product_id.split(/\s*,\s*/);
 		var selectedOptions = [];
 		$('#mySelect option').each(function() {
@@ -216,39 +215,45 @@ app.controller("discount-ctrl", function($scope, $filter, $http, $timeout) {
 
 
 	validateForm = () => {
-		 
-		 var isvalid = true;
-		 
-		 var nameform = document.getElementById("nameForm").value
-		 var discountform = document.getElementById("discountForm").value
-		 var selectedOptions = $('#mySelect').val();
-		 var checkbox = document.getElementById('allproductform');
-		 
-		 if (nameform === "") {
+
+		var isvalid = true;
+
+		var nameform = document.getElementById("nameForm").value
+		var discountform = document.getElementById("discountForm").value
+		var selectedOptions = $('#mySelect').val();
+		var checkbox = document.getElementById('allproductform');
+
+		if (nameform === "") {
 			isvalid = false;
-			document.getElementById("nameFormError").innerText = "Không bỏ trống";
+			document.getElementById("nameFormError").innerText = "Tên mã giảm giá không bỏ trống";
 		} else if (/[!@#$%^&*(),.?":{}|<>]/.test(nameform)) {
 
 			isvalid = false;
-			document.getElementById("nameFormError").innerText = "Tên không được chứa ký tự đặt biệt";
+			document.getElementById("nameFormError").innerText = "Tên mã giảm giá không được chứa ký tự đặt biệt";
 		} else {
 			document.getElementById("nameFormError").innerText = "";
 		}
-		
+
 		if (discountform === "") {
 			isvalid = false;
-			document.getElementById("discountFormError").innerText = "Không bỏ trống";
+			document.getElementById("discountFormError").innerText = "Số phần trăm giảm không bỏ trống";
 		} else if (/[^0-9]/.test(discountform)) {
 			isvalid = false;
-			document.getElementById("discountFormError").innerText = "Tên không được chứa ký tự đặt biệt hoặc chữ";
+			document.getElementById("discountFormError").innerText = "Số phần trăm giảm không được chứa ký tự đặt biệt hoặc chữ";
 		} else {
-			document.getElementById("discountFormError").innerText = "";
+			var discountPercentage = parseInt(discountform, 10);
+
+			if (discountPercentage < 1 || discountPercentage > 100) {
+				isvalid = false;
+				document.getElementById("discountFormError").innerText = "Số phần trăm giảm phải nằm trong khoảng từ 1 đến 100";
+			} else {
+				document.getElementById("discountFormError").innerText = "";
+			}
 		}
-		
 		if (!checkbox.checked) {
 			if (selectedOptions === null) {
 				isvalid = false;
-				document.getElementById("mySelectError").innerText = "Không bỏ trống";
+				document.getElementById("mySelectError").innerText = "Bắt buộc chọn ít nhất 1 sản phẩm";
 			} else {
 				document.getElementById("mySelectError").innerText = "";
 			}
@@ -256,7 +261,7 @@ app.controller("discount-ctrl", function($scope, $filter, $http, $timeout) {
 			document.getElementById("mySelectError").innerText = "";
 
 		}
-		
+
 		return isvalid;
 	}
 

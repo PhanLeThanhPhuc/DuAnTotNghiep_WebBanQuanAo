@@ -160,7 +160,7 @@ app.controller("size-ctrl", function($scope,$filter, $http){
 		console.log(name)
 		if (name === "") {
 			isvalid = false;
-			document.getElementById("sizeNameError").innerText = "Không bỏ trống";
+			document.getElementById("sizeNameError").innerText = "Tên kích thước không bỏ trống";
 		} else if (/[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-\d]/.test(name)) {
 			
 			isvalid = false;

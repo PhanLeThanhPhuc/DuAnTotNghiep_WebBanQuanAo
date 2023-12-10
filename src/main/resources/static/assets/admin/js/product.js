@@ -43,13 +43,13 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 		// clearthumbnail();
 	}
 
-	$scope.clearImageProduct = () =>{
+	$scope.clearImageProduct = () => {
 		$scope.selectedFiles = [];
 		const imageContainer = document.getElementById('imageContainer');
 		imageContainer.innerHTML = '';
 	}
 
-	$scope.clearThumbnail = () =>{
+	$scope.clearThumbnail = () => {
 		$scope.image = []
 		const imageContainer = document.getElementById('ImageThumbnail');
 		imageContainer.innerHTML = '';
@@ -106,7 +106,7 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 			await $scope.uploadImageDetail();
 			alert("Thêm mới sản phẩm thành công!");
 			// them anh san pham phu
-			
+
 			$scope.selected.forEach(function(productDetail) {
 				productdt = { size: productDetail, product: $scope.form }
 				$http.post(`/rest/productsDetail`, productdt).then(resp => {
@@ -609,14 +609,14 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 		console.log(selectedTextproductDes)
 		if (name === "") {
 			isvalid = false;
-			document.getElementById("productNameError").innerText = "Không bỏ trống";
+			document.getElementById("productNameError").innerText = "Tên sản phẩm không bỏ trống";
 		} else {
 			document.getElementById("productNameError").innerText = "";
 		}
 
 		if (price === "") {
 			isvalid = false;
-			document.getElementById("productPriceError").innerText = "Không bỏ trống";
+			document.getElementById("productPriceError").innerText = "Giá không bỏ trống";
 		} else if (/[!@#$%^&*(),.?":{}|<>]/.test(price)) {
 			// Kiểm tra xem giá có phải là số hay không
 			isvalid = false;
@@ -635,7 +635,7 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 
 		if (discountPrice === "") {
 			isvalid = false;
-			document.getElementById("ProductDiscountPriceError").innerText = "Không bỏ trống";
+			document.getElementById("ProductDiscountPriceError").innerText = "Số tiền giảm không bỏ trống";
 		} else if (/[!@#$%^&*(),.?":{}|<>]/.test(discountPrice)) {
 			// Kiểm tra xem giá có chứa ký tự đặc biệt ở bất kỳ vị trí không
 			isvalid = false;
@@ -648,6 +648,10 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 			// Kiểm tra xem giá có lớn hơn 0 hay không
 			isvalid = false;
 			document.getElementById("ProductDiscountPriceError").innerText = "Số tiền phải lớn hơn 0";
+		} else if (parseFloat(discountPrice) >= parseFloat(price)) {
+			// Kiểm tra xem số tiền giảm có lớn hơn giá gốc không
+			isvalid = false;
+			document.getElementById("ProductDiscountPriceError").innerText = "Số tiền giảm phải nhỏ hơn giá gốc";
 		} else {
 			document.getElementById("ProductDiscountPriceError").innerText = "";
 		}
@@ -682,14 +686,14 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 
 		if (descriptionname === "") {
 			isvalid = false;
-			document.getElementById("descriptionNameError").innerText = "Không bỏ trống";
+			document.getElementById("descriptionNameError").innerText = "Tên chi tiết không bỏ trống";
 		} else {
 			document.getElementById("descriptionNameError").innerText = "";
 		}
 
 		if (descriptionweight === "") {
 			isvalid = false;
-			document.getElementById("descriptionWeightError").innerText = "Không bỏ trống";
+			document.getElementById("descriptionWeightError").innerText = "Cân nặng không bỏ trống";
 		}
 		else {
 			document.getElementById("descriptionWeightError").innerText = "";
@@ -697,28 +701,28 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 
 		if (descriptionmaterial === "") {
 			isvalid = false;
-			document.getElementById("descriptionMaterialError").innerText = "Không bỏ trống";
+			document.getElementById("descriptionMaterialError").innerText = "Chất liệu không bỏ trống";
 		} else {
 			document.getElementById("descriptionMaterialError").innerText = "";
 		}
 
 		if (descriptiontechnology === "") {
 			isvalid = false;
-			document.getElementById("descriptionTechnologyError").innerText = "Không bỏ trống";
+			document.getElementById("descriptionTechnologyError").innerText = "Công nghệ không bỏ trống";
 		} else {
 			document.getElementById("descriptionTechnologyError").innerText = "";
 		}
 
 		if (descriptionmanufacture === "") {
 			isvalid = false;
-			document.getElementById("descriptionManufactureError").innerText = "Không bỏ trống";
+			document.getElementById("descriptionManufactureError").innerText = "Sản xuất không bỏ trống";
 		} else {
 			document.getElementById("descriptionManufactureError").innerText = "";
 		}
 
 		if (descriptiondescription === "") {
 			isvalid = false;
-			document.getElementById("descriptionDescriptionError").innerText = "Không bỏ trống";
+			document.getElementById("descriptionDescriptionError").innerText = "Mô tả không bỏ trống";
 		} else {
 			document.getElementById("descriptionDescriptionError").innerText = "";
 		}
