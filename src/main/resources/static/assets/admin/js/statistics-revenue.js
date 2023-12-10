@@ -1,4 +1,4 @@
-app.controller("statistic-ctrl", function($scope, $filter, $http) {
+app.controller("statistic-ctrl", function($scope, $filter, $http,$location) {
 
     $scope.listTotalDate = [];
     $scope.date =[];
@@ -19,7 +19,9 @@ app.controller("statistic-ctrl", function($scope, $filter, $http) {
                 const tenDaysAgoArray = $scope.arrayTenDayAgo();
                 processTenDaysAgoArray(tenDaysAgoArray,$scope.map);
             }
-        });
+        }).catch(error => {
+            $location.path("/unauthorized");
+        })
         $scope.total.reverse();
         $scope.date.reverse();
         $scope.chart();

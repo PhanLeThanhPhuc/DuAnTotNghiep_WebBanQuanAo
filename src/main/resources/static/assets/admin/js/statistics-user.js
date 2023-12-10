@@ -1,4 +1,4 @@
-app.controller("user-statistic-ctrl", function($scope, $filter, $http) {
+app.controller("user-statistic-ctrl", function($scope, $filter, $http,$location) {
 
     $scope.listUser = [];
     $scope.listTotal = [];
@@ -14,7 +14,9 @@ app.controller("user-statistic-ctrl", function($scope, $filter, $http) {
                     $scope.listTotal.push($scope.pager.listData[i].total);
                 }
             }
-        });
+        }).catch(error => {
+            $location.path("/unauthorized");
+        })
         $scope.chart();
         defaulStatistic();
     }
