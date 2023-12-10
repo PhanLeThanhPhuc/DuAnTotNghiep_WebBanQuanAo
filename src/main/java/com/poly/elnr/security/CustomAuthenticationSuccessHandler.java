@@ -44,8 +44,6 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
 		 session.set("role",adminOrUser);
 
-
-		// Tiến hành phân quyền
 		for (GrantedAuthority authority : userDetails.getAuthorities()) {
 			if (authority.getAuthority().equals("ROLE_ADMIN")) {
 				response.sendRedirect("/user/index");
@@ -56,7 +54,6 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 				return;
 			}
 		}
-
 		response.sendRedirect("/user/index");
 	}
 }
