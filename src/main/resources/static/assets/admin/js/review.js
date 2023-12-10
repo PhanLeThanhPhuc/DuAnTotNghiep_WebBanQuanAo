@@ -91,10 +91,14 @@ app.controller("review-ctrl", function($scope, $filter, $http) {
 	$scope.pager = {
 		page: 0,
 		size: 10,
-		sortColumn: '',
-		sortDirection: '',
+		sortColumn: 'item.id',
+		sortDirection: 'desc',
 		get filteredItems() {
-			return $filter('filter')($scope.items, $scope.searchText);
+			var filteredItems = $filter('filter')($scope.items, $scope.searchText);
+			if ($scope.pager.sortColumn === 'item.id') {
+				filteredItems = $filter('orderBy')(filteredItems, 'item.id', $scope.pager.sortDirection === 'asc');
+			}
+			return filteredItems;
 		},
 		get items() {
 			if (this.page < 0) {
