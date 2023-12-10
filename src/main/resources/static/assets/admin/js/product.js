@@ -106,6 +106,7 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 			await $scope.uploadImageDetail();
 			alert("Thêm mới sản phẩm thành công!");
 			// them anh san pham phu
+			
 			$scope.selected.forEach(function(productDetail) {
 				productdt = { size: productDetail, product: $scope.form }
 				$http.post(`/rest/productsDetail`, productdt).then(resp => {
@@ -115,6 +116,7 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 					console.log("Error", error);
 				});
 			});
+			$scope.selected = [];
 		}).catch(error => {
 			alert("Lỗi thêm mới sản phẩm!");
 			console.log("Error", error);
