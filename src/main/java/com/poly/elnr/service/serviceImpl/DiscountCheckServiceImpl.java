@@ -47,7 +47,7 @@ public class DiscountCheckServiceImpl implements DiscountCheckService {
 		return productList;
 	}
 	
-	public Page<Product> getDiscountProducts2(List<Product> productList, Optional<String> sort, Optional<Integer> p) {
+	public Page<Product> getDiscountProducts2(List<Product> productList, Optional<String> sort, Optional<Integer> p,double min,double max) {
 	    Date currentDate = new Date();
 	    List<Product> discountedProducts = productList.stream()
 	            .filter(product -> discountCheck.isDateInRangeAndAllProducts(currentDate) || discountCheck
@@ -56,6 +56,7 @@ public class DiscountCheckServiceImpl implements DiscountCheckService {
 	                applyDiscount(product);
 	                return product;
 	            })
+	            
 	            .sorted((p1, p2) -> {
 	            	 if (sort.isEmpty()) {
 	            		 return Double.compare(p1.getDiscountPrice(), p2.getDiscountPrice());
@@ -73,6 +74,7 @@ public class DiscountCheckServiceImpl implements DiscountCheckService {
 	                    	return Double.compare(p1.getDiscountPrice(), p2.getDiscountPrice());
 	                }
 	            })
+	            .filter(product-> min<=product.getDiscountPrice() && product.getDiscountPrice() <= max)
 	            .collect(Collectors.toList());
 
 	    Pageable pageable = PageRequest.of(p.orElse(0), 12);

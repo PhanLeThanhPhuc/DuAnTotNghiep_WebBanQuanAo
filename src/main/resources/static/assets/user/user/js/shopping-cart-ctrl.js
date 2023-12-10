@@ -6,9 +6,9 @@ app.controller("cart-ctrl", function($scope, $http) {
 		await $http.get("/user/province").then(resp => {
 			$scope.listProvince = resp.data.data;
 		})
-		 $http.get("/rest/productsDetail/date").then(resp => {
+		$http.get("/rest/productsDetail/date").then(resp => {
 			$scope.dateEnd = new Date(resp.data);
-	
+
 		})
 
 		//get user or status login
@@ -45,11 +45,14 @@ app.controller("cart-ctrl", function($scope, $http) {
 			$scope.formInformationOrder.name = $scope.dataLogin.user.fullName;
 			$scope.formInformationOrder.phone = $scope.dataLogin.user.phone;
 			$scope.formInformationOrder.email = $scope.dataLogin.user.email;
-			document.getElementById("phone").disabled = true;
+			var phoneElement = document.getElementById("phone");
+			if (phoneElement !== null) {
+				phoneElement.disabled = true;
+			}
 			$scope.$apply();
-			console.log("phone:",$scope.dataLogin.user.phone)
+			console.log("phone:", $scope.dataLogin.user.phone)
 		}
-		if($scope.dataLogin.user.phone === null){
+		if ($scope.dataLogin.user.phone === null) {
 			$('#exampleModalCenter3').modal('show');
 		}
 
@@ -150,10 +153,10 @@ app.controller("cart-ctrl", function($scope, $http) {
 			this.saveToLocalStorage();
 		},
 		amt_of(item) { // tính thành tiền của 1 sản phẩm
-			if(item.product.sale==false){
+			if (item.product.sale == false) {
 				return item.product.price * item.qty;
-			}else{
-				return item.product.discountPrice  * item.qty;
+			} else {
+				return item.product.discountPrice * item.qty;
 			}
 		},
 
@@ -211,13 +214,13 @@ app.controller("cart-ctrl", function($scope, $http) {
 		loadFromLocalStorage() { // đọc giỏ hàng từ local storage
 			var json = localStorage.getItem("cart");
 			product = json ? JSON.parse(json) : [];
-			
+
 			product.forEach(product => {
-            $http.get(`/rest/productsDetail/size/${product.productId}/` + product.sizeId).then(resp => {
-				resp.data.qty =product.qty
-                this.items.push(resp.data); 
-            });
-        });
+				$http.get(`/rest/productsDetail/size/${product.productId}/` + product.sizeId).then(resp => {
+					resp.data.qty = product.qty
+					this.items.push(resp.data);
+				});
+			});
 		}
 	}
 
@@ -363,8 +366,8 @@ app.controller("cart-ctrl", function($scope, $http) {
 	}
 
 	purchase = () => {
-		if(!validate()){
-			return ;
+		if (!validate()) {
+			return;
 		}
 		$scope.data = {
 			province: $scope.provinceName,
@@ -423,7 +426,7 @@ app.controller("cart-ctrl", function($scope, $http) {
 	// discout
 	$scope.addVoucher = () => {
 		///reset
-		$scope.discoutVoucher =0;
+		$scope.discoutVoucher = 0;
 		const voucher = document.getElementById("inputvoucher").value;
 		const foundVoucher = $scope.listVoucherDate.find(v => v.voucher === voucher);
 		if (foundVoucher) {
@@ -456,8 +459,8 @@ app.controller("cart-ctrl", function($scope, $http) {
 					for (const item of $scope.cart.items) {
 						const productIDs = foundVoucher.productID.split(',').map(id => id.trim());
 						const cartItemId = String(item.product.id);
-						console.log("cartItemId",cartItemId);
-						console.log("productIDs",productIDs);
+						console.log("cartItemId", cartItemId);
+						console.log("productIDs", productIDs);
 						if (productIDs.includes(cartItemId)) {
 							$scope.voucherId = $scope.objectVoucher.id;
 							console.log("Có sản phẩm: ", cartItemId);
@@ -478,41 +481,45 @@ app.controller("cart-ctrl", function($scope, $http) {
 			smallElement.innerHTML = "Mã voucher không khả dụng!";
 		}
 	};
-	
-	
-	
-	
+
+
+
+
 
 	function updateCountdown() {
-	  const currentDate = new Date();
-	  const timeDifference = $scope.dateEnd - currentDate;
-	  if (timeDifference > 0) {
-		const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-		const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-		const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
-		const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+		const countdownElement = document.getElementById('countdown');
 
-		document.getElementById('countdown').innerHTML = `
-		  ${days} ngày, ${hours} giờ, ${minutes} phút, ${seconds} giây
-		`;
+		if (countdownElement) {
+			const currentDate = new Date();
+			const timeDifference = $scope.dateEnd - currentDate;
 
-	  }
+			if (timeDifference > 0) {
+				const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+				const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+				const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+				const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+				countdownElement.innerHTML = `
+       	 ${days} ngày, ${hours} giờ, ${minutes} phút, ${seconds} giây`;
+			}
+		}
 	}
+
 
 	setInterval(updateCountdown, 1000);
 	updateCountdown();
 
 	$scope.registerPhoneNumber = async () => {
 
-		const phoneNumber = "0"+$scope.registerPhone;
+		const phoneNumber = "0" + $scope.registerPhone;
 		const email = $scope.formInformationOrder.email;
-		console.log("Phone: ",phoneNumber);
+		console.log("Phone: ", phoneNumber);
 		await $http.get(`/rest/users/register-phone?phone=${phoneNumber}&email=${email}`).then(resp => {
 
-			console.log("data",resp.data)
-			if(resp.data.data == null){
-				console.log("message",resp.data.message)
-			}else{
+			console.log("data", resp.data)
+			if (resp.data.data == null) {
+				console.log("message", resp.data.message)
+			} else {
 
 				const currentTime = new Date();
 
@@ -540,13 +547,13 @@ app.controller("cart-ctrl", function($scope, $http) {
 		const email = $scope.formInformationOrder.email;
 		await $http.get(`/rest/users/confirm-otp?otp=${otp}&phone=${phoneNumber}&email=${email}`).then(resp => {
 			console.log("respose: ", resp.data);
-			if(resp.status === 'timeout'){
+			if (resp.status === 'timeout') {
 				var smallElement = document.getElementById("messageOtp");
 				smallElement.innerHTML = resp.data.message;
-			}else if (resp.status === 'true'){
+			} else if (resp.status === 'true') {
 				var smallElement = document.getElementById("messageOtp");
 				smallElement.innerHTML = resp.data.message;
-			}else{
+			} else {
 				var smallElement = document.getElementById("messageOtp");
 				smallElement.innerHTML = resp.data.message;
 			}
@@ -564,7 +571,7 @@ app.controller("cart-ctrl", function($scope, $http) {
 		var totalSeconds = initialSeconds;
 
 		// Cập nhật đồng hồ đếm ngược sau mỗi giây
-		var countdownInterval = setInterval(function () {
+		var countdownInterval = setInterval(function() {
 			// Kiểm tra nếu hết thời gian
 			if (totalSeconds <= 0) {
 				clearInterval(countdownInterval);
@@ -583,7 +590,7 @@ app.controller("cart-ctrl", function($scope, $http) {
 		}, 1000); // 1000 milliseconds = 1 giây
 	}
 
-	validate = () =>{
+	validate = () => {
 		var name = document.getElementById('name').value;
 		var phone = document.getElementById('phone').value;
 		var email = document.getElementById('email').value;
@@ -659,17 +666,17 @@ app.controller("cart-ctrl", function($scope, $http) {
 				document.getElementById('address_detail_error').innerText = '';
 			}
 		} else {
-			if($scope.listAddress.length === 0 ){
+			if ($scope.listAddress.length === 0) {
 				document.getElementById('address_user').innerText = 'Chưa có địa chỉ. Vui lòng thêm ít nhất 1 địa chỉ nhận hàng';
 				isValid = false;
-			}else{
+			} else {
 
 				var isAnyRadioChecked = false;
 				var cboAddress = document.querySelectorAll(".radio-address");
-				console.log("cboAddress: ",cboAddress);
+				console.log("cboAddress: ", cboAddress);
 				for (let i = 0; i < cboAddress.length; i++) {
-					console.log("cboAddressn: ",cboAddress[i]);
-					console.log("cboAddressc: ",cboAddress[i].checked);
+					console.log("cboAddressn: ", cboAddress[i]);
+					console.log("cboAddressc: ", cboAddress[i].checked);
 					if (cboAddress[i].checked) {
 						console.log('da check');
 						isAnyRadioChecked = true;
