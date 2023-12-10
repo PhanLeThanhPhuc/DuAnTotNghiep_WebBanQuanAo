@@ -652,7 +652,7 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 			// Kiểm tra xem giá có lớn hơn 0 hay không
 			isvalid = false;
 			document.getElementById("ProductDiscountPriceError").innerText = "Số tiền phải lớn hơn 0";
-		} else if (parseFloat(discountPrice) >= parseFloat(price)) {
+		} else if (parseFloat(discountPrice) > parseFloat(price)) {
 			// Kiểm tra xem số tiền giảm có lớn hơn giá gốc không
 			isvalid = false;
 			document.getElementById("ProductDiscountPriceError").innerText = "Số tiền giảm phải nhỏ hơn giá gốc";
