@@ -38,12 +38,7 @@
                                     <input  width="100px" id="upload-file-input" type="file" name="uploadfile" accept="*" />
                                 </form>
                                 <div class="mb-3">
-                                    <h5 class="font-upper font-bold">[[${account.fullName}]]</h5>
-                                    <h6 class="c-text-xl">
-                                        <font color="red">
-                                            <b>User</b>
-                                        </font>
-                                    </h6>
+                                    <h4 class="font-upper font-bold">[[${account.fullName}]]</h4>
                                 </div>
                             </div>
                             <form th:object="${account}"  >
@@ -69,13 +64,13 @@
                                         <label>Giới tính</label>
                                         <div class="radio-container">
                                             <label class="radio-inline">
-                                                <input type="radio" name="dmđ" th:value="${gender}"  th:checked="${account.gender == 0}"> Nam
+                                                <input type="radio" name="radio-gender" th:value="${gender}"  th:checked="${account.gender == 0}"> Nam
                                             </label>
                                             <label class="radio-inline">
-                                                <input type="radio" name="dmđ" th:value="${gender}" th:checked="${account.gender == 1}"> Nữ
+                                                <input type="radio" name="radio-gender" th:value="${gender}" th:checked="${account.gender == 1}"> Nữ
                                             </label>
                                             <label class="radio-inline">
-                                                <input type="radio" name="dmđ" th:value="${gender}" th:checked="${account.gender == 2}"> Khác
+                                                <input type="radio" name="radio-gender" th:value="${gender}" th:checked="${account.gender == 2}"> Khác
                                             </label>
                                         </div>
                                     </div>

@@ -127,6 +127,7 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 		if (!validateForm()) {
 			return;
 		}
+		$scope.updateDescription();
 		var size = angular.copy($scope.productSize);
 		//
 		await $scope.uploadImageDetail();
@@ -477,13 +478,12 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 		$http.put(`/rest/description/${item.id}`, item).then(resp => {
 			var index = $scope.description.findIndex(p => p.id == item.id);
 			$scope.description[index] = item;
-
-			alert("Cập nhật mô tả sản phẩm công!");
+			// alert("Cập nhật mô tả sản phẩm công!");
 		})
-			.catch(error => {
-				alert("Lỗi cập nhật !");
-				console.log("Error", error);
-			});
+		.catch(error => {
+			alert("Lỗi cập nhật !");
+			console.log("Error", error);
+		});
 	}
 
 	$scope.closeCollapsibles = function() {
