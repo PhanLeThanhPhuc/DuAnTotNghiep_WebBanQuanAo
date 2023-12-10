@@ -222,5 +222,10 @@ public class UserController {
 		model.addAttribute("address", addressService.findAddressByIdUser(userDetails.getUsername()));
 		return "user/layout/user-address";
 	}
+	
+	@GetMapping("user/blog")
+	public String viewBlog (Model model, Authentication authentication){
+		return "user/layout/blog";
+	}
 
 }
