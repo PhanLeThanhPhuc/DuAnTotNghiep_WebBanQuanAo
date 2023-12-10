@@ -518,7 +518,7 @@ app.controller("cart-ctrl", function($scope, $http) {
 
 			console.log("data", resp.data)
 			if (resp.data.data == null) {
-				console.log("message", resp.data.message)
+				document.getElementById("message-otp").innerText = resp.data.message
 			} else {
 
 				const currentTime = new Date();
@@ -553,6 +553,7 @@ app.controller("cart-ctrl", function($scope, $http) {
 			} else if (resp.status === 'true') {
 				var smallElement = document.getElementById("messageOtp");
 				smallElement.innerHTML = resp.data.message;
+				location.href = `/user/checkout`
 			} else {
 				var smallElement = document.getElementById("messageOtp");
 				smallElement.innerHTML = resp.data.message;
