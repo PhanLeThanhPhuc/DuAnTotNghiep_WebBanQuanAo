@@ -50,11 +50,7 @@
 									</div>
 								</div>
 								<div class=" col-sm-2" style="width: 100%; height: 230px;">
-									<div ng-repeat="img in image">
-										<!--										<label> <img style="width: 100px; height: 50px;"-->
-										<!--													 ng-src="{{img.image}}" alt="Uploaded Image">-->
-										<!--										</label>-->
-									</div>
+
 								</div>
 								<div class="col-sm-12">
 									<div class="row" style="margin-left: -8px; margin-top: 10px">
@@ -65,7 +61,6 @@
 								</div>
 							</div>
 						</div>
-
 
 						<div class="col-sm-6">
 							<form class="form-valide" action="#" method="post" novalidate>
@@ -177,12 +172,14 @@
 						</div>
 						<div class="col-sm-7 " style="margin-top: 18px;">
 							<div class=" border border-dark"
-								style="margin: 3; padding: 15px;">
+								style="margin: 3px; padding: 15px;">
 								<div class="row">
-									<div class="col-sm-3" ng-repeat="productSize in productSize"
-										ng-if="productSize.size.status">
-										{{productSize.size.name}}<input
-											ng-model="productSize.quantity" class="form-control"
+									<div ng-if="form.id" class="col-sm-3" ng-repeat="productSize in productSize" ng-if="productSize.size.status">
+										{{productSize.name}}
+										<input  min="0"
+											data-size-name="{{productSize.name}}"
+											data-size-index="{{productSize.id}}"
+											ng-model="productSize.quantity" class="form-control input-size"
 											type="number">
 									</div>
 								</div>
@@ -191,28 +188,34 @@
 									   style="margin: 5px; margin-top: 15px; color: black; font-weight: bold" data-target="#addsize"
 										data-toggle="collapse">Thêm kích thước</a>
 								</div>
+<!--								<button onclick="getInputsValues()">test</button>-->
 								<div id="addsize" class="collapse">
 									<div class="row">
-										<div class="col-sm-3" style="padding: 10px;"
-											ng-repeat="size in sizes" ng-if="size.status">
-											<div ng-if="size_of(form, size)">
-												<input type="checkbox" name="productsize" ng-disabled="size_of(form, size)"
-													ng-checked="true">{{size.name}}
+										<div ng-if="!form.id" class="col-sm-3" style="padding: 10px;" ng-repeat="size in sizes" ng-if="size.status">
+											<div>
+												<input min="0" type="checkbox" name="productsize"
+													   data-size-index="{{size.id}}" onchange="toggleInput(this)">
+												{{size.name}}
 											</div>
-											<div ng-if="!size_of(form, size)">
-												<input type="checkbox" name="productsize" ng-checked="exist(size)"
-													ng-click="toggleSelection(size)">{{size.name}}
+											<input   type="number" class="input-quantity-size" style="width: 50px; margin-top: 10px; display: none"
+													min=0
+													data-size-name="{{size.name}}"
+													data-size-index="{{size.id}}" />
+										</div>
+										<div ng-if="form.id" class="col-sm-3" style="padding: 10px;" ng-repeat="size in sizeEdit" ng-if="size.status">
+											<div>
+												<input  min="0" type="checkbox"  class="checkbox-size-product "
+												data-size-index="{{size.id}}" >
+												{{size.name}}
 											</div>
-											<div id="status"></div>
 										</div>
 									</div>
 									<div class="text-center">
 										<button ng-click="addsize(form)" ng-if="form.id"
-											class="btn btn-success">(+) Size</button>
-										<button ng-click="test()" class="btn btn-success">Clear</button>
+												class="btn btn-success">(+) Size</button>
+<!--										<button onclick="getValueSize()" class="btn btn-success">Thêm size</button>-->
 									</div>
 									<div id="checkboxError" style="color: red;"></div>
-									
 								</div>
 							</div>
 						</div>
@@ -279,12 +282,9 @@
 					<div class="panel-footer text-center">
 						<button ng-click="create()" ng-disabled="form.id"
 							class="btn btn-primary">Create</button>
-						<button ng-click="update()" ng-disabled="!form.id"
-
-							class="btn btn-success">Update</button>
-
+						<button ng-click="update()" ng-disabled="!form.id" class="btn btn-success">Update</button>
 						<button ng-click="reset();clearImageProduct(); clearThumbnail() " class="btn btn-info">Reset</button>
-
+<!--						<button ng-click="check()"  class="btn btn-success">Tạo bản sao </button>-->
 					</div>
 				</div>
 			</div>

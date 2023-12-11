@@ -47,11 +47,15 @@ public class ProductDetailRestController {
 	
 	@PostMapping
 	public ProductDetails post(@RequestBody ProductDetails productdetail) {
-		detailService.create(productdetail);
+		System.out.println();
+		ProductDetails sss = detailService.create(productdetail);
+
+		System.out.println();
 		return productdetail;
 	}
 	@PutMapping("{id}")
 	public ProductDetails put(@PathVariable("id") Integer id, @RequestBody ProductDetails productdetail) {
+		System.out.println();
 		return detailService.update(productdetail);
 	}
 

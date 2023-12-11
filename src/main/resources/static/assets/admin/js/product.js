@@ -12,6 +12,7 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 
 		$http.get("/rest/sizes").then(resp => {
 			$scope.sizes = resp.data;
+			console.log("SIZE", $scope.sizes);
 		})
 		$http.get("/rest/products").then(resp => {
 			$scope.items = resp.data;
@@ -23,6 +24,7 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 				item.dateUpdate = new Date(item.dateUpdate)
 			})
 		});
+
 		$scope.reset();
 	}
 
@@ -38,9 +40,7 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 		}
 		$scope.displayedImages = [];
 		$scope.closeCollapsibles();
-		// $scope.selectedFiles = [];
-		// updateImageContainer();
-		// clearthumbnail();
+
 	}
 
 	$scope.clearImageProduct = () => {
@@ -55,14 +55,28 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 		imageContainer.innerHTML = '';
 	}
 
+	loadProductDetail = (id) =>{
+		$http.get(`/rest/productsDetail/${id}`).then(resp => {
+			$scope.productSize = []
+			$scope.dataProductDetail =  resp.data;
+			resp.data.forEach(function(value) {
+				var sizeProduct = {
+					id: value.size.id,
+					name: value.size.name,
+					quantity: value.quantity
+				};
+				$scope.productSize.push(sizeProduct);
+			});
+			loadSizeEdit();
+		})
+	}
+
 	$scope.edit = function(item) {
 		loadImageThumbnail(item);
 		$scope.form = angular.copy(item);
 		console.log("FORM: ", $scope.form);
 		$(".nav-pills a:eq(0)").tab("show");
-		$http.get(`/rest/productsDetail/${item.id}`).then(resp => {
-			$scope.productSize = resp.data;
-		})
+		loadProductDetail(item.id);
 		$http.get(`/rest/image/${item.id}`).then(resp => {
 			$scope.selectedFiles = resp.data;
 			updateImageContainer();
@@ -70,7 +84,6 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 		$scope.selected = [];
 		$scope.displayedImages = [];
 	}
-
 
 	loadImageDetail = (imageUrlArray) => {
 		const imageContainer = document.getElementById('imageContainer');
@@ -94,29 +107,19 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 		}
 		if ($scope.form.thumbnail instanceof File) {
 			await $scope.uploadImageThumbnail();
-			// console.log("THEEM ANH THANH CONG");
 		}
 		await $scope.createDescription();
 		var item = angular.copy($scope.form);
-		// console.log("item form", $scope.form)
-		// alert("hihi")
 		await $http.post(`/rest/products`, item).then(async resp => {
 			$scope.items.push(resp.data);
 			$scope.form = angular.copy(resp.data);
+			getValueSize();
 			await $scope.uploadImageDetail();
+			loadProductDetail(item.id);
+			$scope.reset();
+			$scope.clearImageProduct();
+			$scope.clearThumbnail();
 			alert("Thêm mới sản phẩm thành công!");
-			// them anh san pham phu
-
-			$scope.selected.forEach(function(productDetail) {
-				productdt = { size: productDetail, product: $scope.form }
-				$http.post(`/rest/productsDetail`, productdt).then(resp => {
-					$scope.productSize.push(resp.data);
-				}).catch(error => {
-					alert("Lỗi thêm size sản phẩm!");
-					console.log("Error", error);
-				});
-			});
-			$scope.selected = [];
 		}).catch(error => {
 			alert("Lỗi thêm mới sản phẩm!");
 			console.log("Error", error);
@@ -128,22 +131,22 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 			return;
 		}
 		$scope.updateDescription();
-		var size = angular.copy($scope.productSize);
-		//
+		// var size = angular.copy($scope.productSize);
 		await $scope.uploadImageDetail();
-		console.log("kdkdkd", $scope.form.thumbnail);
 		if ($scope.form.thumbnail instanceof File) {
 			await $scope.uploadImageThumbnail();
 			console.log("THEEM ANH THANH CONG");
 		}
-		for (const size1 of size) {
-			await $http.put(`/rest/productsDetail/${size1.id}`, size1).then(resp => {
+		getInputsValues();
+		for (var i = 0; i < $scope.arrProductDetail.length; i++) {
+			$http.put(`/rest/productsDetail/${$scope.arrProductDetail[i].id}`, $scope.arrProductDetail[i]).then(resp => {
+
 			}).catch(error => {
-				alert("Lỗi cập nhật size sản phẩm!");
+				alert("Lỗi cập nhật sảna phẩm!");
 				console.log("Error", error);
 			});
 		}
-		console.log("Link hình repose", $scope.displayedImages)
+		console.log("$scope.dataProductDetail", $scope.dataProductDetail)
 		if ($scope.form.description.id == null) {
 			$scope.form.description.id = $scope.oldDescriptionId;
 		}
@@ -153,17 +156,13 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 			var index = $scope.items.findIndex(p => p.id == item.id);
 			$scope.items[index] = item;
 			$scope.oldDescriptionId = $scope.form.description.id;
+			loadProductDetail(item.id);
 			alert("Cập nhật sản phẩm thành công!!!!");
 		}).catch(error => {
 			alert("Lỗi cập nhật sảna phẩm!");
 			console.log("Error", error);
 		});
 	}
-
-	// $scope.updateImageDetail = () =>{
-	// 	console.log("List ảnh truy vấn lên",$scope.selectedFiles);
-	// }
-
 
 	$scope.updateStatus = function(product) {
 		var item = angular.copy(product);
@@ -178,10 +177,10 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 			$scope.items[index] = item;
 			$scope.messege("Cập nhật trạng thái thành công");
 		})
-			.catch(error => {
-				alert("Lỗi cập nhật!");
-				console.log("Error", error);
-			});
+		.catch(error => {
+			alert("Lỗi cập nhật!");
+			console.log("Error", error);
+		});
 	}
 
 	////anh thum
@@ -265,7 +264,38 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 			imageContainer.appendChild(img);
 		}
 	}
-
+	loadImageThumbnailDuplicate = (imageFile) => {
+		$scope.image = imageFile;
+		const imageContainer = document.getElementById('ImageThumbnail1');
+		imageContainer.innerHTML = '';
+		const img = document.createElement('img');
+		console.log("$scope.image", $scope.image);
+		if ($scope.image instanceof FileList) {
+			console.log("Đây là FileList:", image);
+			for (let i = 0; i < $scope.image.length; i++) {
+				img.src = URL.createObjectURL($scope.image[i]);
+				console.log("SSSSSSSSSSSSSSS", $scope.image[i]);
+				img.alt = $scope.image[i].name;
+				img.style.width = '250px';
+				img.style.height = '250px';
+				img.style.marginRight = '10px';
+				img.style.marginBottom = '10px';
+				img.style.borderRadius = '20px';
+				imageContainer.appendChild(img);
+				$scope.form.thumbnail = $scope.image[i];
+			}
+		} else {
+			console.log("Không phải là FileList:", $scope.image);
+			img.src = $scope.image.thumbnail;
+			// img.alt = `Image ${i + 1}`;
+			img.style.width = '250px';
+			img.style.height = '250px';
+			img.style.marginRight = '10px';
+			img.style.marginBottom = '10px';
+			img.style.borderRadius = '20px';
+			imageContainer.appendChild(img);
+		}
+	}
 
 	/// upload xuong db anh thumbnail
 	$scope.uploadImageThumbnail = async function() {
@@ -398,7 +428,35 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 			imageContainer.appendChild(img);
 		}
 	}
+	function updateImageContainerDuplicate() {
+		const imageContainer = document.getElementById('imageContainer1');
+		imageContainer.innerHTML = '';
 
+		for (let i = 0; i < $scope.selectedFiles.length; i++) {
+			const img = document.createElement('img');
+
+			if ($scope.selectedFiles[i].name) {
+				// File selected from user's device
+				img.src = URL.createObjectURL($scope.selectedFiles[i]);
+				img.alt = $scope.selectedFiles[i].name;
+			} else if ($scope.selectedFiles[i].image) {
+				// URL from cloud storage (e.g., Cloudinary)
+				img.src = $scope.selectedFiles[i].image;
+				img.alt = `Image ${i + 1}`;
+			}
+
+			img.style.width = '100px';
+			img.style.height = '100px';
+			img.style.marginRight = '10px';
+			img.style.marginBottom = '10px';
+			img.style.borderRadius = '20px';
+			img.addEventListener('dblclick', function() {
+				deleteImage(i);
+			});
+
+			imageContainer.appendChild(img);
+		}
+	}
 	function deleteImage(index) {
 		$scope.selectedFiles.splice(index, 1);
 		updateImageContainer();
@@ -419,26 +477,6 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 			$scope.selected.push(item);
 		}
 	}
-	$scope.size_of = function(form, size) {
-		if ($scope.productSize) {
-			return $scope.productSize.find(ur => ur.size.id == size.id);
-		}
-	}
-	$scope.addsize = function(id) {
-
-		$scope.selected.forEach(function(productDetail) {
-			productdt = { size: productDetail, product: id }
-			$http.post(`/rest/productsDetail`, productdt).then(resp => {
-				$scope.productSize.push(resp.data);
-			}).catch(error => {
-				alert("Lỗi thêm size sản phẩm!");
-				console.log("Error", error);
-			});
-		});
-		$scope.selected = [];
-
-	}
-
 
 	$scope.oldDescriptionId = null;
 	$scope.descriptionDetail = function(selectedValue) {
@@ -681,13 +719,6 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 		var descriptionmanufacture = document.getElementById("descriptionManufacture").value
 		var descriptiondescription = document.getElementById("descriptionDescription").value
 
-		// console.log(descriptionname);
-		// console.log(descriptionweight);
-		// console.log(descriptionmaterial);
-		// console.log(descriptiontechnology);
-		// console.log(descriptionmanufacture);
-		// console.log(descriptiondescription);
-
 		if (descriptionname === "") {
 			isvalid = false;
 			document.getElementById("descriptionNameError").innerText = "Tên chi tiết không bỏ trống";
@@ -745,12 +776,6 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 		var descriptionmanufacture = document.getElementById("descriptionManufacture").value
 		var descriptiondescription = document.getElementById("descriptionDescription").value
 
-		// console.log(descriptionname);
-		// console.log(descriptionweight);
-		// console.log(descriptionmaterial);
-		// console.log(descriptiontechnology);
-		// console.log(descriptionmanufacture);
-		// console.log(descriptiondescription);
 
 		if (descriptionname === "") {
 			isvalid = false;
@@ -794,13 +819,128 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 		} else {
 			document.getElementById("descriptionDescriptionError").innerText = "";
 		}
-
-
-
-
 		return isvalid;
 	}
 
+	toggleInput = (checkbox) => {
+		var index = checkbox.getAttribute('data-size-index');
+		var input = document.querySelector('.input-quantity-size[data-size-index="' + index + '"]');
 
+		if (checkbox.checked) {
+			input.style.display = 'inline-block'; // Show the input
+			input.value = 0; // Set input value to 0
+		} else {
+			input.style.display = 'none'; // Hide the input
+		}
+	}
+
+	 getValueSize =  () => {
+		var inputs = document.querySelectorAll('.input-quantity-size');
+		$scope.datasize = [];
+		inputs.forEach(function (input) {
+			if (input.style.display !== 'none') {
+				var index = input.getAttribute('data-size-index');
+				var name = input.getAttribute('data-size-name');
+				$scope.datasize.push({
+					id: parseInt(index),
+					name: name,
+					quantity: parseInt(input.value)
+				});
+			}
+		});
+		 console.log("productdetail", $scope.datasize)
+		$scope.datasize.forEach(function(value) {
+			 var productDetail = {
+				 quantity : value.quantity,
+				 size :{
+					 id: value.id,
+					 name: value.name
+				 },
+				 product :{
+					 id: $scope.form.id
+				 }
+			 }
+			 console.log("productdetail", productDetail)
+			 $http.post(`/rest/productsDetail`, productDetail).then(resp => {
+				 console.log("data tra ve", resp.data);
+				 var sizeProduct = {
+					 id: resp.data.size.id,
+					 name: resp.data.size.name,
+					 quantity: resp.data.quantity
+				 };
+				 $scope.productSize.push(sizeProduct);
+				 loadSizeEdit();
+			 }).catch(error => {
+				 alert("Lỗi thêm size sản phẩm!");
+				 console.log("Error", error);
+			 });
+		});
+	}
+
+	loadSizeEdit = () =>{
+		console.log("size1",$scope.productSize);
+		$scope.sizeEdit = $scope.sizes.filter(item2 => !$scope.productSize.some(item1 => item1.id === item2.id));
+		console.log("size", $scope.sizeEdit)
+	}
+
+	$scope.addsize = () => {
+		var checkboxes = document.querySelectorAll('.checkbox-size-product');
+		var selectedSizes = [];
+
+		for (var i = 0; i < checkboxes.length; i++) {
+			var checkbox = checkboxes[i];
+
+			if (checkbox.checked) {
+				var sizeIndex = checkbox.getAttribute('data-size-index');
+				var index = $scope.sizeEdit.findIndex(function (size) {
+					return size.id == sizeIndex;
+				});
+
+				if (index !== -1) {
+					var sizeProduct = {
+						id: $scope.sizeEdit[index].id,
+						name: $scope.sizeEdit[index].name,
+						quantity: 0
+					};
+					$scope.productSize.push(sizeProduct);
+					selectedSizes.push($scope.sizeEdit[index]);
+					$scope.sizeEdit.splice(index, 1);
+				}
+			}
+		}
+		console.log(selectedSizes);
+	};
+
+	getInputsValues = () => {
+		var inputs = document.querySelectorAll('.input-size');
+		$scope.productSize  =[]
+		$scope.arrProductDetail  =	[]
+		// console.log("Trước khi thay: ",$scope.dataProductDetail);
+		for (var i = 0; i < inputs.length; i++) {
+			var input = inputs[i];
+			var id = input.getAttribute('data-size-index');
+			var name = input.getAttribute('data-size-name');
+			var quantity = parseInt(input.value);
+			var productId = $scope.dataProductDetail[i] && $scope.dataProductDetail[i].id ? $scope.dataProductDetail[i].id : 0;
+			console.log("productID", productId)
+			var objectProductDetail = {
+				id: productId,
+				product:{
+					id: $scope.form.id,
+				},
+				quantity: quantity,
+				size:{
+					id:parseInt(id)
+				}
+			}
+			$scope.productSize.push({
+				id:parseInt(id),
+				name: name,
+				quantity: quantity
+			});
+			$scope.arrProductDetail.push(objectProductDetail);
+		}
+		console.log("Mảng productDetail: ",$scope.arrProductDetail);
+	}
 
 });
