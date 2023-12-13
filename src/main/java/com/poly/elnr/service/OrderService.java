@@ -48,4 +48,6 @@ public interface OrderService {
 
     Order updateStatusOrder(int id, int status);
 
+   Order findOrderByPhoneAndId(String phone, int idOrder);
+
 }

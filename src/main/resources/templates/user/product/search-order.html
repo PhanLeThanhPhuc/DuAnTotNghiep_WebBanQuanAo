@@ -1,0 +1,29 @@
+
+<div xmlns:th="http://www.thymeleaf.org"
+     th:replace="~{/user/layout/index :: dynamic (~{::main})}">
+
+    <main>
+        <section class="login_part padding_top">
+            <div class="container">
+                <div style=" text-align: center; margin-bottom: 10px;">
+                    <span style="font-size: 24px; font-weight: bold;">TRA CỨU ĐƠN HÀNG</span>
+                </div>
+
+                <div style="border-radius: 10px;padding: 30px;border: 1px solid rgb(255, 244, 244); box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;">
+                    <div style="margin: 0 auto; width: 50%;">
+                        <span class="form-text text-muted pb-2" id="message" style="color: red!important;">[[${message}]]</span>
+                        <form>
+                            <div class="form-group">
+                                <input id="phone1" type="text" class="form-control"  placeholder="Nhập số điện thoại mua hàng">
+                            </div>
+                            <div class="form-group">
+                                <input id="id-order" type="text" class="form-control"  placeholder="Nhập mã đơn hàng">
+                            </div>
+                            <button type="button" onclick="search()" class="btn btn-primary">Tìm kiếm</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>

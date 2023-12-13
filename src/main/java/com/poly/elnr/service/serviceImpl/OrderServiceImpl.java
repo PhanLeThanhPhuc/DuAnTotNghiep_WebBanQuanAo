@@ -245,4 +245,9 @@ public class OrderServiceImpl implements OrderService {
         return order;
     }
 
+    @Override
+    public Order findOrderByPhoneAndId(String phone, int idOrder) {
+        return orderRepository.findOrderByPhoneAndId(phone, idOrder);
+    }
+
 }

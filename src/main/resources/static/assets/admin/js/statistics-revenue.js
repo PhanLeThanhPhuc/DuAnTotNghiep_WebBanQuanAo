@@ -9,19 +9,15 @@ app.controller("statistic-ctrl", function($scope, $filter, $http,$location) {
         await $http.get("/rest/orderTotal").then(resp => {
             $scope.map = new Map();
             if (resp.status === 200){
-                console.log("Dữ liệu từ database: ",resp.data);
                 $scope.listTotalDate = resp.data;
                 $scope.map = processData($scope.listTotalDate);
-
-                // $scope.TotalInToday();
-                console.log("Map data: ", $scope.map);
-                console.log("DATA: ", $scope.listTotalDate);
                 const tenDaysAgoArray = $scope.arrayTenDayAgo();
                 processTenDaysAgoArray(tenDaysAgoArray,$scope.map);
             }
         }).catch(error => {
             $location.path("/unauthorized");
         })
+
         $scope.total.reverse();
         $scope.date.reverse();
         $scope.chart();

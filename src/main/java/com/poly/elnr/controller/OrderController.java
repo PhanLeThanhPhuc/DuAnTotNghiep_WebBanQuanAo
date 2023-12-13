@@ -5,10 +5,14 @@ import com.poly.elnr.service.OrderService;
 import com.poly.elnr.service.VnPayService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 public class OrderController {
@@ -43,5 +47,28 @@ public class OrderController {
         }
         model.addAttribute("order", order);
         return "user/product/information-order";
+    }
+
+    @GetMapping("/user/search-order")
+    public String searchOrder(){
+        return "user/product/search-order";
+    }
+
+    @GetMapping("/user/search-order-result")
+    public String searchOrderResult(Model model, @RequestParam("idOrder") int idOrder){
+        model.addAttribute("subTotal",orderService.subTotalOrder(idOrder));
+        model.addAttribute("order", orderService.fillOrderById(idOrder));
+        return "user/product/search-order-result";
+    }
+
+    @GetMapping("rest/order/search-order")
+    public String searchOrder(@RequestParam("phone") String phone, @RequestParam("id-order") int idOrder, Model model) {
+        Order order = orderService.findOrderByPhoneAndId(phone, idOrder);
+        if(order == null){
+            model.addAttribute("message","Không tìm thấy đơn hàng");
+            return "user/product/search-order";
+        }else{
+            return "redirect:/user/search-order-result?idOrder="+order.getId();
+        }
     }
 }

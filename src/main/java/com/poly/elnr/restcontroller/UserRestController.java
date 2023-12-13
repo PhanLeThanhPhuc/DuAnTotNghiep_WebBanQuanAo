@@ -129,9 +129,8 @@ public class UserRestController {
 			long currentTime = System.currentTimeMillis();
 			Date otpCreationTime = user.getTimeOtp();
 
-			// Tính thời gian đã trôi qua (elapsedTime) và thời gian còn lại
 			long elapsedTime = (currentTime - otpCreationTime.getTime()) / 1000;
-			long remainingTime = Math.max(0, 60 - elapsedTime); // Đảm bảo không bao giờ là số âm
+			long remainingTime = Math.max(0, 60 - elapsedTime);
 
 			return remainingTime;
 		} else {
