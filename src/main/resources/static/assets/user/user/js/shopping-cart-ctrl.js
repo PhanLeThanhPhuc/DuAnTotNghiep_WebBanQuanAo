@@ -126,6 +126,7 @@ app.controller("cart-ctrl", function($scope, $http) {
 					alert("Vượt quá số lượng cho phép !!!");
 				} else {
 					item.qty += qtt;
+					message("Thêm sản phẩm thành công");
 					this.saveToLocalStorage();
 				}
 			}
@@ -138,7 +139,7 @@ app.controller("cart-ctrl", function($scope, $http) {
 						resp.data.qty = qtt;
 						this.items.push(resp.data);
 						this.saveToLocalStorage();
-						alert("Thêm sản phẩm thành công");
+						message("Thêm sản phẩm thành công");
 					}
 				})
 			}
@@ -707,6 +708,28 @@ app.controller("cart-ctrl", function($scope, $http) {
 
 		inputElement.value = sanitizedValue;
 	}
+	
+	
+	message = (mes) =>{
+    $.toast({
+        text: mes,
+        heading: 'Note',
+        icon: 'success',
+        showHideTransition: 'fade',
+        allowToastClose: true,
+        hideAfter: 3000,
+        stack: 5,
+        position: 'top-center', // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values
+        textAlign: 'left',  // Text alignment i.e. left, right or center
+        loader: true,  // Whether to show loader or not. True by default
+        loaderBg: '#9EC600',  // Background color of the toast loader
+        beforeShow: function () {}, // will be triggered before the toast is shown
+        afterShown: function () {}, // will be triggered after the toat has been shown
+        beforeHide: function () {}, // will be triggered before the toast gets hidden
+        afterHidden: function () {}  // will be triggered after the toast has been hidden
+    });
+}
+
 })
 
 

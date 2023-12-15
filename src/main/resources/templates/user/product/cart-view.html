@@ -64,7 +64,8 @@
 										<i class="fa fa-times"></i>
 									</button></td>
 							</tr>
-							<tr>
+							<tr ng-if="cart.count >0">
+								
 								<td></td>
 								<td></td>
 								<td></td>
@@ -75,6 +76,9 @@
 								<td>
 									<h5>${{cart.amount | currency:'' :0}}</h5>
 								</td>
+							</tr>
+							<tr ng-if="cart.count <= 0">
+								<td colspan="6 " style="text-align:center; font-weight:bold;">Giỏ hàng hiện không có sản phẩm nào.</td>
 							</tr>
 						</tbody>
 					</table>
