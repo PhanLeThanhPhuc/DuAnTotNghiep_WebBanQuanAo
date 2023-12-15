@@ -188,15 +188,17 @@ app.controller("discount-ctrl", function($scope, $filter, $http, $timeout) {
 	$scope.form.product_id = "";
 	$scope.showSelectedOptions = function() {
 
-		var selectedOptionsIds = $scope.form.product_id.split(/\s*,\s*/);
-		var selectedOptions = [];
-		$('#mySelect option').each(function() {
-			var optionId = $(this).val();
-			if (selectedOptionsIds.includes(optionId)) {
-				selectedOptions.push(optionId);
-			}
-		});
+		if (!$scope.form.productID == "") {
+			var selectedOptionsIds = $scope.form.productID.split(/\s*,\s*/);
+			var selectedOptions = [];
 
+			$('#mySelect option').each(function() {
+				var optionId = $(this).val();
+				if (selectedOptionsIds.includes(optionId)) {
+					selectedOptions.push(optionId);
+				}
+			});
+		}
 		$('#mySelect').selectpicker('val', selectedOptions);
 	}
 
