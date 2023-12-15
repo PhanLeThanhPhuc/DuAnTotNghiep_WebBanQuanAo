@@ -22,7 +22,6 @@ public interface OrderService {
 
     void removeSseEmitter(SseEmitter emitter) ;
 
-
     Order fillOrderById(int id);
 
     double subTotalOrder(int idOrder);

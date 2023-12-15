@@ -83,8 +83,8 @@
 						</tbody>
 					</table>
 					<div class="checkout_btn_inner float-right">
-						<a class="btn_1" href="/user/index">Tiếp tục mua sắm</a> <a
-							class="btn_1 checkout_btn_1" href="/user/checkout">Thanh toán</a>
+						<a class="btn_1" href="/user/index">Tiếp tục mua sắm</a>
+						<a ng-if="!cart.items.length == 0" class="btn_1 checkout_btn_1" href="/user/checkout">Thanh toán</a>
 					</div>
 				</div>
 			</div>

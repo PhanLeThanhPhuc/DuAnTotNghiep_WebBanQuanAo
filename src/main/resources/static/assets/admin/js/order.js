@@ -26,6 +26,14 @@ app.controller("order-ctrl", function($scope, $filter, $http) {
 		});
 	}
 
+	$scope.fillAllOrder = async () =>{
+		await $http.get("/rest/orders").then(resp => {
+			$scope.listOrders = resp.data;
+			console.log("Danh sách đơn hàng", $scope.listOrders);
+			countOrder();
+		});
+	}
+
 
 	$scope.initialize();
 
@@ -167,10 +175,10 @@ app.controller("order-ctrl", function($scope, $filter, $http) {
 	filterStatusOrder = async () =>{
 		var status = document.getElementById("cbb-status").value;
 		if(status === 'all'){
-			await $scope.initialize();
+			await $scope.fillAllOrder();
 			$scope.$apply();
 		}else {
-			await $scope.initialize();
+			await $scope.fillAllOrder();
 			var listFilterStatus = [];
 			listFilterStatus = $scope.listOrders.filter(o => {
 				return o.status == status;

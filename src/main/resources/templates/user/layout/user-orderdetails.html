@@ -174,7 +174,7 @@
 													</span>
 													<br>
 													<a
-														th:if="${order.statusPayment != 1 || order.status == 2   }"
+														th:if="${order.statusPayment ==0 && order.status == 0   }"
 														data-toggle="modal" data-target="#exampleModalCenter">Chọn
 														hình thức thanh toán khác</a>
 													<span style="font-style: italic; color: seagreen"
@@ -227,21 +227,20 @@
 													<td><th:block
 															th:if="${orderdetail.discountPrice != 0}">
 															<div style="display: grid; grid-gap: 8px;">
-																<span style="color: red; font-weight: bold">[[${#numbers.formatDecimal(orderdetail.price,
-																	0, 'COMMA', 0, 'POINT')}]]₫</span> <span
-																	style="text-decoration: line-through; font-size: 13px">[[${#numbers.formatDecimal(orderdetail.discountPrice
-																	+ orderdetail.price, 0, 'COMMA', 0, 'POINT')}]]₫</span>
+																<span style="color: red; font-weight: bold">[[${#numbers.formatDecimal(orderdetail.price / orderdetail.quantity,
+																	0, 'COMMA', 0, 'POINT')}]]₫</span>
+																<span
+																	style="text-decoration: line-through; font-size: 13px">[[${#numbers.formatDecimal((orderdetail.discountPrice + orderdetail.price) /orderdetail.quantity, 0, 'COMMA', 0, 'POINT')}]]₫</span>
 															</div>
 														</th:block> <th:block th:if="${orderdetail.discountPrice == 0}">
 															<div style="display: grid; grid-gap: 8px;">
-																<span style="color: red; font-weight: bold">[[${#numbers.formatDecimal(orderdetail.price,
+																<span style="color: red; font-weight: bold">[[${#numbers.formatDecimal(orderdetail.price/orderdetail.quantity,
 																	0, 'COMMA', 0, 'POINT')}]]₫</span>
 															</div>
 														</th:block></td>
 													<td>
 														<div style="display: grid; grid-gap: 8px;">
-															<span style="color: red; font-weight: bold">[[${#numbers.formatDecimal(orderdetail.price
-																* orderdetail.quantity, 0, 'COMMA', 0, 'POINT')}]]₫</span>
+															<span style="color: red; font-weight: bold">[[${#numbers.formatDecimal(orderdetail.price, 0, 'COMMA', 0, 'POINT')}]]₫</span>
 														</div>
 
 
@@ -478,7 +477,6 @@
 					$(this).addClass('active');
 					$(this).parent().addClass('starRated');
 
-					// Added for Demo
 					let rating = $(this).index() + 1;
 					$('#currentRating').html(rating);
 					
