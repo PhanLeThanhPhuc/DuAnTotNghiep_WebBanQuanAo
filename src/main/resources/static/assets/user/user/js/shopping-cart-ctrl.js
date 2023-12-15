@@ -699,6 +699,14 @@ app.controller("cart-ctrl", function($scope, $http) {
 		}
 		return isValid;
 	}
+	preventNegative =(event) => {
+		const inputElement = event.target;
+		const inputValue = inputElement.value;
+
+		const sanitizedValue = inputValue.replace(/^-/, '');
+
+		inputElement.value = sanitizedValue;
+	}
 })
 
 

@@ -36,7 +36,7 @@ app.controller("discount-ctrl", function($scope, $filter, $http, $timeout) {
 		if (!validateForm()) {
 			return;
 		}
-		document.getElementById("buttonclose").click()
+		// document.getElementById("buttonclose").click()
 		$scope.showSelectedOptions2();
 		var item = angular.copy($scope.form);
 		$http.post(`/rest/discount`, item).then(resp => {

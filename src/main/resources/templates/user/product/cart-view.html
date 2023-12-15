@@ -49,7 +49,7 @@
 								</td>
 								<td>
 									<div class="product_count">
-										<input type="number"
+										<input oninput="preventNegative(event)" type="number"
 											ng-change="cart.cartChange({{item.size.id}},{{item.product.id}},{{item.qty}})"
 											ng-model="item.qty" min="1">
 									</div>

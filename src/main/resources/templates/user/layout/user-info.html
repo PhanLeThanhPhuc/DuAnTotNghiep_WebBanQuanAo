@@ -76,7 +76,8 @@
                                     </div>
                                 </div>
                                 <button type="submit" class="btn btn-primary">Cập nhật thông tin</button>
-                                <button data-toggle="modal" data-target="#exampleModalCenter1" type="submit" class="btn btn-primary">Đổi mật khẩu</button>
+                                <button th:if="${account.isPasswordReset}" data-toggle="modal" data-target="#exampleModalCenter1" type="submit" class="btn btn-primary">Đổi mật khẩu</button>
+                                <button onclick="clearForm()" th:if="${!account.isPasswordReset}" data-toggle="modal" data-target="#exampleModalCenter2" type="submit" class="btn btn-primary">Thêm mật khẩu</button>
                             </form>
                         </div>
 
@@ -171,6 +172,39 @@
                     <button id="update-password-button" type="button" class="btn btn-primary">Đổi mật khẩu</button>
                     <button onclick="check()" type="button"
                             class="btn btn-primary">fff</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle2" style="font-weight: bold">THÊM SỐ ĐIỆN THOẠI</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form th:object="${account}">
+                        <div class="col-sm-12">
+                            <div class="row">
+                                <label>Nhập mật khẩu mới</label>
+                                <input id="password" type="password" class="form-control"><br>
+                                <span id="error-password" style="color: red; font-weight: 600"></span><br>
+
+                                <label>Nhập lại mật khẩu mới</label><br>
+                                <input id="enter-password" type="password" class="form-control">
+                                <span id="error-enter-password" style="color: red; font-weight: 600"></span>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button  type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button onclick="createPassword()"  type="button" class="btn btn-primary">Thêm mật khẩu</button>
                 </div>
             </div>
         </div>
