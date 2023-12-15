@@ -123,7 +123,9 @@ app.controller("cart-ctrl", function($scope, $http) {
 			if (item) {
 				var qtt2 = item.qty + qtt;
 				if (qtt2 > sol) {
+
 					message2("Vượt quá số lượng cho phép !!!");
+
 				} else {
 					item.qty += qtt;
 					message1("Thêm sản phẩm thành công");
@@ -133,7 +135,9 @@ app.controller("cart-ctrl", function($scope, $http) {
 			else {
 				$http.get(`/rest/productsDetail/size/${id}/` + sizeid).then(resp => {
 					if (qtt > sol) {
+
 						message2("Vượt quá số lượng cho phép !!!");
+
 					} else {
 
 						resp.data.qty = qtt;
@@ -196,7 +200,7 @@ app.controller("cart-ctrl", function($scope, $http) {
 			var item = this.items.find(item => item.product.id == product && item.size.id == size);
 			if (qti > item.quantity) {
 				item.qty = item.quantity;
-				alert("Vượt quá số lượng cho phép !!!");
+				messageError("Vượt quá số lượng cho phép !!!");
 			}
 
 			this.saveToLocalStorage();
@@ -320,7 +324,7 @@ app.controller("cart-ctrl", function($scope, $http) {
 				console.log(resp.data.data.expected_delivery_time);
 			}
 		}).catch(error => {
-			alert("Lỗi thêm mới !");
+			messageError("Lỗi thêm mới !");
 			console.log("Error", error);
 		});
 

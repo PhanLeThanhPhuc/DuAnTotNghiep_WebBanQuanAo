@@ -79,7 +79,6 @@ public class ApiGHNServiceImpl implements ApiGHNService {
         httpHeaders.set("Content-Type", "application/json");
 
         HttpEntity<String> entity = new HttpEntity<>(httpHeaders);
-//        ResponseEntity<String> responseEntity = rest.exchange(url, HttpMethod.GET, entity, String.class);
         ResponseEntity<Map<String, Object>> responseEntity = rest.exchange(url, HttpMethod.GET, entity, new ParameterizedTypeReference<Map<String, Object>>() {});
         return responseEntity.getBody();
     }
@@ -91,12 +90,12 @@ public class ApiGHNServiceImpl implements ApiGHNService {
         orderData.setTo_phone(order.getPhone());
         orderData.setTo_address(order.getDetailAddress()+ ", "+ order.getWard()+ ", " + order.getDistrict() + ", " + order.getProvince());
         orderData.setTo_province_name(order.getProvince());
-        if(order.getVoucher() == null){
-            orderData.setCod_amount(order.getTotal());
-        }else {
-            orderData.setCod_amount((int) (order.getTotal()-order.getVoucher().getDiscountPrice()));
+        orderData.setCod_amount(order.getTotal()-order.getTotalDiscount()+order.getShipFee());
+        if(order.getStatusPayment() == 1){
+            orderData.setCod_amount(order.getTotal()-order.getTotalDiscount()+order.getShipFee());
+        }else{
+            orderData.setCod_amount(0);
         }
-        orderData.setContent("Testcontent");
         orderData.setTo_ward_code(order.getWardCode());
         orderData.setTo_district_id(order.getDistrictId());
         orderData.setWeight(order.getWeight());

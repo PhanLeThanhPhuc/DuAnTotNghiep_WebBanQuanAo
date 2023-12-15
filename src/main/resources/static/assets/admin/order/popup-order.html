@@ -158,8 +158,9 @@
                             <div class="title">Thông tin đơn hàng</div>
                             <div class="content">
                                 <p class="name"><span style="font-weight: 600">Mã đơn hàng:</span> {{objectOrder.id}}</p>
-                                <p class="name"><span  style="font-weight: 600">Mã vận đơn:</span> {{objectOrder.shipCode}}</p>
-                                <p class="address"><span  style="font-weight: 600">Ngày đặt hàng: </span> {{objectOrder.orderDate | date:'yyyy-MM-dd HH:mm:ss'}} </p>
+                                <p ng-if="!objectOrder.shipCode == ''" class="name"><span  style="font-weight: 600">Mã vận đơn (GHN):</span> {{objectOrder.shipCode}}</p>
+                                <p class="address"><span  style="font-weight: 600">Ngày đặt hàng: </span> {{ objectOrder.orderDate |date:'HH:mm - dd-MM-yyyy ' }}
+                                </p>
                                 <p class="phone">
                                     <span  style="font-weight: 600">Trạng thái đơn hàng: </span>
                                     <span class="badge badge-pill badge-secondary" ng-if="objectOrder.status == 0">Chờ xác nhận</span>
@@ -196,7 +197,8 @@
                         <div class="styles__StyledSection-sc-ri73gr-1 gQjSfs">
                             <div class="title">Hình thức giao hàng</div>
                             <div class="content">
-                                <p><span  style="font-weight: 600">Thời gian dự kiến giao hàng:</span> {{objectOrder.expectedDeliveryTime |date:' dd-MM-yyyy '}}</p>
+                                <p ng-if="!objectOrder.expectedDeliveryTime == ''">
+                                    <span  style="font-weight: 600">Thời gian dự kiến giao hàng:</span> {{objectOrder.expectedDeliveryTime |date:' dd-MM-yyyy '}}</p>
                                 <p>Đơn vị vận chuyển Giao Hàng Nhanh</p>
                                 <p><span  style="font-weight: 600">Phí vận chuyển:</span> <span style=" color: red; font-weight: 600">{{objectOrder.shipFee | currency:'' :0 }}đ</span></p>
                             </div>
