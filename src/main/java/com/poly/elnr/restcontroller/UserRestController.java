@@ -2,6 +2,7 @@ package com.poly.elnr.restcontroller;
 
 import java.util.*;
 
+import com.poly.elnr.dto.CreatePasswordDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -122,6 +123,15 @@ public class UserRestController {
 			response.put("remainingTime", remainingTime);
 			return ResponseEntity.ok(response);
 		}
+	}
+
+	@PostMapping("create-password")
+	public ResponseEntity<?> createPassword(@RequestBody CreatePasswordDTO passwordDTO, Authentication authentication){
+		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+		userService.createPassword(passwordDTO,userDetails.getUsername());
+		Map<String, Object> response = new HashMap<>();
+		response.put("message", "Thêm mật khẩu thành công");
+		return ResponseEntity.ok(response);
 	}
 
 	private long calculateRemainingTime(Users user) {

@@ -4,6 +4,7 @@ package com.poly.elnr.service;
 import java.io.IOException;
 import java.util.List;
 
+import com.poly.elnr.dto.CreatePasswordDTO;
 import com.poly.elnr.dto.UserRegisterDTO;
 import com.poly.elnr.entity.Address;
 import com.poly.elnr.utils.CustomOAuth2User;
@@ -51,5 +52,5 @@ public interface UserService {
 
 	Users findByEmailAndPhone(String phone, String email);
 
-
+	void createPassword(CreatePasswordDTO passwordDTO, String username);
 }

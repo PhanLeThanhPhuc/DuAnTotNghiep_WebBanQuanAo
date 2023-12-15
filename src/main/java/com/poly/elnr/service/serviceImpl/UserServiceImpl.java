@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.util.List;
 
 
+import com.poly.elnr.dto.CreatePasswordDTO;
 import com.poly.elnr.dto.UserRegisterDTO;
 import com.poly.elnr.entity.Address;
 import com.poly.elnr.utils.*;
@@ -262,5 +263,12 @@ public class UserServiceImpl implements UserService {
 		return userRepository.findByEmailAndPhone(phone, email);
 	}
 
+	@Override
+	public void createPassword(CreatePasswordDTO passwordDTO, String username) {
+		Users users = findByUserNamePhoneAndEmail(username);
+		users.setPassword(passwordEncoder.encode(passwordDTO.getPassword()));
+		users.setPasswordReset(true);
+		userRepository.save(users);
+	}
 
 }
