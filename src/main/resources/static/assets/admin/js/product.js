@@ -56,10 +56,10 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 		imageContainer.innerHTML = '';
 	}
 
-	loadProductDetail = (id) =>{
+	loadProductDetail = (id) => {
 		$http.get(`/rest/productsDetail/${id}`).then(resp => {
 			$scope.productSize = []
-			$scope.dataProductDetail =  resp.data;
+			$scope.dataProductDetail = resp.data;
 			resp.data.forEach(function(value) {
 				var sizeProduct = {
 					id: value.size.id,
@@ -73,6 +73,7 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 	}
 
 	$scope.edit = function(item) {
+
 		$scope.clearValidateForm();
 		loadImageThumbnail(item);
 		$scope.form = angular.copy(item);
@@ -107,6 +108,7 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 		if (!validateForm()) {
 			return;
 		}
+		document.getElementById('preloader').style.display = 'grid';
 		if ($scope.form.thumbnail instanceof File) {
 			await $scope.uploadImageThumbnail();
 		}
@@ -125,8 +127,10 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 			// $scope.reset();
 			// $scope.clearImageProduct();
 			// $scope.clearThumbnail();
-			alert("Thêm mới sản phẩm thành công!");
+			document.getElementById('preloader').style.display = 'none';
+			$scope.messege("Thêm mới sản phẩm thành công!");
 		}).catch(error => {
+			document.getElementById('preloader').style.display = 'none';
 			alert("Lỗi thêm mới sản phẩm!");
 			console.log("Error", error);
 		});
@@ -137,16 +141,18 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 			return;
 		}
 		$scope.updateDescription();
+		document.getElementById('preloader').style.display = 'grid';
 		// var size = angular.copy($scope.productSize);
 		await $scope.uploadImageDetail();
 		if ($scope.form.thumbnail instanceof File) {
 			await $scope.uploadImageThumbnail();
 		}
 		getInputsValues();
-		console.log("arrProductDetail: ", $scope.arrProductDetail );
+		console.log("arrProductDetail: ", $scope.arrProductDetail);
 		for (var i = 0; i < $scope.arrProductDetail.length; i++) {
 			$http.put(`/rest/productsDetail/${$scope.arrProductDetail[i].id}`, $scope.arrProductDetail[i]).then(resp => {
 			}).catch(error => {
+				document.getElementById('preloader').style.display = 'none';
 				alert("Lỗi cập nhật sảna phẩm!");
 				console.log("Error", error);
 			});
@@ -162,8 +168,10 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 			$scope.items[index] = item;
 			$scope.oldDescriptionId = $scope.form.description.id;
 			loadProductDetail(item.id);
-			alert("Cập nhật sản phẩm thành công!!!!");
+			document.getElementById('preloader').style.display = 'none';
+			$scope.messege("Cập nhật sản phẩm thành công!!!!");
 		}).catch(error => {
+			document.getElementById('preloader').style.display = 'none';
 			alert("Lỗi cập nhật sảna phẩm!");
 			console.log("Error", error);
 		});
@@ -808,10 +816,10 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 		}
 	}
 
-	getValueSize =  () => {
+	getValueSize = () => {
 		var inputs = document.querySelectorAll('.input-quantity-size');
 		$scope.datasize = [];
-		inputs.forEach(function (input) {
+		inputs.forEach(function(input) {
 			if (input.style.display !== 'none') {
 				var index = input.getAttribute('data-size-index');
 				var name = input.getAttribute('data-size-name');
@@ -825,12 +833,12 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 		console.log("productdetail", $scope.datasize)
 		$scope.datasize.forEach(function(value) {
 			var productDetail = {
-				quantity : value.quantity,
-				size :{
+				quantity: value.quantity,
+				size: {
 					id: value.id,
 					name: value.name
 				},
-				product :{
+				product: {
 					id: $scope.form.id
 				}
 			}
@@ -851,8 +859,8 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 		});
 	}
 
-	loadSizeEdit = () =>{
-		console.log("size1",$scope.productSize);
+	loadSizeEdit = () => {
+		console.log("size1", $scope.productSize);
 		$scope.sizeEdit = $scope.sizes.filter(item2 => !$scope.productSize.some(item1 => item1.id === item2.id));
 		console.log("size", $scope.sizeEdit)
 		$scope.datasize = [];
@@ -867,7 +875,7 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 
 			if (checkbox.checked) {
 				var sizeIndex = checkbox.getAttribute('data-size-index');
-				var index = $scope.sizeEdit.findIndex(function (size) {
+				var index = $scope.sizeEdit.findIndex(function(size) {
 					return size.id == sizeIndex;
 				});
 
@@ -888,38 +896,38 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 
 	getInputsValues = () => {
 		var inputs = document.querySelectorAll('.input-size');
-		$scope.productSize  =[]
-		$scope.arrProductDetail  =	[]
+		$scope.productSize = []
+		$scope.arrProductDetail = []
 		// console.log("Trước khi thay: ",$scope.dataProductDetail);
 		for (var i = 0; i < inputs.length; i++) {
 			var input = inputs[i];
 			var id = input.getAttribute('data-size-index');
 			var name = input.getAttribute('data-size-name');
 			var quantity = parseInt(input.value);
-			console.log("dataProductDetail",$scope.dataProductDetail[i])
+			console.log("dataProductDetail", $scope.dataProductDetail[i])
 			var productId = $scope.dataProductDetail[i] && $scope.dataProductDetail[i].id ? $scope.dataProductDetail[i].id : 0;
 			console.log("productID", productId)
 			var objectProductDetail = {
 				id: productId,
-				product:{
+				product: {
 					id: $scope.form.id,
 				},
 				quantity: quantity,
-				size:{
-					id:parseInt(id)
+				size: {
+					id: parseInt(id)
 				}
 			}
 			$scope.productSize.push({
-				id:parseInt(id),
+				id: parseInt(id),
 				name: name,
 				quantity: quantity
 			});
 			$scope.arrProductDetail.push(objectProductDetail);
 		}
-		console.log("Mảng productDetail: ",$scope.arrProductDetail);
+		console.log("Mảng productDetail: ", $scope.arrProductDetail);
 	}
 
-	$scope.clearValidateForm = () =>{
+	$scope.clearValidateForm = () => {
 
 		document.getElementById("productNameError").innerText = "";
 		document.getElementById("weightError").innerText = "";
@@ -936,7 +944,7 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 		document.getElementById("descriptionManufactureError").innerText = "";
 		document.getElementById("descriptionDescriptionError").innerText = "";
 	}
-	preventNegative =(event) => {
+	preventNegative = (event) => {
 		const inputElement = event.target;
 		const inputValue = inputElement.value;
 
