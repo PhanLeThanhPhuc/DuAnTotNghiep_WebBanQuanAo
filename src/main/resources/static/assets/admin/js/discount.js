@@ -23,7 +23,7 @@ app.controller("discount-ctrl", function($scope, $filter, $http, $timeout) {
 	}
 
 	$scope.edit = function(item) {
-
+		$scope.clearValidateForm();
 		$scope.form = angular.copy(item);
 		$scope.idDiscount = item.id
 	}
@@ -430,6 +430,14 @@ app.controller("discount-ctrl", function($scope, $filter, $http, $timeout) {
 			beforeHide: function() { }, // will be triggered before the toast gets hidden
 			afterHidden: function() { }  // will be triggered after the toast has been hidden
 		});
+	}
+
+	$scope.clearValidateForm = () =>{
+		document.getElementById("nameFormError").innerText = "";
+		document.getElementById('start-date-error').innerText = '';
+		document.getElementById('end-date-error').innerText = '';
+		document.getElementById("discountFormError").innerText = "";
+		document.getElementById("mySelectError").innerText = "";
 	}
 }
 );

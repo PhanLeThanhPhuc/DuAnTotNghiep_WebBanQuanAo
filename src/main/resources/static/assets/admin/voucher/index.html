@@ -7,72 +7,72 @@
 					Tìm kiếm: <input ng-model="searchText.$" class="form-control">
 				</div>
 				<div class="text-right col-sm-6">
-					<button ng-click="reset()" type="button" class="btn btn-primary "
-						data-toggle="modal" data-target=".bd-example-modal-lg">(+)Thêm</button>
+					<button ng-click="reset(); clearValidate()" type="button" class="btn btn-primary "
+							data-toggle="modal" data-target=".bd-example-modal-lg">(+)Thêm</button>
 				</div>
 			</div>
 
 			<div class="table-responsive">
 				<table class="table ">
 					<thead>
-						<tr>
-							<th ng-click="toggleSort('id')">Mã số giảm giá <span
+					<tr>
+						<th ng-click="toggleSort('id')">Mã số giảm giá <span
 								ng-show="isSortedBy('id')" ng-class="getSortIconClass('id')"></span>
-							</th>
-							<th ng-click="toggleSort('voucher')">Mã giảm giá <span
+						</th>
+						<th ng-click="toggleSort('voucher')">Mã giảm giá <span
 								ng-show="isSortedBy('voucher')"
 								ng-class="getSortIconClass('voucher')"></span>
-							</th>
-							<th ng-click="toggleSort('startDate')">Ngày bắt đầu <span
+						</th>
+						<th ng-click="toggleSort('startDate')">Ngày bắt đầu <span
 								ng-show="isSortedBy('startDate')"
 								ng-class="getSortIconClass('startDate')"></span>
-							</th>
-							<th ng-click="toggleSort('endDate')">Ngày kết thúc <span
+						</th>
+						<th ng-click="toggleSort('endDate')">Ngày kết thúc <span
 								ng-show="isSortedBy('endDate')"
 								ng-class="getSortIconClass('endDate')"></span>
-							</th>
-							<th ng-click="toggleSort('quantity')">Số lượng <span
+						</th>
+						<th ng-click="toggleSort('quantity')">Số lượng <span
 								ng-show="isSortedBy('quantity')"
 								ng-class="getSortIconClass('quantity')"></span>
-							</th>
-							<th ng-click="toggleSort('status')">Trạng thái <span
+						</th>
+						<th ng-click="toggleSort('status')">Trạng thái <span
 								ng-show="isSortedBy('status')"
 								ng-class="getSortIconClass('status')"></span>
-							</th>
-							<th></th>
-						</tr>
+						</th>
+						<th></th>
+					</tr>
 					</thead>
 					<tbody>
-						<tr ng-repeat="item in pager.items ">
-							<td>{{item.id}}</td>
-							<td>{{item.voucher}}</td>
-							<td>{{item.startDate |date:'HH:mm - dd-MM-yyyy '}}</td>
-							<td>{{item.endDate |date:'HH:mm - dd-MM-yyyy '}}</td>
-							<td>{{item.quantity}}</td>
-							<td><label class="switch"> <input
-									ng-model="item.status" ng-value="true" name="available"
-									type="checkbox"> <span ng-click="updateStatus(item)"
-									class="slider round"></span>
-							</label></td>
-							<td><span> <a ng-click="edit(item)"
-									data-toggle="modal" data-target=".bd-example-modal-lg"
-									title="Edit"> <span class="fe fe-24 fe-edit-2"></a></span>
-						</tr>
+					<tr ng-repeat="item in pager.items ">
+						<td>{{item.id}}</td>
+						<td>{{item.voucher}}</td>
+						<td>{{item.startDate |date:'HH:mm - dd-MM-yyyy '}}</td>
+						<td>{{item.endDate |date:'HH:mm - dd-MM-yyyy '}}</td>
+						<td>{{item.quantity}}</td>
+						<td><label class="switch"> <input
+								ng-model="item.status" ng-value="true" name="available"
+								type="checkbox"> <span ng-click="updateStatus(item)"
+													   class="slider round"></span>
+						</label></td>
+						<td><span> <a ng-click="edit(item)"
+									  data-toggle="modal" data-target=".bd-example-modal-lg"
+									  title="Edit"> <span class="fe fe-24 fe-edit-2"></a></span>
+					</tr>
 					</tbody>
 				</table>
 				<div class="bootstrap-pagination text-center">
 					<nav>
 						<ul class="pagination">
 							<li class="page-item"><a class="page-link" href=""
-								ng-click="pager.first()">First</a></li>
+													 ng-click="pager.first()">First</a></li>
 							<li class="page-item"><a class="page-link" href=""
-								ng-click="pager.prev()">Previous</a></li>
+													 ng-click="pager.prev()">Previous</a></li>
 							<li class="page-item"><a class="page-link" href="">{{pager.page
-									+ 1}} of {{pager.count}}</a></li>
+								+ 1}} of {{pager.count}}</a></li>
 							<li class="page-item"><a class="page-link" href=""
-								ng-click="pager.next()">Next</a></li>
+													 ng-click="pager.next()">Next</a></li>
 							<li class="page-item"><a class="page-link" href=""
-								ng-click="pager.last()">First</a></li>
+													 ng-click="pager.last()">First</a></li>
 						</ul>
 					</nav>
 				</div>

@@ -45,7 +45,7 @@
 									<div class=" ml-4 " style="width: 95%; height: 250px;">
 										<label for="image">
 											<div id="ImageThumbnail"
-												style="display: flex; flex-wrap: wrap;"></div>
+												 style="display: flex; flex-wrap: wrap;"></div>
 										</label>
 									</div>
 								</div>
@@ -68,7 +68,7 @@
 									<div class="form-group col-sm-6">
 										<div>Tên sản phẩm</div>
 										<input ng-model="form.name" id="productName"
-											class="form-control" ng-required="true">
+											   class="form-control" ng-required="true">
 										<div id="productNameError" class="text-danger"></div>
 									</div>
 
@@ -81,19 +81,19 @@
 									<div class="form-group col-sm-6">
 										<div>Số tiền giảm</div>
 										<input ng-model="form.discountPrice" id="ProductDiscountPrice"
-											class="form-control" type="number" ng-required="true">
+											   class="form-control" type="number" ng-required="true">
 										<div id="ProductDiscountPriceError" class="text-danger"></div>
 									</div>
 									<div class="form-group col-sm-6">
 										<div>Giảm giá ?</div>
 										<div class="form-check">
 											<input ng-model="form.sale" ng-value="true" name="sale"
-												type="radio" id="radioSaleTrue" class="form-check-input">
+												   type="radio" id="radioSaleTrue" class="form-check-input">
 											<label for="radioSaleTrue" class="form-check-label">Có</label>
 										</div>
 										<div class="form-check">
 											<input ng-model="form.sale" ng-value="false" name="sale"
-												type="radio" id="radioSaleFalse" class="form-check-input">
+												   type="radio" id="radioSaleFalse" class="form-check-input">
 											<label for="radioSaleFalse" class="form-check-label">Không</label>
 										</div>
 									</div>
@@ -103,13 +103,13 @@
 									<div type="hidden" class="form-group col-sm-6">
 										<div>Ảnh</div>
 										<input type="file" class="form-control" id="image"
-											onchange="InputPreviewImageThumbnail(this)">
+											   onchange="InputPreviewImageThumbnail(this)">
 									</div>
 									<div class="form-group col-sm-6">
 										<div>Màu sắc</div>
-										
+
 										<select class="form-control" ng-model="form.color.id" id="productColor">
-											
+
 											<option ng-repeat="c in colors" ng-value="c.id">{{c.name}}</option>
 										</select>
 										<div id="productColorError" class="text-danger"></div>
@@ -117,9 +117,9 @@
 									<div class="form-group col-sm-6">
 										<div>Loại</div>
 										<select id="productCategory"
-											ng-model="form.categoryDdetail.id" class="form-control"
-											ng-change="test(form.categoryDdetail.id)">
-											
+												ng-model="form.categoryDdetail.id" class="form-control"
+												ng-change="test(form.categoryDdetail.id)">
+
 											<option ng-repeat="cate in categories" ng-value="cate.id">{{cate.name}}</option>
 										</select>
 										<div id="productCategoryError" class="text-danger"></div>
@@ -127,8 +127,8 @@
 									<div class="form-group col-sm-6">
 										<div>Trạng thái?</div>
 										<label class="switch"> <input ng-model="form.status"
-											ng-value="true" name="available" type="checkbox"> <span
-											class="slider round"></span>
+																	  ng-value="true" name="available" type="checkbox"> <span
+												class="slider round"></span>
 										</label>
 									</div>
 								</div>
@@ -140,72 +140,78 @@
 								<div class="form-group col-sm-12">
 									<div>Ảnh chi tiết</div>
 									<input class="form-control" type="file" accept="image/*"
-										multiple onchange="uploadFiles1(this)" />
+										   multiple onchange="uploadFiles1(this)" />
 								</div>
 								<div class="form-group col-sm-12">
 									<div>Ngày tạo</div>
 									<input ng-model="form.dateInsert" id="productdateInsert"
-										type="date" class="form-control">
+										   type="date" class="form-control">
 									<div id="productdateInsertError"></div>
 								</div>
 
 								<div class="form-group col-sm-12">
 									<div>Ngày cập nhật</div>
 									<input ng-model="form.dateUpdate" type="date"
-										class="form-control">
+										   class="form-control">
+								</div>
+								<div class="form-group col-sm-12">
+									<div>Cân nặng</div>
+									<input ng-model="form.weight" id="weight"
+										   class="form-control" type="number" ng-required="true">
+									<div id="weightError" class="text-danger"></div>
 								</div>
 								<div class="form-group col-sm-12">
 									<div>Mô tả</div>
 									<select ng-model="form.description.id" id="productDescription"
-										class="form-control">
+											class="form-control">
 										<option ng-repeat="d in description" ng-value="d.id">{{d.name}}</option>
 									</select>
 									<div id="productDescriptionError" class="text-danger"></div>
 								</div>
 								<div>
 									<a ref="" class="btn btn-light "
-										style="margin: 5px; margin-top: 15px; color: black; font-weight: bold"
-										data-target="#description" data-toggle="collapse"> Mô tả
+									   style="margin: 5px; margin-top: 15px; color: black; font-weight: bold"
+									   data-target="#description" data-toggle="collapse"> Mô tả
 										chi tiết</a>
 								</div>
 							</div>
 						</div>
 						<div class="col-sm-7 " style="margin-top: 18px;">
 							<div class=" border border-dark"
-								style="margin: 3px; padding: 15px;">
+								 style="margin: 3px; padding: 15px;">
 								<div class="row">
 									<div ng-if="form.id" class="col-sm-3" ng-repeat="productSize in productSize" ng-if="productSize.size.status">
 										{{productSize.name}}
-										<input  min="0"
-											data-size-name="{{productSize.name}}"
-											data-size-index="{{productSize.id}}"
-											ng-model="productSize.quantity" class="form-control input-size"
-											type="number">
+										<input oninput="preventNegative(event)"  min="0"
+												data-size-name="{{productSize.name}}"
+												data-size-index="{{productSize.id}}"
+												ng-model="productSize.quantity" class="form-control input-size"
+												type="number">
 									</div>
 								</div>
 								<div class=" text-center">
 									<a ref="" class="btn btn-light "
 									   style="margin: 5px; margin-top: 15px; color: black; font-weight: bold" data-target="#addsize"
-										data-toggle="collapse">Thêm kích thước</a>
+									   data-toggle="collapse">Thêm kích thước</a>
 								</div>
-<!--								<button onclick="getInputsValues()">test</button>-->
+								<!--								<button onclick="getInputsValues()">test</button>-->
 								<div id="addsize" class="collapse">
 									<div class="row">
 										<div ng-if="!form.id" class="col-sm-3" style="padding: 10px;" ng-repeat="size in sizes" ng-if="size.status">
 											<div>
-												<input min="0" type="checkbox" name="productsize"
+												<input  min="0" type="checkbox" name="productsize"
 													   data-size-index="{{size.id}}" onchange="toggleInput(this)">
 												{{size.name}}
 											</div>
-											<input   type="number" class="input-quantity-size" style="width: 50px; margin-top: 10px; display: none"
-													min=0
-													data-size-name="{{size.name}}"
-													data-size-index="{{size.id}}" />
+											<input oninput="preventNegative(event)"   type="number" class="input-quantity-size" style="width: 50px; margin-top: 10px; display: none"
+													 min=0
+													 data-size-name="{{size.name}}"
+													 data-size-index="{{size.id}}" />
 										</div>
 										<div ng-if="form.id" class="col-sm-3" style="padding: 10px;" ng-repeat="size in sizeEdit" ng-if="size.status">
 											<div>
-												<input  min="0" type="checkbox"  class="checkbox-size-product "
-												data-size-index="{{size.id}}" >
+												<input   min="0" type="checkbox"  class="checkbox-size-product "
+														data-size-index="{{size.id}}" >
 												{{size.name}}
 											</div>
 										</div>
@@ -213,7 +219,7 @@
 									<div class="text-center">
 										<button ng-click="addsize(form)" ng-if="form.id"
 												class="btn btn-success">(+) Size</button>
-<!--										<button onclick="getValueSize()" class="btn btn-success">Thêm size</button>-->
+										<!--										<button onclick="getValueSize()" class="btn btn-success">Thêm size</button>-->
 									</div>
 									<div id="checkboxError" style="color: red;"></div>
 								</div>
@@ -235,33 +241,33 @@
 									<div class="form-group col-sm-6">
 										<div>Chất liệu</div>
 										<input ng-model="form.description.material" id="descriptionMaterial"
-											class="form-control">
-											<div id="descriptionMaterialError" class="text-danger" ></div>
+											   class="form-control">
+										<div id="descriptionMaterialError" class="text-danger" ></div>
 									</div>
 									<div class="form-group col-sm-6">
 										<div>Công nghệ</div>
 										<input ng-model="form.description.technology" id="descriptionTechnology"
-											class="form-control">
-											<div id="descriptionTechnologyError" class="text-danger" ></div>
+											   class="form-control">
+										<div id="descriptionTechnologyError" class="text-danger" ></div>
 									</div>
 									<div class="form-group col-sm-6">
 										<div>Sản xuất</div>
 										<input ng-model="form.description.manufacture" id="descriptionManufacture"
-											class="form-control">
-											<div id="descriptionManufactureError" class="text-danger" ></div>
+											   class="form-control">
+										<div id="descriptionManufactureError" class="text-danger" ></div>
 									</div>
 									<div class="form-group col-sm-12">
 										<div>Mô tả</div>
 										<textarea ng-model="form.description.description" rows="4" id="descriptionDescription"
-											class="form-control" cols="50"></textarea>
-											<div id="descriptionDescriptionError" class="text-danger" ></div>
+												  class="form-control" cols="50"></textarea>
+										<div id="descriptionDescriptionError" class="text-danger" ></div>
 									</div>
 
 									<div class="col-sm-12 panel-footer text-right">
 										<button ng-click="createDescription()"
-											ng-disabled="form.description.id" class="btn btn-primary">Tạo</button>
+												ng-disabled="form.description.id" class="btn btn-primary">Tạo</button>
 										<button ng-click="updateDescription()"
-											ng-disabled="!form.description.id" class="btn btn-success ">Cập
+												ng-disabled="!form.description.id" class="btn btn-success ">Cập
 											nhật</button>
 										<button ng-click="resetDescription()" class="btn btn-info">Clear</button>
 									</div>
@@ -280,11 +286,11 @@
 			<div class="card">
 				<div class="card-body">
 					<div class="panel-footer text-center">
-						<button ng-click="create()" ng-disabled="form.id"
-							class="btn btn-primary">Create</button>
-						<button ng-click="update()" ng-disabled="!form.id" class="btn btn-success">Update</button>
-						<button ng-click="reset();clearImageProduct(); clearThumbnail() " class="btn btn-info">Reset</button>
-<!--						<button ng-click="check()"  class="btn btn-success">Tạo bản sao </button>-->
+						<button ng-click="create()" ng-if="!form.id"
+								class="btn btn-primary">Create</button>
+						<button ng-click="update()" ng-if="form.id" class="btn btn-success">Update</button>
+						<button ng-click="reset();clearImageProduct(); clearThumbnail();clearValidateForm() " class="btn btn-info">Reset</button>
+						<!--						<button ng-click="check()"  class="btn btn-success">Tạo bản sao </button>-->
 					</div>
 				</div>
 			</div>
