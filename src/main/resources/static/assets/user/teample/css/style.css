@@ -5551,14 +5551,16 @@ ul {
 /* line 34, ../../01 cl html template/03_jun 2019/188_Aranoz shop_html/sass/_confirmation_part.scss */
 .single_confirmation_details ul li p {
   position: absolute;
+  font-weight: 500;
   left: 0;
   top: 0;
-  line-height: 21px;
+  /*line-height: 21px;*/
   color: #777777;
 }
 
 /* line 41, ../../01 cl html template/03_jun 2019/188_Aranoz shop_html/sass/_confirmation_part.scss */
 .single_confirmation_details ul li span {
+  font-weight: 400;
   color: #222222;
 }
 

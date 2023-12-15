@@ -129,24 +129,19 @@
 									<div class="single_confirmation_details p-3">
 										<h6>THÔNG TIN ĐƠN HÀNG</h6>
 										<ul>
+											<li th:if="${order.shipCode}">
+												<p>Mã vận đơn (GHN):</p> <span
+													th:text="${order.shipCode}"></span>
+											</li>
 											<li>
 												<p>Ngày đặt:</p> <span
 												th:text="${#dates.format(order.orderDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
 											</li>
 											<li>
-												<!--                                                <th:block th:if="${order.voucher != null}" >-->
-												<!--                                                    <p>Tổng tiền:</p>-->
-												<!--                                                    <span>[[${#numbers.formatDecimal(order.totalDiscount, 0, 'COMMA', 0, 'POINT')}]]</span><br>-->
-												<!--                                                    <p>Tổng tiền:</p>-->
-												<!--                                                    <span style="text-decoration: line-through;" >[[${#numbers.formatDecimal(order.total, 0, 'COMMA', 0, 'POINT')}]]</span>-->
-												<!--                                                </th:block>-->
-
-												<!--                                                <th:block th:if="${order.voucher == null}" >-->
 												<p>Tổng tiền:</p> <span th:if="${order.voucher != null}">[[${#numbers.formatDecimal(order.total
-													+ order.shipFee - order.voucher.discountPrice, 0, 'COMMA',
+													+ order.shipFee - order.totalDiscount, 0, 'COMMA',
 													0,'POINT')}]]đ</span> <span th:if="${order.voucher == null}">[[${#numbers.formatDecimal(order.total
 													+ order.shipFee, 0, 'COMMA', 0,'POINT')}]]đ</span> <!--                                                </th:block>-->
-
 											</li>
 											<li>
 												<p>Trạng thái giao hàng:</p> <span
