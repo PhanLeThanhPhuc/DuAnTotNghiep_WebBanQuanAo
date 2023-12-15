@@ -114,7 +114,7 @@ app.controller("cart-ctrl", function($scope, $http) {
 		add(id) { // thêm sản phẩm vào giỏ hàng
 			var sizeid = $scope.sizeidf;
 			if (sizeid == null) {
-				alert("Vui Lòng chọn size !!");
+				message2("Vui Lòng chọn size !!");
 			}
 			var item = this.items.find(item => item.product.id == id && item.size.id == $scope.sizeidf);
 			var qtt = this.qtyyy;
@@ -123,23 +123,27 @@ app.controller("cart-ctrl", function($scope, $http) {
 			if (item) {
 				var qtt2 = item.qty + qtt;
 				if (qtt2 > sol) {
-					messageError("Vượt quá số lượng cho phép !!!");
+
+					message2("Vượt quá số lượng cho phép !!!");
+
 				} else {
 					item.qty += qtt;
-					message("Thêm sản phẩm thành công");
+					message1("Thêm sản phẩm thành công");
 					this.saveToLocalStorage();
 				}
 			}
 			else {
 				$http.get(`/rest/productsDetail/size/${id}/` + sizeid).then(resp => {
 					if (qtt > sol) {
-						messageError("Vượt quá số lượng cho phép !!!");
+
+						message2("Vượt quá số lượng cho phép !!!");
+
 					} else {
 
 						resp.data.qty = qtt;
 						this.items.push(resp.data);
 						this.saveToLocalStorage();
-						message("Thêm sản phẩm thành công");
+						message1("Thêm sản phẩm thành công");
 					}
 				})
 			}
@@ -385,7 +389,7 @@ app.controller("cart-ctrl", function($scope, $http) {
 			shipFee: $scope.shipFee,
 			email: $scope.formInformationOrder.email,
 			total: $scope.cart.totalNoDiscount,
-			totalDiscount: $scope.cart.totalNoDiscount -  $scope.cart.amount + $scope.discoutVoucher ,
+			totalDiscount: $scope.cart.totalNoDiscount - $scope.cart.amount + $scope.discoutVoucher,
 			weight: $scope.cart.totalWeights,
 			wardCode: $scope.wardId,
 			districtId: parseInt($scope.districtId),
@@ -406,7 +410,7 @@ app.controller("cart-ctrl", function($scope, $http) {
 
 		$http.post("/user/order", $scope.data,).then(resp => {
 			if (resp.status === 200) {
-				alert("Đặt hàng thành công!");
+				message1("Đặt hàng thành công!");
 				if (resp.data.payment === 1) {
 					// console.log(resp.data.urlVnPay);
 					$cart.clear();
@@ -700,7 +704,7 @@ app.controller("cart-ctrl", function($scope, $http) {
 		}
 		return isValid;
 	}
-	preventNegative =(event) => {
+	preventNegative = (event) => {
 		const inputElement = event.target;
 		const inputValue = inputElement.value;
 
@@ -708,9 +712,9 @@ app.controller("cart-ctrl", function($scope, $http) {
 
 		inputElement.value = sanitizedValue;
 	}
-	
-	
-	message = (mes) =>{
+
+
+	message1 = (mes) => {
 		$.toast({
 			text: mes,
 			heading: 'Note',
@@ -723,34 +727,30 @@ app.controller("cart-ctrl", function($scope, $http) {
 			textAlign: 'left',  // Text alignment i.e. left, right or center
 			loader: true,  // Whether to show loader or not. True by default
 			loaderBg: '#9EC600',  // Background color of the toast loader
-			beforeShow: function () {}, // will be triggered before the toast is shown
-			afterShown: function () {}, // will be triggered after the toat has been shown
-			beforeHide: function () {}, // will be triggered before the toast gets hidden
-			afterHidden: function () {}  // will be triggered after the toast has been hidden
+			beforeShow: function() { }, // will be triggered before the toast is shown
+			afterShown: function() { }, // will be triggered after the toat has been shown
+			beforeHide: function() { }, // will be triggered before the toast gets hidden
+			afterHidden: function() { }  // will be triggered after the toast has been hidden
 		});
 	}
-
-	messageError = (mes) =>{
-
+	
+	message2 = (mes) => {
 		$.toast({
-			text: mes, // Text that is to be shown in the toast
-			heading: 'Lỗi', // Optional heading to be shown on the toast
-			icon: 'error', // Type of toast icon
-			showHideTransition: 'fade', // fade, slide or plain
-			allowToastClose: true, // Boolean value true or false
-			hideAfter: 3000, // false to make it sticky or number representing the miliseconds as time after which toast needs to be hidden
-			stack: 5, // false if there should be only one toast at a time or a number representing the maximum number of toasts to be shown at a time
-			position: 'top-right', // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values
-
-
-
+			text: mes,
+			heading: 'Note',
+			icon: 'warning',
+			showHideTransition: 'fade',
+			allowToastClose: true,
+			hideAfter: 3000,
+			stack: 5,
+			position: 'top-center', // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values
 			textAlign: 'left',  // Text alignment i.e. left, right or center
 			loader: true,  // Whether to show loader or not. True by default
-			loaderBg: '#9EC600',  // Background color of the toast loader
-			beforeShow: function () {}, // will be triggered before the toast is shown
-			afterShown: function () {}, // will be triggered after the toat has been shown
-			beforeHide: function () {}, // will be triggered before the toast gets hidden
-			afterHidden: function () {}  // will be triggered after the toast has been hidden
+			loaderBg: 'rgb(225, 120, 7)',  // Background color of the toast loader
+			beforeShow: function() { }, // will be triggered before the toast is shown
+			afterShown: function() { }, // will be triggered after the toat has been shown
+			beforeHide: function() { }, // will be triggered before the toast gets hidden
+			afterHidden: function() { }  // will be triggered after the toast has been hidden
 		});
 	}
 
