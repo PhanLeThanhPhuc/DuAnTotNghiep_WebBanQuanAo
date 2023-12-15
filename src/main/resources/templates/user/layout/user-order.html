@@ -49,7 +49,7 @@
                                         <span th:text="${#dates.format(order.orderDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
                                     </td>
                                     <td>
-                                        <span style="color: red; font-weight: 600">[[${#numbers.formatDecimal(order.total, 0, 'COMMA', 0, 'POINT')}]]₫</span>
+                                        <span style="color: red; font-weight: 600">[[${#numbers.formatDecimal(order.total - order.totalDiscount + order.shipFee, 0, 'COMMA', 0, 'POINT')}]]₫</span>
                                     </td>
                                     <td>
                                         <span class="badge badge-pill badge-secondary" th:if="${order.status == 0}">Chờ xác nhận</span>

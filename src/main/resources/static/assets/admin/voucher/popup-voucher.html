@@ -18,10 +18,9 @@
 						<div class="form-group col-sm-12">
 							<div>Mã giảm giá</div>
 							<div class="row px-3">
-								<input ng-model="form.voucher" id="voucherForm"
-									   class="form-control col-sm-8">
+								<input ng-model="form.voucher" id="voucherForm" class="form-control col-sm-8" ng-disabled="form.id">
 
-								<button type="button" class="btn btn-secondary col-sm-2"
+								<button ng-if="!form.id" type="button" class="btn btn-secondary col-sm-2"
 										ng-click="generateRandomString()">Ngẫu nhiên</button>
 
 							</div>

@@ -1,14 +1,31 @@
 app.controller("order-ctrl", function($scope, $filter, $http) {
 
-	$scope.initialize = async () => {
-		$scope.listOrders = []
-		await $http.get("/rest/orders").then(resp => {
+	$scope.initialize = () => {
+		$scope.listOrders = [];
+
+		const eventSource = new EventSource("/sse", { withCredentials: true, cache: "no-store" });
+
+		eventSource.addEventListener("order-update", function (event) {
+			const order = JSON.parse(event.data);
+			console.log("Đơn hàng đã cập nhật:", order);
+			$scope.$apply(function () {
+				$scope.listOrders.push(order);
+				countOrder();
+			});
+		});
+
+		eventSource.onerror = function (error) {
+			console.error("EventSource failed:", error);
+			eventSource.close();
+		};
+
+		$http.get("/rest/orders").then(resp => {
 			$scope.listOrders = resp.data;
-			console.log("list order",$scope.listOrders);
+			console.log("Danh sách đơn hàng", $scope.listOrders);
 			countOrder();
 		});
-		// $scope.reset();
 	}
+
 
 	$scope.initialize();
 
@@ -23,7 +40,6 @@ app.controller("order-ctrl", function($scope, $filter, $http) {
 			if (resp.status === 200) {
 				var index = $scope.listOrders.findIndex(p => p.id == orderId);
 				$scope.listOrders[index] = resp.data;
-				console.log("Data xac nhạn: ", resp.data);
 				$scope.message(`Xác nhận đơn hàng ${orderId} thành công`)
 				countOrder();
 			}

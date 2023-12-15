@@ -73,13 +73,16 @@
 	href="/assets/user/teample/css/lightslider.min.css">
 
 <style>
-#preloader {
-	background: white url(/assets/user/teample/img/preloader.gif) no-repeat center;
-	height: 100vh;
-	width: 100%;
-	position: fixed;
-	z-index: 1000;
-}
+	#preloader {
+		background: white url(/assets/user/teample/img/preloader.gif) no-repeat center;
+		height: 100vh;
+		width: 100%;
+		position: fixed;
+		z-index: 1000;
+		opacity: 1; /* Mặc định opacity là 1 */
+		transition: opacity 0.6s ease; /* Thêm hiệu ứng chuyển động */
+	}
+
 </style>
 </head>
 
@@ -157,7 +160,7 @@
     window.addEventListener("load", function() {
     	setTimeout(function() {
             loader.style.display = "none";
-        }, 750);
+        }, 300);
     });
 	</script>
 </body>
