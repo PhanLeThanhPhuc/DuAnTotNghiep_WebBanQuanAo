@@ -131,7 +131,7 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 			$scope.messege("Thêm mới sản phẩm thành công!");
 		}).catch(error => {
 			document.getElementById('preloader').style.display = 'none';
-			alert("Lỗi thêm mới sản phẩm!");
+			$scope.messege2("Lỗi thêm mới sản phẩm!");
 			console.log("Error", error);
 		});
 	}
@@ -153,7 +153,7 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 			$http.put(`/rest/productsDetail/${$scope.arrProductDetail[i].id}`, $scope.arrProductDetail[i]).then(resp => {
 			}).catch(error => {
 				document.getElementById('preloader').style.display = 'none';
-				alert("Lỗi cập nhật sảna phẩm!");
+				$scope.messege2("Lỗi cập nhật sản phẩm!");
 				console.log("Error", error);
 			});
 		}
@@ -172,7 +172,7 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 			$scope.messege("Cập nhật sản phẩm thành công!!!!");
 		}).catch(error => {
 			document.getElementById('preloader').style.display = 'none';
-			alert("Lỗi cập nhật sảna phẩm!");
+			$scope.messege2("Lỗi cập nhật sản phẩm!");
 			console.log("Error", error);
 		});
 	}
@@ -191,7 +191,7 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 			$scope.messege("Cập nhật trạng thái thành công");
 		})
 			.catch(error => {
-				alert("Lỗi cập nhật!");
+				$scope.messege2("Lỗi cập nhật!");
 				console.log("Error", error);
 			});
 	}
@@ -286,7 +286,7 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 				console.log("UPload thành công", $scope.form.thumbnail);
 			}
 		}).catch(error => {
-			alert("Lỗi upload hình ảnh");
+			$scope.messege2("Lỗi upload hình ảnh");
 			console.log("Error", error);
 		})
 	}
@@ -326,7 +326,7 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 			await $http.delete(`/rest/image/delete-by-product${$scope.form.id}`).then(resp => {
 				// $scope.image.push(resp.data);
 			}).catch(error => {
-				alert("Lỗi thêm hinh !");
+				$scope.messege2("Lỗi thêm hinh !");
 				console.log("Error", error);
 			});
 			return;
@@ -358,7 +358,7 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 		await $http.post(`/rest/image`, $scope.selectedFiles).then(resp => {
 			// $scope.image.push(resp.data);
 		}).catch(error => {
-			alert("Lỗi thêm hinh !");
+			$scope.messege2("Lỗi thêm hinh !");
 			console.log("Error", error);
 		});
 	}
@@ -474,7 +474,7 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 			console.log($scope.form.description);
 			// alert("Thêm mới mô tả sản phẩm thành công!");
 		}).catch(error => {
-			alert("Lỗi thêm mới !");
+			$scope.messege2("Lỗi thêm mới !");
 			console.log("Error", error);
 		});
 	}
@@ -493,7 +493,7 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 			// alert("Cập nhật mô tả sản phẩm công!");
 		})
 			.catch(error => {
-				alert("Lỗi cập nhật !");
+				$scope.messege2("Lỗi cập nhật !");
 				console.log("Error", error);
 			});
 	}
@@ -524,6 +524,26 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 			textAlign: 'left',  // Text alignment i.e. left, right or center
 			loader: true,  // Whether to show loader or not. True by default
 			loaderBg: '#9EC600',  // Background color of the toast loader
+			beforeShow: function() { }, // will be triggered before the toast is shown
+			afterShown: function() { }, // will be triggered after the toat has been shown
+			beforeHide: function() { }, // will be triggered before the toast gets hidden
+			afterHidden: function() { }  // will be triggered after the toast has been hidden
+		});
+	}
+	
+	$scope.messege2 = (mes) => {
+		$.toast({
+			text: mes, // Text that is to be shown in the toast
+			heading: 'Thông báo', // Optional heading to be shown on the toast
+			icon: 'error', // Type of toast icon
+			showHideTransition: 'fade', // fade, slide or plain
+			allowToastClose: true, // Boolean value true or false
+			hideAfter: 2000, // false to make it sticky or number representing the miliseconds as time after which toast needs to be hidden
+			stack: 5, // false if there should be only one toast at a time or a number representing the maximum number of toasts to be shown at a time
+			position: 'top-right', // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values
+			textAlign: 'left',  // Text alignment i.e. left, right or center
+			loader: true,  // Whether to show loader or not. True by default
+			loaderBg: 'rgb(225, 120, 7)',  // Background color of the toast loader
 			beforeShow: function() { }, // will be triggered before the toast is shown
 			afterShown: function() { }, // will be triggered after the toat has been shown
 			beforeHide: function() { }, // will be triggered before the toast gets hidden
@@ -853,7 +873,7 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 				$scope.productSize.push(sizeProduct);
 				loadSizeEdit();
 			}).catch(error => {
-				alert("Lỗi thêm size sản phẩm!");
+				$scope.messege2("Lỗi thêm size sản phẩm!");
 				console.log("Error", error);
 			});
 		});
