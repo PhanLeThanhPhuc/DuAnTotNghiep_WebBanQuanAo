@@ -32,12 +32,15 @@
                         <div class="tab-pane fade shadow rounded bg-white show active p-4" id="v-pills-home"
                              role="tabpanel" aria-labelledby="v-pills-home-tab">
                             <div>
-                                <span class="mb-4" style="font-size: 18px; font-weight: bold; ">Địa chỉ nhận hàng</span>
+                                <div class="mb-2">
+                                    <span style="font-size: 18px; font-weight: 600; ">Địa chỉ nhận hàng</span>
+                                </div>
                                 <div th:each="address : ${address}" class="form-check mb-2">
                                     <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
                                     <label class="form-check-label" for="exampleRadios1">
                                         [[${address.addressDetail}]], [[${address.wardName}]], [[${address.districtName}]], [[${address.provinceName}]]
                                     </label>
+                                    <button class="btn btn-danger" th:attr="onclick='deleteAddress(\'' + ${address.id} + '\')'">X</button>
                                 </div>
                                 <button data-toggle="modal" data-target="#exampleModalCenter" type="button" class="btn btn-outline-warning">+ Thêm địa chỉ mới</button>
                             </div>
@@ -58,7 +61,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle">Thêm địa chỉ nhận hàng</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>

@@ -14,10 +14,9 @@ createPassword = () => {
         data: JSON.stringify(userObject),
         contentType: 'application/json',
         success: function(response) {
-            // Store the message in localStorage
+
             localStorage.setItem('successMessage', response.message);
 
-            // Redirect to another page
             window.location.href = '/user/info';
         },
         error: function(error) {
@@ -27,19 +26,16 @@ createPassword = () => {
 }
 
 showMessage = () => {
-    // Retrieve the message from localStorage
     var successMessage = localStorage.getItem('successMessage');
 
-    // Check if there is a message to display
     if (successMessage) {
         message(successMessage);
 
-        // Clear the stored message to avoid displaying it again
         localStorage.removeItem('successMessage');
     }
 }
 
-// Call the showMessage function on page load
+
 showMessage();
 
 message = (mes) => {
@@ -47,7 +43,7 @@ message = (mes) => {
         text: mes,
         heading: 'Note',
         icon: 'success',
-        // ... rest of your code ...
+
     });
 }
 
@@ -81,4 +77,47 @@ clearForm = () => {
     document.getElementById('error-password').innerText = '';
     document.getElementById('error-enter-password').innerText = '';
 }
+
+updateUserInfo = () => {
+    var name = document.getElementById('name-info').value;
+    var email = document.getElementById('email-info').value;
+    var gender = document.querySelector('input[name="radio-gender"]:checked').value;
+
+
+    var userObject = {
+        fullName: name,
+        email: email,
+        gender: gender
+    };
+
+    $.ajax({
+        type: 'POST',
+        url: '/rest/users/update-user-info',
+        data: JSON.stringify(userObject),
+        contentType: 'application/json',
+        success: function(response) {
+            localStorage.setItem('successUpdateUser', response.message);
+
+            window.location.href = '/user/info';
+        },
+        error: function(error) {
+            // Handle errors if needed
+            console.error(error);
+        }
+    });
+}
+
+    showMessageUserInfo = () => {
+        var successMessage = localStorage.getItem('successUpdateUser');
+
+        if (successMessage) {
+            message(successMessage);
+
+            localStorage.removeItem('successUpdateUser');
+        }
+    }
+
+
+    showMessageUserInfo();
+
 });

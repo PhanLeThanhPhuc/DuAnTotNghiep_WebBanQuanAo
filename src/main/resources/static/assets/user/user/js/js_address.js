@@ -23,7 +23,7 @@ $.ajax({
 });
 
 district = (province_id) => {
-	// Clear comboboxDistrict and comboboxWard
+
 	document.getElementById("comboboxDistrict").innerHTML = "";
 	document.getElementById("comboboxWard").innerHTML = "";
 
@@ -50,7 +50,7 @@ district = (province_id) => {
 }
 
 ward = (district_id) => {
-	// Clear comboboxWard
+
 	document.getElementById("comboboxWard").innerHTML = "";
 
 	$.ajax({
@@ -103,4 +103,20 @@ createAddress = () => {
 		}
 	});
 }
+
+deleteAddress = (id) => {
+	$.ajax({
+		type: 'DELETE',
+		url: `/rest/address/delete/${id}`,
+		contentType: 'application/json',
+		success: function(response) {
+			console.log('Deletion successful:', response);
+			window.location.href = '/user/address';
+		},
+		error: function(error) {
+			console.error('Error during deletion:', error);
+		}
+	});
+}
+
 

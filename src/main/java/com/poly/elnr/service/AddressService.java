@@ -11,5 +11,5 @@ public interface AddressService {
 
     Address insertAddress(Address address);
 
-
+    void delete(Address id);
 }

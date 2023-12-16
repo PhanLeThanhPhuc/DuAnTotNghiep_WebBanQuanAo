@@ -145,6 +145,14 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	public void updateUserInfo(Users request) {
+		Users user = userRepository.findByEmail(request.getEmail());
+		user.setFullName(request.getFullName());
+		user.setGender(request.getGender());
+		userRepository.save(user);
+	}
+
+	@Override
 	public void delete(Users id) {
 		// TODO Auto-generated method stub
 		userRepository.delete(id);

@@ -535,9 +535,9 @@ app.controller("cart-ctrl", function($scope, $http) {
 
 				countdownotp(remainingTime)
 
-				// console.log("Thời gian còn lại",remainingTime);
+
 				$("#exampleModalCenter3").modal("hide");
-				// Đóng modal sử dụng jQuery khi nút "Close" được click
+
 				$("#exampleModalCenter4").modal("show");
 
 			}
@@ -551,7 +551,7 @@ app.controller("cart-ctrl", function($scope, $http) {
 		const phoneNumber = $scope.registerPhone;
 		const email = $scope.formInformationOrder.email;
 		await $http.get(`/rest/users/confirm-otp?otp=${otp}&phone=${phoneNumber}&email=${email}`).then(resp => {
-			console.log("respose: ", resp.data);
+			// console.log("respose: ", resp.data);
 			if (resp.status === 'timeout') {
 				var smallElement = document.getElementById("messageOtp");
 				smallElement.innerHTML = resp.data.message;
@@ -571,7 +571,7 @@ app.controller("cart-ctrl", function($scope, $http) {
 		var initialSeconds = second; // Ví dụ: 5 phút = 300 giây
 
 		// Lấy thẻ div để hiển thị đồng hồ đếm ngược
-		var countdownElement = document.getElementById('countdown');
+		var countdownElement = document.getElementById('count-down');
 
 		// Tính tổng số giây
 		var totalSeconds = initialSeconds;

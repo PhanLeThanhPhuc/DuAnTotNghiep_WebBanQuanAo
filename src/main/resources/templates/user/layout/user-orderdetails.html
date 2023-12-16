@@ -129,9 +129,9 @@
 									<div class="single_confirmation_details p-3">
 										<h6>THÔNG TIN ĐƠN HÀNG</h6>
 										<ul>
-											<li th:if="${order.shipCode}">
-												<p>Mã vận đơn (GHN):</p> <span
-													th:text="${order.shipCode}"></span>
+											<li th:if="${order.shipCode != ''}">
+												<p>Mã vận đơn (GHN):</p>
+												<span th:text="${order.shipCode}"></span>
 											</li>
 											<li>
 												<p>Ngày đặt:</p> <span
@@ -216,7 +216,11 @@
 																width="85px" height="85px" style="border-radius: 20px;"
 																alt="">
 															<div style="display: flex; flex-flow: column; gap: 10px;">
-																<span style="font-size: 17px;">[[${orderdetail.productDetails.product.name}]]</span>
+																<span style="font-size: 17px;">
+																	<a th:href="@{|/user/product-detail?product-id=${orderdetail.productDetails.product.id}|}">
+																				[[${orderdetail.productDetails.product.name}]]
+																	</a>
+																</span>
 																<span>Color:
 																	[[${orderdetail.productDetails.product.color.name}]]</span> <span>Size:
 																	[[${orderdetail.productDetails.size.name}]]</span>
