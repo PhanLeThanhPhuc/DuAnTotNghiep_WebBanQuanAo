@@ -252,7 +252,7 @@
 								<div th:each="review : ${reviews}" class="review_item">
 									<div class="media">
 										<div class="d-flex">
-											<img class="rounded-circle" style="width: 50px;"
+											<img th:if="${review.User.image != null}" class="rounded-circle" style="width: 50px;"
 												th:src="@{|${review.User.image}|}" alt="" />
 										</div>
 										<div class="media-body">

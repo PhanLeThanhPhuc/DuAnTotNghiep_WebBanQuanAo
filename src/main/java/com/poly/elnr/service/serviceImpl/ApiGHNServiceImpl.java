@@ -91,10 +91,11 @@ public class ApiGHNServiceImpl implements ApiGHNService {
         orderData.setTo_address(order.getDetailAddress()+ ", "+ order.getWard()+ ", " + order.getDistrict() + ", " + order.getProvince());
         orderData.setTo_province_name(order.getProvince());
         orderData.setCod_amount(order.getTotal()-order.getTotalDiscount()+order.getShipFee());
+        //1 ck 0 tien mat
         if(order.getStatusPayment() == 1){
-            orderData.setCod_amount(order.getTotal()-order.getTotalDiscount()+order.getShipFee());
-        }else{
             orderData.setCod_amount(0);
+        }else{
+            orderData.setCod_amount(order.getTotal()-order.getTotalDiscount()+order.getShipFee());
         }
         orderData.setTo_ward_code(order.getWardCode());
         orderData.setTo_district_id(order.getDistrictId());

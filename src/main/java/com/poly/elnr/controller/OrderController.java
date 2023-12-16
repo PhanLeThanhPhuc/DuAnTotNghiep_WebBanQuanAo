@@ -68,7 +68,7 @@ public class OrderController {
             model.addAttribute("message","Không tìm thấy đơn hàng");
             return "user/product/search-order";
         }else{
-            return "redirect:/user/search-order-result?idOrder="+order.getId();
+            return "redirect:/user/order-detail?idOrder="+order.getId();
         }
     }
 }

@@ -23,9 +23,8 @@ app.controller("user-statistic-ctrl", function($scope, $filter, $http,$location)
 
     $scope.initialize();
 
-    $scope.chart = () =>{
+    $scope.chart = () => {
         const ctx = document.getElementById('myChart');
-
 
         $scope.chartUser = new Chart(ctx, {
             type: 'bar',
@@ -60,10 +59,18 @@ app.controller("user-statistic-ctrl", function($scope, $filter, $http,$location)
                     ],
                     borderWidth: 1
                 }]
-            }
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            },
+            // plugins: [ChartDataLabels]
         });
+    };
 
-    }
 
     defaulStatistic = () =>{
         var valuecbb = document.getElementById('cbb-statistic').value;

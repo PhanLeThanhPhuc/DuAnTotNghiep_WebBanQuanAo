@@ -34,13 +34,13 @@
 
 								<td>
 									<div ng-if="item.product.sale ==false">
-										<h4 style=" color: red; font-weight: 600">{{item.product.price }}₫</h4>
+										<h4 style=" color: red; font-weight: 600">{{item.product.price | currency:'' :0  }}₫</h4>
 									</div>
 
 									<div ng-if="item.product.sale == true">
-										<h5 style="text-decoration-line: line-through;">{{item.product.price
+										<h5 style="text-decoration-line: line-through;">{{item.product.price | currency:'' :0
 											}}₫</h5>
-										<h4 style=" color: red; font-weight: 600">{{item.product.discountPrice }}₫</h4>
+										<h4 style=" color: red; font-weight: 600">{{item.product.discountPrice | currency:'' :0 }}₫</h4>
 									</div>
 						
 								</td>

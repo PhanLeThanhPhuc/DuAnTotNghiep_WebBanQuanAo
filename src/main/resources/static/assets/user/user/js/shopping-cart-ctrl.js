@@ -422,7 +422,7 @@ app.controller("cart-ctrl", function($scope, $http) {
 				}
 			}
 		}).catch(error => {
-			alert("Đặt hàng lỗi!")
+			console.log("Đặt hàng lỗi!")
 			console.log(error)
 		})
 	}

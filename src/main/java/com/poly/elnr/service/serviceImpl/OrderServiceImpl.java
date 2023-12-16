@@ -128,7 +128,7 @@ public class OrderServiceImpl implements OrderService {
             productDetails.setQuantity(qty);
             productDetailsRepository.save(productDetails);
         });
-        sendOrderUpdate(order);
+//        sendOrderUpdate(order);
         return order;
     }
 
@@ -170,7 +170,7 @@ public class OrderServiceImpl implements OrderService {
             productDetails.setQuantity(qty);
             productDetailsRepository.save(productDetails);
         });
-
+//        sendOrderUpdate(order);
         return orderRepository.save(order);
     }
 
@@ -268,6 +268,7 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderRepository.findById(id).get();
         order.setStatus(status);
         orderRepository.save(order);
+//        sendOrderUpdate(order);
         return order;
     }
 

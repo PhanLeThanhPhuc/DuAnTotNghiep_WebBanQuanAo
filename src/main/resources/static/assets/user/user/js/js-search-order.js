@@ -15,3 +15,10 @@ search = () =>{
    // });
    location.href=`/rest/order/search-order?phone=${phone}&id-order=${idOrder}`
 }
+
+// validateSearchOrder = () =>{
+//    var phone = document.getElementById("phone1").value
+//    var idOrder = document.getElementById("id-order").value
+//
+//
+// }
