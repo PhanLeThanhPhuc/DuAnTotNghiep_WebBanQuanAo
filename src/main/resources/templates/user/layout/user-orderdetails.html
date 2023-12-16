@@ -67,7 +67,7 @@
 					<!-- Tabs nav -->
 					<div class="nav flex-column nav-pills nav-pills-custom"
 						id="v-pills-tab" role="tablist" aria-orientation="vertical">
-						<a class="nav-link mb-3 p-3 shadow " th:href="@{/user/info}"
+						<a th:if="${session.user != null}" class="nav-link mb-3 p-3 shadow " th:href="@{/user/info}"
 							role="tab" aria-controls="v-pills-home" aria-selected="false">
 							<i class="fa fa-user-circle-o mr-2"></i> <span
 							class="font-weight-bold small text-uppercase text-a">Thông
@@ -77,7 +77,7 @@
 							href="v-pills-profile" role="tab" aria-controls="v-pills-profile"
 							aria-selected="true"> <i class="fa fa-calendar-minus-o mr-2"></i>
 							<span class="font-weight-bold small text-uppercase text-a">Thông
-								tin đơn hàng</span></a> <a class="nav-link mb-3 p-3 shadow"
+								tin đơn hàng</span></a> <a  th:if="${session.user != null}" class="nav-link mb-3 p-3 shadow"
 							id="v-pills-messages-tab" data-toggle="pill"
 							href="v-pills-messages" role="tab"
 							aria-controls="v-pills-messages" aria-selected="false"> <i
@@ -93,6 +93,9 @@
 							id="v-pills-home" role="tabpanel"
 							aria-labelledby="v-pills-home-tab">
 							<div class="row">
+								<div class="col-sm-12 mb-3">
+									<a th:if="${session.user != null}" th:href="@{/user/order}"> <<< Quay lại danh sách đơn hàng</a>
+								</div>
 								<div class="col-sm-6">
 									<h6>CHI TIẾT ĐƠN HÀNG #[[${order.id}]]</h6>
 								</div>
@@ -129,24 +132,19 @@
 									<div class="single_confirmation_details p-3">
 										<h6>THÔNG TIN ĐƠN HÀNG</h6>
 										<ul>
+											<li th:if="${order.shipCode != ''}">
+												<p>Mã vận đơn (GHN):</p>
+												<span th:text="${order.shipCode}"></span>
+											</li>
 											<li>
 												<p>Ngày đặt:</p> <span
 												th:text="${#dates.format(order.orderDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
 											</li>
 											<li>
-												<!--                                                <th:block th:if="${order.voucher != null}" >-->
-												<!--                                                    <p>Tổng tiền:</p>-->
-												<!--                                                    <span>[[${#numbers.formatDecimal(order.totalDiscount, 0, 'COMMA', 0, 'POINT')}]]</span><br>-->
-												<!--                                                    <p>Tổng tiền:</p>-->
-												<!--                                                    <span style="text-decoration: line-through;" >[[${#numbers.formatDecimal(order.total, 0, 'COMMA', 0, 'POINT')}]]</span>-->
-												<!--                                                </th:block>-->
-
-												<!--                                                <th:block th:if="${order.voucher == null}" >-->
-												<p>Tổng tiền:</p> <span th:if="${order.voucher != null}">[[${#numbers.formatDecimal(order.total
-													+ order.shipFee - order.voucher.discountPrice, 0, 'COMMA',
-													0,'POINT')}]]đ</span> <span th:if="${order.voucher == null}">[[${#numbers.formatDecimal(order.total
-													+ order.shipFee, 0, 'COMMA', 0,'POINT')}]]đ</span> <!--                                                </th:block>-->
-
+												<p>Tổng tiền:</p>
+												<span style="font-weight: 600; color: red" >[[${#numbers.formatDecimal(order.total
+													+ order.shipFee - order.totalDiscount, 0, 'COMMA',
+													0,'POINT')}]]đ</span>
 											</li>
 											<li>
 												<p>Trạng thái giao hàng:</p> <span
@@ -162,22 +160,25 @@
 												th:if="${order.status == 5}">Đã giao</span>
 											</li>
 											<li>
-												<p>Thanh toán:</p> <th:block th:if="${order.payment eq 0}">
+												<p>Thanh toán:</p>
+												<th:block th:if="${order.payment eq 0}">
 													<span> Tiền mặt</span>
 													<br>
-													<a th:if="${order.status==0}" ; data-toggle="modal"
+													<a th:if="${order.status==0}"  data-toggle="modal"
 														style="color: blue; text-transform: none;"
 														data-target="#exampleModalCenter">Hoặc chọn hình thức
 														thanh toán khác</a>
-												</th:block> <th:block th:if="${order.payment eq 1}">
+												</th:block>
+												<th:block th:if="${order.payment eq 1}">
 													<span> VN-PAY</span>
-													<span style="font-style: italic; color: red;"
+													<span style="font-style: italic; color: red;    text-transform: none !important;"
 														th:if="${order.statusPayment eq 0}"> (Thanh toán
-														không thành công)</span>
+														không thành công, sẽ thanh toán bằng tiền mặt khi nhận hàng)
+													</span>
 													<br>
 													<a
-														th:if="${order.statusPayment != 1 || order.status == 2   }"
-														data-toggle="modal" data-target="#exampleModalCenter">Chọn
+														th:if="${order.statusPayment ==0 && order.status == 0   }"
+														data-toggle="modal" style=" text-transform: none !important; color: blue" data-target="#exampleModalCenter">Hoặc chọn
 														hình thức thanh toán khác</a>
 													<span style="font-style: italic; color: seagreen"
 														class="text-success" th:if="${order.statusPayment eq 1}">
@@ -218,7 +219,11 @@
 																width="85px" height="85px" style="border-radius: 20px;"
 																alt="">
 															<div style="display: flex; flex-flow: column; gap: 10px;">
-																<span style="font-size: 17px;">[[${orderdetail.productDetails.product.name}]]</span>
+																<span style="font-size: 17px;">
+																	<a th:href="@{|/user/product-detail?product-id=${orderdetail.productDetails.product.id}|}">
+																				[[${orderdetail.productDetails.product.name}]]
+																	</a>
+																</span>
 																<span>Color:
 																	[[${orderdetail.productDetails.product.color.name}]]</span> <span>Size:
 																	[[${orderdetail.productDetails.size.name}]]</span>
@@ -229,38 +234,48 @@
 													<td><th:block
 															th:if="${orderdetail.discountPrice != 0}">
 															<div style="display: grid; grid-gap: 8px;">
-																<span style="color: red; font-weight: bold">[[${#numbers.formatDecimal(orderdetail.price,
-																	0, 'COMMA', 0, 'POINT')}]]₫</span> <span
-																	style="text-decoration: line-through; font-size: 13px">[[${#numbers.formatDecimal(orderdetail.discountPrice
-																	+ orderdetail.price, 0, 'COMMA', 0, 'POINT')}]]₫</span>
+																<span style="color: red; font-weight: bold">[[${#numbers.formatDecimal(orderdetail.price / orderdetail.quantity,
+																	0, 'COMMA', 0, 'POINT')}]]₫</span>
+																<span
+																	style="text-decoration: line-through; font-size: 13px">[[${#numbers.formatDecimal((orderdetail.discountPrice + orderdetail.price) /orderdetail.quantity, 0, 'COMMA', 0, 'POINT')}]]₫</span>
 															</div>
 														</th:block> <th:block th:if="${orderdetail.discountPrice == 0}">
 															<div style="display: grid; grid-gap: 8px;">
-																<span style="color: red; font-weight: bold">[[${#numbers.formatDecimal(orderdetail.price,
+																<span style="color: red; font-weight: bold">[[${#numbers.formatDecimal(orderdetail.price/orderdetail.quantity,
 																	0, 'COMMA', 0, 'POINT')}]]₫</span>
 															</div>
 														</th:block></td>
 													<td>
 														<div style="display: grid; grid-gap: 8px;">
-															<span style="color: red; font-weight: bold">[[${#numbers.formatDecimal(orderdetail.price
-																* orderdetail.quantity, 0, 'COMMA', 0, 'POINT')}]]₫</span>
+															<span style="color: red; font-weight: bold">[[${#numbers.formatDecimal(orderdetail.price, 0, 'COMMA', 0, 'POINT')}]]₫</span>
 														</div>
 
 
 													</td>
-													<td th:if="${order.status == 5}"><span> <a
+													<td th:if="${order.status == 5 && session.user != null}"><span> <a
 															th:attr="ng-click=|reviews(${session.user.id},${orderdetail.productDetails.product.id})|"
 															data-toggle="modal" data-target=".bd-example-modal-lg"
 															title="Edit"> Đánh giá
-																</a></td>
+																</a>
+													</td>
+													<td th:if="${session.user == null && order.status == 5}">
+														<span>
+															<a>
+																Đăng nhập để đánh giá đơn hàng
+															</a>
+													</td>
 												</tr>
 											</tbody>
 											<tfoot>
 												<tr>
 													<th scope="col" colspan="3"></th>
 													<th scope="col" style="font-size: 14px">TẠM TÍNH:</th>
-													<th scope="col">[[${#numbers.formatDecimal(subTotal,
-														0, 'COMMA', 0, 'POINT')}]]đ</th>
+													<th th:if="${order.voucher != null}" scope="col">[[${#numbers.formatDecimal(order.total - order.totalDiscount + order.voucher.discountPrice,
+														0, 'COMMA', 0, 'POINT')}]]đ
+													</th>
+													<th th:if="${order.voucher == null}" scope="col">[[${#numbers.formatDecimal(order.total - order.totalDiscount ,
+														0, 'COMMA', 0, 'POINT')}]]đ
+													</th>
 												</tr>
 												<tr th:if="${order.voucher != null}">
 													<th scope="col" colspan="3"></th>
@@ -281,13 +296,8 @@
 													<th scope="col" colspan="3"></th>
 													<th scope="col" style="font-size: 14px">TỔNG TIỀN
 														THANH TOÁN:</th>
-													<th th:if="${order.voucher != null}" scope="col"
-														colspan="3">[[${#numbers.formatDecimal(order.total +
-														order.shipFee - order.voucher.discountPrice, 0, 'COMMA',
-														0,'POINT')}]]đ</th>
-													<th th:if="${order.voucher == null}" scope="col"
-														colspan="3">[[${#numbers.formatDecimal(order.total +
-														order.shipFee, 0, 'COMMA', 0,'POINT')}]]đ</th>
+													<th  scope="col"
+														colspan="3">[[${#numbers.formatDecimal(order.total - order.totalDiscount +order.shipFee , 0, 'COMMA', 0,'POINT')}]]đ</th>
 												</tr>
 											</tfoot>
 										</table>
@@ -481,7 +491,6 @@
 					$(this).addClass('active');
 					$(this).parent().addClass('starRated');
 
-					// Added for Demo
 					let rating = $(this).index() + 1;
 					$('#currentRating').html(rating);
 					

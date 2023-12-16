@@ -1,4 +1,4 @@
-app.controller("user-statistic-ctrl", function($scope, $filter, $http) {
+app.controller("user-statistic-ctrl", function($scope, $filter, $http,$location) {
 
     $scope.listUser = [];
     $scope.listTotal = [];
@@ -14,16 +14,17 @@ app.controller("user-statistic-ctrl", function($scope, $filter, $http) {
                     $scope.listTotal.push($scope.pager.listData[i].total);
                 }
             }
-        });
+        }).catch(error => {
+            $location.path("/unauthorized");
+        })
         $scope.chart();
         defaulStatistic();
     }
 
     $scope.initialize();
 
-    $scope.chart = () =>{
+    $scope.chart = () => {
         const ctx = document.getElementById('myChart');
-
 
         $scope.chartUser = new Chart(ctx, {
             type: 'bar',
@@ -58,10 +59,18 @@ app.controller("user-statistic-ctrl", function($scope, $filter, $http) {
                     ],
                     borderWidth: 1
                 }]
-            }
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            },
+            // plugins: [ChartDataLabels]
         });
+    };
 
-    }
 
     defaulStatistic = () =>{
         var valuecbb = document.getElementById('cbb-statistic').value;
@@ -85,6 +94,8 @@ app.controller("user-statistic-ctrl", function($scope, $filter, $http) {
             document.getElementById("div-button").style.display = "";
             document.getElementById("end-date").disabled = false;
             document.getElementById("start-date").disabled = false;
+            document.getElementById("start-date").value = "";
+            document.getElementById("end-date").value = "";
         }
     }
 

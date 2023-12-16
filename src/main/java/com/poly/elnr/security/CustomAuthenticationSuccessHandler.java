@@ -14,6 +14,8 @@ import com.poly.elnr.service.serviceImpl.SessionService;
 //import com.poly.elnr.service.UserServiceSecurity;
 
 import java.io.IOException;
+import java.util.List;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -34,26 +36,24 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
 		userService.findByUserNameLogin(userDetails.getUsername());
 
-		// Tiến hành phân quyền
+
+		boolean adminOrUser = false;
+		adminOrUser = userDetails.getAuthorities().stream()
+				.anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN")
+						|| authority.getAuthority().equals("ROLE_STAFF"));
+
+		 session.set("role",adminOrUser);
+
 		for (GrantedAuthority authority : userDetails.getAuthorities()) {
 			if (authority.getAuthority().equals("ROLE_ADMIN")) {
 				response.sendRedirect("/user/index");
 				return;
-
 			} else if (authority.getAuthority().equals("ROLE_USER")) {
-			
+
 				response.sendRedirect("/user/index");
 				return;
-
 			}
-//			} else if (authority.getAuthority().equals("SELLER")) {
-//
-//				response.sendRedirect("/user/index");
-//				return;
-//
-//			}
 		}
-		
 		response.sendRedirect("/user/index");
 	}
 }

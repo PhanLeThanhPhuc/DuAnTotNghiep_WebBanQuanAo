@@ -1,14 +1,14 @@
 app.controller("cart-ctrl", function($scope, $http) {
-
+	$scope.discoutVoucher = 0;
 	$scope.initialize = async () => {
 		// $scope.listAddress =[];
 		//get province
 		await $http.get("/user/province").then(resp => {
 			$scope.listProvince = resp.data.data;
 		})
-		 $http.get("/rest/productsDetail/date").then(resp => {
+		$http.get("/rest/productsDetail/date").then(resp => {
 			$scope.dateEnd = new Date(resp.data);
-	
+
 		})
 
 		//get user or status login
@@ -35,7 +35,6 @@ app.controller("cart-ctrl", function($scope, $http) {
 		$scope.form();
 		$scope.shipFee = 0;
 		$scope.findInfoUser();
-		$scope.discoutVoucher = 0;
 		$scope.voucherId = '';
 		console.log("san pham", $scope.cart)
 	}
@@ -46,11 +45,14 @@ app.controller("cart-ctrl", function($scope, $http) {
 			$scope.formInformationOrder.name = $scope.dataLogin.user.fullName;
 			$scope.formInformationOrder.phone = $scope.dataLogin.user.phone;
 			$scope.formInformationOrder.email = $scope.dataLogin.user.email;
-			document.getElementById("phone").disabled = true;
+			var phoneElement = document.getElementById("phone");
+			if (phoneElement !== null) {
+				phoneElement.disabled = true;
+			}
 			$scope.$apply();
-			console.log("phone:",$scope.dataLogin.user.phone)
+			console.log("phone:", $scope.dataLogin.user.phone)
 		}
-		if($scope.dataLogin.user.phone === null){
+		if ($scope.dataLogin.user.phone === null) {
 			$('#exampleModalCenter3').modal('show');
 		}
 
@@ -112,7 +114,7 @@ app.controller("cart-ctrl", function($scope, $http) {
 		add(id) { // thêm sản phẩm vào giỏ hàng
 			var sizeid = $scope.sizeidf;
 			if (sizeid == null) {
-				alert("Vui Lòng chọn size !!");
+				message2("Vui Lòng chọn size !!");
 			}
 			var item = this.items.find(item => item.product.id == id && item.size.id == $scope.sizeidf);
 			var qtt = this.qtyyy;
@@ -121,22 +123,27 @@ app.controller("cart-ctrl", function($scope, $http) {
 			if (item) {
 				var qtt2 = item.qty + qtt;
 				if (qtt2 > sol) {
-					alert("Vượt quá số lượng cho phép !!!");
+
+					message2("Vượt quá số lượng cho phép !!!");
+
 				} else {
 					item.qty += qtt;
+					message1("Thêm sản phẩm thành công");
 					this.saveToLocalStorage();
 				}
 			}
 			else {
 				$http.get(`/rest/productsDetail/size/${id}/` + sizeid).then(resp => {
 					if (qtt > sol) {
-						alert("Vượt quá số lượng cho phép !!!");
+
+						message2("Vượt quá số lượng cho phép !!!");
+
 					} else {
 
 						resp.data.qty = qtt;
 						this.items.push(resp.data);
 						this.saveToLocalStorage();
-						alert("Thêm sản phẩm thành công");
+						message1("Thêm sản phẩm thành công");
 					}
 				})
 			}
@@ -151,10 +158,10 @@ app.controller("cart-ctrl", function($scope, $http) {
 			this.saveToLocalStorage();
 		},
 		amt_of(item) { // tính thành tiền của 1 sản phẩm
-			if(item.product.sale==false){
+			if (item.product.sale == false) {
 				return item.product.price * item.qty;
-			}else{
-				return item.product.discountPrice  * item.qty;
+			} else {
+				return item.product.discountPrice * item.qty;
 			}
 		},
 
@@ -193,7 +200,7 @@ app.controller("cart-ctrl", function($scope, $http) {
 			var item = this.items.find(item => item.product.id == product && item.size.id == size);
 			if (qti > item.quantity) {
 				item.qty = item.quantity;
-				alert("Vượt quá số lượng cho phép !!!");
+				messageError("Vượt quá số lượng cho phép !!!");
 			}
 
 			this.saveToLocalStorage();
@@ -212,13 +219,13 @@ app.controller("cart-ctrl", function($scope, $http) {
 		loadFromLocalStorage() { // đọc giỏ hàng từ local storage
 			var json = localStorage.getItem("cart");
 			product = json ? JSON.parse(json) : [];
-			
+
 			product.forEach(product => {
-            $http.get(`/rest/productsDetail/size/${product.productId}/` + product.sizeId).then(resp => {
-				resp.data.qty =product.qty
-                this.items.push(resp.data); 
-            });
-        });
+				$http.get(`/rest/productsDetail/size/${product.productId}/` + product.sizeId).then(resp => {
+					resp.data.qty = product.qty
+					this.items.push(resp.data);
+				});
+			});
 		}
 	}
 
@@ -317,7 +324,7 @@ app.controller("cart-ctrl", function($scope, $http) {
 				console.log(resp.data.data.expected_delivery_time);
 			}
 		}).catch(error => {
-			alert("Lỗi thêm mới !");
+			messageError("Lỗi thêm mới !");
 			console.log("Error", error);
 		});
 
@@ -364,8 +371,8 @@ app.controller("cart-ctrl", function($scope, $http) {
 	}
 
 	purchase = () => {
-		if(!validate()){
-			return ;
+		if (!validate()) {
+			return;
 		}
 		$scope.data = {
 			province: $scope.provinceName,
@@ -381,8 +388,8 @@ app.controller("cart-ctrl", function($scope, $http) {
 			note: $scope.formInformationOrder.note,
 			shipFee: $scope.shipFee,
 			email: $scope.formInformationOrder.email,
-			total: $scope.cart.amount + $scope.discoutVoucher,
-			totalDiscount: $scope.cart.totalNoDiscount -  $scope.cart.amount + $scope.discoutVoucher,
+			total: $scope.cart.totalNoDiscount,
+			totalDiscount: $scope.cart.totalNoDiscount - $scope.cart.amount + $scope.discoutVoucher,
 			weight: $scope.cart.totalWeights,
 			wardCode: $scope.wardId,
 			districtId: parseInt($scope.districtId),
@@ -399,10 +406,11 @@ app.controller("cart-ctrl", function($scope, $http) {
 		};
 
 		console.log("Order: ", $scope.data);
+		console.log("Order: ", $scope.discoutVoucher);
 
 		$http.post("/user/order", $scope.data,).then(resp => {
 			if (resp.status === 200) {
-				alert("Đặt hàng thành công!");
+				message1("Đặt hàng thành công!");
 				if (resp.data.payment === 1) {
 					// console.log(resp.data.urlVnPay);
 					$cart.clear();
@@ -414,7 +422,7 @@ app.controller("cart-ctrl", function($scope, $http) {
 				}
 			}
 		}).catch(error => {
-			alert("Đặt hàng lỗi!")
+			console.log("Đặt hàng lỗi!")
 			console.log(error)
 		})
 	}
@@ -423,7 +431,7 @@ app.controller("cart-ctrl", function($scope, $http) {
 	// discout
 	$scope.addVoucher = () => {
 		///reset
-		$scope.discoutVoucher =0;
+		$scope.discoutVoucher = 0;
 		const voucher = document.getElementById("inputvoucher").value;
 		const foundVoucher = $scope.listVoucherDate.find(v => v.voucher === voucher);
 		if (foundVoucher) {
@@ -456,8 +464,8 @@ app.controller("cart-ctrl", function($scope, $http) {
 					for (const item of $scope.cart.items) {
 						const productIDs = foundVoucher.productID.split(',').map(id => id.trim());
 						const cartItemId = String(item.product.id);
-						console.log("cartItemId",cartItemId);
-						console.log("productIDs",productIDs);
+						console.log("cartItemId", cartItemId);
+						console.log("productIDs", productIDs);
 						if (productIDs.includes(cartItemId)) {
 							$scope.voucherId = $scope.objectVoucher.id;
 							console.log("Có sản phẩm: ", cartItemId);
@@ -478,41 +486,45 @@ app.controller("cart-ctrl", function($scope, $http) {
 			smallElement.innerHTML = "Mã voucher không khả dụng!";
 		}
 	};
-	
-	
-	
-	
+
+
+
+
 
 	function updateCountdown() {
-	  const currentDate = new Date();
-	  const timeDifference = $scope.dateEnd - currentDate;
-	  if (timeDifference > 0) {
-		const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-		const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-		const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
-		const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+		const countdownElement = document.getElementById('countdown');
 
-		document.getElementById('countdown').innerHTML = `
-		  ${days} ngày, ${hours} giờ, ${minutes} phút, ${seconds} giây
-		`;
+		if (countdownElement) {
+			const currentDate = new Date();
+			const timeDifference = $scope.dateEnd - currentDate;
 
-	  }
+			if (timeDifference > 0) {
+				const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+				const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+				const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+				const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+				countdownElement.innerHTML = `
+       	 ${days} ngày, ${hours} giờ, ${minutes} phút, ${seconds} giây`;
+			}
+		}
 	}
+
 
 	setInterval(updateCountdown, 1000);
 	updateCountdown();
 
 	$scope.registerPhoneNumber = async () => {
 
-		const phoneNumber = "0"+$scope.registerPhone;
+		const phoneNumber = "0" + $scope.registerPhone;
 		const email = $scope.formInformationOrder.email;
-		console.log("Phone: ",phoneNumber);
+		console.log("Phone: ", phoneNumber);
 		await $http.get(`/rest/users/register-phone?phone=${phoneNumber}&email=${email}`).then(resp => {
 
-			console.log("data",resp.data)
-			if(resp.data.data == null){
-				console.log("message",resp.data.message)
-			}else{
+			console.log("data", resp.data)
+			if (resp.data.data == null) {
+				document.getElementById("message-otp").innerText = resp.data.message
+			} else {
 
 				const currentTime = new Date();
 
@@ -523,9 +535,9 @@ app.controller("cart-ctrl", function($scope, $http) {
 
 				countdownotp(remainingTime)
 
-				// console.log("Thời gian còn lại",remainingTime);
+
 				$("#exampleModalCenter3").modal("hide");
-				// Đóng modal sử dụng jQuery khi nút "Close" được click
+
 				$("#exampleModalCenter4").modal("show");
 
 			}
@@ -539,14 +551,15 @@ app.controller("cart-ctrl", function($scope, $http) {
 		const phoneNumber = $scope.registerPhone;
 		const email = $scope.formInformationOrder.email;
 		await $http.get(`/rest/users/confirm-otp?otp=${otp}&phone=${phoneNumber}&email=${email}`).then(resp => {
-			console.log("respose: ", resp.data);
-			if(resp.status === 'timeout'){
+			// console.log("respose: ", resp.data);
+			if (resp.status === 'timeout') {
 				var smallElement = document.getElementById("messageOtp");
 				smallElement.innerHTML = resp.data.message;
-			}else if (resp.status === 'true'){
+			} else if (resp.status === 'true') {
 				var smallElement = document.getElementById("messageOtp");
 				smallElement.innerHTML = resp.data.message;
-			}else{
+				location.href = `/user/checkout`
+			} else {
 				var smallElement = document.getElementById("messageOtp");
 				smallElement.innerHTML = resp.data.message;
 			}
@@ -558,13 +571,13 @@ app.controller("cart-ctrl", function($scope, $http) {
 		var initialSeconds = second; // Ví dụ: 5 phút = 300 giây
 
 		// Lấy thẻ div để hiển thị đồng hồ đếm ngược
-		var countdownElement = document.getElementById('countdown');
+		var countdownElement = document.getElementById('count-down');
 
 		// Tính tổng số giây
 		var totalSeconds = initialSeconds;
 
 		// Cập nhật đồng hồ đếm ngược sau mỗi giây
-		var countdownInterval = setInterval(function () {
+		var countdownInterval = setInterval(function() {
 			// Kiểm tra nếu hết thời gian
 			if (totalSeconds <= 0) {
 				clearInterval(countdownInterval);
@@ -583,7 +596,7 @@ app.controller("cart-ctrl", function($scope, $http) {
 		}, 1000); // 1000 milliseconds = 1 giây
 	}
 
-	validate = () =>{
+	validate = () => {
 		var name = document.getElementById('name').value;
 		var phone = document.getElementById('phone').value;
 		var email = document.getElementById('email').value;
@@ -610,12 +623,20 @@ app.controller("cart-ctrl", function($scope, $http) {
 		}
 
 
+
 		if (email === '') {
 			document.getElementById('email_error').innerText = 'Vui lòng nhập email';
 			isValid = false;
 		} else {
-			document.getElementById('email_error').innerText = '';
+			var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+			if (!emailRegex.test(email)) {
+				document.getElementById('email_error').innerText = 'Email không đúng định dạng';
+				isValid = false;
+			} else {
+				document.getElementById('email_error').innerText = '';
+			}
 		}
+
 
 
 		if (!$scope.dataLogin.statusLogin) {
@@ -651,17 +672,17 @@ app.controller("cart-ctrl", function($scope, $http) {
 				document.getElementById('address_detail_error').innerText = '';
 			}
 		} else {
-			if($scope.listAddress.length === 0 ){
+			if ($scope.listAddress.length === 0) {
 				document.getElementById('address_user').innerText = 'Chưa có địa chỉ. Vui lòng thêm ít nhất 1 địa chỉ nhận hàng';
 				isValid = false;
-			}else{
+			} else {
 
 				var isAnyRadioChecked = false;
 				var cboAddress = document.querySelectorAll(".radio-address");
-				console.log("cboAddress: ",cboAddress);
+				console.log("cboAddress: ", cboAddress);
 				for (let i = 0; i < cboAddress.length; i++) {
-					console.log("cboAddressn: ",cboAddress[i]);
-					console.log("cboAddressc: ",cboAddress[i].checked);
+					console.log("cboAddressn: ", cboAddress[i]);
+					console.log("cboAddressc: ", cboAddress[i].checked);
 					if (cboAddress[i].checked) {
 						console.log('da check');
 						isAnyRadioChecked = true;
@@ -683,6 +704,56 @@ app.controller("cart-ctrl", function($scope, $http) {
 		}
 		return isValid;
 	}
+	preventNegative = (event) => {
+		const inputElement = event.target;
+		const inputValue = inputElement.value;
+
+		const sanitizedValue = inputValue.replace(/^-/, '');
+
+		inputElement.value = sanitizedValue;
+	}
+
+
+	message1 = (mes) => {
+		$.toast({
+			text: mes,
+			heading: 'Note',
+			icon: 'success',
+			showHideTransition: 'fade',
+			allowToastClose: true,
+			hideAfter: 3000,
+			stack: 5,
+			position: 'top-center', // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values
+			textAlign: 'left',  // Text alignment i.e. left, right or center
+			loader: true,  // Whether to show loader or not. True by default
+			loaderBg: '#9EC600',  // Background color of the toast loader
+			beforeShow: function() { }, // will be triggered before the toast is shown
+			afterShown: function() { }, // will be triggered after the toat has been shown
+			beforeHide: function() { }, // will be triggered before the toast gets hidden
+			afterHidden: function() { }  // will be triggered after the toast has been hidden
+		});
+	}
+	
+	message2 = (mes) => {
+		$.toast({
+			text: mes,
+			heading: 'Note',
+			icon: 'warning',
+			showHideTransition: 'fade',
+			allowToastClose: true,
+			hideAfter: 3000,
+			stack: 5,
+			position: 'top-center', // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values
+			textAlign: 'left',  // Text alignment i.e. left, right or center
+			loader: true,  // Whether to show loader or not. True by default
+			loaderBg: 'rgb(225, 120, 7)',  // Background color of the toast loader
+			beforeShow: function() { }, // will be triggered before the toast is shown
+			afterShown: function() { }, // will be triggered after the toat has been shown
+			beforeHide: function() { }, // will be triggered before the toast gets hidden
+			afterHidden: function() { }  // will be triggered after the toast has been hidden
+		});
+	}
+
 })
 
 

@@ -12,9 +12,11 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 
 		$http.get("/rest/sizes").then(resp => {
 			$scope.sizes = resp.data;
+			console.log("SIZE", $scope.sizes);
 		})
 		$http.get("/rest/products").then(resp => {
 			$scope.items = resp.data;
+			console.log($scope.items);
 			$scope.items.forEach(item => {
 				item.dateInsert = new Date(item.dateInsert)
 			})
@@ -23,6 +25,7 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 				item.dateUpdate = new Date(item.dateUpdate)
 			})
 		});
+
 		$scope.reset();
 	}
 
@@ -38,31 +41,45 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 		}
 		$scope.displayedImages = [];
 		$scope.closeCollapsibles();
-		// $scope.selectedFiles = [];
-		// updateImageContainer();
-		// clearthumbnail();
+
 	}
 
-	$scope.clearImageProduct = () =>{
+	$scope.clearImageProduct = () => {
 		$scope.selectedFiles = [];
 		const imageContainer = document.getElementById('imageContainer');
 		imageContainer.innerHTML = '';
 	}
 
-	$scope.clearThumbnail = () =>{
+	$scope.clearThumbnail = () => {
 		$scope.image = []
 		const imageContainer = document.getElementById('ImageThumbnail');
 		imageContainer.innerHTML = '';
 	}
 
+	loadProductDetail = (id) => {
+		$http.get(`/rest/productsDetail/${id}`).then(resp => {
+			$scope.productSize = []
+			$scope.dataProductDetail = resp.data;
+			resp.data.forEach(function(value) {
+				var sizeProduct = {
+					id: value.size.id,
+					name: value.size.name,
+					quantity: value.quantity
+				};
+				$scope.productSize.push(sizeProduct);
+			});
+			loadSizeEdit();
+		})
+	}
+
 	$scope.edit = function(item) {
+
+		$scope.clearValidateForm();
 		loadImageThumbnail(item);
 		$scope.form = angular.copy(item);
-		console.log("FORM: ",$scope.form);
-		$(".nav-tabs a:eq(0)").tab("show");
-		$http.get(`/rest/productsDetail/${item.id}`).then(resp => {
-			$scope.productSize = resp.data;
-		})
+		console.log("FORM: ", $scope.form);
+		$(".nav-pills a:eq(0)").tab("show");
+		loadProductDetail(item.id);
 		$http.get(`/rest/image/${item.id}`).then(resp => {
 			$scope.selectedFiles = resp.data;
 			updateImageContainer();
@@ -70,7 +87,6 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 		$scope.selected = [];
 		$scope.displayedImages = [];
 	}
-
 
 	loadImageDetail = (imageUrlArray) => {
 		const imageContainer = document.getElementById('imageContainer');
@@ -84,56 +100,64 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 			img.style.height = '100px';
 			img.style.marginRight = '10px';
 			img.style.marginBottom = '10px';
-
 			imageContainer.appendChild(img);
 		}
 	}
 
 	$scope.create = async () => {
-		if($scope.form.thumbnail instanceof File){
-			await $scope.uploadImageThumbnail();
-			console.log("THEEM ANH THANH CONG");
+		if (!validateForm()) {
+			return;
 		}
+		document.getElementById('preloader').style.display = 'grid';
+		if ($scope.form.thumbnail instanceof File) {
+			await $scope.uploadImageThumbnail();
+		}
+		await $scope.createDescription();
 		var item = angular.copy($scope.form);
-		console.log("item form", $scope.form)
+		item.dateInsert = new Date()
+		item.dateUpdate = new Date()
 		await $http.post(`/rest/products`, item).then(async resp => {
+			resp.data.dateInsert = new Date(resp.data.dateInsert)
+			resp.data.dateUpdate = new Date(resp.data.dateUpdate)
 			$scope.items.push(resp.data);
 			$scope.form = angular.copy(resp.data);
+			getValueSize();
 			await $scope.uploadImageDetail();
-			alert("Thêm mới sản phẩm thành công!");
-			// them anh san pham phu
-			$scope.selected.forEach(function (productDetail) {
-				productdt = {size: productDetail, product: $scope.form}
-				$http.post(`/rest/productsDetail`, productdt).then(resp => {
-					$scope.productSize.push(resp.data);
-				}).catch(error => {
-					alert("Lỗi thêm size sản phẩm!");
-					console.log("Error", error);
-				});
-			});
+			loadProductDetail($scope.form.id);
+			// $scope.reset();
+			// $scope.clearImageProduct();
+			// $scope.clearThumbnail();
+			document.getElementById('preloader').style.display = 'none';
+			$scope.messege("Thêm mới sản phẩm thành công!");
 		}).catch(error => {
-			alert("Lỗi thêm mới sản phẩm!");
+			document.getElementById('preloader').style.display = 'none';
+			$scope.messege2("Lỗi thêm mới sản phẩm!");
 			console.log("Error", error);
 		});
 	}
 
-	$scope.update  =async () => {
-		var size = angular.copy($scope.productSize);
-		//
-		await $scope.uploadImageDetail();
-		console.log("kdkdkd", $scope.form.thumbnail);
-		if($scope.form.thumbnail instanceof File){
-			await $scope.uploadImageThumbnail();
-			console.log("THEEM ANH THANH CONG");
+	$scope.update = async () => {
+		if (!validateForm()) {
+			return;
 		}
-		for (const size1 of size) {
-			await $http.put(`/rest/productsDetail/${size1.id}`, size1).then(resp => {
+		$scope.updateDescription();
+		document.getElementById('preloader').style.display = 'grid';
+		// var size = angular.copy($scope.productSize);
+		await $scope.uploadImageDetail();
+		if ($scope.form.thumbnail instanceof File) {
+			await $scope.uploadImageThumbnail();
+		}
+		getInputsValues();
+		console.log("arrProductDetail: ", $scope.arrProductDetail);
+		for (var i = 0; i < $scope.arrProductDetail.length; i++) {
+			$http.put(`/rest/productsDetail/${$scope.arrProductDetail[i].id}`, $scope.arrProductDetail[i]).then(resp => {
 			}).catch(error => {
-				alert("Lỗi cập nhật size sản phẩm!");
+				document.getElementById('preloader').style.display = 'none';
+				$scope.messege2("Lỗi cập nhật sản phẩm!");
 				console.log("Error", error);
 			});
 		}
-		console.log("Link hình repose", $scope.displayedImages)
+		console.log("$scope.dataProductDetail", $scope.dataProductDetail)
 		if ($scope.form.description.id == null) {
 			$scope.form.description.id = $scope.oldDescriptionId;
 		}
@@ -143,17 +167,15 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 			var index = $scope.items.findIndex(p => p.id == item.id);
 			$scope.items[index] = item;
 			$scope.oldDescriptionId = $scope.form.description.id;
-			alert("Cập nhật sản phẩm thành công!!!!");
+			loadProductDetail(item.id);
+			document.getElementById('preloader').style.display = 'none';
+			$scope.messege("Cập nhật sản phẩm thành công!!!!");
 		}).catch(error => {
-			alert("Lỗi cập nhật sảna phẩm!");
+			document.getElementById('preloader').style.display = 'none';
+			$scope.messege2("Lỗi cập nhật sản phẩm!");
 			console.log("Error", error);
 		});
 	}
-
-	// $scope.updateImageDetail = () =>{
-	// 	console.log("List ảnh truy vấn lên",$scope.selectedFiles);
-	// }
-
 
 	$scope.updateStatus = function(product) {
 		var item = angular.copy(product);
@@ -169,14 +191,13 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 			$scope.messege("Cập nhật trạng thái thành công");
 		})
 			.catch(error => {
-				alert("Lỗi cập nhật!");
+				$scope.messege2("Lỗi cập nhật!");
 				console.log("Error", error);
 			});
 	}
 
 	////anh thum
 	InputPreviewImageThumbnail = (input) => {
-		// fillImageThumbnail(input.files);
 		loadImageThumbnail(input.files);
 	}
 
@@ -187,34 +208,30 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 		for (let i = 0; i < files.length; i++) {
 			const img = document.createElement('img');
 			img.src = URL.createObjectURL(files[i]);
-			console.log("SSSSSSSSSSSSSSS", files[i]);
 			img.alt = files[i].name;
 			img.style.width = '250px';
 			img.style.height = '250px';
 			img.style.marginRight = '10px';
 			img.style.marginBottom = '10px';
+			img.style.borderRadius = '20px';
 			imageContainer.appendChild(img);
 		}
 
 		for (let i = 0; i < $scope.selectedFiles.length; i++) {
 			const img = document.createElement('img');
-
 			if ($scope.selectedFiles[i].name) {
-				// File selected from user's device
 				img.src = URL.createObjectURL($scope.selectedFiles[i]);
 				img.alt = $scope.selectedFiles[i].name;
 			} else if ($scope.selectedFiles[i].image) {
-				// URL from cloud storage (e.g., Cloudinary)
 				img.src = $scope.selectedFiles[i].image;
 				img.alt = `Image ${i + 1}`;
 			}
-
 			img.style.width = '100px';
 			img.style.height = '100px';
 			img.style.marginRight = '10px';
 			img.style.marginBottom = '10px';
-
-			img.addEventListener('dblclick', function () {
+			img.style.borderRadius = '20px';
+			img.addEventListener('dblclick', function() {
 				deleteImage(i);
 			});
 
@@ -238,38 +255,38 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 				img.style.height = '250px';
 				img.style.marginRight = '10px';
 				img.style.marginBottom = '10px';
+				img.style.borderRadius = '20px';
 				imageContainer.appendChild(img);
 				$scope.form.thumbnail = $scope.image[i];
 			}
 		} else {
 			console.log("Không phải là FileList:", $scope.image);
 			img.src = $scope.image.thumbnail;
-			// img.alt = `Image ${i + 1}`;
 			img.style.width = '250px';
 			img.style.height = '250px';
 			img.style.marginRight = '10px';
 			img.style.marginBottom = '10px';
+			img.style.borderRadius = '20px';
 			imageContainer.appendChild(img);
 		}
 	}
 
-
 	/// upload xuong db anh thumbnail
-	$scope.uploadImageThumbnail  = async function() {
+	$scope.uploadImageThumbnail = async function() {
 		var data = new FormData();
-		console.log(" $scope.form.thumbnail[0]",  $scope.form.thumbnail)
+		console.log(" $scope.form.thumbnail[0]", $scope.form.thumbnail)
 		data.append('uploadfile', $scope.form.thumbnail);
 		console.log("data form", data)
 		await $http.post('/rest/upload', data, {
 			transformRequest: angular.identity,
 			headers: { 'Content-Type': undefined }
 		}).then(resp => {
-			if(resp.status ===200){
+			if (resp.status === 200) {
 				$scope.form.thumbnail = resp.data.image;
 				console.log("UPload thành công", $scope.form.thumbnail);
 			}
 		}).catch(error => {
-			alert("Lỗi upload hình ảnh");
+			$scope.messege2("Lỗi upload hình ảnh");
 			console.log("Error", error);
 		})
 	}
@@ -292,8 +309,8 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 				transformRequest: angular.identity,
 				headers: { 'Content-Type': undefined }
 			}).then(resp => {
-				if(resp.status === 200){
-				 	updateImageProduct(resp.data);
+				if (resp.status === 200) {
+					updateImageProduct(resp.data);
 				}
 			}).catch(error => {
 				console.log("Errors", error);
@@ -301,15 +318,15 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 		}
 	};
 
-	updateImageProduct = async (listUrlImage) =>{
+	updateImageProduct = async (listUrlImage) => {
 
 		console.log("$scope.listImageProductCopy", $scope.listImageProductCopy)
-		if($scope.listImageProductCopy.length === 0){
-			console.log("$scope.listImageProductCopy",$scope.listImageProductCopy)
+		if ($scope.listImageProductCopy.length === 0) {
+			console.log("$scope.listImageProductCopy", $scope.listImageProductCopy)
 			await $http.delete(`/rest/image/delete-by-product${$scope.form.id}`).then(resp => {
 				// $scope.image.push(resp.data);
 			}).catch(error => {
-				alert("Lỗi thêm hinh !");
+				$scope.messege2("Lỗi thêm hinh !");
 				console.log("Error", error);
 			});
 			return;
@@ -326,7 +343,7 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 				};
 				$scope.selectedFiles[i] = objectImageProduct;
 				j++;
-			}else{
+			} else {
 				var objectImageProduct = {
 					id: $scope.selectedFiles[i].id,
 					image: $scope.selectedFiles[i].image,
@@ -337,11 +354,11 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 				$scope.selectedFiles[i] = objectImageProduct;
 			}
 		}
-		console.log("images",$scope.selectedFiles);
+		console.log("images", $scope.selectedFiles);
 		await $http.post(`/rest/image`, $scope.selectedFiles).then(resp => {
 			// $scope.image.push(resp.data);
 		}).catch(error => {
-			alert("Lỗi thêm hinh !");
+			$scope.messege2("Lỗi thêm hinh !");
 			console.log("Error", error);
 		});
 	}
@@ -377,15 +394,43 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 			img.style.height = '100px';
 			img.style.marginRight = '10px';
 			img.style.marginBottom = '10px';
-
-			img.addEventListener('dblclick', function () {
+			img.style.borderRadius = '20px';
+			img.addEventListener('dblclick', function() {
 				deleteImage(i);
 			});
 
 			imageContainer.appendChild(img);
 		}
 	}
+	function updateImageContainerDuplicate() {
+		const imageContainer = document.getElementById('imageContainer1');
+		imageContainer.innerHTML = '';
 
+		for (let i = 0; i < $scope.selectedFiles.length; i++) {
+			const img = document.createElement('img');
+
+			if ($scope.selectedFiles[i].name) {
+				// File selected from user's device
+				img.src = URL.createObjectURL($scope.selectedFiles[i]);
+				img.alt = $scope.selectedFiles[i].name;
+			} else if ($scope.selectedFiles[i].image) {
+				// URL from cloud storage (e.g., Cloudinary)
+				img.src = $scope.selectedFiles[i].image;
+				img.alt = `Image ${i + 1}`;
+			}
+
+			img.style.width = '100px';
+			img.style.height = '100px';
+			img.style.marginRight = '10px';
+			img.style.marginBottom = '10px';
+			img.style.borderRadius = '20px';
+			img.addEventListener('dblclick', function() {
+				deleteImage(i);
+			});
+
+			imageContainer.appendChild(img);
+		}
+	}
 	function deleteImage(index) {
 		$scope.selectedFiles.splice(index, 1);
 		updateImageContainer();
@@ -406,25 +451,6 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 			$scope.selected.push(item);
 		}
 	}
-	$scope.size_of = function(form, size) {
-		if ($scope.productSize) {
-			return $scope.productSize.find(ur => ur.size.id == size.id);
-		}
-	}
-	$scope.addsize = function(id) {
-		$scope.selected.forEach(function(productDetail) {
-			productdt = { size: productDetail, product: id }
-			$http.post(`/rest/productsDetail`, productdt).then(resp => {
-				$scope.productSize.push(resp.data);
-			}).catch(error => {
-				alert("Lỗi thêm size sản phẩm!");
-				console.log("Error", error);
-			});
-		});
-		$scope.selected = [];
-
-	}
-
 
 	$scope.oldDescriptionId = null;
 	$scope.descriptionDetail = function(selectedValue) {
@@ -436,15 +462,19 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 	};
 
 
-	$scope.createDescription = function() {
+	$scope.createDescription = async function() {
+		if (!validateFormDetail()) {
+			return;
+		}
 		var item = angular.copy($scope.form.description);
-		$http.post(`/rest/description`, item).then(resp => {
+		await $http.post(`/rest/description`, item).then(resp => {
 			resp.data.dateInsert = new Date(resp.data.dateInsert)
 			$scope.description.push(resp.data);
 			$scope.form.description = resp.data;
-			alert("Thêm mới mô tả sản phẩm thành công!");
+			console.log($scope.form.description);
+			// alert("Thêm mới mô tả sản phẩm thành công!");
 		}).catch(error => {
-			alert("Lỗi thêm mới !");
+			$scope.messege2("Lỗi thêm mới !");
 			console.log("Error", error);
 		});
 	}
@@ -460,11 +490,10 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 		$http.put(`/rest/description/${item.id}`, item).then(resp => {
 			var index = $scope.description.findIndex(p => p.id == item.id);
 			$scope.description[index] = item;
-
-			alert("Cập nhật mô tả sản phẩm công!");
+			// alert("Cập nhật mô tả sản phẩm công!");
 		})
 			.catch(error => {
-				alert("Lỗi cập nhật !");
+				$scope.messege2("Lỗi cập nhật !");
 				console.log("Error", error);
 			});
 	}
@@ -501,6 +530,26 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 			afterHidden: function() { }  // will be triggered after the toast has been hidden
 		});
 	}
+	
+	$scope.messege2 = (mes) => {
+		$.toast({
+			text: mes, // Text that is to be shown in the toast
+			heading: 'Thông báo', // Optional heading to be shown on the toast
+			icon: 'error', // Type of toast icon
+			showHideTransition: 'fade', // fade, slide or plain
+			allowToastClose: true, // Boolean value true or false
+			hideAfter: 2000, // false to make it sticky or number representing the miliseconds as time after which toast needs to be hidden
+			stack: 5, // false if there should be only one toast at a time or a number representing the maximum number of toasts to be shown at a time
+			position: 'top-right', // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values
+			textAlign: 'left',  // Text alignment i.e. left, right or center
+			loader: true,  // Whether to show loader or not. True by default
+			loaderBg: 'rgb(225, 120, 7)',  // Background color of the toast loader
+			beforeShow: function() { }, // will be triggered before the toast is shown
+			afterShown: function() { }, // will be triggered after the toat has been shown
+			beforeHide: function() { }, // will be triggered before the toast gets hidden
+			afterHidden: function() { }  // will be triggered after the toast has been hidden
+		});
+	}
 
 	$scope.initialize();
 	$scope.searchText = {};
@@ -508,10 +557,14 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 	$scope.pager = {
 		page: 0,
 		size: 10,
-		sortColumn: '',
-		sortDirection: '',
+		sortColumn: 'item.id',
+		sortDirection: 'desc',
 		get filteredItems() {
-			return $filter('filter')($scope.items, $scope.searchText);
+			var filteredItems = $filter('filter')($scope.items, $scope.searchText);
+			if ($scope.pager.sortColumn === 'item.id') {
+				filteredItems = $filter('orderBy')(filteredItems, 'item.id', $scope.pager.sortDirection === 'asc');
+			}
+			return filteredItems;
 		},
 		get items() {
 			if (this.page < 0) {
@@ -570,4 +623,353 @@ app.controller("product-ctrl", function($scope, $filter, $http) {
 	});
 
 
+	validateForm = () => {
+
+		var isvalid = true;
+
+		var name = document.getElementById("productName").value
+		var price = document.getElementById("productPrice").value
+		var weight = document.getElementById("weight").value
+		var discountPrice = document.getElementById("ProductDiscountPrice").value
+		var productcolor = document.getElementById("productColor")
+		var productcaterory = document.getElementById("productCategory")
+		var productdescription = document.getElementById("productDescription")
+		var selectedTextproductColor = productcolor.options[productcolor.selectedIndex].text;
+		var selectedTextproductCategory = productcaterory.options[productcaterory.selectedIndex].text;
+		var selectedTextproductDes = productdescription.options[productdescription.selectedIndex].text;
+
+
+
+
+		console.log(selectedTextproductColor)
+		console.log(selectedTextproductCategory)
+		console.log(selectedTextproductDes)
+		if (name === "") {
+			isvalid = false;
+			document.getElementById("productNameError").innerText = "Tên sản phẩm không bỏ trống";
+		} else {
+			document.getElementById("productNameError").innerText = "";
+		}
+
+		if (weight === '') {
+			isvalid = false;
+			document.getElementById("weightError").innerText = "Không được để trống cân nặng";
+		} else {
+			document.getElementById("weightError").innerText = "";
+		}
+
+		if (price === "") {
+			isvalid = false;
+			document.getElementById("productPriceError").innerText = "Giá không bỏ trống";
+		} else if (/[!@#$%^&*(),.?":{}|<>]/.test(price)) {
+			// Kiểm tra xem giá có phải là số hay không
+			isvalid = false;
+			document.getElementById("productPriceError").innerText = "Giá không được chứa ký tự đặt biệt";
+		} else if (isNaN(price)) {
+			// Kiểm tra xem giá có chứa ký tự đặc biệt hay không
+			isvalid = false;
+			document.getElementById("productPriceError").innerText = "Giá phải là một số";
+		} else if (parseFloat(price) <= 0) {
+			// Kiểm tra xem giá có lớn hơn 0 hay không
+			isvalid = false;
+			document.getElementById("productPriceError").innerText = "Giá phải lớn hơn 0";
+		} else {
+			document.getElementById("productPriceError").innerText = "";
+		}
+
+		if (discountPrice === "") {
+			isvalid = false;
+			document.getElementById("ProductDiscountPriceError").innerText = "Số tiền giảm không bỏ trống";
+		} else if (/[!@#$%^&*(),.?":{}|<>]/.test(discountPrice)) {
+			// Kiểm tra xem giá có chứa ký tự đặc biệt ở bất kỳ vị trí không
+			isvalid = false;
+			document.getElementById("ProductDiscountPriceError").innerText = "Số tiền không được chứa ký tự đặc biệt";
+		} else if (isNaN(discountPrice)) {
+			// Kiểm tra xem giá có phải là số hay không
+			isvalid = false;
+			document.getElementById("ProductDiscountPriceError").innerText = "Số tiền phải là một số";
+		} else if (parseFloat(discountPrice) <= 0) {
+			// Kiểm tra xem giá có lớn hơn 0 hay không
+			isvalid = false;
+			document.getElementById("ProductDiscountPriceError").innerText = "Số tiền phải lớn hơn 0";
+		} else if (parseFloat(discountPrice) > parseFloat(price)) {
+			// Kiểm tra xem số tiền giảm có lớn hơn giá gốc không
+			isvalid = false;
+			document.getElementById("ProductDiscountPriceError").innerText = "Số tiền giảm phải nhỏ hơn giá gốc";
+		} else {
+			document.getElementById("ProductDiscountPriceError").innerText = "";
+		}
+
+
+		if (selectedTextproductColor == "") {
+			isvalid = false;
+			document.getElementById("productColorError").innerText = "Vui lòng chọn màu sản phẩm";
+		} else {
+			document.getElementById("productColorError").innerText = "";
+		}
+
+		if (selectedTextproductCategory == "") {
+			isvalid = false;
+			document.getElementById("productCategoryError").innerText = "Vui lòng chọn loại sản phẩm";
+		} else {
+			document.getElementById("productCategoryError").innerText = "";
+		}
+		var descriptionname = document.getElementById("descriptionName").value
+		var descriptionweight = document.getElementById("descriptionWeight").value
+		var descriptionmaterial = document.getElementById("descriptionMaterial").value
+		var descriptiontechnology = document.getElementById("descriptionTechnology").value
+		var descriptionmanufacture = document.getElementById("descriptionManufacture").value
+		var descriptiondescription = document.getElementById("descriptionDescription").value
+
+		if (descriptionname === "") {
+			isvalid = false;
+			document.getElementById("descriptionNameError").innerText = "Tên chi tiết không bỏ trống";
+		} else {
+			document.getElementById("descriptionNameError").innerText = "";
+		}
+
+		if (descriptionweight === "") {
+			isvalid = false;
+			document.getElementById("descriptionWeightError").innerText = "Cân nặng không bỏ trống";
+		}
+		else {
+			document.getElementById("descriptionWeightError").innerText = "";
+		}
+
+		if (descriptionmaterial === "") {
+			isvalid = false;
+			document.getElementById("descriptionMaterialError").innerText = "Chất liệu không bỏ trống";
+		} else {
+			document.getElementById("descriptionMaterialError").innerText = "";
+		}
+
+		if (descriptiontechnology === "") {
+			isvalid = false;
+			document.getElementById("descriptionTechnologyError").innerText = "Công nghệ không bỏ trống";
+		} else {
+			document.getElementById("descriptionTechnologyError").innerText = "";
+		}
+
+		if (descriptionmanufacture === "") {
+			isvalid = false;
+			document.getElementById("descriptionManufactureError").innerText = "Sản xuất không bỏ trống";
+		} else {
+			document.getElementById("descriptionManufactureError").innerText = "";
+		}
+
+		if (descriptiondescription === "") {
+			isvalid = false;
+			document.getElementById("descriptionDescriptionError").innerText = "Mô tả không bỏ trống";
+		} else {
+			document.getElementById("descriptionDescriptionError").innerText = "";
+		}
+
+		return isvalid;
+	}
+
+
+	validateFormDetail = () => {
+		var isvalid = true;
+
+		var descriptionname = document.getElementById("descriptionName").value
+		var descriptionweight = document.getElementById("descriptionWeight").value
+		var descriptionmaterial = document.getElementById("descriptionMaterial").value
+		var descriptiontechnology = document.getElementById("descriptionTechnology").value
+		var descriptionmanufacture = document.getElementById("descriptionManufacture").value
+		var descriptiondescription = document.getElementById("descriptionDescription").value
+
+
+		if (descriptionname === "") {
+			isvalid = false;
+			document.getElementById("descriptionNameError").innerText = "Không bỏ trống";
+		} else {
+			document.getElementById("descriptionNameError").innerText = "";
+		}
+
+		if (descriptionweight === "") {
+			isvalid = false;
+			document.getElementById("descriptionWeightError").innerText = "Không bỏ trống";
+		}
+		else {
+			document.getElementById("descriptionWeightError").innerText = "";
+		}
+
+		if (descriptionmaterial === "") {
+			isvalid = false;
+			document.getElementById("descriptionMaterialError").innerText = "Không bỏ trống";
+		} else {
+			document.getElementById("descriptionMaterialError").innerText = "";
+		}
+
+		if (descriptiontechnology === "") {
+			isvalid = false;
+			document.getElementById("descriptionTechnologyError").innerText = "Không bỏ trống";
+		} else {
+			document.getElementById("descriptionTechnologyError").innerText = "";
+		}
+
+		if (descriptionmanufacture === "") {
+			isvalid = false;
+			document.getElementById("descriptionManufactureError").innerText = "Không bỏ trống";
+		} else {
+			document.getElementById("descriptionManufactureError").innerText = "";
+		}
+
+		if (descriptiondescription === "") {
+			isvalid = false;
+			document.getElementById("descriptionDescriptionError").innerText = "Không bỏ trống";
+		} else {
+			document.getElementById("descriptionDescriptionError").innerText = "";
+		}
+		return isvalid;
+	}
+
+	toggleInput = (checkbox) => {
+		var index = checkbox.getAttribute('data-size-index');
+		var input = document.querySelector('.input-quantity-size[data-size-index="' + index + '"]');
+
+		if (checkbox.checked) {
+			input.style.display = 'inline-block'; // Show the input
+			input.value = 0; // Set input value to 0
+		} else {
+			input.style.display = 'none'; // Hide the input
+		}
+	}
+
+	getValueSize = () => {
+		var inputs = document.querySelectorAll('.input-quantity-size');
+		$scope.datasize = [];
+		inputs.forEach(function(input) {
+			if (input.style.display !== 'none') {
+				var index = input.getAttribute('data-size-index');
+				var name = input.getAttribute('data-size-name');
+				$scope.datasize.push({
+					id: parseInt(index),
+					name: name,
+					quantity: parseInt(input.value)
+				});
+			}
+		});
+		console.log("productdetail", $scope.datasize)
+		$scope.datasize.forEach(function(value) {
+			var productDetail = {
+				quantity: value.quantity,
+				size: {
+					id: value.id,
+					name: value.name
+				},
+				product: {
+					id: $scope.form.id
+				}
+			}
+			console.log("productdetail", productDetail)
+			$http.post(`/rest/productsDetail`, productDetail).then(resp => {
+				console.log("data tra ve", resp.data);
+				var sizeProduct = {
+					id: resp.data.size.id,
+					name: resp.data.size.name,
+					quantity: resp.data.quantity
+				};
+				$scope.productSize.push(sizeProduct);
+				loadSizeEdit();
+			}).catch(error => {
+				$scope.messege2("Lỗi thêm size sản phẩm!");
+				console.log("Error", error);
+			});
+		});
+	}
+
+	loadSizeEdit = () => {
+		console.log("size1", $scope.productSize);
+		$scope.sizeEdit = $scope.sizes.filter(item2 => !$scope.productSize.some(item1 => item1.id === item2.id));
+		console.log("size", $scope.sizeEdit)
+		$scope.datasize = [];
+	}
+
+	$scope.addsize = () => {
+		var checkboxes = document.querySelectorAll('.checkbox-size-product');
+		var selectedSizes = [];
+
+		for (var i = 0; i < checkboxes.length; i++) {
+			var checkbox = checkboxes[i];
+
+			if (checkbox.checked) {
+				var sizeIndex = checkbox.getAttribute('data-size-index');
+				var index = $scope.sizeEdit.findIndex(function(size) {
+					return size.id == sizeIndex;
+				});
+
+				if (index !== -1) {
+					var sizeProduct = {
+						id: $scope.sizeEdit[index].id,
+						name: $scope.sizeEdit[index].name,
+						quantity: 0
+					};
+					$scope.productSize.push(sizeProduct);
+					selectedSizes.push($scope.sizeEdit[index]);
+					$scope.sizeEdit.splice(index, 1);
+				}
+			}
+		}
+		console.log(selectedSizes);
+	};
+
+	getInputsValues = () => {
+		var inputs = document.querySelectorAll('.input-size');
+		$scope.productSize = []
+		$scope.arrProductDetail = []
+		// console.log("Trước khi thay: ",$scope.dataProductDetail);
+		for (var i = 0; i < inputs.length; i++) {
+			var input = inputs[i];
+			var id = input.getAttribute('data-size-index');
+			var name = input.getAttribute('data-size-name');
+			var quantity = parseInt(input.value);
+			console.log("dataProductDetail", $scope.dataProductDetail[i])
+			var productId = $scope.dataProductDetail[i] && $scope.dataProductDetail[i].id ? $scope.dataProductDetail[i].id : 0;
+			console.log("productID", productId)
+			var objectProductDetail = {
+				id: productId,
+				product: {
+					id: $scope.form.id,
+				},
+				quantity: quantity,
+				size: {
+					id: parseInt(id)
+				}
+			}
+			$scope.productSize.push({
+				id: parseInt(id),
+				name: name,
+				quantity: quantity
+			});
+			$scope.arrProductDetail.push(objectProductDetail);
+		}
+		console.log("Mảng productDetail: ", $scope.arrProductDetail);
+	}
+
+	$scope.clearValidateForm = () => {
+
+		document.getElementById("productNameError").innerText = "";
+		document.getElementById("weightError").innerText = "";
+		document.getElementById("productPriceError").innerText = "";
+		document.getElementById("productPriceError").innerText = "";
+		document.getElementById("productPriceError").innerText = "";
+		document.getElementById("ProductDiscountPriceError").innerText = "";
+		document.getElementById("productColorError").innerText = "";
+		document.getElementById("productCategoryError").innerText = "";
+		document.getElementById("descriptionNameError").innerText = "";
+		document.getElementById("descriptionWeightError").innerText = "";
+		document.getElementById("descriptionMaterialError").innerText = "";
+		document.getElementById("descriptionTechnologyError").innerText = "";
+		document.getElementById("descriptionManufactureError").innerText = "";
+		document.getElementById("descriptionDescriptionError").innerText = "";
+	}
+	preventNegative = (event) => {
+		const inputElement = event.target;
+		const inputValue = inputElement.value;
+
+		const sanitizedValue = inputValue.replace(/^-/, '');
+
+		inputElement.value = sanitizedValue;
+	}
 });

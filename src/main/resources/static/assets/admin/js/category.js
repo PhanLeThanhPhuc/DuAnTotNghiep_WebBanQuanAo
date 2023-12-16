@@ -40,6 +40,10 @@ app.controller("category-ctrl", function($scope, $filter, $http) {
 
 
 	$scope.createCategory = function() {
+		if(!validateForm()){
+			return;
+		}
+		document.getElementById("buttonclose").click()
 		var item = angular.copy($scope.formCategory);
 		$http.post(`/rest/categories`, item).then(resp => {
 			if (resp.status == 200) {
@@ -57,6 +61,9 @@ app.controller("category-ctrl", function($scope, $filter, $http) {
 
 
 	$scope.updateCategory = function() {
+		if(!validateForm()){
+			return;
+		}
 		var item = angular.copy($scope.formCategory);
 		item.dateUpdate = new Date();
 		$http.put(`/rest/categories/${item.id}`, item).then(resp => {
@@ -96,15 +103,20 @@ app.controller("category-ctrl", function($scope, $filter, $http) {
 
 
 
+
 	$scope.searchText = {};
 	$scope.items = [];
 	$scope.pager = {
 		page: 0,
 		size: 10,
-		sortColumn: '',
-		sortDirection: '',
+		sortColumn: 'item.id',
+		sortDirection: 'desc',
 		get filteredItems() {
-			return $filter('filter')($scope.items, $scope.searchText);
+			var filteredItems = $filter('filter')($scope.items, $scope.searchText);
+			if ($scope.pager.sortColumn === 'item.id') {
+				filteredItems = $filter('orderBy')(filteredItems, 'item.id', $scope.pager.sortDirection === 'asc');
+			}
+			return filteredItems;
 		},
 		get items() {
 			if (this.page < 0) {
@@ -171,6 +183,10 @@ app.controller("category-ctrl", function($scope, $filter, $http) {
 	}
 
 	$scope.createCategoryDetail = function() {
+		if(!validateFormDetail()){
+			return;
+		}
+		document.getElementById("closeButton").click()
 		$scope.formCategoryDetail.category = $scope.Category
 		var item = angular.copy($scope.formCategoryDetail);
 		item.dateUpdate = new Date();
@@ -195,7 +211,9 @@ app.controller("category-ctrl", function($scope, $filter, $http) {
 	}
 
 	$scope.updateCategoryDetail = function() {
-
+		if(!validateFormDetail()){
+			return;
+		}
 		var item = angular.copy($scope.formCategoryDetail);
 		item.category = $scope.Category;
 		item.dateUpdate = new Date();
@@ -265,5 +283,51 @@ app.controller("category-ctrl", function($scope, $filter, $http) {
 	$scope.toggleCollapse = function(item) {
 		item.showDetails = !item.showDetails;
 	};
+	
+	
+	validateForm = () => {
+
+		var isvalid = true;
+
+		var name = document.getElementById("categoryName").value
+		console.log(name)
+		if (name === "") {
+			isvalid = false;
+			document.getElementById("categotyNameError").innerText = "Tên loại không bỏ trống";
+		} else if (/[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-\d]/.test(name)) {
+			
+			isvalid = false;
+			document.getElementById("categotyNameError").innerText = "Tên loại không được chứa ký tự đặt biệt hoặc số";
+		} else {
+			document.getElementById("categotyNameError").innerText = "";
+		}
+
+
+
+		return isvalid;
+
+	}
+	
+	
+	
+	validateFormDetail = () => {
+
+		var isvalid = true;
+
+		var namedetail = document.getElementById("categoryDetailName").value
+		console.log(namedetail)
+		if (namedetail === "") {
+			isvalid = false;
+			document.getElementById("categoryDetailNameError").innerText = "Tên chi tiết loại Không bỏ trống";
+		} else if (/[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-\d]/.test(namedetail)) {
+			
+			isvalid = false;
+			document.getElementById("categoryDetailNameError").innerText = "Tên chi tiết loại không được chứa ký tự đặt biệt hoặc số";
+		} else {
+			document.getElementById("categoryDetailNameError").innerText = "";
+		}
+
+		return isvalid;
+	}
 }
 );

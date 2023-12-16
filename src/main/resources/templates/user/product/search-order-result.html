@@ -1,0 +1,224 @@
+
+<div xmlns:th="http://www.thymeleaf.org"
+     th:replace="~{/user/layout/index :: dynamic (~{::main})}">
+
+    <main>
+        <section class="login_part padding_top">
+            <div class="container">
+                <div class="col-md-12">
+                    <!-- Tabs content -->
+                    <div class="tab-content" id="v-pills-tabContent">
+                        <div class="tab-pane fade shadow rounded bg-white show active p-4"
+                             id="v-pills-home" role="tabpanel"
+                             aria-labelledby="v-pills-home-tab">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <h6>THÔNG TIN ĐƠN HÀNG #[[${order.id}]]</h6>
+                                </div>
+                                <div th:if="${order.status eq 0}" style="text-align: right"
+                                     class="col-sm-6">
+                                    <a th:href="@{|/user/cancel-order?idorder=${order.id}|}">Hủy
+                                        đơn hàng</a>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6 col-lx-4">
+                                    <div class="single_confirmation_details p-3">
+                                        <h6>THÔNG TIN KHÁCH HÀNG</h6>
+                                        <ul>
+                                            <li>
+                                                <p>Tên:</p> <span> [[${order.nameUser}]]</span>
+                                            </li>
+                                            <li>
+                                                <p>Địa chỉ:</p> <span>[[${order.detailAddress}]],
+                                            [[${order.ward}]], [[${order.province}]],
+                                            [[${order.district}]]</span>
+                                            </li>
+                                            <li>
+                                                <p>Số điện thoại:</p> <span> [[${order.phone}]]</span>
+                                            </li>
+                                            <li>
+                                                <p>Email:</p> <span> [[${order.email}]]</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6 col-lx-4">
+                                    <div class="single_confirmation_details p-3">
+                                        <h6>THÔNG TIN ĐƠN HÀNG</h6>
+                                        <ul>
+                                            <li>
+                                                <p>Ngày đặt:</p> <span
+                                                    th:text="${#dates.format(order.orderDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                                            </li>
+                                            <li>
+                                                <!--                                                <th:block th:if="${order.voucher != null}" >-->
+                                                <!--                                                    <p>Tổng tiền:</p>-->
+                                                <!--                                                    <span>[[${#numbers.formatDecimal(order.totalDiscount, 0, 'COMMA', 0, 'POINT')}]]</span><br>-->
+                                                <!--                                                    <p>Tổng tiền:</p>-->
+                                                <!--                                                    <span style="text-decoration: line-through;" >[[${#numbers.formatDecimal(order.total, 0, 'COMMA', 0, 'POINT')}]]</span>-->
+                                                <!--                                                </th:block>-->
+
+                                                <!--                                                <th:block th:if="${order.voucher == null}" >-->
+                                                <p>Tổng tiền:</p> <span th:if="${order.voucher != null}">[[${#numbers.formatDecimal(order.total
+                                            + order.shipFee - order.voucher.discountPrice, 0, 'COMMA',
+                                            0,'POINT')}]]đ</span> <span th:if="${order.voucher == null}">[[${#numbers.formatDecimal(order.total
+                                            + order.shipFee, 0, 'COMMA', 0,'POINT')}]]đ</span> <!--                                                </th:block>-->
+
+                                            </li>
+                                            <li>
+                                                <p>Trạng thái giao hàng:</p> <span
+                                                    class="badge badge-pill badge-secondary"
+                                                    th:if="${order.status == 0}">Chờ xác nhận</span> <span
+                                                    class="badge badge-pill badge-warning"
+                                                    th:if="${order.status == 1}">Chờ lấy hàng</span> <span
+                                                    class="badge badge-pill badge-danger"
+                                                    th:if="${order.status == 2}">Hủy</span> <span
+                                                    class="badge badge-pill badge-info"
+                                                    th:if="${order.status == 4}">Đang giao</span> <span
+                                                    class="badge badge-pill badge-success"
+                                                    th:if="${order.status == 5}">Đã giao</span>
+                                            </li>
+                                            <li>
+                                                <p>Thanh toán:</p>
+                                                <th:block th:if="${order.payment eq 0}">
+                                                    <span> Tiền mặt</span>
+                                                    <br>
+                                                    <a th:if="${order.status==0}"  data-toggle="modal"
+                                                       style="color: blue; text-transform: none;"
+                                                       data-target="#exampleModalCenter">Hoặc chọn hình thức
+                                                        thanh toán khác</a>
+                                                </th:block>
+                                                <th:block th:if="${order.payment eq 1}">
+                                                    <span> VN-PAY</span>
+                                                    <span style="font-style: italic; color: red;"
+                                                          th:if="${order.statusPayment eq 0}"> (Thanh toán
+                                                không thành công)
+                                            </span>
+                                                    <br>
+                                                    <a
+                                                            th:if="${order.statusPayment != 1 || order.status == 2   }"
+                                                            data-toggle="modal" data-target="#exampleModalCenter">Chọn
+                                                        hình thức thanh toán khác</a>
+                                                    <span style="font-style: italic; color: seagreen"
+                                                          class="text-success" th:if="${order.statusPayment eq 1}">
+                                                (Thanh toán thành công)</span>
+                                                </th:block>
+                                            </li>
+                                            <li></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="order_details_iner"
+                                         style="border-radius: 15px; color: #ffffff;">
+                                        <h4 style="font-weight: bold;">THÔNG TIN SẢN PHẨM</h4>
+                                        <table class="table table-borderless">
+                                            <thead>
+                                            <tr style="vertical-align: center !important;">
+                                                <th style="font-weight: bold; font-size: 15px" scope="col"
+                                                    colspan="2">SẢN PHẨM</th>
+                                                <th style="font-weight: bold; font-size: 15px" scope="col">SỐ
+                                                    LƯỢNG</th>
+                                                <th style="font-weight: bold; font-size: 15px" scope="col">GIÁ</th>
+                                                <th style="font-weight: bold; font-size: 15px" scope="col">TỔNG
+                                                    TIỀN</th>
+                                                <th th:if="${order.status == 5}" style="font-weight: bold; font-size: 15px" scope="col">Đánh
+                                                    giá</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:each="orderdetail : ${order.orderDetails}">
+                                                <td colspan="2">
+                                                    <div
+                                                            style="display: grid; grid-template-columns: 80px auto 15%; grid-gap: 20px;">
+                                                        <img
+                                                                th:src="@{|${orderdetail.productDetails.product.thumbnail}|}"
+                                                                width="85px" height="85px" style="border-radius: 20px;"
+                                                                alt="">
+                                                        <div style="display: flex; flex-flow: column; gap: 10px;">
+                                                            <span style="font-size: 17px;">[[${orderdetail.productDetails.product.name}]]</span>
+                                                            <span>Color:
+                                                            [[${orderdetail.productDetails.product.color.name}]]</span> <span>Size:
+                                                            [[${orderdetail.productDetails.size.name}]]</span>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>[[${orderdetail.quantity}]]</td>
+                                                <td><th:block
+                                                        th:if="${orderdetail.discountPrice != 0}">
+                                                    <div style="display: grid; grid-gap: 8px;">
+                                                        <span style="color: red; font-weight: bold">[[${#numbers.formatDecimal(orderdetail.price,
+                                                            0, 'COMMA', 0, 'POINT')}]]₫</span> <span
+                                                            style="text-decoration: line-through; font-size: 13px">[[${#numbers.formatDecimal(orderdetail.discountPrice
+                                                            + orderdetail.price, 0, 'COMMA', 0, 'POINT')}]]₫</span>
+                                                    </div>
+                                                </th:block> <th:block th:if="${orderdetail.discountPrice == 0}">
+                                                    <div style="display: grid; grid-gap: 8px;">
+                                                        <span style="color: red; font-weight: bold">[[${#numbers.formatDecimal(orderdetail.price,
+                                                            0, 'COMMA', 0, 'POINT')}]]₫</span>
+                                                    </div>
+                                                </th:block></td>
+                                                <td>
+                                                    <div style="display: grid; grid-gap: 8px;">
+                                                    <span style="color: red; font-weight: bold">[[${#numbers.formatDecimal(orderdetail.price
+                                                        * orderdetail.quantity, 0, 'COMMA', 0, 'POINT')}]]₫</span>
+                                                    </div>
+
+
+                                                </td>
+                                                <td th:if="${order.status == 5}"><span> <a
+                                                        th:attr="ng-click=|reviews(${session.user.id},${orderdetail.productDetails.product.id})|"
+                                                        data-toggle="modal" data-target=".bd-example-modal-lg"
+                                                        title="Edit"> Đánh giá
+                                                        </a></td>
+                                            </tr>
+                                            </tbody>
+                                            <tfoot>
+                                            <tr>
+                                                <th scope="col" colspan="3"></th>
+                                                <th scope="col" style="font-size: 14px">TẠM TÍNH:</th>
+                                                <th th:if="${order.voucher != null}" scope="col">[[${#numbers.formatDecimal(order.total - order.totalDiscount + order.voucher.discountPrice,
+                                                    0, 'COMMA', 0, 'POINT')}]]đ
+                                                </th>
+                                                <th th:if="${order.voucher == null}" scope="col">[[${#numbers.formatDecimal(order.total - order.totalDiscount ,
+                                                    0, 'COMMA', 0, 'POINT')}]]đ
+                                                </th>
+                                            </tr>
+                                            <tr th:if="${order.voucher != null}">
+                                                <th scope="col" colspan="3"></th>
+                                                <th scope="col" style="font-size: 14px">ÁP DỤNG
+                                                    VOUCHER:</th>
+                                                <th scope="col" colspan="3">-
+                                                    [[${#numbers.formatDecimal(order.voucher.discountPrice, 0,
+                                                    'COMMA', 0, 'POINT')}]]đ</th>
+                                            </tr>
+                                            <tr>
+                                                <th scope="col" colspan="3"></th>
+                                                <th scope="col" style="font-size: 14px">PHÍ SHIP:</th>
+                                                <th scope="col" colspan="3">
+                                                    [[${#numbers.formatDecimal(order.shipFee, 0, 'COMMA', 0,
+                                                    'POINT')}]]đ</th>
+                                            </tr>
+                                            <tr>
+                                                <th scope="col" colspan="3"></th>
+                                                <th scope="col" style="font-size: 14px">TỔNG TIỀN
+                                                    THANH TOÁN:</th>
+                                                <th  scope="col"
+                                                     colspan="3">[[${#numbers.formatDecimal(order.total - order.totalDiscount +order.shipFee , 0, 'COMMA', 0,'POINT')}]]đ</th>
+                                            </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>

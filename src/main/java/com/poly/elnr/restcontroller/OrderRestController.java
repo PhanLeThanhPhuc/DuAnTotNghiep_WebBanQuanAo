@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -36,24 +37,35 @@ public class OrderRestController {
     public Map<String, Object> order (@RequestBody JsonNode orderData, HttpServletResponse response) throws IOException {
         int payment = Integer.parseInt(orderData.get("payment").asText());
         Order order = orderService.saveOrder(orderData);
-            if(payment == 1){
-                Map<String, Object> model = new HashMap<>();
-                model.put("payment", payment);
-                model.put("urlVnPay", vnPay(order));
-                model.put("order", order);
-                return model;
-            }else{
-                Map<String, Object> model = new HashMap<>();
-                model.put("order", order);
-                return model;
-            }
+        if(payment == 1){
+            Map<String, Object> model = new HashMap<>();
+            model.put("payment", payment);
+            model.put("urlVnPay", vnPay(order));
+            model.put("order", order);
+            return model;
+        }else{
+            Map<String, Object> model = new HashMap<>();
+            model.put("order", order);
+            return model;
+        }
     }
 
     @GetMapping("rest/orders")
     public List<Order> fillAllOrder(){
         return orderService.fillAllOrder();
     }
+    @CrossOrigin(origins = "*")
+    @GetMapping("/sse")
+    public SseEmitter handleSSE() {
+        SseEmitter emitter = new SseEmitter((long) -1);
 
+        orderService.addSseEmitter(emitter);
+
+        emitter.onCompletion(() -> orderService.removeSseEmitter(emitter));
+        emitter.onTimeout(() -> orderService.removeSseEmitter(emitter));
+
+        return emitter;
+    }
 
     @GetMapping("rest/orderGhn")
     public Order orderGhn(@RequestParam("orderId") int orderId) throws JsonProcessingException {
@@ -69,19 +81,10 @@ public class OrderRestController {
 
     public String vnPay(Order order){
         int idOrder = order.getId();
-        int total = 0;
-        if(order.getVoucher() == null){
-             total = (int) ((order.getTotal() + order.getShipFee()) );
-
-        }else{
-             total = (int) ((order.getTotal() + order.getShipFee()) - order.getVoucher().getDiscountPrice());
-        }
-
-        System.out.println();
-        String content = "Thanh toán đơn hàng ";
+        int total = order.getTotal() - order.getTotalDiscount() + order.getShipFee();
+        String content = "Thanh toán đơn hàng " + idOrder;
         String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
         baseUrl += "/user/payment-order-user";
-        System.out.println(baseUrl);
         String vnpayUrl = vnPayService.createOrder(total, content, baseUrl,idOrder);
         return  vnpayUrl;
     }

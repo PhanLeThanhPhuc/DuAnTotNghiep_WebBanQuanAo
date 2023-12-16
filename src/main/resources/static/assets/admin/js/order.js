@@ -1,13 +1,47 @@
 app.controller("order-ctrl", function($scope, $filter, $http) {
 
-	$scope.initialize = async () => {
-		$scope.listOrders = []
+	$scope.initialize = () => {
+		$scope.listOrders = [];
+
+		// const eventSource = new EventSource("/sse", { withCredentials: true, cache: "no-store" });
+		//
+		// eventSource.addEventListener("order-update", function (event) {
+		// 	const order = JSON.parse(event.data);
+		// 	console.log("Đơn hàng đã cập nhật:", order);
+		//
+		// 	const existingOrderIndex = $scope.listOrders.findIndex(existingOrder => existingOrder.id === order.id);
+		//
+		// 	$scope.$apply(function () {
+		// 		if (existingOrderIndex !== -1) {
+		// 			$scope.listOrders[existingOrderIndex] = order;
+		// 		} else {
+		// 			$scope.listOrders.push(order);
+		// 		}
+		// 		countOrder();
+		// 	});
+		// });
+		//
+		// eventSource.onerror = function (error) {
+		// 	console.error("EventSource failed:", error);
+		// 	eventSource.close();
+		// };
+
+		$http.get("/rest/orders").then(resp => {
+			$scope.listOrders = resp.data;
+			console.log("Danh sách đơn hàng", $scope.listOrders);
+			countOrder();
+		});
+	};
+
+
+	$scope.fillAllOrder = async () =>{
 		await $http.get("/rest/orders").then(resp => {
 			$scope.listOrders = resp.data;
-			console.log("list order",$scope.listOrders);
+			console.log("Danh sách đơn hàng", $scope.listOrders);
+			countOrder();
 		});
-		// $scope.reset();
 	}
+
 
 	$scope.initialize();
 
@@ -18,12 +52,14 @@ app.controller("order-ctrl", function($scope, $filter, $http) {
 	}
 
 	$scope.confirmOrder = (orderId) => {
+		document.getElementById('preloader').style.display = 'grid';
 		$http.get(`/rest/orderGhn?orderId=${orderId}`).then(resp => {
 			if (resp.status === 200) {
+				document.getElementById('preloader').style.display = 'none';
 				var index = $scope.listOrders.findIndex(p => p.id == orderId);
 				$scope.listOrders[index] = resp.data;
-				console.log("Data xac nhạn: ", resp.data);
 				$scope.message(`Xác nhận đơn hàng ${orderId} thành công`)
+				countOrder();
 			}
 		});
 	}
@@ -35,20 +71,10 @@ app.controller("order-ctrl", function($scope, $filter, $http) {
 				$scope.listOrders[index] = resp.data.order;
 				console.log("ssss", resp.data);
 				$scope.message(`Hủy đơn hàng ${orderId} thành công`)
+				countOrder();
 			}
 		});
 	}
-
-	// $scope.statusOrder = (id, status) =>{
-	// 	$http.get(`/rest/orders/update-status?idOrder=${id}&statusOrder=${status}`).then(resp => {
-	// 		if (resp.status === 200) {
-	// 			var index = $scope.listOrders.findIndex(p => p.id == orderId);
-	// 			$scope.listOrders[index] = resp.data.order;
-	// 			console.log("ssss", resp.data);
-	// 			$scope.message(`Hủy đơn hàng ${orderId} thành công`)
-	// 		}
-	// 	});
-	// }
 
 	$scope.delivering = (orderId) =>{
 		$http.get(`/rest/orders/update-status?idOrder=${orderId}&statusOrder=4`).then(resp => {
@@ -57,6 +83,7 @@ app.controller("order-ctrl", function($scope, $filter, $http) {
 				$scope.listOrders[index] = resp.data;
 				console.log("ssss", resp.data);
 				$scope.message(`Đang giao đơn hàng ${orderId}`)
+				countOrder();
 			}
 		});
 	}
@@ -68,6 +95,7 @@ app.controller("order-ctrl", function($scope, $filter, $http) {
 				$scope.listOrders[index] = resp.data;
 				console.log("ssss", resp.data);
 				$scope.message(`Giao thành công đơn hàng ${orderId}`)
+				countOrder();
 			}
 		});
 	}
@@ -93,11 +121,7 @@ app.controller("order-ctrl", function($scope, $filter, $http) {
 		});
 	}
 
-
-
-
 	$scope.searchText = {};
-	// $scope.listOrders = [];
 	$scope.pager = {
 		page: 0,
 		size: 10,
@@ -105,7 +129,6 @@ app.controller("order-ctrl", function($scope, $filter, $http) {
 		sortDirection: 'desc',
 		get filteredlistOrders() {
 			var filteredlistOrders = $filter('filter')($scope.listOrders, $scope.searchText);
-			// console.log("List filter: ",filteredlistOrders);
 			if ($scope.pager.sortColumn === 'item.id') {
 				filteredlistOrders = $filter('orderBy')(filteredlistOrders, 'item.id', $scope.pager.sortDirection === 'asc');
 			}
@@ -162,10 +185,10 @@ app.controller("order-ctrl", function($scope, $filter, $http) {
 	filterStatusOrder = async () =>{
 		var status = document.getElementById("cbb-status").value;
 		if(status === 'all'){
-			await $scope.initialize();
+			await $scope.fillAllOrder();
 			$scope.$apply();
 		}else {
-			await $scope.initialize();
+			await $scope.fillAllOrder();
 			var listFilterStatus = [];
 			listFilterStatus = $scope.listOrders.filter(o => {
 				return o.status == status;
@@ -175,5 +198,86 @@ app.controller("order-ctrl", function($scope, $filter, $http) {
 			$scope.$apply();
 		}
 	}
+
+	searchIdOrder = () => {
+		var valueSearch = document.getElementById("search").value;
+
+		var listOrdersCopy = $scope.listOrders;
+
+		console.log("Original array:", $scope.listOrders);
+
+		if (valueSearch) {
+			var foundOrder = $scope.listOrders.find(order => order.id === parseInt(valueSearch));
+
+			console.log("Found order:", foundOrder);
+
+			if (foundOrder) {
+				$scope.listOrders = [foundOrder];
+				$scope.$apply();
+				$scope.listOrders = listOrdersCopy;
+			} else {
+				$scope.listOrders = [];
+				$scope.$apply();
+				$scope.listOrders = listOrdersCopy;
+			}
+		}else{
+			$scope.listOrders = listOrdersCopy;
+			$scope.$apply();
+		}
+	};
+
+	buttonFilterByDate = async () =>{
+		await $scope.fillAllOrder();
+		var listOrdersCopy = $scope.listOrders;
+
+		var startDate = document.getElementById("start-date").value;
+		var endDate = document.getElementById("end-date").value;
+
+		$scope.listOrders = listOrdersCopy.filter( order =>{
+			return $scope.formatDate(startDate) <= $scope.formatDate(order.orderDate) && $scope.formatDate(order.orderDate) <= $scope.formatDate(endDate)
+		})
+		countOrder();
+		$scope.$apply();
+
+		// $scope.listOrders = []
+		// $scope.listOrders = listOrdersCopy;
+	}
+
+	countOrder = () =>{
+		//allorder
+		$scope.quantityAllOrder = $scope.listOrders.length;
+
+		$scope.pendingConfirmation= 0;
+		$scope.pendingPickup = 0;
+		$scope.inTransit = 0;
+		$scope.delivered = 0;
+		$scope.canceled = 0;
+
+		$scope.listOrders.forEach(order => {
+			var status = order.status;
+			switch (status) {
+				case 0:
+					$scope.pendingConfirmation++;
+					break;
+				case 1:
+					$scope.pendingPickup++;
+					break;
+				case 4:
+					$scope.inTransit++;
+					break;
+				case 5:
+					$scope.delivered++;
+					break;
+				case 2:
+					$scope.canceled++;
+					break;
+			}
+		});
+		// $scope.$apply();
+	}
+
+	$scope.formatDate = function(date) {
+		return $filter('date')(date, 'dd/MM/yyyy');
+	};
 
 });

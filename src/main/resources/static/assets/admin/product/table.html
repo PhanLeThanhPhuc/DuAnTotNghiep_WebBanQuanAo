@@ -9,7 +9,7 @@
 					</div>
 					<div class="table-responsive">
 						<table
-							class="table table-striped table-bordered zero-configuration">
+								class="table ">
 							<thead>
 								<tr>
 									<th ng-click="toggleSort('id')">Mã sản phẩm <span
@@ -47,11 +47,11 @@
 									<td>{{item.id}}</td>
 									<td><div class="d-flex">
 											<img src="{{item.thumbnail}}" alt=""
-												style="width: 50px;">
+												style="width: 60px; border-radius: 10px">
 										</div></td>
 									<td>{{item.name}}</td>
 									<td>{{item.categoryDdetail.name}}</td>
-									<td>{{item.price}}đ</td>
+									<td style="color: red; font-weight: bold">{{item.price | currency:'' :0}}đ</td>
 									<td>{{item.sale?'Yes':'No'}}</td>
 									<td><label class="switch"> <input
 											ng-model="item.status" ng-value="true" name="available"

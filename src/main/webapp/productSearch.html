@@ -1,0 +1,166 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{/user/layout/index :: dynamic(~{::main})}">
+<main>
+	
+	<section class="cat_product_area section_padding">
+
+		<div class="container" >
+			<form id="form" th:action="@{|productsale|}" method="get">
+				<div class="row">
+					<div class="col-sm-3 ">
+						<div class="left_sidebar_area">
+							<aside class="left_widgets p_filter_widgets">
+								<div class="l_w_title">
+									<h3>Size</h3>
+								</div>
+								<div class="widgets_inner">
+									<ul class="list">
+										<li th:each="item : ${sizeMenu}"><a class="size">[[${item.name}]]</a>
+											<span> <input onclick="clickCheckbox()"
+												th:checked="${#lists.contains(sizeId, item.id)}" name="size"
+												th:value="${item.id}" type="checkbox"
+												class="form-check-input">
+										</span></li>
+									</ul>
+								</div>
+							</aside>
+							<aside class="left_widgets p_filter_widgets">
+								<div class="l_w_title">
+									<h3>Color</h3>
+								</div>
+								<div class="widgets_inner">
+									<ul class="list">
+										<li th:each="item : ${colorMenu}"><a class="color">[[${item.name}]]</a>
+											<span> <input onclick="clickCheckbox()"
+												th:checked="${#lists.contains(colorId, item.id)}"
+												name="color" th:value="${item.id}" type="checkbox"
+												class="form-check-input checkbox-sidebar">
+										</span></li>
+										<li><a class="color" type="button" id="popoverButton">Khác>></a>
+											<div id="customPopover" class="custom-popover"
+												style="display: none;">
+												<div class="custom-popover-header">Chọn màu</div>
+												<div class="custom-popover-content col-sm-12 row">
+													<div th:each="item : ${colorPopover}"
+														class="col-sm-3 container-checkbox">
+														<div class="custom-control custom-checkbox">
+															<input th:checked="${#lists.contains(colorId, item.id)}"
+																name="color" th:value="${item.id}" type="checkbox"
+																class="form-check-input checkbox-popover"> <a
+																class="color">[[${item.name}]]</a>
+														</div>
+													</div>
+												</div>
+												<button onclick="buttonPopover()" type="button"
+													class="btn btn-danger">Xác nhận</button>
+											</div></li>
+									</ul>
+								</div>
+							</aside>
+						</div>
+					</div>
+					<div class="col-sm-9">
+						<div class="row">
+							<div class="col-sm-12">
+								<div
+									class="product_top_bar d-flex justify-content-between align-items-center">
+									<div class="single_product_menu">
+										<p>
+											Hiện đang có <span>[[${product.totalElements}]]</span> sản
+											phẩm
+										</p>
+									</div>
+									<div class="single_product_menu d-flex">
+										<h5>Short by :</h5>
+										<select onchange="document.getElementById('form').submit();"
+											name="sort" class="form-control"
+											id="exampleFormControlSelect1">
+											<option th:selected="${sortValue == 'price-asc'}"
+												th:value="price-asc">Giá thấp đến cao</option>
+											<option th:selected="${sortValue == 'price-desc'}"
+												th:value="price-desc">Giá cao đến thấp</option>
+											<option th:selected="${sortValue == 'name-az'}"
+												th:value="name-az">A-Z</option>
+											<option th:selected="${sortValue == 'name-za'}"
+												th:value="name-za">Z-A</option>
+										</select>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="row align-items-center latest_product_inner">
+							<div th:each="item : ${product.content}"
+								class="col-lg-3 col-sm-6">
+
+								<div class="single_product_item">
+									<a th:href="@{|/user/product-detail?product-id=${item.id}|}">
+
+										<img th:src="@{|${item.thumbnail}|}">
+
+										<div class="single_product_text">
+											<h4>[[${item.name}]]</h4>
+											<h6>Màu: [[${item.color.name}]]</h6>
+											<h6>
+												Size: <span th:each="itemsize : ${item.productDetails}"
+													class="size">[[${itemsize.size.name}]]</span>
+											</h6>
+
+											<div th:if="${item.isSale == true}">
+												<h3>[[${#numbers.formatDecimal(item.discountPrice, 0,
+													'COMMA', 0, 'POINT')}]]₫</h3>
+												<h4
+													style="text-decoration-line: line-through; display: inline-block; margin-right: 5px;">
+													<span>[[${#numbers.formatDecimal(item.price, 0,
+														'COMMA', 0, 'POINT')}]]₫</span>
+												</h4>
+												<span class="badge badge-warning"
+													style="color: red; font-weight: 600">[[${#numbers.formatDecimal((100-(item.discountPrice
+													/ item.price) * 100), 0, 'COMMA', 0, 'POINT')}]]%</span>
+											</div>
+
+											<div th:unless="${item.isSale ==true}">
+												<h3 class="price">[[${#numbers.formatDecimal(item.price,
+													0, 'COMMA', 0,'POINT')}]]₫</h3>
+											</div>
+										</div>
+									</a>
+								</div>
+
+
+							</div>
+							<div class="col-lg-12">
+								<div class="pageination">
+									<nav aria-label="Page navigation example">
+										<ul class="pagination justify-content-center " id="pagination"></ul>
+									</nav>
+									<input id="page" name="p" type="hidden">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</section>
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+		$(function() {
+			window.pagObj = $('#pagination').twbsPagination({
+				totalPages : /*[[${product.totalPages}]]*/'default',
+				visiblePages : 5,
+				startPage : /*[[${product.number+1}]]*/'default',
+				onPageClick : function(event, page) {
+					console.info(page + ' (from options)');
+					if (page != /*[[${product.number+1}]]*/'default') {
+						$('#page').val(parseInt(page - 1));
+						$('#form').submit();
+					}
+				}
+			}).on('page', function(event, page) {
+				console.info(page + ' (from event listening)');
+			});
+		});
+		/*]]>*/
+	</script>
+</main>

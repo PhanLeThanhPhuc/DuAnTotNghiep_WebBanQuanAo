@@ -2,6 +2,7 @@ package com.poly.elnr.restcontroller;
 
 import java.util.*;
 
+import com.poly.elnr.dto.CreatePasswordDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -24,13 +25,22 @@ import com.poly.elnr.service.UserService;
 @RestController
 @RequestMapping("/rest/users")
 public class UserRestController {
+
 	@Autowired
 	UserService userService;
-	
+
+
 	@PostMapping
 	public Users post(@RequestBody  Users user) {
+		System.out.println();
 		return userService.create(user);
 		 
+	}
+
+	@PostMapping("update-user-info")
+	public void postInfo(@RequestBody  Users user) {
+		System.out.println();
+		userService.updateUserInfo(user);
 	}
 
 	@GetMapping("/userid")
@@ -124,14 +134,22 @@ public class UserRestController {
 		}
 	}
 
+	@PostMapping("create-password")
+	public ResponseEntity<?> createPassword(@RequestBody CreatePasswordDTO passwordDTO, Authentication authentication){
+		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+		userService.createPassword(passwordDTO,userDetails.getUsername());
+		Map<String, Object> response = new HashMap<>();
+		response.put("message", "Thêm mật khẩu thành công");
+		return ResponseEntity.ok(response);
+	}
+
 	private long calculateRemainingTime(Users user) {
 		if (user.isPasswordReset()) {
 			long currentTime = System.currentTimeMillis();
 			Date otpCreationTime = user.getTimeOtp();
 
-			// Tính thời gian đã trôi qua (elapsedTime) và thời gian còn lại
 			long elapsedTime = (currentTime - otpCreationTime.getTime()) / 1000;
-			long remainingTime = Math.max(0, 60 - elapsedTime); // Đảm bảo không bao giờ là số âm
+			long remainingTime = Math.max(0, 60 - elapsedTime);
 
 			return remainingTime;
 		} else {

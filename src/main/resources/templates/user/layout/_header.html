@@ -20,13 +20,11 @@
 
 						<!-- <div class=""> -->
 
-
 						<a class="navbar-brand " th:href="@{/user/index}"> <img
 							sytle="margin:100px !important;"
 							src="/assets/user/teample/img/logo.png" alt="logo">
 
 						</a>
-
 
 						<button class="navbar-toggler" type="button"
 							data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -39,46 +37,40 @@
 							id="navbarSupportedContent">
 							<ul class="navbar-nav">
 								<li class="nav-item"><a class="nav-link"
-									th:href="@{/user/index}">HOME</a></li>
+									th:href="@{/user/index}">TRANG CHỦ</a></li>
 								<li class="nav-item dropdown"><a
 									class="nav-link dropdown-toggle" href="blog.html"
 									id="navbarDropdown_1" role="button" data-toggle="dropdown"
-									aria-haspopup="true" aria-expanded="false"> SHOP </a>
+									aria-haspopup="true" aria-expanded="false"> DANH MỤC </a>
 									<div style="width: 500px;" class="dropdown-menu mx-auto "
 										aria-labelledby="navbarDropdown_1">
 										<div class="col-sm-12 row">
 
 
-											<div th:each="itemCategory : ${category}"  th:if="${itemCategory.status ==true}" class="col-sm-6">
-													<a class="dropdown-item font-category"
-														th:href="@{|productcategory?idCategory=${itemCategory.id}|}">
-														[[${itemCategory.name.toUpperCase()}]] </a> <a
-														th:each="categoryDetail : ${itemCategory.category_detail}"
-														class="dropdown-item category-detail" th:if="${categoryDetail.status==true}"
-														th:href="@{|productcategorydetail?idCategoryDetail=${categoryDetail.id}|}">
-														- [[${categoryDetail.name}]] </a>												
+											<div th:each="itemCategory : ${category}"
+												th:if="${itemCategory.status ==true}" class="col-sm-6">
+												<a class="dropdown-item font-category"
+													th:href="@{|productcategory?idCategory=${itemCategory.id}|}">
+													[[${itemCategory.name.toUpperCase()}]] </a> <a
+													th:each="categoryDetail : ${itemCategory.category_detail}"
+													class="dropdown-item category-detail"
+													th:if="${categoryDetail.status==true}"
+													th:href="@{|productcategorydetail?idCategoryDetail=${categoryDetail.id}|}">
+													- [[${categoryDetail.name}]] </a>
 
 											</div>
 
 
 										</div>
 									</div></li>
-							
-								<li class="nav-item dropdown"><a
-									class="nav-link dropdown-toggle" href="blog.html"
-									id="navbarDropdown_2" role="button" data-toggle="dropdown"
-									aria-haspopup="true" aria-expanded="false"> BLOG </a>
-									<div class="dropdown-menu" aria-labelledby="navbarDropdown_2">
 
-										<a class="dropdown-item" href="blog.html"> blog</a> <a
-											class="dropdown-item" href="single-blog.html">Single blog</a>
-									</div></li>
-
-
+								
+							<li class="nav-item"><a class="nav-link"
+									th:href="@{/user/blog}">BLOG</a></li>
 
 
 								<li class="nav-item"><a class="nav-link"
-									href="contact.html">CONTACT</a></li>
+									href="contact.html">LIÊN HỆ</a></li>
 
 							</ul>
 							<!--  -->
@@ -90,50 +82,65 @@
 						<!-- </div> -->
 
 
+						<div class="hearer_icon d-flex  align-items-center">
+							<div class="collapse navbar-collapse main-menu-item "
+								>
+								<form style="margin:0px;" th:action="@{|productSearch|}">
+									<input type="text" class="form-control" th:value="${search}"
+										name="search"  placeholder="Tìm kiếm">
+								</form>
+							</div>
 
-						<div class="hearer_icon d-flex">
-							<div th:if="${session.user != null}">
-								<!-- Nội dung hiển thị khi đã đăng nhập -->
-								<div class="dropdown">
-									<button class="btn  btn-icon" type="button"
-										id="accountDropdown" data-toggle="dropdown"
-										aria-haspopup="true" aria-expanded="false">
-										<i><img class="rounded-circle" style="width: 40px;"
-											th:src="@{|${session.user.image}|}" th:href="@{info}" alt="" /></i>
+							<div class="hearer_icon d-flex">
+								<div th:if="${session.user != null}">
+									<!-- Nội dung hiển thị khi đã đăng nhập -->
+									<div class="dropdown">
+										<button class="btn  btn-icon" type="button"
+											id="accountDropdown" data-toggle="dropdown"
+											aria-haspopup="true" aria-expanded="false">
+											<i>
+												<img th:if="${session.user.image != null}" class="rounded-circle" style="width: 40px;" th:src="@{|${session.user.image}|}" th:href="@{info}" alt="" />
+												<span style="font-weight: 500">[[${session.user.fullName}]]</span>
+											</i>
 
 
-									</button>
-									<div class="dropdown-menu" aria-labelledby="accountDropdown">
-										<a class="dropdown-item" th:href="@{info}">Thông tin tài
-											khoản</a>
-										<a class="dropdown-item" href="/admin/index">Admin</a>
-										<div class="dropdown-divider"> </div>
-										
-										<a class="dropdown-item" th:href="@{/logout}">Đăng xuất </a>
+										</button>
+										<div class="dropdown-menu" aria-labelledby="accountDropdown">
+
+											<a class="dropdown-item" th:href="@{info}">Thông tin tài
+												khoản</a>
+											<a th:if="${session.role}" class="dropdown-item" href="/admin/index">Admin</a>
+
+											<div class="dropdown-divider"></div>
+
+											<a class="dropdown-item" th:href="@{/logout}">Đăng xuất </a>
+										</div>
 									</div>
 								</div>
-							</div>
-							<div th:unless="${session.user != null}">
+								<div th:unless="${session.user != null}">
 
-								<!-- Nội dung hiển thị khi chưa đăng nhập -->
-								<div class="dropdown">
-									<button class="btn dropdown-toggle btn-icon" type="button"
-										id="accountDropdown" data-toggle="dropdown"
-										aria-haspopup="true" aria-expanded="false">
-										<i class="fas fa-user"></i>
-										<!-- Icon user -->
-									</button>
-									<div class="dropdown-menu" aria-labelledby="accountDropdown">
-										<a class="dropdown-item" th:href="@{/user/login}">Đăng
-											nhập</a> <a class="dropdown-item" th:href="@{/user/register-form}">Đăng kí</a>
+									<!-- Nội dung hiển thị khi chưa đăng nhập -->
+									<div class="dropdown">
+										<button class="btn dropdown-toggle btn-icon" type="button"
+											id="accountDropdown" data-toggle="dropdown"
+											aria-haspopup="true" aria-expanded="false">
+											<i class="fas fa-user"></i>
+											<!-- Icon user -->
+										</button>
+										<div class="dropdown-menu" aria-labelledby="accountDropdown">
+											<a class="dropdown-item" th:href="@{/user/search-order}">Tra cứu đơn hàng</a>
+											<a class="dropdown-item" th:href="@{/user/login}">Đăng nhập</a>
+											<a class="dropdown-item" th:href="@{/user/register-form}">Đăng kí</a>
+										</div>
 									</div>
 								</div>
-							</div>
-							<div class="d-flex align-items-center">
-								<a th:href="@{/user/cart}" class="btn "> <i
-									class="fas fa-shopping-cart "></i> <span class="badge"
-									th:href="@{/user/cart}">{{cart.count}}</span>
-								</a>
+
+								<div class=" hearer_icon d-flex align-items-center">
+									<a th:href="@{/user/cart}" class="btn "> <i
+										class="fas fa-shopping-cart " style="margin: 0px;"></i> <span
+										class="badge" th:href="@{/user/cart}">{{cart.count}}</span>
+									</a>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -141,17 +148,10 @@
 			</div>
 		</div>
 	</div>
-	<div class="search_input" id="search_input_box">
-		<div class="container ">
-			<form class="d-flex justify-content-between search-inner">
-				<input type="text" class="form-control" id="search_input"
-					placeholder="Search Here">
-				<button type="submit" class="btn"></button>
-				<span class="ti-close" id="close_search" title="Close Search"></span>
-			</form>
-		</div>
-	</div>
+
+
 </header>
+
 
 
 <!-- Header part end-->

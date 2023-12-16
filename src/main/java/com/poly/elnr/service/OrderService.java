@@ -8,6 +8,7 @@ import com.poly.elnr.dto.PhoneTotalDTO;
 import com.poly.elnr.dto.TotalWithUserOrderDTO;
 import com.poly.elnr.entity.Order;
 import org.springframework.data.repository.query.Param;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -17,6 +18,9 @@ import java.util.Map;
 public interface OrderService {
 
     List<Order> fillAllOrder();
+    void addSseEmitter(SseEmitter emitter);
+
+    void removeSseEmitter(SseEmitter emitter) ;
 
     Order fillOrderById(int id);
 
@@ -47,5 +51,7 @@ public interface OrderService {
     List<PhoneTotalDTO> findPhoneTotalsForToday();
 
     Order updateStatusOrder(int id, int status);
+
+    Order findOrderByPhoneAndId(String phone, int idOrder);
 
 }

@@ -14,4 +14,6 @@ public interface AddressRepository extends JpaRepository<Address, Integer>{
 
     @Query("SELECT a FROM Address a WHERE a.user.id =:userId")
     List<Address> findAddressByIdUser(@Param("userId") int userId);
+
+//    void delete(int id);
 }

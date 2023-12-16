@@ -17,6 +17,9 @@ app.controller("size-ctrl", function($scope,$filter, $http){
 	}
 
 	$scope.create = function(){
+		if(!validateForm()){
+			return;
+		}
 		var item = angular.copy($scope.form);
 		$http.post(`/rest/sizes`, item).then(resp => {
 			resp.data.dateInsert = new Date(resp.data.dateInsert)
@@ -30,6 +33,9 @@ app.controller("size-ctrl", function($scope,$filter, $http){
 	}
 
 	$scope.update = function(){
+		if(!validateForm()){
+			return;
+		}
 		var item = angular.copy($scope.form);
 		$http.put(`/rest/sizes/${item.id}`, item).then(resp => {
 			var index = $scope.items.findIndex(p => p.id == item.id);
@@ -71,10 +77,14 @@ app.controller("size-ctrl", function($scope,$filter, $http){
 	$scope.pager = {
 		page: 0,
 		size: 10,
-		sortColumn: '',
-		sortDirection: '',
+		sortColumn: 'item.id',
+		sortDirection: 'desc',
 		get filteredItems() {
-			return $filter('filter')($scope.items, $scope.searchText);
+			var filteredItems = $filter('filter')($scope.items, $scope.searchText);
+			if ($scope.pager.sortColumn === 'item.id') {
+				filteredItems = $filter('orderBy')(filteredItems, 'item.id', $scope.pager.sortDirection === 'asc');
+			}
+			return filteredItems;
 		},
 		get items() {
 			if (this.page < 0) {
@@ -143,6 +153,30 @@ app.controller("size-ctrl", function($scope,$filter, $http){
 	    beforeHide: function () {}, // will be triggered before the toast gets hidden
 	    afterHidden: function () {}  // will be triggered after the toast has been hidden
 	});
+	}
+	
+	
+	validateForm = () => {
+
+		var isvalid = true;
+
+		var name = document.getElementById("sizeName").value
+		console.log(name)
+		if (name === "") {
+			isvalid = false;
+			document.getElementById("sizeNameError").innerText = "Tên kích thước không bỏ trống";
+		} else if (/[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-\d]/.test(name)) {
+			
+			isvalid = false;
+			document.getElementById("sizeNameError").innerText = "Tên không được chứa ký tự đặt biệt hoặc số";
+		} else {
+			document.getElementById("sizeNameError").innerText = "";
+		}
+
+
+
+		return isvalid;
+
 	}
 }
 );

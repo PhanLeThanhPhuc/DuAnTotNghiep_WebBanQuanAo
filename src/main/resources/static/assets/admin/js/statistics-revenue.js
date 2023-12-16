@@ -1,4 +1,4 @@
-app.controller("statistic-ctrl", function($scope, $filter, $http) {
+app.controller("statistic-ctrl", function($scope, $filter, $http,$location) {
 
     $scope.listTotalDate = [];
     $scope.date =[];
@@ -9,16 +9,15 @@ app.controller("statistic-ctrl", function($scope, $filter, $http) {
         await $http.get("/rest/orderTotal").then(resp => {
             $scope.map = new Map();
             if (resp.status === 200){
-                console.log("Dữ liệu từ database: ",resp.data);
                 $scope.listTotalDate = resp.data;
                 $scope.map = processData($scope.listTotalDate);
-
-                // $scope.TotalInToday();
-                // console.log("Map data: ", $scope.map);
                 const tenDaysAgoArray = $scope.arrayTenDayAgo();
                 processTenDaysAgoArray(tenDaysAgoArray,$scope.map);
             }
-        });
+        }).catch(error => {
+            $location.path("/unauthorized");
+        })
+
         $scope.total.reverse();
         $scope.date.reverse();
         $scope.chart();
@@ -124,6 +123,7 @@ app.controller("statistic-ctrl", function($scope, $filter, $http) {
         const tenDaysAgoArray = getDates(startDateFormat, endDateFormat);
         processTenDaysAgoArray(tenDaysAgoArray, map);
         $scope.chart();
+        $scope.messageTotalPrice = `Tổng doanh thu :`;
         // console.log("arr",$scope.listTotalDate)
     };
 
@@ -183,6 +183,8 @@ app.controller("statistic-ctrl", function($scope, $filter, $http) {
             document.getElementById("div-button").style.display = "";
             document.getElementById("end-date").disabled = false;
             document.getElementById("start-date").disabled = false;
+            document.getElementById("start-date").value = "";
+            document.getElementById("end-date").value = "";
         }
     }
 

@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.util.List;
 
 
+import com.poly.elnr.dto.CreatePasswordDTO;
 import com.poly.elnr.dto.UserRegisterDTO;
 import com.poly.elnr.entity.Address;
 import com.poly.elnr.utils.*;
@@ -66,6 +67,8 @@ public class UserServiceImpl implements UserService {
 			user.setPassword(passwordEncoder.encode(RamDomNameUtils.generateRandomPassword()));
 			user.setDate_insert(new Date());
 			user.setDate_update(new Date());
+			user.setSignup(true);
+			user.setStatus(true);
 			userRepository.save(user);
 			
 			//set quyền
@@ -79,7 +82,6 @@ public class UserServiceImpl implements UserService {
 			authority.setUser(userid);
 			authority.setRole(roleId);
 			authorityRepository.save(authority);
-
 			userDetails = User.withUsername(user.getEmail()).password(passwordEncoder.encode(RamDomNameUtils.generateRandomPassword()))
 											.roles("USER").build();
 			Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
@@ -140,6 +142,14 @@ public class UserServiceImpl implements UserService {
 	public Users update(Users user) {
 		// TODO Auto-generated method stub
 		return userRepository.save(user);
+	}
+
+	@Override
+	public void updateUserInfo(Users request) {
+		Users user = userRepository.findByEmail(request.getEmail());
+		user.setFullName(request.getFullName());
+		user.setGender(request.getGender());
+		userRepository.save(user);
 	}
 
 	@Override
@@ -231,7 +241,10 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void registerUser(UserRegisterDTO userRegisterDTO) {
-		Users user = new Users();
+		Users user = userRepository.findByPhone(userRegisterDTO.getPhone());
+		if(user == null){
+			user = new Users();
+		}
 		user.setFullName(userRegisterDTO.getFullname());
 		user.setPhone(userRegisterDTO.getPhone());
 		user.setPassword(passwordEncoder.encode(userRegisterDTO.getPassword()));
@@ -242,7 +255,6 @@ public class UserServiceImpl implements UserService {
 		user.setDate_insert(new Date());
 		user.setDate_update(new Date());
 		Users userSave = userRepository.save(user);
-		System.out.println();
 		//set role
 		Role roleId = new Role();
 		roleId.setId("ROLE_USER");
@@ -252,7 +264,6 @@ public class UserServiceImpl implements UserService {
 		authority.setUser(userid);
 		authority.setRole(roleId);
 		authorityRepository.save(authority);
-//		return null;
 	}
 
 	@Override
@@ -260,5 +271,12 @@ public class UserServiceImpl implements UserService {
 		return userRepository.findByEmailAndPhone(phone, email);
 	}
 
+	@Override
+	public void createPassword(CreatePasswordDTO passwordDTO, String username) {
+		Users users = findByUserNamePhoneAndEmail(username);
+		users.setPassword(passwordEncoder.encode(passwordDTO.getPassword()));
+		users.setPasswordReset(true);
+		userRepository.save(users);
+	}
 
 }

@@ -79,17 +79,17 @@ public class UserController {
 		if(paymentMethod == 0){
 			System.out.println("tien mat");
 			orderService.updatePayment(idOrder,paymentMethod);
-			return "redirect:/user/order-detail?idOrder="+idOrder;
+			return "redirect:/user/information-order?idorder="+idOrder;
 		}else{
 			baseUrl += "/user/payment-order-user";
 			String content = "Thanh toán đơn hàng ";
 			Order order = orderService.fillOrderById(idOrder);
-			int total = 0;
-			if(order.getVoucher() == null){
-				total = (int) ((order.getTotal() + order.getShipFee()));
-			}else{
-				total = (int) ((order.getTotal() + order.getShipFee()) - order.getVoucher().getDiscountPrice());
-			}
+			int total = order.getTotal() -  order.getTotalDiscount() + order.getShipFee();
+//			if(order.getVoucher() == null){
+//				total = (int) ((order.getTotal() + order.getShipFee()));
+//			}else{
+//				total = (int) ((order.getTotal() + order.getShipFee()) - order.getVoucher().getDiscountPrice());
+//			}
 			String urlPayment = vnPayService.createOrder(total, content, baseUrl,idOrder);
 			return "redirect:"+urlPayment;
 		}
@@ -127,7 +127,7 @@ public class UserController {
 			int statusPayment = 0;
 			order= orderService.updatePaymentAndStatusPayment(idorder,statusPayment, payment);
 		}
-		return "redirect:/user/order-detail?idOrder="+idorder;
+		return "redirect:/user/information-order?idorder="+idorder;
 	}
 
 	@GetMapping("user/order-detail")
@@ -196,36 +196,36 @@ public class UserController {
 		Users userEmail = userService.findByEmail(userRegisterDTO.getEmail());
 		Users userPhone = userService.findByPhone(userRegisterDTO.getPhone());
 		Map<String, Object> map = new HashMap<>();
-		if(userEmail != null){
-			if(userEmail.isSignup()){
+		if (userEmail != null) {
 				map.put("status", false);
-				map.put("message","Email đã được sử dụng");
-				return ResponseEntity.ok(map) ;
-			}
-		}else if(userPhone != null){
-			if(userPhone.isSignup()){
+				map.put("message", "Email đã được sử dụng");
+				return ResponseEntity.ok(map);
+		} else if (userPhone != null && userPhone.isSignup() == true) {
 				map.put("status", false);
-				map.put("message","Phone đã được sử dụng");
-				return ResponseEntity.ok(map) ;
-			}
-		}else if (!userRegisterDTO.getPassword().equals(userRegisterDTO.getConfirmPassword())) {
+				map.put("message", "Phone đã được sử dụng");
+				return ResponseEntity.ok(map);
+		} else if (!userRegisterDTO.getPassword().equals(userRegisterDTO.getConfirmPassword())) {
 			map.put("status", false);
-			map.put("message","Mật khẩu không khớp");
-			return ResponseEntity.ok(map) ;
-		}else{
+			map.put("message", "Mật khẩu không khớp");
+			return ResponseEntity.ok(map);
+		} else {
 			userService.registerUser(userRegisterDTO);
 			map.put("status", true);
-			map.put("message","Đăng ký thành công");
-			return ResponseEntity.ok(map) ;
+			map.put("message", "Đăng ký thành công");
+			return ResponseEntity.ok(map);
 		}
-        return null;
-    }
+	}
 
 	@GetMapping("user/address")
 	public String viewAddress (Model model, Authentication authentication){
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		model.addAttribute("address", addressService.findAddressByIdUser(userDetails.getUsername()));
 		return "user/layout/user-address";
+	}
+	
+	@GetMapping("user/blog")
+	public String viewBlog (Model model, Authentication authentication){
+		return "user/layout/blog";
 	}
 
 }

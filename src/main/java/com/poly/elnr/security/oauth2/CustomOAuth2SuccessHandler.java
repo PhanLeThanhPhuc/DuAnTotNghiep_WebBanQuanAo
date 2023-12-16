@@ -32,6 +32,12 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
 
         UserDetails userDetails = userService.oauth2(oauthUser);
 
+        boolean adminOrUser = false;
+        adminOrUser = userDetails.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN")
+                        || authority.getAuthority().equals("ROLE_STAFF"));
+
+        session.set("role",adminOrUser);
         for (GrantedAuthority authority : userDetails.getAuthorities()) {
             if (authority.getAuthority().equals("ROLE_ADMIN")) {
                 response.sendRedirect("/user/index");

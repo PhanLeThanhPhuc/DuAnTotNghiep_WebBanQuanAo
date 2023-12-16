@@ -17,7 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.poly.elnr.service.OrderService;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -50,10 +52,12 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     VoucherRepository voucherRepository;
 
+    private final List<SseEmitter> emitters = new ArrayList<>();
     @Override
     public List<Order> fillAllOrder() {
         return orderRepository.findAll();
     }
+
 
     @Override
     public Order fillOrderById(int id) {
@@ -81,22 +85,22 @@ public class OrderServiceImpl implements OrderService {
         Users user = userService.findByUserNamePhoneAndEmail(order.getPhone());
 
         Voucher voucherId = null;
-          if(order.getVoucher().getId() != 0){
-              voucherId = new Voucher();
-              order.getVoucher().getId();
-              voucherId.setId(order.getVoucher().getId());
-              Voucher voucher = voucherRepository.findById(order.getVoucher().getId()).get();
-              int quantity =  voucher.getQuantity() - 1;
-              voucher.setQuantity(quantity);
-              voucherRepository.save(voucher);
-          }
+        if(order.getVoucher().getId() != 0){
+            voucherId = new Voucher();
+            order.getVoucher().getId();
+            voucherId.setId(order.getVoucher().getId());
+            Voucher voucher = voucherRepository.findById(order.getVoucher().getId()).get();
+            int quantity =  voucher.getQuantity() - 1;
+            voucher.setQuantity(quantity);
+            voucherRepository.save(voucher);
+        }
 
         if(user == null){
-           user = new Users();
-           user.setPhone(order.getPhone());
-           user.setSignup(false);
-           user.setPasswordReset(false);
-           Users userSave = userRepository.save(user);
+            user = new Users();
+            user.setPhone(order.getPhone());
+            user.setSignup(false);
+            user.setPasswordReset(false);
+            Users userSave = userRepository.save(user);
 
             Users userId = new Users();
             userId.setId(user.getId());
@@ -124,7 +128,29 @@ public class OrderServiceImpl implements OrderService {
             productDetails.setQuantity(qty);
             productDetailsRepository.save(productDetails);
         });
+//        sendOrderUpdate(order);
         return order;
+    }
+
+
+    public void addSseEmitter(SseEmitter emitter) {
+        emitters.add(emitter);
+    }
+
+    public void removeSseEmitter(SseEmitter emitter) {
+        emitters.remove(emitter);
+    }
+
+    public void sendOrderUpdate(Order order) {
+        List<SseEmitter> deadEmitters = new ArrayList<>();
+        emitters.forEach(emitter -> {
+            try {
+                emitter.send(SseEmitter.event().name("order-update").data(order));
+            } catch (IOException e) {
+                deadEmitters.add(emitter);
+            }
+        });
+        emitters.removeAll(deadEmitters);
     }
 
     @Override
@@ -144,7 +170,7 @@ public class OrderServiceImpl implements OrderService {
             productDetails.setQuantity(qty);
             productDetailsRepository.save(productDetails);
         });
-
+//        sendOrderUpdate(order);
         return orderRepository.save(order);
     }
 
@@ -182,13 +208,13 @@ public class OrderServiceImpl implements OrderService {
             return orderRepository.findOrderByIdUser(user.getId());
         }else{
             user = userRepository.findByEmail(username);
-           if(user.getPhone() ==  null){
-               return null;
-           }else{
-               List<Order> order =  orderRepository.findOrderByIdUser(user.getId());
-               System.out.println();
-               return orderRepository.findOrderByIdUser(user.getId());
-           }
+            if(user.getPhone() ==  null){
+                return null;
+            }else{
+                List<Order> order =  orderRepository.findOrderByIdUser(user.getId());
+                System.out.println();
+                return orderRepository.findOrderByIdUser(user.getId());
+            }
         }
 
     }
@@ -242,7 +268,13 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderRepository.findById(id).get();
         order.setStatus(status);
         orderRepository.save(order);
+//        sendOrderUpdate(order);
         return order;
+    }
+
+    @Override
+    public Order findOrderByPhoneAndId(String phone, int idOrder) {
+        return orderRepository.findOrderByPhoneAndId(phone, idOrder);
     }
 
 }

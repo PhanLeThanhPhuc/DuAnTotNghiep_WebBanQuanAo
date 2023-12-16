@@ -34,13 +34,13 @@
 
 								<td>
 									<div ng-if="item.product.sale ==false">
-										<h4 style=" color: red; font-weight: 600">{{item.product.price }}₫</h4>
+										<h4 style=" color: red; font-weight: 600">{{item.product.price | currency:'' :0  }}₫</h4>
 									</div>
 
 									<div ng-if="item.product.sale == true">
-										<h5 style="text-decoration-line: line-through;">{{item.product.price
+										<h5 style="text-decoration-line: line-through;">{{item.product.price | currency:'' :0
 											}}₫</h5>
-										<h4 style=" color: red; font-weight: 600">{{item.product.discountPrice }}₫</h4>
+										<h4 style=" color: red; font-weight: 600">{{item.product.discountPrice | currency:'' :0 }}₫</h4>
 									</div>
 						
 								</td>
@@ -49,7 +49,7 @@
 								</td>
 								<td>
 									<div class="product_count">
-										<input type="number"
+										<input oninput="preventNegative(event)" type="number"
 											ng-change="cart.cartChange({{item.size.id}},{{item.product.id}},{{item.qty}})"
 											ng-model="item.qty" min="1">
 									</div>
@@ -64,7 +64,8 @@
 										<i class="fa fa-times"></i>
 									</button></td>
 							</tr>
-							<tr>
+							<tr ng-if="cart.count >0">
+								
 								<td></td>
 								<td></td>
 								<td></td>
@@ -76,11 +77,14 @@
 									<h5>${{cart.amount | currency:'' :0}}</h5>
 								</td>
 							</tr>
+							<tr ng-if="cart.count <= 0">
+								<td colspan="6 " style="text-align:center; font-weight:bold;">Giỏ hàng hiện không có sản phẩm nào.</td>
+							</tr>
 						</tbody>
 					</table>
 					<div class="checkout_btn_inner float-right">
-						<a class="btn_1" href="/user/index">Tiếp tục mua sắm</a> <a
-							class="btn_1 checkout_btn_1" href="/user/checkout">Thanh toán</a>
+						<a class="btn_1" href="/user/index">Tiếp tục mua sắm</a>
+						<a ng-if="!cart.items.length == 0" class="btn_1 checkout_btn_1" href="/user/checkout">Thanh toán</a>
 					</div>
 				</div>
 			</div>

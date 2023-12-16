@@ -327,7 +327,7 @@
                     <div class="form-group mt-3">
                         <label >Số điện thoại</label>
                         <input ng-model="registerPhone" type="number" class="form-control"  placeholder="Nhập số điện thoại của bạn...">
-<!--                        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>-->
+                        <span style="color: red; font-weight: 500" id="message-otp"></span>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -352,7 +352,7 @@
                     <div class="form-group mt-3">
                         <label >Nhập mã otp</label>
                         <input ng-model="otp" type="number" class="form-control"  placeholder="Nhập mã otp vừa gửi đến số điện thoại">
-                        <div id="countdown"></div>
+                        <div id="count-down"></div>
                         <span id="messageOtp" style="color: red" class="form-text text-muted"></span>
                     </div>
                 </div>
