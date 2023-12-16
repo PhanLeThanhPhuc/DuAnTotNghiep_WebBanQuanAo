@@ -183,6 +183,8 @@ app.controller("statistic-ctrl", function($scope, $filter, $http,$location) {
             document.getElementById("div-button").style.display = "";
             document.getElementById("end-date").disabled = false;
             document.getElementById("start-date").disabled = false;
+            document.getElementById("start-date").value = "";
+            document.getElementById("end-date").value = "";
         }
     }
 
