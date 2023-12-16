@@ -44,8 +44,10 @@ app.controller("order-ctrl", function($scope, $filter, $http) {
 	}
 
 	$scope.confirmOrder = (orderId) => {
+		document.getElementById('preloader').style.display = 'grid';
 		$http.get(`/rest/orderGhn?orderId=${orderId}`).then(resp => {
 			if (resp.status === 200) {
+				document.getElementById('preloader').style.display = 'none';
 				var index = $scope.listOrders.findIndex(p => p.id == orderId);
 				$scope.listOrders[index] = resp.data;
 				$scope.message(`Xác nhận đơn hàng ${orderId} thành công`)
@@ -216,8 +218,8 @@ app.controller("order-ctrl", function($scope, $filter, $http) {
 		}
 	};
 
-	buttonFilterByDate = () =>{
-
+	buttonFilterByDate = async () =>{
+		await $scope.fillAllOrder();
 		var listOrdersCopy = $scope.listOrders;
 
 		var startDate = document.getElementById("start-date").value;
@@ -229,8 +231,8 @@ app.controller("order-ctrl", function($scope, $filter, $http) {
 		countOrder();
 		$scope.$apply();
 
-		$scope.listOrders = []
-		$scope.listOrders = listOrdersCopy;
+		// $scope.listOrders = []
+		// $scope.listOrders = listOrdersCopy;
 	}
 
 	countOrder = () =>{

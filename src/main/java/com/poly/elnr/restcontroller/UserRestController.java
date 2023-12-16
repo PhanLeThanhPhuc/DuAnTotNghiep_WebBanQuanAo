@@ -25,13 +25,22 @@ import com.poly.elnr.service.UserService;
 @RestController
 @RequestMapping("/rest/users")
 public class UserRestController {
+
 	@Autowired
 	UserService userService;
-	
+
+
 	@PostMapping
 	public Users post(@RequestBody  Users user) {
+		System.out.println();
 		return userService.create(user);
 		 
+	}
+
+	@PostMapping("update-user-info")
+	public void postInfo(@RequestBody  Users user) {
+		System.out.println();
+		userService.updateUserInfo(user);
 	}
 
 	@GetMapping("/userid")

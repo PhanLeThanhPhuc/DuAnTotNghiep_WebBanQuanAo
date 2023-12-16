@@ -123,6 +123,7 @@ app.controller("statistic-ctrl", function($scope, $filter, $http,$location) {
         const tenDaysAgoArray = getDates(startDateFormat, endDateFormat);
         processTenDaysAgoArray(tenDaysAgoArray, map);
         $scope.chart();
+        $scope.messageTotalPrice = `Tổng doanh thu :`;
         // console.log("arr",$scope.listTotalDate)
     };
 

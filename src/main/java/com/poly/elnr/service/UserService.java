@@ -25,6 +25,8 @@ public interface UserService {
 
 	public Users update(Users user);
 
+	void  updateUserInfo(Users user);
+
 	public void delete(Users id);
 
 	UserDetails oauth2(CustomOAuth2User oAuth2User);
