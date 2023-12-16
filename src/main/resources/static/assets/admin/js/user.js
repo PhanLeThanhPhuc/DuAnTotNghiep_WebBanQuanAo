@@ -196,67 +196,69 @@ app.controller("user-ctrl", function($scope, $filter, $http) {
 
 
 	validateForm = () => {
-    var isvalid = true;
+		var isvalid = true;
 
-    var fullNameform = document.getElementById("fullNameForm").value;
-    var emailform = document.getElementById("emailForm").value;
-    var phoneform = document.getElementById("phoneForm").value;
-    var genderCheck = document.getElementsByName('gender');
+		var fullNameform = document.getElementById("fullNameForm").value;
+		var emailform = document.getElementById("emailForm").value;
+		var phoneform = document.getElementById("phoneForm").value;
+		var genderCheck = document.getElementsByName('gender');
 
-    console.log(fullNameform);
-    console.log(emailform);
-    console.log(phoneform);
+		console.log(fullNameform);
+		console.log(emailform);
+		console.log(phoneform);
 
-    if (fullNameform === "") {
-        isvalid = false;
-        document.getElementById("fullNameFormError").innerText = "Tên người dùng không bỏ trống";
-    } else if (/[^a-zA-Zàáảãạăắằẳẵặâấầẩẫậèéẻẽẹêếềểễệđìíỉĩịòóỏõọôốồổỗộơớờởỡợùúủũụưứừửữựỳỹỷỵ\s]/ug.test(fullNameform)) {
-        isvalid = false;
-        document.getElementById("fullNameFormError").innerText = "Tên người dùng được chứa ký tự đặt biệt và số";
-    } else {
-        document.getElementById("fullNameFormError").innerText = "";
-    }
+		if (fullNameform === "") {
+			isvalid = false;
+			document.getElementById("fullNameFormError").innerText = "Tên người dùng không bỏ trống";
+		} else if (/[^a-zA-Zàáảãạăắằẳẵặâấầẩẫậèéẻẽẹêếềểễệđìíỉĩịòóỏõọôốồổỗộơớờởỡợùúủũụưứừửữựỳỹỷỵ0-9\s]/ug.test(fullNameform)) {
+			isvalid = false;
+			document.getElementById("fullNameFormError").innerText = "Tên người dùng không được chứa ký tự đặt biệt";
+		} else {
+			document.getElementById("fullNameFormError").innerText = "";
+		}
 
-    if (emailform === "") {
-        isvalid = false;
-        document.getElementById("emailFormError").innerText = "Email không bỏ trống";
-    } else if (!/^[A-Za-z0-9]+[A-Za-z0-9]*@[A-Za-z0-9]+\.[A-Za-z0-9]+$/.test(emailform)) {
-        isvalid = false;
-        document.getElementById("emailFormError").innerText = "Email không đúng định dạng";
-    } else {
-        document.getElementById("emailFormError").innerText = "";
-    }
 
-    if (phoneform === "") {
-        isvalid = false;
-        document.getElementById("phoneFormError").innerText = "Số điện thoại không bỏ trống";
-    } else if (/[^\d]/.test(phoneform)) {
-        isvalid = false;
-        document.getElementById("phoneFormError").innerText = "Số điện thoại không được chứa ký tự đặc biệt hoặc chữ";
-    } else if (/[^0-9]/.test(phoneform) || phoneform.length !== 10) {
-        isvalid = false;
-        document.getElementById("phoneFormError").innerText = "Số điện thoại không hợp lệ ";
-    } else {
-        document.getElementById("phoneFormError").innerText = "";
-    }
+		if (emailform === "") {
+			isvalid = false;
+			document.getElementById("emailFormError").innerText = "Email không bỏ trống";
+		} else if (!/^[A-Za-z0-9]+[A-Za-z0-9]*@[A-Za-z0-9]+\.[A-Za-z0-9.]+$/.test(emailform)) {
+			isvalid = false;
+			document.getElementById("emailFormError").innerText = "Email không đúng định dạng";
+		} else {
+			document.getElementById("emailFormError").innerText = "";
+		}
 
-    var isGenderSelected = false;
-    for (var i = 0; i < genderCheck.length; i++) {
-        if (genderCheck[i].checked) {
-            isGenderSelected = true;
-            break;
-        }
-    }
 
-    if (!isGenderSelected) {
-        isvalid = false;
-        document.getElementById('genderCheckError').innerText = 'Vui lòng chọn giới tính.';
-    } else {
-        document.getElementById('genderCheckError').innerText = '';
-    }
+		if (phoneform === "") {
+			isvalid = false;
+			document.getElementById("phoneFormError").innerText = "Số điện thoại không bỏ trống";
+		} else if (/[^\d]/.test(phoneform)) {
+			isvalid = false;
+			document.getElementById("phoneFormError").innerText = "Số điện thoại không được chứa ký tự đặc biệt hoặc chữ";
+		} else if (/[^0-9]/.test(phoneform) || phoneform.length !== 10) {
+			isvalid = false;
+			document.getElementById("phoneFormError").innerText = "Số điện thoại không hợp lệ ";
+		} else {
+			document.getElementById("phoneFormError").innerText = "";
+		}
 
-    return isvalid;
-}
+		var isGenderSelected = false;
+		for (var i = 0; i < genderCheck.length; i++) {
+			if (genderCheck[i].checked) {
+				isGenderSelected = true;
+				break;
+			}
+		}
+
+		if (!isGenderSelected) {
+			isvalid = false;
+			document.getElementById('genderCheckError').innerText = 'Vui lòng chọn giới tính.';
+		} else {
+			document.getElementById('genderCheckError').innerText = '';
+		}
+
+		return isvalid;
+	}
 
 
 }
