@@ -12,6 +12,7 @@ import com.poly.elnr.repository.*;
 //import com.poly.elnr.service.ApiGHNService;
 import com.poly.elnr.service.ApiGHNService;
 import com.poly.elnr.service.UserService;
+import com.poly.elnr.service.VnPayService;
 import com.poly.elnr.utils.RegexUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,6 +52,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     VoucherRepository voucherRepository;
+
+    @Autowired
+    VnPayService vnPayService;
 
     private final List<SseEmitter> emitters = new ArrayList<>();
     @Override
@@ -154,11 +158,17 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order cancelOrder(int orderId) throws JsonProcessingException {
+    public Order cancelOrder(int orderId) throws IOException {
         Order order =  orderRepository.findById(orderId).get();
         if(Objects.equals(order.getShipCode(), "")){
+            if(order.getPayment() == 1 && order.getStatusPayment() ==1){
+                order.setPaymentTime(vnPayService.refundVnPay(order));
+            }
             order.setStatus(2);
         }else{
+            if(order.getPayment() == 1 && order.getStatusPayment() ==1){
+                order.setPaymentTime(vnPayService.refundVnPay(order));
+            }
             apiGHNService.cancelOrder(order.getShipCode());
             order.setStatus(2);
         }
@@ -175,8 +185,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order updateStatusPayment(int idOrder, int statusPayment) {
+    public Order updateStatusPayment(int idOrder, int statusPayment, String paymentTime) {
         Order order = orderRepository.findById(idOrder).get();
+        order.setPaymentTime(paymentTime);
         order.setStatusPayment(statusPayment);
         return orderRepository.save(order);
     }
@@ -228,8 +239,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order updatePaymentAndStatusPayment(int idOrder, int statusPayment, int payment) {
+    public Order updatePaymentAndStatusPayment(int idOrder, int statusPayment, int payment, String paymentTime) {
         Order order = orderRepository.findById(idOrder).get();
+        order.setPaymentTime(paymentTime);
         order.setPayment(payment);
         order.setStatusPayment(statusPayment);
         orderRepository.save(order);

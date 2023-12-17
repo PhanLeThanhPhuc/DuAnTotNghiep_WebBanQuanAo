@@ -39,11 +39,11 @@ public class OrderController {
         int idorder = Integer.parseInt(request.getParameter("vnp_TxnRef"));
         System.out.println("THời gian thanh toán: "+ request.getParameter("vnp_PayDate"));
         Order order = new Order();
-
+        String paymentTime = request.getParameter("vnp_PayDate");
         if(paymentStatus==1){
-            order= orderService.updateStatusPayment(idorder, paymentStatus);
+            order= orderService.updateStatusPayment(idorder, paymentStatus, paymentTime);
         }else{
-            order = orderService.updateStatusPayment(idorder, paymentStatus);
+            order = orderService.updateStatusPayment(idorder, paymentStatus, paymentTime);
         }
         model.addAttribute("order", order);
         return "user/product/information-order";

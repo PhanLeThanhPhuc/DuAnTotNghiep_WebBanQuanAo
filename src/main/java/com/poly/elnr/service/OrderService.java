@@ -10,6 +10,7 @@ import com.poly.elnr.entity.Order;
 import org.springframework.data.repository.query.Param;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
@@ -28,9 +29,9 @@ public interface OrderService {
 
     Order saveOrder(JsonNode orderData) throws JsonProcessingException;
 
-    Order cancelOrder(int orderId) throws JsonProcessingException;
+    Order cancelOrder(int orderId) throws IOException;
 
-    Order updateStatusPayment(int idOrder, int statusPayment);
+    Order updateStatusPayment(int idOrder, int statusPayment, String paymentTime);
 
     Order orderGhn(int orderId) throws JsonProcessingException;
 
@@ -38,7 +39,7 @@ public interface OrderService {
 
     Order updatePayment(int idOrder, int statusPayment);
 
-    Order updatePaymentAndStatusPayment(int idOrder, int statusPayment, int payment);
+    Order updatePaymentAndStatusPayment(int idOrder, int statusPayment, int payment, String paymentTime);
 
     List<OrderDTO> findAllTotal();
 

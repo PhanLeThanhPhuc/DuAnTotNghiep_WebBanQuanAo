@@ -42,12 +42,12 @@ public class testreturnvnpay {
         String vnp_Command = "refund";
         String vnp_TmnCode = VnPayConstant.vnp_TmnCode;
         String vnp_TransactionType = "02";
-        String vnp_TxnRef = "107";
-        long amount = (long) (412000 * 100);
+        String vnp_TxnRef = "27";
+        long amount = (long) (94000 * 100);
         String vnp_Amount = String.valueOf(amount);
         String vnp_OrderInfo = "Hoan tien GD OrderId:" + vnp_TxnRef;
         String vnp_TransactionNo = ""; // Assuming value of the parameter "vnp_TransactionNo" does not exist on your system.
-        String vnp_TransactionDate = "20231113194942";
+        String vnp_TransactionDate = "20231217142010";
         String vnp_CreateBy = "0346363680";
         String vnp_IpAddr = "127.0.0.1";
 

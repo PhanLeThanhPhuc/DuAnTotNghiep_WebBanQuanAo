@@ -110,6 +110,8 @@
 									<div class="single_confirmation_details p-3">
 										<h6>THÔNG TIN KHÁCH HÀNG</h6>
 										<ul>
+<!--											<p>Formatted Date: <span th:text="${#temporals.format(paymentTime, 'dd/MM/yyyy HH:mm:ss')}"></span></p>-->
+<!--											<div th:text="${order.paymentTime}"></div>-->
 											<li>
 												<p>Tên:</p> <span> [[${order.nameUser}]]</span>
 											</li>
@@ -138,7 +140,7 @@
 											</li>
 											<li>
 												<p>Ngày đặt:</p> <span
-												th:text="${#dates.format(order.orderDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
+												th:text="${#dates.format(order.orderDate, 'dd/MM/yyyy HH:mm:ss')}"></span>
 											</li>
 											<li>
 												<p>Tổng tiền:</p>
@@ -182,7 +184,8 @@
 														hình thức thanh toán khác</a>
 													<span style="font-style: italic; color: seagreen"
 														class="text-success" th:if="${order.statusPayment eq 1}">
-														(Thanh toán thành công)</span>
+														(Thanh toán thành công)</span><br>
+<!--													<span th:text="${#temporals.format(paymentTime, 'dd/MM/yyyy HH:mm:ss')}"></span>-->
 												</th:block>
 											</li>
 											<li></li>
@@ -499,7 +502,13 @@
 
 			});
 		</script>
+		<script th:inline="javascript">
+			// Lấy giá trị chuỗi giờ từ Thymeleaf
+			var dateTimeString = /*[[${order.paymentTime}]]*/ '';
 
+			// Chuyển đổi chuỗi giờ thành đối tượng LocalDateTime
+			var dateTime = java.time.LocalDateTime.parse(dateTimeString, java.time.format.DateTimeFormatter.ofPattern('yyyyMMddHHmmss'));
+		</script>
 	</section>
 </main>
 

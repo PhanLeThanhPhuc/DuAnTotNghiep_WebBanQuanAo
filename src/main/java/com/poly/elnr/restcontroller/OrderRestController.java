@@ -73,7 +73,7 @@ public class OrderRestController {
     }
 
     @GetMapping("rest/cancel-order")
-    public Map<String, Object> cancelOrder(@RequestParam("orderId") int orderId) throws JsonProcessingException {
+    public Map<String, Object> cancelOrder(@RequestParam("orderId") int orderId) throws IOException {
         Map<String, Object> model =  new HashMap<>();
         model.put("order", orderService.cancelOrder(orderId));
         return model;
