@@ -93,6 +93,9 @@ public class Order implements Serializable{
     @Column(name = "note")
     private String note;
 
+    @Column(name = "payment_time")
+    private String paymentTime;
+
     @Column(name = "district_id")
     private int districtId;
 

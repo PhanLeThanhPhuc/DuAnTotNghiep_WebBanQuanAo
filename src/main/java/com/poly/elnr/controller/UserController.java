@@ -16,6 +16,8 @@ import com.poly.elnr.service.*;
 
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -85,11 +87,7 @@ public class UserController {
 			String content = "Thanh toán đơn hàng ";
 			Order order = orderService.fillOrderById(idOrder);
 			int total = order.getTotal() -  order.getTotalDiscount() + order.getShipFee();
-//			if(order.getVoucher() == null){
-//				total = (int) ((order.getTotal() + order.getShipFee()));
-//			}else{
-//				total = (int) ((order.getTotal() + order.getShipFee()) - order.getVoucher().getDiscountPrice());
-//			}
+
 			String urlPayment = vnPayService.createOrder(total, content, baseUrl,idOrder);
 			return "redirect:"+urlPayment;
 		}
@@ -116,24 +114,30 @@ public class UserController {
 		int paymentStatus =vnPayService.orderReturn(request);
 		int idorder = Integer.parseInt(request.getParameter("vnp_TxnRef"));
 		System.out.println("THời gian thanh toán: "+ request.getParameter("vnp_PayDate"));
+		String paymentTime = request.getParameter("vnp_PayDate");
 		Order order = new Order();
 
 		if(paymentStatus==1){
 			int payment = 1;
 			int statusPayment = 1;
-			order= orderService.updatePaymentAndStatusPayment(idorder,statusPayment, payment);
+			order= orderService.updatePaymentAndStatusPayment(idorder,statusPayment, payment, paymentTime);
 		}else{
 			int payment = 1;
 			int statusPayment = 0;
-			order= orderService.updatePaymentAndStatusPayment(idorder,statusPayment, payment);
+			order= orderService.updatePaymentAndStatusPayment(idorder,statusPayment, payment, paymentTime);
 		}
 		return "redirect:/user/information-order?idorder="+idorder;
 	}
 
 	@GetMapping("user/order-detail")
 	public String userOrderDetails(Model model, @RequestParam("idOrder") int idOrder){
+		Order order = orderService.fillOrderById(idOrder);
 		model.addAttribute("subTotal",orderService.subTotalOrder(idOrder));
-		model.addAttribute("order", orderService.fillOrderById(idOrder));
+		model.addAttribute("order", order );
+		String timeString = order.getPaymentTime();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+		LocalDateTime paymentTime = LocalDateTime.parse(timeString, formatter);
+		model.addAttribute("paymentTime", paymentTime);
 		return "user/layout/user-orderdetails.html";
 	}
 	
@@ -167,7 +171,7 @@ public class UserController {
     }
 
 	@GetMapping("user/cancel-order")
-	public String cancelOrder (@RequestParam("idorder") int idorder) throws JsonProcessingException {
+	public String cancelOrder (@RequestParam("idorder") int idorder) throws IOException {
 		orderService.cancelOrder(idorder);
 		return "redirect:/user/order-detail?idOrder="+idorder;
 	}

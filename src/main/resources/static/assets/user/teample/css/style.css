@@ -2108,7 +2108,7 @@ ul {
   font-size: 15px;
   padding: 36px 23px;
   font-family: "Poppins", sans-serif;
-  text-transform: capitalize;
+  /*text-transform: capitalize;*/
   line-height: 12px;
   font-weight: 400;
 }
