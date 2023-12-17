@@ -28,9 +28,8 @@
     </div>
 
     <div class="panel-footer text-center">
-        <button ng-click="create()"  class="btn btn-primary">Create</button>
-        <button ng-click="update()" class="btn btn-success">Update</button>
-        <button ng-click="delete(form)" ng-disabled="!form.id" class="btn btn-danger">Delete</button>
+        <button ng-click="create()"  class="btn btn-primary" ng-if="!form.id">Create</button>
+        <button ng-click="update()" class="btn btn-success" ng-if="form.id" >Update</button>
         <button ng-click="reset(colorForm)" class="btn btn-info">Reset</button>
     </div>
 </div>

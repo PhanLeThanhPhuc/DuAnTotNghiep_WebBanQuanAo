@@ -231,5 +231,10 @@ public class UserController {
 	public String viewBlog (Model model, Authentication authentication){
 		return "user/layout/blog";
 	}
+	
+	@GetMapping("user/contact")
+	public String viewContact (Model model, Authentication authentication){
+		return "user/layout/contact";
+	}
 
 }
