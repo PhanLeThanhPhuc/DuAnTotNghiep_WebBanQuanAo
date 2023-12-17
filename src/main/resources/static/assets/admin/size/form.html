@@ -1,4 +1,4 @@
-<div class="container-fluid">
+	<div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-lg-12">
             <div class="card">
@@ -27,7 +27,7 @@
                                 <div class="col-lg-6">
                                     <label class="switch">
                                         <input ng-model="form.status" ng-true-value="true" ng-false-value="false" name="available" type="checkbox" ng-required="false">
-                                        <span ng-click="updateStatus(form)" class="slider round"></span>
+                                        <span class="slider round"></span>
                                     </label>
                                 </div>
                             </div>
@@ -39,9 +39,8 @@
     </div>
 
     <div class="panel-footer text-center">
-        <button ng-click="create()" class="btn btn-primary">Create</button>
-        <button ng-click="update()" class="btn btn-success">Update</button>
-        <button ng-click="delete(form)" ng-disabled="!form.id" class="btn btn-danger">Delete</button>
+        <button ng-click="create()" class="btn btn-primary" ng-if="!form.id">Create</button>
+        <button ng-click="update()" class="btn btn-success" ng-if="form.id" >Update</button>
         <button ng-click="reset(sizeForm)" class="btn btn-info">Reset</button>
     </div>
 </div>
